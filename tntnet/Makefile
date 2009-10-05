@@ -16,6 +16,7 @@ PKG_SOURCE_URL:=http://www.tntnet.org/download
 
 PKG_INSTALL:=1
 
+include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 
 TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/lib/libiconv/include
@@ -53,4 +54,5 @@ define Package/tntnet/install
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libtntnet.so* $(1)/usr/lib/
 endef
 
+$(eval $(call HostBuild))
 $(eval $(call BuildPackage,tntnet))
