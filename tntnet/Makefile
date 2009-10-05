@@ -28,7 +28,7 @@ define Package/tntnet
     TITLE:=tntnet
     SECTION:=libs
     CATEGORY:=Libraries
-    DEPENDS:=+libiconv +zlib
+    DEPENDS:=+libiconv +zlib +cxxtools/host
 endef
 
 define Build/Configure
