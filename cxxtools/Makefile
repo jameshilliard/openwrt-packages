@@ -27,7 +27,7 @@ TARGET_LDFLAGS+=-liconv -L$(STAGING_DIR)/usr/lib/libiconv/lib
 define Package/cxxtools
     TITLE:=cxxtools
     SECTION:=utils
-    CATEGORY:=Utilitiews
+    CATEGORY:=Utilities
     DEPENDS:=+libiconv
 endef
 
