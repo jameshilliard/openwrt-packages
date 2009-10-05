@@ -18,6 +18,7 @@ PKG_INSTALL:=1
 
 PKG_FIXUP:=libtool
 
+include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 
 TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/lib/libiconv/include
@@ -47,4 +48,5 @@ define Package/cxxtools/install
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcxxtools.so* $(1)/usr/lib/
 endef
 
+$(eval $(call HostBuild))
 $(eval $(call BuildPackage,cxxtools))
