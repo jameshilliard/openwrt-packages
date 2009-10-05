@@ -20,10 +20,12 @@ PKG_BUILD_DIR=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/
 
 PKG_INSTALL:=1
 
-PKG_FIXUP:=libtool-uclibxx
+#PKG_FIXUP:=libtool-uclibxx
+PKG_FIXUP:=libtool
 
 include $(INCLUDE_DIR)/package.mk
 
+# we have to to stick to libstdc++ for, as zimlib is using locales hardcoded and the uclibc++ does not have locales-support
 #CONFIGURE_VARS += \
 #    CXX="g++-uc"
 #
@@ -32,15 +34,11 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/zimlib
     TITLE:=zimlib
-    SECTION:=network
-    CATEGORY:=Network
+    SECTION:=libs
+    CATEGORY:=Libraries
     #DEPENDS:=+zlib +bzip2 +cxxtools +uclibcxx
     DEPENDS:=+zlib +bzip2 +cxxtools +libstdcpp
     URL:=http://openzim.org
-endef
-
-define Package/zimlib/description
-    foobar
 endef
 
 define Build/Configure
@@ -49,13 +47,15 @@ define Build/Configure
 endef
 
 define Build/InstallDev
-	$(INSTALL_DIR) $(1)
-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	$(INSTALL_DIR) $(1)/usr/include $(1)/usr/lib
+	$(CP) $(PKG_INSTALL_DIR)/usr/include/* $(1)/usr/include/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/*.{a,la,so*} $(1)/usr/lib/
 endef
 
 define Package/zimlib/install
-	$(INSTALL_DIR) $(1)
-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	$(INSTALL_DIR) $(1)/usr/bin $(1)/usr/lib
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/* $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/*.so* $(1)/usr/lib/
 endef
 
 $(eval $(call BuildPackage,zimlib))
