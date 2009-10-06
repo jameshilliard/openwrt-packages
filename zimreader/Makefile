@@ -18,6 +18,8 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://svn.openzim.org/svnroot/trunk/zimreader
 PKG_BUILD_DIR=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/
 
+PKG_BUILD_DEPENDS:=tntnet/host
+
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
