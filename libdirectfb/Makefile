@@ -54,23 +54,16 @@ define Build/InstallDev
 	$(INSTALL_DIR) \
 		$(1)/usr/include \
 		$(1)/usr/lib \
-		$(1)/usr/lib/pkgconfig \
-		$(1)/usr/lib/directfb-1.4-0-pure/systems \
-		$(1)/usr/lib/directfb-1.4-0-pure/wm \
-		$(1)/usr/lib/directfb-1.4-0-pure/inputdrivers \
-		$(1)/usr/lib/directfb-1.4-0-pure/gfxdrivers \
-		$(1)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBFont \
-		$(1)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBImageProvider \
-		$(1)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBVideoProvider
+		$(1)/usr/lib/pkgconfig
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/lib{directfb,fusion}*.{so*,a,la} \
+		$(PKG_INSTALL_DIR)/usr/lib/lib{direct,fusion}*.{so*,a,la} \
 		$(1)/usr/lib/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/include/directfb \
+		$(PKG_INSTALL_DIR)/usr/include/directfb* \
 		$(1)/usr/include/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/include/directfb-internal \
-		$(1)/usr/include/
+		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig \
+		$(1)/usr/lib/
 endef
 
 define Package/DirectFB/install
