@@ -1,0 +1,13 @@
+--- zimlib.orig/src/fileimpl.cpp	2009-08-25 01:47:04.000000000 +0200
++++ zimlib/src/fileimpl.cpp	2009-10-08 13:02:45.000000000 +0200
+@@ -43,8 +43,8 @@
+   //
+   FileImpl::FileImpl(const char* fname)
+     : zimFile(fname, std::ios::in | std::ios::binary),
+-      direntCache(512),
+-      clusterCache(16)
++      direntCache(128),
++      clusterCache(4)
+   {
+     if (!zimFile)
+       throw ZenoFileFormatError(std::string("can't open zim-file \"") + fname + '"');
