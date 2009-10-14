@@ -25,7 +25,7 @@ define Package/DirectFB
     SECTION:=libs
     CATEGORY:=Libraries
     URL:=http://directfb.org
-    DEPENDS:=+libpng
+    DEPENDS:=+libpng +libjpeg
 endef
 
 define Package/DirectFB/description
@@ -33,9 +33,10 @@ define Package/DirectFB/description
 endef
 
 TARGET_LDFLAGS+="-Wl,-rpath-link=$(STAGING_DIR)/usr/lib"
+CONFIGURE_CMD=./autogen.sh
 
+comma:=,
 define Build/Configure
-	( cd $(PKG_BUILD_DIR); ./autogen.sh );
 	$(call Build/Configure/Default, \
 		--disable-osx \
 		--disable-x11 \
@@ -47,6 +48,8 @@ define Build/Configure
 		--disable-sdl \
 		--disable-vnc \
 		--enable-sysfs \
+		--with-inputdrivers=keyboard$(comma)linuxinput \
+		--with-gfxdrivers=none \
 	)
 endef
 
@@ -56,10 +59,10 @@ define Build/InstallDev
 		$(1)/usr/lib \
 		$(1)/usr/lib/pkgconfig
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/lib{direct,fusion}*.{so*,a,la} \
+		$(PKG_INSTALL_DIR)/usr/lib/* \
 		$(1)/usr/lib/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/include/directfb* \
+		$(PKG_INSTALL_DIR)/usr/include/* \
 		$(1)/usr/include/
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig \
@@ -75,8 +78,7 @@ define Package/DirectFB/install
 		$(1)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBVideoProvider \
 		$(1)/usr/lib/directfb-1.4-0-pure/wm \
 		$(1)/usr/lib/directfb-1.4-0-pure/systems \
-		$(1)/usr/lib/directfb-1.4-0-pure/inputdrivers \
-		$(1)/usr/lib/directfb-1.4-0-pure/gfxdrivers
+		$(1)/usr/lib/directfb-1.4-0-pure/inputdrivers
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/* \
 		$(1)/usr/bin/
@@ -101,9 +103,6 @@ define Package/DirectFB/install
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0-pure/inputdrivers/*.so* \
 		$(1)/usr/lib/directfb-1.4-0-pure/inputdrivers/
-	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0-pure/gfxdrivers/*.so* \
-		$(1)/usr/lib/directfb-1.4-0-pure/gfxdrivers/
 endef
 
 $(eval $(call BuildPackage,DirectFB))
