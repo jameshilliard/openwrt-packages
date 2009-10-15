@@ -24,13 +24,15 @@ define Package/lynx
     TITLE:=lynx
     SECTION:=network
     CATEGORY:=Network
-    DEPENDS:=+libncurses
+    DEPENDS:=+libncurses +zlib
     URL:=http://lynx.isc.org
 endef
 
 define Package/lynx/description
     text console browser
 endef
+
+CONFIGURE_ARGS += --with-zlib
 
 define Package/lynx/install
 	$(INSTALL_DIR) $(1)/usr/bin $(1)/etc
