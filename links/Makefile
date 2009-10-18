@@ -36,7 +36,7 @@ CONFIGURE_ARGS += --without-x --without-fb --without-directfb
 
 define Package/links/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/links2 $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/links $(1)/usr/bin/
 endef
 
 $(eval $(call BuildPackage,links))
