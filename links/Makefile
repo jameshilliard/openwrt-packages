@@ -24,7 +24,6 @@ define Package/links
     TITLE:=links
     SECTION:=network
     CATEGORY:=Network
-    DEPENDS:=+libncurses
     URL:=http://links.twibright.com/
 endef
 
