@@ -29,7 +29,7 @@ define Package/links
 endef
 
 define Package/links/description
-    text console browser
+    Text and graphics WWW browser
 endef
 
 CONFIGURE_ARGS += --without-x --without-fb --without-directfb
