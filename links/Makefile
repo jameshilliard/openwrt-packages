@@ -31,7 +31,7 @@ define Package/links/description
     Text and graphics WWW browser
 endef
 
-CONFIGURE_ARGS += --without-x --without-fb --without-directfb
+CONFIGURE_ARGS += --enable-graphics --without-x --without-fb
 
 define Package/links/install
 	$(INSTALL_DIR) $(1)/usr/bin
