@@ -25,7 +25,7 @@ define Package/DirectFB
     SECTION:=libs
     CATEGORY:=Libraries
     URL:=http://directfb.org
-    DEPENDS:=+libpng +libjpeg +libpthread
+    DEPENDS:=+libpng +libjpeg +libpthread +libfreetype
 endef
 
 define Package/DirectFB/description
@@ -40,7 +40,7 @@ define Build/Configure
 	$(call Build/Configure/Default, \
 		--disable-osx \
 		--disable-x11 \
-		--disable-debug-support \
+		--enable-debug-support \
 		--disable-network \
 		--disable-mmx \
 		--disable-sse \
@@ -73,12 +73,12 @@ define Package/DirectFB/install
 	$(INSTALL_DIR) \
 		$(1)/usr/bin \
 		$(1)/usr/lib \
-		$(1)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBFont \
-		$(1)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBImageProvider \
-		$(1)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBVideoProvider \
-		$(1)/usr/lib/directfb-1.4-0-pure/wm \
-		$(1)/usr/lib/directfb-1.4-0-pure/systems \
-		$(1)/usr/lib/directfb-1.4-0-pure/inputdrivers
+		$(1)/usr/lib/directfb-1.4-0/interfaces/IDirectFBFont \
+		$(1)/usr/lib/directfb-1.4-0/interfaces/IDirectFBImageProvider \
+		$(1)/usr/lib/directfb-1.4-0/interfaces/IDirectFBVideoProvider \
+		$(1)/usr/lib/directfb-1.4-0/wm \
+		$(1)/usr/lib/directfb-1.4-0/systems \
+		$(1)/usr/lib/directfb-1.4-0/inputdrivers
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/* \
 		$(1)/usr/bin/
@@ -86,23 +86,23 @@ define Package/DirectFB/install
 		$(PKG_INSTALL_DIR)/usr/lib/lib{direct,fusion}*.so* \
 		$(1)/usr/lib/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBFont/*.so* \
-		$(1)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBFont/
+		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0/interfaces/IDirectFBFont/*.so* \
+		$(1)/usr/lib/directfb-1.4-0/interfaces/IDirectFBFont/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBImageProvider/*.so* \
-		$(1)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBImageProvider/
+		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0/interfaces/IDirectFBImageProvider/*.so* \
+		$(1)/usr/lib/directfb-1.4-0/interfaces/IDirectFBImageProvider/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBVideoProvider/*.so* \
-		$(1)/usr/lib/directfb-1.4-0-pure/interfaces/IDirectFBVideoProvider/
+		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0/interfaces/IDirectFBVideoProvider/*.so* \
+		$(1)/usr/lib/directfb-1.4-0/interfaces/IDirectFBVideoProvider/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0-pure/wm/*.so* \
-		$(1)/usr/lib/directfb-1.4-0-pure/wm/
+		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0/wm/*.so* \
+		$(1)/usr/lib/directfb-1.4-0/wm/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0-pure/systems/*.so* \
-		$(1)/usr/lib/directfb-1.4-0-pure/systems/
+		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0/systems/*.so* \
+		$(1)/usr/lib/directfb-1.4-0/systems/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0-pure/inputdrivers/*.so* \
-		$(1)/usr/lib/directfb-1.4-0-pure/inputdrivers/
+		$(PKG_INSTALL_DIR)/usr/lib/directfb-1.4-0/inputdrivers/*.so* \
+		$(1)/usr/lib/directfb-1.4-0/inputdrivers/
 endef
 
 $(eval $(call BuildPackage,DirectFB))
