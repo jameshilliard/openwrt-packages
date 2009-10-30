@@ -31,7 +31,14 @@ define Package/links/description
     Text and graphics WWW browser
 endef
 
-CONFIGURE_ARGS += --enable-graphics --without-x --without-fb
+CONFIGURE_ARGS += --enable-graphics \
+  --enable-debuglevel=0 \
+  --without-gpm \
+  --without-svgalib \
+  --without-pmshell \
+  --without-atheos \
+  --without-x \
+  --without-fb
 
 define Package/links/install
 	$(INSTALL_DIR) $(1)/usr/bin
