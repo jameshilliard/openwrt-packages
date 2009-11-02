@@ -1,0 +1,74 @@
+diff --git a/configure.in b/configure.in
+index 6caa564..7a27bc1 100644
+--- a/configure.in
++++ b/configure.in
+@@ -71,7 +71,7 @@ _ldflags="$LDFLAGS"
+ CPPFLAGS="$libcurl_INCLUDES $CPPFLAGS"
+ LDFLAGS="$libcurl_LDFLAGS $LDFLAGS"
+ 
+-AC_CHECK_LIB(curl, curl_easy_init,,AC_MSG_ERROR(Unable to locate curl library))
++PKG_CHECK_MODULES(CURL, libcurl >= 7.19.6)
+ 
+ CPPFLAGS="$_cppflags"
+ LDFLAGS="$_ldflags"
+diff --git a/src/dfbmp.c b/src/dfbmp.c
+index 5d265e8..79e7f7c 100644
+--- a/src/dfbmp.c
++++ b/src/dfbmp.c
+@@ -171,7 +171,7 @@ void do_button(button_t button) {
+ 				curl_handle=curl_easy_init();
+ 
+ 				curl_easy_setopt(curl_handle,
+-					CURLOPT_NOPROGRESS, TRUE);
++					CURLOPT_NOPROGRESS, 1);
+ 
+ 				curl_easy_setopt(curl_handle,
+                         		CURLOPT_URL, button.data);
+@@ -624,6 +624,7 @@ int main(int argc, char *argv[]) {
+ 	char * fontpath;
+ 	FILE * devnull;
+ 	int i;
++	int status = 1;
+ 
+ 	DFBSurfaceDescription dsc;
+ 	DFBFontDescription font_dsc;
+@@ -658,7 +659,7 @@ int main(int argc, char *argv[]) {
+ 
+ 	if(dfb->CreateFont(dfb, fontpath, &font_dsc, &lrgfont) != DFB_OK) {
+ 		fprintf(stderr, "Unable to locate font %s\n", fontpath);
+-		exit(1);
++		goto err_init_font;
+ 	}
+ 
+ 	font_dsc.flags = DFDESC_HEIGHT;
+@@ -666,7 +667,7 @@ int main(int argc, char *argv[]) {
+ 
+ 	if(dfb->CreateFont(dfb, fontpath, &font_dsc, &smlfont) != DFB_OK) {
+ 		fprintf(stderr, "Unable to locate font %s\n", fontpath);
+-		exit(1);
++		goto err_init_font;
+ 	}
+ 
+ 	lrgfont->GetHeight(lrgfont, &lfheight);
+@@ -693,14 +694,15 @@ int main(int argc, char *argv[]) {
+ 	lrgfont->Release(lrgfont);
+ 	smlfont->Release(smlfont);
+ 
+-	primary->Release (primary);
+-	dfb->Release (dfb);
+-
+-	free(fontpath);
+-
+ 	for(i=0;i<3;i++) {
+ 		freebutton(&button[i]);
+ 	}
+ 	
+-	return 23;
++	status = 23;
++err_init_font:
++	primary->Release (primary);
++	dfb->Release (dfb);
++	free(fontpath);
++
++	return status;
+ }
