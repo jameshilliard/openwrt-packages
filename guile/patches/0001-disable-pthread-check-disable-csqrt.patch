@@ -1,0 +1,50 @@
+diff --git a/configure b/configure
+index a57297d..98857ae 100755
+--- a/configure
++++ b/configure
+@@ -35053,6 +35053,8 @@ fi
+ 
+ if test "$with_threads" = pthreads; then
+ 
++cat >> /dev/null << end_pthread_attr_getstack_check_part1
++
+ { $as_echo "$as_me:$LINENO: checking whether pthread_attr_getstack works for the main thread" >&5
+ $as_echo_n "checking whether pthread_attr_getstack works for the main thread... " >&6; }
+ old_CFLAGS="$CFLAGS"
+@@ -35121,12 +35123,15 @@ $as_echo "$ac_try_echo") >&5
+   ac_status=$?
+   $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; }; then
++
++end_pthread_attr_getstack_check_part1
+   works=yes
+ 
+ cat >>confdefs.h <<\_ACEOF
+ #define PTHREAD_ATTR_GETSTACK_WORKS 1
+ _ACEOF
+ 
++cat >> /dev/null << end_pthread_attr_getstack_check_part2
+ else
+   $as_echo "$as_me: program exited with status $ac_status" >&5
+ $as_echo "$as_me: failed program was:" >&5
+@@ -35138,6 +35143,7 @@ fi
+ rm -rf conftest.dSYM
+ rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+ fi
++end_pthread_attr_getstack_check_part2
+ 
+ 
+ CFLAGS="$old_CFLAGS"
+diff --git a/configure.in b/configure.in
+index 217ac83..c4c16fc 100644
+--- a/configure.in
++++ b/configure.in
+@@ -854,7 +854,7 @@ main (void)
+ }]])],
+     [guile_cv_use_csqrt=yes],
+     [guile_cv_use_csqrt="no, glibc 2.3 bug"],
+-    [guile_cv_use_csqrt="yes, hopefully (cross-compiling)"])])
++    [guile_cv_use_csqrt="no, Ben NanoNote (cross-compiling)"])])
+   case $guile_cv_use_csqrt in
+     yes*)
+       AC_DEFINE(HAVE_USABLE_CSQRT, 1, [Define to 1 if csqrt is bug-free])
