@@ -38,7 +38,19 @@ CONFIGURE_ARGS +=
 
 define Package/guile/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/guile $(1)/usr/bin/
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_DIR) $(1)/usr/share/guile/1.8
+
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/* \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/lib/libguile*.so* \
+		$(1)/usr/lib/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/share/guile/1.8/* \
+		$(1)/usr/share/guile/1.8/
+
 endef
 
 $(eval $(call BuildPackage,guile))
