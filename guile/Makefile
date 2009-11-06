@@ -24,7 +24,7 @@ define Package/guile
     TITLE:=guile
     SECTION:=libs
     CATEGORY:=Libraries
-    DEPENDS:=+libgmp +libpthread
+    DEPENDS:=+libgmp +libpthread +libltdl
     URL:=http://savannah.gnu.org/projects/guile/
 endef
 
