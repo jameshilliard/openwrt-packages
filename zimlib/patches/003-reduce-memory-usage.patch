@@ -6,8 +6,8 @@
      : zimFile(fname, std::ios::in | std::ios::binary),
 -      direntCache(512),
 -      clusterCache(16)
-+      direntCache(128),
-+      clusterCache(4)
++      direntCache(32),
++      clusterCache(1)
    {
      if (!zimFile)
        throw ZenoFileFormatError(std::string("can't open zim-file \"") + fname + '"');
