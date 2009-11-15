@@ -22,8 +22,8 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/guile
     TITLE:=guile
-    SECTION:=libs
-    CATEGORY:=Libraries
+    SECTION:=lang
+    CATEGORY:=Languages
     DEPENDS:=+libgmp +libpthread +libltdl
     URL:=http://savannah.gnu.org/projects/guile/
 endef
