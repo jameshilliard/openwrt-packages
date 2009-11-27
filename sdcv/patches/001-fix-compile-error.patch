@@ -1,0 +1,29 @@
+diff --git a/src/lib/mapfile.hpp b/src/lib/mapfile.hpp
+index eedb1bc..300849a 100644
+--- a/src/lib/mapfile.hpp
++++ b/src/lib/mapfile.hpp
+@@ -18,9 +18,9 @@
+ class MapFile {
+ public:
+   MapFile(void) : 
+-		data(NULL),
++		data(NULL)
+ #ifdef HAVE_MMAP
+-		mmap_fd(-1)
++		, mmap_fd(-1)
+ #elif defined(_WIN32)
+ 		hFile(0),
+ 		hFileMap(0)
+diff --git a/src/utils.cpp b/src/utils.cpp
+index 5e8d562..2e3e55e 100644
+--- a/src/utils.cpp
++++ b/src/utils.cpp
+@@ -24,6 +24,8 @@
+ 
+ #include <glib.h>
+ #include <glib/gi18n.h>
++#include <stdio.h>
++#include <stdlib.h>
+ 
+ #include "utils.hpp"
+ 
