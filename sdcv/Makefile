@@ -24,6 +24,7 @@ define Package/sdcv
     TITLE:=sdcv
     SECTION:=utils
     CATEGORY:=Utilities
+    DEPENDS:=+libintl
     URL:=http://sdcv.sourceforge.net/
 endef
 
