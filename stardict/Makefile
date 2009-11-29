@@ -1,0 +1,44 @@
+#
+# Copyright (C) 2009 Qi Hardware Inc.
+# Author: Xiangfu Liu <xiangfu@qi-hardware.com>
+# 
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
+
+include $(TOPDIR)/rules.mk
+
+PKG_NAME:=stardict
+PKG_VERSION:=3.0.1
+
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE_URL:=http://downloads.sourceforge.net/stardict/
+
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+
+PKG_INSTALL:=1
+
+include $(INCLUDE_DIR)/package.mk
+
+define Package/stardict
+    TITLE:=stardict
+    SECTION:=utils
+    CATEGORY:=Utilities
+    DEPENDS:=+libintl +libiconv
+    URL:=
+endef
+
+define Package/stardict/description
+    StarDict is a Cross-Platform and international dictionary Software.
+endef
+
+CONFIGURE_ARGS += --disable-spell --disable-gucharmap \
+	--disable-festival \
+	--disable-espeak
+
+define Package/stardict/install
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/stardict $(1)/usr/bin/
+endef
+
+$(eval $(call BuildPackage,stardict))
