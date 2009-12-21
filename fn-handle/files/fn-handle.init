@@ -1,0 +1,11 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2008 OpenWrt.org
+START=40
+
+start() {
+	fn-handle
+}
+
+stop() {
+	killall fn-handle
+}
