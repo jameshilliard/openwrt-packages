@@ -2,8 +2,10 @@
 # Copyright (C) 2008 OpenWrt.org
 START=40
 
+DEVICE="/dev/input/event0"
+
 start() {
-	fn-handle
+	fn-handle $DEVICE
 }
 
 stop() {
