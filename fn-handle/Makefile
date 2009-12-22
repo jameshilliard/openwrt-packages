@@ -41,7 +41,7 @@ define Package/fn-handle/install
 
 	$(INSTALL_BIN) \
 		./files/$(PKG_NAME).init \
-		$(1)/etc/init.d/
+		$(1)/etc/init.d/$(PKG_NAME)
 endef
 
 $(eval $(call BuildPackage,fn-handle))
