@@ -5,9 +5,9 @@ START=40
 DEVICE="/dev/input/event0"
 
 start() {
-	fn-handle $DEVICE
+	fnkeys $DEVICE &
 }
 
 stop() {
-	killall fn-handle
+	killall fnkeys
 }
