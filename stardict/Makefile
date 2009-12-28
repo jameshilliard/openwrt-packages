@@ -24,7 +24,7 @@ define Package/stardict
     TITLE:=stardict
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=+libintl +libiconv
+    DEPENDS:=+libintl +libiconv +libgnomeui
     URL:=
 endef
 
@@ -32,9 +32,27 @@ define Package/stardict/description
     StarDict is a Cross-Platform and international dictionary Software.
 endef
 
-CONFIGURE_ARGS += --disable-spell --disable-gucharmap \
-	--disable-festival \
-	--disable-espeak
+CONFIGURE_ARGS += \
+  --disable-dependency-tracking \
+  --disable-libtool-lock \
+  --disable-spell \
+  --disable-gucharmap \
+  --disable-festival \
+  --disable-espeak \
+  --disable-dictdotcn \
+  --disable-advertisement \
+  --disable-man \
+  --disable-qqwry \
+  --disable-updateinfo \
+  --disable-htmlparse \
+  --disable-xdxfparse \
+  --disable-wordnet \
+  --disable-powerwordparse \
+  --disable-wikiparse \
+  --disable-schemas-install \
+  --disable-deprecations
+
+#  --disable-gnome-support 
 
 define Package/stardict/install
 	$(INSTALL_DIR) $(1)/usr/bin
