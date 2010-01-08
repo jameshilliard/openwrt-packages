@@ -26,7 +26,6 @@ define Package/gnome-mime-data
 endef
 
 define Package/gnome-mime-data/description
-    
 endef
 
 TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/lib/libintl/include
