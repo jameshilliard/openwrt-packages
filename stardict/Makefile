@@ -24,7 +24,7 @@ define Package/stardict
     TITLE:=stardict
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=+libintl +libiconv +libgnomeui
+    DEPENDS:=+libintl +libiconv
     URL:=
 endef
 
@@ -50,9 +50,8 @@ CONFIGURE_ARGS += \
   --disable-powerwordparse \
   --disable-wikiparse \
   --disable-schemas-install \
-  --disable-deprecations
-
-#  --disable-gnome-support 
+  --disable-deprecations \
+  --disable-gnome-support 
 
 define Package/stardict/install
 	$(INSTALL_DIR) $(1)/usr/bin
