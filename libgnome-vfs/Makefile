@@ -26,7 +26,6 @@ define Package/gnome-vfs
 endef
 
 define Package/gnome-vfs/description
-    
 endef
 
 TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/lib/libintl/include
