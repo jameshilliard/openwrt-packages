@@ -8,11 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cxxtools
-PKG_VERSION:=1.99.4
+PKG_VERSION:=1.99.5.20091227-1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.tntnet.org/download
+PKG_MD5SUM:=c0cb4270f33b46b1fb3fb7d7abd974c0
 
 PKG_INSTALL:=1
 
@@ -21,19 +22,16 @@ PKG_FIXUP:=libtool
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 
-TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/lib/libiconv/include
-TARGET_LDFLAGS+=-liconv -L$(STAGING_DIR)/usr/lib/libiconv/lib
-
 define Package/cxxtools
     TITLE:=cxxtools
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=+libiconv
 endef
 
 define Build/Configure
 	$(call Build/Configure/Default, \
-		--with-atomictype=generic \
+		--disable-demos \
+		--disable-unittest \
 	)
 endef
 
