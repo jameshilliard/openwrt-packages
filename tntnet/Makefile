@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tntnet
-PKG_VERSION:=1.6.99
+PKG_VERSION:=1.6.991.20091227-1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
@@ -28,7 +28,7 @@ define Package/tntnet
     TITLE:=tntnet
     SECTION:=libs
     CATEGORY:=Libraries
-    DEPENDS:=+libiconv +zlib +cxxtools/host
+    DEPENDS:=+zlib +cxxtools
 endef
 
 define Build/Configure
@@ -39,6 +39,7 @@ define Build/Configure
 		--with-demos=no \
 		--with-server=no \
 		--with-sdk=no \
+		--disable-unittest \
 	)
 endef
 

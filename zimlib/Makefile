@@ -4,19 +4,16 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+#
 
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=zimlib
-PKG_REV:=239
-PKG_VERSION:=r$(PKG_REV)
+PKG_VERSION:=0.92.20091227-3
 PKG_RELEASE:=1
-PKG_SOURCE_PROTO:=svn
-PKG_SOURCE_VERSION:=$(PKG_REV)
-PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
+
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://svn.openzim.org/svnroot/trunk/zimlib
-PKG_BUILD_DIR=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/
+PKG_SOURCE_URL:=http://www.openzim.org/download
 
 PKG_INSTALL:=1
 
@@ -36,14 +33,16 @@ define Package/zimlib
     TITLE:=zimlib
     SECTION:=libs
     CATEGORY:=Libraries
-    #DEPENDS:=+zlib +bzip2 +cxxtools +uclibcxx
-    DEPENDS:=+zlib +bzip2 +cxxtools +libstdcpp
+    DEPENDS:=+zlib +bzip2 +cxxtools +libstdcpp +xz
     URL:=http://openzim.org
 endef
 
 define Build/Configure
-	( cd $(PKG_BUILD_DIR); ./autogen.sh );
-	$(call Build/Configure/Default)
+	$(call Build/Configure/Default, \
+        --with-cluster-cache-size=5 \
+		--disable-unittest \
+		--enable-benchmark \
+    )
 endef
 
 define Build/InstallDev
