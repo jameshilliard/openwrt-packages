@@ -63,7 +63,12 @@ endef
 
 define Package/stardict/install
 	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_DIR) $(1)/usr/share
+	$(INSTALL_DIR) $(1)/usr/share/pixmaps
+
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/stardict $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/share/pixmaps/stardict.png $(1)/usr/share/pixmaps/
+	$(CP) $(PKG_INSTALL_DIR)/usr/share/stardict $(1)/usr/share/
 endef
 
 $(eval $(call BuildPackage,stardict))
