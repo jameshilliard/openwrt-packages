@@ -19,6 +19,8 @@ PKG_INSTALL:=1
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 
+PKG_BUILD_DEPENDS:=cxxtools/host
+
 TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/lib/libiconv/include
 TARGET_LDFLAGS+=-liconv -L$(STAGING_DIR)/usr/lib/libiconv/lib
 
