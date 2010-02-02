@@ -1,0 +1,394 @@
+fix compile error
+
+From: Xiangfu Liu <xiangfu@sharism.cc>
+
+
+---
+
+ src/gconf_file.cpp                                 |    2 ++
+ src/inifile.cpp                                    |    1 +
+ src/lib/common.cpp                                 |    2 ++
+ src/lib/data.cpp                                   |    1 +
+ src/lib/http_client.cpp                            |    1 +
+ src/lib/pluginmanager.cpp                          |    2 +-
+ src/lib/stardict_client.cpp                        |    1 +
+ src/lib/treedict.cpp                               |    1 +
+ src/pangoview.cpp                                  |    2 ++
+ src/prefsdlg.cpp                                   |    1 +
+ src/readword.cpp                                   |    1 +
+ src/sigc++/signal.h                                |    2 +-
+ src/utils.cpp                                      |    2 ++
+ src/x11_iskeyspressed.hpp                          |    2 ++
+ .../stardict_dictdotcn.cpp                         |    2 +-
+ .../stardict-espeak-tts-plugin/stardict_espeak.cpp |    1 +
+ .../stardict_gucharmap.cpp                         |    3 ++-
+ .../stardict_html_parsedata.cpp                    |    2 ++
+ .../stardict-man-plugin/stardict_man.cpp           |    2 +-
+ .../stardict_powerword_parsedata.cpp               |    1 +
+ .../stardict-qqwry-plugin/stardict_qqwry.cpp       |    3 ++-
+ .../stardict-spell-plugin/stardict_spell.cpp       |    1 +
+ .../stardict_wiki2xml.cpp                          |    1 +
+ .../stardict_wiki_parsedata.cpp                    |    1 +
+ .../stardict-wordnet-plugin/court_widget.cpp       |    1 +
+ .../stardict-wordnet-plugin/stardict_wordnet.cpp   |    1 +
+ .../stardict_wordnet_parsedata.cpp                 |    1 +
+ .../stardict_xdxf_parsedata.cpp                    |    1 +
+ tests/t_config_file.cpp                            |    1 +
+ tests/t_xml.cpp                                    |    1 +
+ 30 files changed, 38 insertions(+), 6 deletions(-)
+
+
+diff --git a/src/gconf_file.cpp b/src/gconf_file.cpp
+index a5b81c6..e1d43aa 100644
+--- a/src/gconf_file.cpp
++++ b/src/gconf_file.cpp
+@@ -22,6 +22,8 @@
+ #  include "config.h"
+ #endif
+ 
++#include <memory>
++
+ #include <glib/gi18n.h>
+ 
+ #include "gconf_file.hpp"
+diff --git a/src/inifile.cpp b/src/inifile.cpp
+index 2f73f7b..e652709 100644
+--- a/src/inifile.cpp
++++ b/src/inifile.cpp
+@@ -25,6 +25,7 @@
+ #include <vector>
+ #include <cerrno>
+ #include <cstring>
++#include <cstdlib>
+ #include <cstdio>
+ #include <glib/gi18n.h>
+ #include <glib/gstdio.h>
+diff --git a/src/lib/common.cpp b/src/lib/common.cpp
+index 6575ad9..29faf9e 100644
+--- a/src/lib/common.cpp
++++ b/src/lib/common.cpp
+@@ -24,6 +24,8 @@
+ #  include "config.h"
+ #endif
+ 
++#include <cstdlib>
++#include <cstring>
+ #include "common.hpp"
+ 
+ static void parse_description(const char *p, long len, std::string &description)
+diff --git a/src/lib/data.cpp b/src/lib/data.cpp
+index 45c7d1a..1b29ec3 100644
+--- a/src/lib/data.cpp
++++ b/src/lib/data.cpp
+@@ -22,6 +22,7 @@
+ #  include "config.h"
+ #endif
+ 
++#include <cstring>
+ #include "kmp.h"
+ 
+ #include "data.hpp"
+diff --git a/src/lib/http_client.cpp b/src/lib/http_client.cpp
+index 802a469..732f205 100644
+--- a/src/lib/http_client.cpp
++++ b/src/lib/http_client.cpp
+@@ -2,6 +2,7 @@
+ #  include "config.h"
+ #endif
+ 
++#include <cstring>
+ #include "http_client.h"
+ #include "sockets.hpp"
+ 
+diff --git a/src/lib/pluginmanager.cpp b/src/lib/pluginmanager.cpp
+index de3e92d..28a46c4 100644
+--- a/src/lib/pluginmanager.cpp
++++ b/src/lib/pluginmanager.cpp
+@@ -1,6 +1,6 @@
+ #include "pluginmanager.h"
+ #include "file.hpp"
+-#include <string>
++#include <cstring>
+ 
+ StarDictPluginBaseObject::StarDictPluginBaseObject(const char *filename, GModule *module_, plugin_configure_func_t configure_func_):
+ 	plugin_filename(filename), module(module_), configure_func(configure_func_)
+diff --git a/src/lib/stardict_client.cpp b/src/lib/stardict_client.cpp
+index dcae5ce..c3d2511 100644
+--- a/src/lib/stardict_client.cpp
++++ b/src/lib/stardict_client.cpp
+@@ -25,6 +25,7 @@
+ #include <glib.h>
+ #include <glib/gi18n.h>
+ 
++#include <cstdlib>
+ #include "sockets.hpp"
+ #include "md5.h"
+ #include "getuint32.h"
+diff --git a/src/lib/treedict.cpp b/src/lib/treedict.cpp
+index 01fa89a..f0b3322 100644
+--- a/src/lib/treedict.cpp
++++ b/src/lib/treedict.cpp
+@@ -25,6 +25,7 @@
+ #  include "config.h"
+ #endif
+ 
++#include <cstring>
+ #include "file.hpp"
+ #include "getuint32.h"
+ 
+diff --git a/src/pangoview.cpp b/src/pangoview.cpp
+index eb5d34d..e400ac3 100644
+--- a/src/pangoview.cpp
++++ b/src/pangoview.cpp
+@@ -22,6 +22,8 @@
+ #  include "config.h"
+ #endif
+ 
++#include <cstring>
++
+ #include "gtktextviewpango.h"
+ #include "utils.h"
+ #include "skin.h"//for SkinCursor definition
+diff --git a/src/prefsdlg.cpp b/src/prefsdlg.cpp
+index 33648ed..14e3f15 100644
+--- a/src/prefsdlg.cpp
++++ b/src/prefsdlg.cpp
+@@ -21,6 +21,7 @@
+ #  include "config.h"
+ #endif
+ 
++#include <cstdlib>
+ #include <glib/gi18n.h>
+ #include <glib/gstdio.h>
+ 
+diff --git a/src/readword.cpp b/src/readword.cpp
+index 340fbb6..f6efb2c 100644
+--- a/src/readword.cpp
++++ b/src/readword.cpp
+@@ -3,6 +3,7 @@
+ #endif
+ 
+ #include <cstring>
++#include <cstdlib>
+ #include <string>
+ 
+ #include <glib/gi18n.h>
+diff --git a/src/sigc++/signal.h b/src/sigc++/signal.h
+index 282a5b1..b103dbf 100644
+--- a/src/sigc++/signal.h
++++ b/src/sigc++/signal.h
+@@ -18,7 +18,7 @@
+   //Compilers, such as older versions of SUN Forte C++, that do not allow this also often
+   //do not allow a typedef to have the same name as a class in the typedef's definition.
+   //For Sun Forte CC 5.7 (SUN Workshop 10), comment this out to fix the build.
+-  #define SIGC_TYPEDEF_REDEFINE_ALLOWED 1
++// #define SIGC_TYPEDEF_REDEFINE_ALLOWED 1
+ #endif
+ 
+ namespace sigc {
+diff --git a/src/utils.cpp b/src/utils.cpp
+index 4a09f30..2ce059b 100644
+--- a/src/utils.cpp
++++ b/src/utils.cpp
+@@ -22,6 +22,8 @@
+ #  include "config.h"
+ #endif
+ 
++#include <cstring>
++
+ #include <glib.h>
+ #include <glib/gi18n.h>
+ #include <cstdlib>
+diff --git a/src/x11_iskeyspressed.hpp b/src/x11_iskeyspressed.hpp
+index 9b0d375..f7391ad 100644
+--- a/src/x11_iskeyspressed.hpp
++++ b/src/x11_iskeyspressed.hpp
+@@ -1,6 +1,8 @@
+ #ifndef _X11_ISKEYSPRESSED_HPP_
+ #define _X11_ISKEYSPRESSED_HPP_
+ 
++#include <memory>
++
+ #include <gdk/gdkx.h>
+ #include <X11/keysym.h>
+ #include <gtk/gtk.h>
+diff --git a/stardict-plugins/stardict-dictdotcn-plugin/stardict_dictdotcn.cpp b/stardict-plugins/stardict-dictdotcn-plugin/stardict_dictdotcn.cpp
+index b779046..f608fb1 100644
+--- a/stardict-plugins/stardict-dictdotcn-plugin/stardict_dictdotcn.cpp
++++ b/stardict-plugins/stardict-dictdotcn-plugin/stardict_dictdotcn.cpp
+@@ -1,6 +1,6 @@
+ #include "stardict_dictdotcn.h"
+ #include <glib/gi18n.h>
+-#include <string>
++#include <cstring>
+ #include <list>
+ 
+ #ifdef _WIN32
+diff --git a/stardict-plugins/stardict-espeak-tts-plugin/stardict_espeak.cpp b/stardict-plugins/stardict-espeak-tts-plugin/stardict_espeak.cpp
+index 08d6f91..340cf5c 100644
+--- a/stardict-plugins/stardict-espeak-tts-plugin/stardict_espeak.cpp
++++ b/stardict-plugins/stardict-espeak-tts-plugin/stardict_espeak.cpp
+@@ -1,4 +1,5 @@
+ #include "stardict_espeak.h"
++#include <cstring>
+ #include <espeak/speak_lib.h>
+ #include <glib/gi18n.h>
+ 
+diff --git a/stardict-plugins/stardict-gucharmap-plugin/stardict_gucharmap.cpp b/stardict-plugins/stardict-gucharmap-plugin/stardict_gucharmap.cpp
+index f522e07..855c5fd 100644
+--- a/stardict-plugins/stardict-gucharmap-plugin/stardict_gucharmap.cpp
++++ b/stardict-plugins/stardict-gucharmap-plugin/stardict_gucharmap.cpp
+@@ -1,7 +1,8 @@
+ #include "stardict_gucharmap.h"
+ #include <glib/gi18n.h>
+ #include <gucharmap/gucharmap.h>
+-#include <string>
++#include <cstring>
++#include <cstdlib>
+ 
+ static char *build_dictdata(char type, const char *definition)
+ {
+diff --git a/stardict-plugins/stardict-html-parsedata-plugin/stardict_html_parsedata.cpp b/stardict-plugins/stardict-html-parsedata-plugin/stardict_html_parsedata.cpp
+index 8bb78e8..1803299 100644
+--- a/stardict-plugins/stardict-html-parsedata-plugin/stardict_html_parsedata.cpp
++++ b/stardict-plugins/stardict-html-parsedata-plugin/stardict_html_parsedata.cpp
+@@ -1,4 +1,6 @@
+ #include "stardict_html_parsedata.h"
++#include <cstring>
++#include <cstdlib>
+ #include <glib/gi18n.h>
+ 
+ #ifdef _WIN32
+diff --git a/stardict-plugins/stardict-man-plugin/stardict_man.cpp b/stardict-plugins/stardict-man-plugin/stardict_man.cpp
+index 1587e46..dfd7560 100644
+--- a/stardict-plugins/stardict-man-plugin/stardict_man.cpp
++++ b/stardict-plugins/stardict-man-plugin/stardict_man.cpp
+@@ -1,6 +1,6 @@
+ #include "stardict_man.h"
+ #include <glib/gi18n.h>
+-#include <string>
++#include <cstring>
+ 
+ static const StarDictPluginSystemInfo *plugin_info = NULL;
+ static bool need_prefix;
+diff --git a/stardict-plugins/stardict-powerword-parsedata-plugin/stardict_powerword_parsedata.cpp b/stardict-plugins/stardict-powerword-parsedata-plugin/stardict_powerword_parsedata.cpp
+index 068ebbe..4da5c81 100644
+--- a/stardict-plugins/stardict-powerword-parsedata-plugin/stardict_powerword_parsedata.cpp
++++ b/stardict-plugins/stardict-powerword-parsedata-plugin/stardict_powerword_parsedata.cpp
+@@ -1,4 +1,5 @@
+ #include "stardict_powerword_parsedata.h"
++#include <cstring>
+ #include <glib/gi18n.h>
+ 
+ #ifdef _WIN32
+diff --git a/stardict-plugins/stardict-qqwry-plugin/stardict_qqwry.cpp b/stardict-plugins/stardict-qqwry-plugin/stardict_qqwry.cpp
+index 65234dc..b5a7046 100644
+--- a/stardict-plugins/stardict-qqwry-plugin/stardict_qqwry.cpp
++++ b/stardict-plugins/stardict-qqwry-plugin/stardict_qqwry.cpp
+@@ -1,7 +1,8 @@
+ #include "stardict_qqwry.h"
+ #include <glib/gi18n.h>
+ #include <glib/gstdio.h>
+-#include <string>
++#include <cstring>
++#include <cstdlib>
+ 
+ #ifdef _WIN32
+ #include <windows.h>
+diff --git a/stardict-plugins/stardict-spell-plugin/stardict_spell.cpp b/stardict-plugins/stardict-spell-plugin/stardict_spell.cpp
+index af3e8ae..d5e66af 100644
+--- a/stardict-plugins/stardict-spell-plugin/stardict_spell.cpp
++++ b/stardict-plugins/stardict-spell-plugin/stardict_spell.cpp
+@@ -1,4 +1,5 @@
+ #include "stardict_spell.h"
++#include <cstring>
+ #include <glib.h>
+ #include <glib/gi18n.h>
+ #include <enchant.h>
+diff --git a/stardict-plugins/stardict-wiki-parsedata-plugin/stardict_wiki2xml.cpp b/stardict-plugins/stardict-wiki-parsedata-plugin/stardict_wiki2xml.cpp
+index 0cfade9..f1a0277 100644
+--- a/stardict-plugins/stardict-wiki-parsedata-plugin/stardict_wiki2xml.cpp
++++ b/stardict-plugins/stardict-wiki-parsedata-plugin/stardict_wiki2xml.cpp
+@@ -1,5 +1,6 @@
+ #include "stardict_wiki2xml.h"
+ #include "WIKI2XML.h"
++#include <cstring>
+ #include <glib.h>
+ 
+ std::string wiki2xml(std::string &str)
+diff --git a/stardict-plugins/stardict-wiki-parsedata-plugin/stardict_wiki_parsedata.cpp b/stardict-plugins/stardict-wiki-parsedata-plugin/stardict_wiki_parsedata.cpp
+index fdf5270..8a6f7b0 100644
+--- a/stardict-plugins/stardict-wiki-parsedata-plugin/stardict_wiki_parsedata.cpp
++++ b/stardict-plugins/stardict-wiki-parsedata-plugin/stardict_wiki_parsedata.cpp
+@@ -1,5 +1,6 @@
+ #include "stardict_wiki_parsedata.h"
+ #include "stardict_wiki2xml.h"
++#include <cstring>
+ #include <glib/gi18n.h>
+ 
+ #ifdef _WIN32
+diff --git a/stardict-plugins/stardict-wordnet-plugin/court_widget.cpp b/stardict-plugins/stardict-wordnet-plugin/court_widget.cpp
+index 37b227e..1e49f90 100644
+--- a/stardict-plugins/stardict-wordnet-plugin/court_widget.cpp
++++ b/stardict-plugins/stardict-wordnet-plugin/court_widget.cpp
+@@ -1,4 +1,5 @@
+ #include "court_widget.h"
++#include <cstring>
+ #include <math.h>
+ #include <list>
+ 
+diff --git a/stardict-plugins/stardict-wordnet-plugin/stardict_wordnet.cpp b/stardict-plugins/stardict-wordnet-plugin/stardict_wordnet.cpp
+index 043afaf..bc4c9ff 100644
+--- a/stardict-plugins/stardict-wordnet-plugin/stardict_wordnet.cpp
++++ b/stardict-plugins/stardict-wordnet-plugin/stardict_wordnet.cpp
+@@ -1,5 +1,6 @@
+ #include "stardict_wordnet.h"
+ #include "court_widget.h"
++#include <cstring>
+ #include <glib/gi18n.h>
+ 
+ #ifdef _WIN32
+diff --git a/stardict-plugins/stardict-wordnet-plugin/stardict_wordnet_parsedata.cpp b/stardict-plugins/stardict-wordnet-plugin/stardict_wordnet_parsedata.cpp
+index 9f9ab9f..c5397e1 100644
+--- a/stardict-plugins/stardict-wordnet-plugin/stardict_wordnet_parsedata.cpp
++++ b/stardict-plugins/stardict-wordnet-plugin/stardict_wordnet_parsedata.cpp
+@@ -1,4 +1,5 @@
+ #include "stardict_wordnet_parsedata.h"
++#include <cstring>
+ #include <glib/gi18n.h>
+ 
+ #ifdef _WIN32
+diff --git a/stardict-plugins/stardict-xdxf-parsedata-plugin/stardict_xdxf_parsedata.cpp b/stardict-plugins/stardict-xdxf-parsedata-plugin/stardict_xdxf_parsedata.cpp
+index 905a01d..b143b90 100644
+--- a/stardict-plugins/stardict-xdxf-parsedata-plugin/stardict_xdxf_parsedata.cpp
++++ b/stardict-plugins/stardict-xdxf-parsedata-plugin/stardict_xdxf_parsedata.cpp
+@@ -1,4 +1,5 @@
+ #include "stardict_xdxf_parsedata.h"
++#include <cstring>
+ #include <glib/gi18n.h>
+ 
+ #ifdef _WIN32
+diff --git a/tests/t_config_file.cpp b/tests/t_config_file.cpp
+index 73e2a52..24715cf 100644
+--- a/tests/t_config_file.cpp
++++ b/tests/t_config_file.cpp
+@@ -8,6 +8,7 @@
+ #include <cstring>
+ #include <iterator>
+ #include <iostream>
++#include <memory>
+ #include <gtk/gtk.h>
+ 
+ #include "config_file.hpp"
+diff --git a/tests/t_xml.cpp b/tests/t_xml.cpp
+index a20422d..29b3d2a 100644
+--- a/tests/t_xml.cpp
++++ b/tests/t_xml.cpp
+@@ -5,6 +5,7 @@
+ #include <glib.h>
+ #include <cstdlib>
+ #include <string>
++#include <cstring>
+ 
+ 
+ static void xml_decode(const char *str, std::string& decoded)
