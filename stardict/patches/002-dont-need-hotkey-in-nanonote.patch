@@ -5,21 +5,47 @@ From: Xiangfu Liu <xiangfu@sharism.cc>
 
 ---
 
- configure.in              |    2 
+ configure.in              |   26 ++-
  src/class_factory.cpp     |    2 
  src/conf.cpp              |    6 -
- src/stardict.cpp          |    6 -
+ src/stardict.cpp          |   35 +++-
  src/x11_iskeyspressed.cpp |  351 ---------------------------------------------
  src/x11_iskeyspressed.hpp |   65 --------
- 6 files changed, 8 insertions(+), 424 deletions(-)
+ 6 files changed, 39 insertions(+), 446 deletions(-)
 
 
 diff --git a/configure.in b/configure.in
-index 83d3d95..3676e2c 100644
+index 83d3d95..6be40db 100644
 --- a/configure.in
 +++ b/configure.in
-@@ -428,7 +428,7 @@ LDFLAGS="$LDFLAGS $X_EXTRA_LIBS"
- fi
+@@ -414,21 +414,21 @@ dnl ==========================================================================
+ 
+ # Checks for header files. need by Solaris.
+ AC_PATH_XTRA
+-if test -n "$X_CFLAGS"; then
+-CPPFLAGS="$CPPFLAGS $X_CFLAGS"
+-fi
+-if test -n "$X_LIBS"; then
+-LDFLAGS="$LDFLAGS $X_LIBS"
+-fi
+-if test -n "$X_PRE_LIBS"; then
+-LDFLAGS="$LDFLAGS $X_PRE_LIBS"
+-fi
+-if test -n "$X_EXTRA_LIBS"; then
+-LDFLAGS="$LDFLAGS $X_EXTRA_LIBS"
+-fi
++#if test -n "$X_CFLAGS"; then
++#CPPFLAGS="$CPPFLAGS $X_CFLAGS"
++#fi
++#if test -n "$X_LIBS"; then
++#LDFLAGS="$LDFLAGS $X_LIBS"
++#fi
++#if test -n "$X_PRE_LIBS"; then
++#LDFLAGS="$LDFLAGS $X_PRE_LIBS"
++#fi
++#if test -n "$X_EXTRA_LIBS"; then
++#LDFLAGS="$LDFLAGS $X_EXTRA_LIBS"
++#fi
  
  # Checks for libraries.
 -AC_CHECK_LIB([X11], [main], , [AC_MSG_ERROR([X11 lib not found])])
@@ -58,7 +84,7 @@ index 2d0f89d..a35bc5c 100644
  
  std::auto_ptr<AppConf> conf;
 diff --git a/src/stardict.cpp b/src/stardict.cpp
-index 326ca4a..4c51d61 100644
+index 326ca4a..0e820ed 100644
 --- a/src/stardict.cpp
 +++ b/src/stardict.cpp
 @@ -351,9 +351,9 @@ void AppCore::Create(gchar *queryword)
@@ -74,6 +100,64 @@ index 326ca4a..4c51d61 100644
  	oFloatWin.Create();
  	bool scan=conf->get_bool_at("dictionary/scan_selection");
  	oDockLet.reset(PlatformFactory::create_tray_icon(window, scan,
+@@ -2005,10 +2005,19 @@ private:
+ 
+ void AppCore::PopupPrefsDlg()
+ {
++    static std::list<std::string> posb_combs;
++    if (posb_combs.empty()) {
++        posb_combs.push_back("Win");
++        posb_combs.push_back("Shift");
++        posb_combs.push_back("Alt");
++        posb_combs.push_back("Ctrl");
++        posb_combs.push_back("Ctrl+Alt");
++    }
++
+ 	if (!prefs_dlg) {
+ 		prefs_dlg = new PrefsDlg(GTK_WINDOW(window),
+-					 get_impl(oAppSkin.icon),
+-					 unlock_keys->possible_combs());
++                                 get_impl(oAppSkin.icon),
++                                 posb_combs);
+ 		bool enbcol =
+ 			conf->get_bool_at("dictionary/enable_collation");
+ 		int colf =
+@@ -2153,17 +2162,17 @@ void AppCore::Quit()
+ 	if (!conf->get_bool_at("main_window/maximized")) {
+ 		gint width, height;
+ 		gtk_window_get_size(GTK_WINDOW(window), &width, &height);
+-    conf->set_int_at("main_window/window_width", width);
+-    conf->set_int_at("main_window/window_height", height);
++		conf->set_int_at("main_window/window_width", width);
++		conf->set_int_at("main_window/window_height", height);
+ 	}
+ 	gint pos = gtk_paned_get_position(GTK_PANED(oMidWin.hpaned));
+-  conf->set_int_at("main_window/hpaned_pos", pos);
++	conf->set_int_at("main_window/hpaned_pos", pos);
+ 
+ 	if (conf->get_bool_at("floating_window/lock")) {
+ 		gint x, y;
+ 		gtk_window_get_position(GTK_WINDOW(oFloatWin.FloatWindow), &x, &y);
+-    conf->set_int_at("floating_window/lock_x", x);
+-    conf->set_int_at("floating_window/lock_y", y);
++		conf->set_int_at("floating_window/lock_x", x);
++		conf->set_int_at("floating_window/lock_y", y);
+ 	}
+ 
+ 	End();
+@@ -2171,9 +2180,9 @@ void AppCore::Quit()
+ #ifdef CONFIG_GNOME
+ 	bonobo_object_unref (stardict_app_server);
+ #endif
+-   unlock_keys.reset(0);
+-	 conf.reset(0);
+-	 gtk_main_quit();
++	unlock_keys.reset(0);
++	conf.reset(0);
++	gtk_main_quit();
+ }
+ 
+ void AppCore::on_main_win_hide_list_changed(const baseconfval* hideval)
 diff --git a/src/x11_iskeyspressed.cpp b/src/x11_iskeyspressed.cpp
 index 15e8fb0..8b13789 100644
 --- a/src/x11_iskeyspressed.cpp
