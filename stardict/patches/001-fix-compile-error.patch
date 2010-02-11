@@ -8,10 +8,10 @@ From: Xiangfu Liu <xiangfu@sharism.cc>
  src/gconf_file.cpp                                 |    2 ++
  src/inifile.cpp                                    |    1 +
  src/lib/common.cpp                                 |    2 ++
- src/lib/data.cpp                                   |    1 +
+ src/lib/data.cpp                                   |    2 ++
  src/lib/http_client.cpp                            |    1 +
  src/lib/pluginmanager.cpp                          |    2 +-
- src/lib/stardict_client.cpp                        |    1 +
+ src/lib/stardict_client.cpp                        |    2 ++
  src/lib/treedict.cpp                               |    1 +
  src/pangoview.cpp                                  |    2 ++
  src/prefsdlg.cpp                                   |    1 +
@@ -35,7 +35,7 @@ From: Xiangfu Liu <xiangfu@sharism.cc>
  .../stardict_xdxf_parsedata.cpp                    |    1 +
  tests/t_config_file.cpp                            |    1 +
  tests/t_xml.cpp                                    |    1 +
- 30 files changed, 38 insertions(+), 6 deletions(-)
+ 30 files changed, 40 insertions(+), 6 deletions(-)
 
 
 diff --git a/src/gconf_file.cpp b/src/gconf_file.cpp
@@ -77,13 +77,14 @@ index 6575ad9..29faf9e 100644
  
  static void parse_description(const char *p, long len, std::string &description)
 diff --git a/src/lib/data.cpp b/src/lib/data.cpp
-index 45c7d1a..1b29ec3 100644
+index 45c7d1a..a428b37 100644
 --- a/src/lib/data.cpp
 +++ b/src/lib/data.cpp
-@@ -22,6 +22,7 @@
+@@ -22,6 +22,8 @@
  #  include "config.h"
  #endif
  
++#include <cstdio>
 +#include <cstring>
  #include "kmp.h"
  
@@ -113,13 +114,14 @@ index de3e92d..28a46c4 100644
  StarDictPluginBaseObject::StarDictPluginBaseObject(const char *filename, GModule *module_, plugin_configure_func_t configure_func_):
  	plugin_filename(filename), module(module_), configure_func(configure_func_)
 diff --git a/src/lib/stardict_client.cpp b/src/lib/stardict_client.cpp
-index dcae5ce..c3d2511 100644
+index dcae5ce..407a907 100644
 --- a/src/lib/stardict_client.cpp
 +++ b/src/lib/stardict_client.cpp
-@@ -25,6 +25,7 @@
+@@ -25,6 +25,8 @@
  #include <glib.h>
  #include <glib/gi18n.h>
  
++#include <cstdio>
 +#include <cstdlib>
  #include "sockets.hpp"
  #include "md5.h"
