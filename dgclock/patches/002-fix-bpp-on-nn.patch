@@ -1,0 +1,47 @@
+diff -ruN dgclock-091222/src/main.c dgclock-091222.mod/src/main.c
+--- dgclock-091222/src/main.c	2010-02-10 11:51:51.000000000 +0100
++++ dgclock-091222.mod/src/main.c	2010-02-10 15:27:40.000000000 +0100
+@@ -7,7 +7,7 @@
+ #include "text.h"
+ #include "settime.h"
+ 
+-SDL_Surface *gSurfaceMain = NULL;
++SDL_Surface *gSurfaceMain, *gRealScreen = NULL;
+ TTF_Font *gTTFFont = NULL;
+ TTF_Font *gTTFSmall = NULL;
+ 
+@@ -46,8 +46,9 @@
+ 		return -1;		
+ 	}
+ 	
+-	gSurfaceMain = SDL_SetVideoMode(320,240,16,0);
+-	
++	gSurfaceMain = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
++	gRealScreen = SDL_SetVideoMode(320,240,32,0);
++
+ 	if (!gSurfaceMain)
+ 		return -1;
+ 	
+@@ -560,7 +561,8 @@
+ 	SDL_Surface *pSurfaceText = NULL;
+ 	
+ 	
+-	SDL_Flip(gSurfaceMain);
++	SDL_BlitSurface(gSurfaceMain,NULL,gRealScreen,NULL);
++	SDL_Flip(gRealScreen);
+ 	
+ 	i = 0;
+ 	quit_flag = 0;
+@@ -612,8 +614,10 @@
+ 				app_make_time(&lctm);
+ 			}
+ 
+-			SDL_Flip(gSurfaceMain);
+-			SDL_Flip(gSurfaceMain); // seems double buffer
++			SDL_BlitSurface(gSurfaceMain,NULL,gRealScreen,NULL);
++			SDL_Flip(gRealScreen);
++			SDL_Flip(gRealScreen);
++
+ 			update_flag = 0;
+ 		}
+ 		
