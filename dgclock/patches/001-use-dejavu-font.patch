@@ -1,0 +1,17 @@
+diff -ruN dgclock/src/main.c dgclock.mod/src/main.c
+--- dgclock/src/main.c	2009-12-21 16:00:00.000000000 +0100
++++ dgclock.mod/src/main.c	2010-02-10 11:30:11.000000000 +0100
+@@ -60,11 +60,11 @@
+ 	
+ 	SDL_ShowCursor(SDL_DISABLE);
+ 	
+-	gTTFFont = TTF_OpenFont ( "mplus-2p-medium.ttf" , 15 );
++	gTTFFont = TTF_OpenFont ( "/usr/share/fonts/ttf-dejavu/DejaVuSans.ttf" , 15 );
+ 	if (!gTTFFont)
+ 		return -1;
+ 	
+-	gTTFSmall = TTF_OpenFont ( "mplus-2p-medium.ttf" , 10 );
++	gTTFSmall = TTF_OpenFont ( "/usr/share/fonts/ttf-dejavu/DejaVuSans.ttf" , 10 );
+ 	if (!gTTFSmall)
+ 		return -1;
+ 	
