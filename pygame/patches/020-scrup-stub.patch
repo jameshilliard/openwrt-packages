@@ -1,0 +1,68 @@
+--- a/src/scrap.c
++++ b/src/scrap.c
+@@ -70,7 +70,7 @@ static uint32_t _cliptype = 0;
+     #define MAC_SCRAP
+     #include "scrap_mac.c"
+ #else
+-    #error Unknown window manager for clipboard handling
++    #include "scrap_stub.c"
+ #endif /* scrap type */
+ 
+ /**
+--- /dev/null
++++ b/src/scrap_stub.c
+@@ -0,0 +1,54 @@
++/*
++    pygame - Python Game Library
++
++    This library is free software; you can redistribute it and/or
++    modify it under the terms of the GNU Library General Public
++    License as published by the Free Software Foundation; either
++    version 2 of the License, or (at your option) any later version.
++
++    This library is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++    Library General Public License for more details.
++
++    You should have received a copy of the GNU Library General Public
++    License along with this library; if not, write to the Free
++    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++*/
++
++
++int
++pygame_scrap_init (void)
++{
++    return 1;
++}
++
++int
++pygame_scrap_lost (void)
++{
++    return 0;
++}
++
++int
++pygame_scrap_put (char *type, int srclen, char *src)
++{
++    return 1;
++}
++
++char*
++pygame_scrap_get (char *type, unsigned long *count)
++{
++       return NULL;
++}
++
++int
++pygame_scrap_contains (char *type)
++{
++   return 0;
++}
++
++char**
++pygame_scrap_get_types (void)
++{
++    return NULL;
++}

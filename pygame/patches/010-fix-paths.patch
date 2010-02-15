@@ -20,8 +20,8 @@ index 1cece2a..0fec7e0 100644
 +                self.found = 0
 +                return
 +
-+            cflags = os.popen('%s %s --cflags 2> /dev/null' % (command, lib)).readline()
-+            libs = os.popen('%s %s --libs 2> /dev/null' % (command, lib)).readline()
++            cflags = os.popen('%s %s --cflags 2> /dev/null' % (command, lib)).readline().strip()
++            libs = os.popen('%s %s --libs 2> /dev/null' % (command, lib)).readline().strip()
 +
 +            self.ver = version
 +            self.found = 1
@@ -42,7 +42,7 @@ index 1cece2a..0fec7e0 100644
  class Dependency:
      def __init__(self, name, checkhead, checklib, libs):
          self.name = name
-@@ -137,13 +170,13 @@ sdl_lib_name = 'SDL'
+@@ -137,18 +170,22 @@ sdl_lib_name = 'SDL'
  def main():
      print ('\nHunting dependencies...')
      DEPS = [
@@ -56,10 +56,20 @@ index 1cece2a..0fec7e0 100644
 -        Dependency('PNG', 'png.h', 'libpng', ['png']),
 +        DependencyPkgConfig('PNG', 'libpng'),
          Dependency('JPEG', 'jpeglib.h', 'libjpeg', ['jpeg']),
-         Dependency('SCRAP', '', 'libX11', ['X11']),
+-        Dependency('SCRAP', '', 'libX11', ['X11']),
          Dependency('PORTMIDI', 'portmidi.h', 'libportmidi.so', ['portmidi']),
          Dependency('PORTTIME', 'porttime.h', 'libporttime.so', ['porttime']),
-@@ -159,10 +182,10 @@ def main():
+         #Dependency('GFX', 'SDL_gfxPrimitives.h', 'libSDL_gfx.so', ['SDL_gfx']),
+     ]
++    if not os.environ.get('NO_SCRAP', None):
++        DEPS += Dependency('SCRAP', '', 'libX11', ['X11']),
++    else:
++        DEPS += Dependency('SCRAP', '', '', []),
++
+     if not DEPS[0].found:
+         print ('Unable to run "sdl-config". Please make sure a development version of SDL is installed.')
+         raise SystemExit
+@@ -159,10 +186,10 @@ def main():
      else:
          incdirs = []
          libdirs = []
@@ -75,3 +85,22 @@ index 1cece2a..0fec7e0 100644
      for arg in DEPS[0].cflags.split():
          if arg[:2] == '-I':
 
+
+--- a/config_unix.py
++++ b/config_unix.py
+@@ -182,15 +209,6 @@ def main():
+     for d in DEPS:
+         d.configure(incdirs, libdirs)
+ 
+-    for d in DEPS[1:]:
+-        if not d.found:
+-            if not confirm("""
+-Warning, some of the pygame dependencies were not found. Pygame can still
+-compile and install, but games that depend on those missing dependencies
+-will not run. Would you like to continue the configuration?"""):
+-                raise SystemExit
+-            break
+-
+     return DEPS
+ 
+ if __name__ == '__main__':
