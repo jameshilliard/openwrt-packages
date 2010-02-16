@@ -46,15 +46,15 @@ define Build/Compile
 		all install
 endef
 
-# define Build/InstallDev
-# 	$(INSTALL_DIR) $(1)/usr/include/SDL $(1)/usr/lib
-# 	$(CP) \
-# 		$(PKG_INSTALL_DIR)/usr/include/SDL/SDL_image.h \
-# 		$(1)/usr/include/SDL/
+define Build/InstallDev
+	$(INSTALL_DIR) $(1)/usr/include/google $(1)/usr/lib
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/include/google/* \
+		$(1)/usr/include/google/
 # 	$(CP) \
 # 		$(PKG_INSTALL_DIR)/usr/lib/libSDL_image*.{a,so*} \
 # 		$(1)/usr/lib/
-# endef
+endef
 
 define Package/sparsehash/install
 	$(INSTALL_DIR) $(1)/usr/lib

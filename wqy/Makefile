@@ -5,7 +5,6 @@
 # This is free software, licensed under the GNU General Public License v3.
 # See /LICENSE for more information.
 #
-#http://jaist.dl.sourceforge.net/project/wqy/wqy-microhei/0.2.0-beta/wqy-microhei-0.2.0-beta.tar.gz
 
 include $(TOPDIR)/rules.mk
 
@@ -15,7 +14,7 @@ PKG_RELEASE:=1
 PKG_VERSION:=0.2.0-beta
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_BUILD_DIR=$(BUILD_DIR)/Xorg/$(_CATEGORY)/${PKG_NAME}/
-PKG_SOURCE_URL:=@SF/wqy-microhei
+PKG_SOURCE_URL:=http://jaist.dl.sourceforge.net/project/wqy/wqy-microhei/0.2.0-beta/wqy-microhei-0.2.0-beta.tar.gz
 
 include $(INCLUDE_DIR)/package.mk
 

@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (C) 2010 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
@@ -15,6 +15,8 @@ PKG_SOURCE:=SDL_image-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.libsdl.org/projects/SDL_image/release/
 PKG_MD5SUM:=6c06584b31559e2b59f2b982d0d1f628
 PKG_BUILD_DIR:=$(BUILD_DIR)/SDL_image-$(PKG_VERSION)
+
+PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -38,21 +40,17 @@ CONFIGURE_ARGS += \
 CONFIGURE_VARS += \
 	LIBS="-lSDL -ldirect -ldirectfb -lfusion"
 
-define Build/Compile
-	rm -rf $(PKG_INSTALL_DIR)
-	$(MAKE) -C $(PKG_BUILD_DIR) \
-		DESTDIR="$(PKG_INSTALL_DIR)" \
-		all install
-endef
-
 define Build/InstallDev
-	$(INSTALL_DIR) $(1)/usr/include/SDL $(1)/usr/lib
+	$(INSTALL_DIR) $(1)/usr/include/SDL $(1)/usr/lib/pkgconfig
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/include/SDL/SDL_image.h \
 		$(1)/usr/include/SDL/
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/lib/libSDL_image*.{a,so*} \
 		$(1)/usr/lib/
+	$(INSTALL_DATA) \
+		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig/* \
+		$(1)/usr/lib/pkgconfig/
 endef
 
 define Package/libsdl-image/install
