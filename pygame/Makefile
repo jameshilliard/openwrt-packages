@@ -19,15 +19,20 @@ define Package/pygame
   CATEGORY:=Languages
   TITLE:=pygame
   URL:=http://pygame.org
-  DEPENDS:=+python-mini +libsdl
+  DEPENDS:=+python-mini +libsdl +libpng +libjpeg +libsdl-image +libsdl-mixer
 endef
 
 define Package/pygame/description
-  serial port python bindings
 endef
 
 define Build/Compile
-	$(call Build/Compile/PyMod,,install --prefix="$(PKG_INSTALL_DIR)/usr")
+	$(call Build/Compile/PyMod,,\
+		install \
+		--prefix="$(PKG_INSTALL_DIR)/usr" \
+		, \
+		LOCALBASE="$(STAGING_DIR)/usr" \
+		NO_SCRAP=1 \
+	)
 endef
 
 define Package/pygame/install
