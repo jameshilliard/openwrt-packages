@@ -13,8 +13,8 @@ From: Xiangfu Liu <xiangfu@sharism.cc>
  src/conf.cpp          |    4 
  src/desktop.cpp       |    2 
  src/mainwin.cpp       |    7 
- src/stardict.cpp      |   40 
- 9 files changed, 11205 insertions(+), 17413 deletions(-)
+ src/stardict.cpp      |   38 
+ 9 files changed, 11204 insertions(+), 17412 deletions(-)
  create mode 100644 m4/nls.m4
 
 
@@ -34803,21 +34803,28 @@ index bca4861..1499775 100644
  	progresswin.cpp progresswin.hpp \
  	tray.cpp tray.hpp \
 diff --git a/src/class_factory.cpp b/src/class_factory.cpp
-index 8bff538..e2deb09 100644
+index 8bff538..9285428 100644
 --- a/src/class_factory.cpp
 +++ b/src/class_factory.cpp
-@@ -53,8 +53,10 @@ void *PlatformFactory::create_class_by_name(const std::string& name, void *param
+@@ -34,7 +34,9 @@
+ #  include "win32/win32_iskeyspressed.h"
+ #  include "win32/systray.h"
+ #else
++#ifndef CONFIG_NANONOTE
+ #  include "x11_iskeyspressed.hpp"
++#endif
+ #  include "docklet.h"
+ #endif
+ 
+@@ -53,6 +55,8 @@ void *PlatformFactory::create_class_by_name(const std::string& name, void *param
  	} else if (name=="hotkeys") {
  #ifdef _WIN32
  		return new win32_hotkeys();
 +#elif defined(CONFIG_NANONOTE)
 +		return NULL; 
  #else
--		return new x11_hotkeys(GTK_WINDOW(param));
-+                return new x11_hotkeys(GTK_WINDOW(param));
+ 		return new x11_hotkeys(GTK_WINDOW(param));
  #endif
- 	}
- 	return NULL;
 diff --git a/src/conf.cpp b/src/conf.cpp
 index 2d0f89d..9f5e308 100644
 --- a/src/conf.cpp
@@ -34904,7 +34911,7 @@ index 7005f7b..15e6543 100644
  
  void BottomWin::on_link_eventbox_clicked(GtkWidget *widget, GdkEventButton *event, BottomWin *oBottomWin)
 diff --git a/src/stardict.cpp b/src/stardict.cpp
-index 326ca4a..fb027d6 100644
+index 326ca4a..8b8b8cf 100644
 --- a/src/stardict.cpp
 +++ b/src/stardict.cpp
 @@ -351,9 +351,9 @@ void AppCore::Create(gchar *queryword)
@@ -34920,13 +34927,11 @@ index 326ca4a..fb027d6 100644
  	oFloatWin.Create();
  	bool scan=conf->get_bool_at("dictionary/scan_selection");
  	oDockLet.reset(PlatformFactory::create_tray_icon(window, scan,
-@@ -2005,10 +2005,22 @@ private:
+@@ -2005,10 +2005,20 @@ private:
  
  void AppCore::PopupPrefsDlg()
  {
 +    static std::list<std::string> posb_combs;
-+
-+    posb_combs = unlock_keys->possible_combs();
 +
 +    if (posb_combs.empty()) {
 +        posb_combs.push_back("Win");
@@ -34945,7 +34950,7 @@ index 326ca4a..fb027d6 100644
  		bool enbcol =
  			conf->get_bool_at("dictionary/enable_collation");
  		int colf =
-@@ -2153,17 +2165,17 @@ void AppCore::Quit()
+@@ -2153,17 +2163,17 @@ void AppCore::Quit()
  	if (!conf->get_bool_at("main_window/maximized")) {
  		gint width, height;
  		gtk_window_get_size(GTK_WINDOW(window), &width, &height);
@@ -34968,7 +34973,7 @@ index 326ca4a..fb027d6 100644
  	}
  
  	End();
-@@ -2171,9 +2183,9 @@ void AppCore::Quit()
+@@ -2171,9 +2181,9 @@ void AppCore::Quit()
  #ifdef CONFIG_GNOME
  	bonobo_object_unref (stardict_app_server);
  #endif
@@ -34981,7 +34986,7 @@ index 326ca4a..fb027d6 100644
  }
  
  void AppCore::on_main_win_hide_list_changed(const baseconfval* hideval)
-@@ -2439,7 +2451,7 @@ int main(int argc,char **argv)
+@@ -2439,7 +2449,7 @@ int main(int argc,char **argv)
  			g_warning("Cannot create directory %s.", userdir.c_str());
  	}
      g_thread_init (NULL);

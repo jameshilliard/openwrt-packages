@@ -58,6 +58,7 @@ define Build/Configure
 		--disable-schemas-install \
 		--disable-deprecations \
 		--disable-gnome-support \
+		--enable-nanonote-support \
 	)
 endef
 
