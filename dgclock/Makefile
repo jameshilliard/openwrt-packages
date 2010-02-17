@@ -20,11 +20,12 @@ UNPACK_CMD=unzip -d $(1) $(DL_DIR)/$(PKG_SOURCE)
 
 include $(INCLUDE_DIR)/package.mk
 
-TARGET_CFLAGS+=\
+TARGET_CFLAGS += \
 	-I$(STAGING_DIR)/usr/lib/libintl/include/ \
-	-I$(STAGING_DIR)/usr/lib/libiconv/include/
+	-I$(STAGING_DIR)/usr/lib/libiconv/include/ \
+	-I$(STAGING_DIR)/usr/include/SDL
 
-TARGET_LDFLAGS+=\
+TARGET_LDFLAGS += \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
 	-L$(STAGING_DIR)/usr/lib/libintl/lib/ \
 	-L$(STAGING_DIR)/usr/lib/libiconv/lib/
@@ -41,22 +42,29 @@ define Package/dgclock/description
   Clock and date in sdl
 endef
 
-TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
-
 define Build/Compile
 	$(call Build/Compile/Default, \
-	A320=1\
+	A320=1 \
 	)
 endef
 
 define Package/dgclock/install
 	$(INSTALL_DIR) \
-		$(1)/usr/bin
+		$(1)/usr/bin \
+		$(1)/usr/share/icons \
+		$(1)/usr/share/applications
         
 	$(INSTALL_BIN) \
 		$(PKG_BUILD_DIR)/bin/a320/dgclock \
 		$(1)/usr/bin/
-        
+
+	$(INSTALL_DATA) \
+		$(PKG_BUILD_DIR)/dgclock/dgclock.png \
+		$(1)/usr/share/icons/
+
+	$(INSTALL_DATA) \
+		./files/dglock.desktop \
+		$(1)/usr/share/applications/
 endef
 
 $(eval $(call BuildPackage,dgclock))
