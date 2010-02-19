@@ -20,10 +20,10 @@ PKG_INSTALL:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/stardict
-    TITLE:=stardict
     SECTION:=utils
     CATEGORY:=Utilities
     DEPENDS:=+libintl +libiconv
+    TITLE:=International Dictionary Software
     URL:=
 endef
 
