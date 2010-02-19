@@ -63,7 +63,7 @@ define Package/dgclock/install
 		$(1)/usr/share/icons/
 
 	$(INSTALL_DATA) \
-		./files/dglock.desktop \
+		./files/dgclock.desktop \
 		$(1)/usr/share/applications/
 endef
 
