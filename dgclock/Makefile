@@ -35,7 +35,7 @@ define Package/dgclock
   CATEGORY:=Xorg
   TITLE:=dgclock - sdl based date and time
   URL:=http://clogging.web.fc2.com/dingoo/
-  DEPENDS:=+libsdl +libsdl-image +libsdl-ttf +libgl-mesa +dejavu-fonts-ttf
+  DEPENDS:=+libsdl +libsdl-image +libsdl-ttf +dejavu-fonts-ttf
 endef
 
 define Package/dgclock/description
