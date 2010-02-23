@@ -8,9 +8,9 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmenu2x
-PKG_VERSION:=20100215-2
-PKG_REV:=630fdd5de9bc4c6f601d0aea1b6ccbc22f9d8bdf
-PKG_RELEASE:=1
+PKG_VERSION:=20100222
+PKG_REV:= 745321edf9101688ac1ffe3a0bff5773f08b36db
+PKG_RELEASE:=4
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=git://projects.qi-hardware.com/gmenu2x.git
@@ -26,6 +26,7 @@ TARGET_CFLAGS+= \
 	-I$(STAGING_DIR)/usr/include/SDL \
 	-I$(STAGING_DIR)/usr/include/google/sparsehash \
 	-I$(PKG_BUILD_DIR)/src/tinyxml \
+	-DTIXML_USE_STL -DTARGET_GP2X -O3 -msoft-float -fomit-frame-pointer -ffast-math -funroll-loops -Wall -Wno-unknown-pragmas -Wno-format \
 
 TARGET_CPPFLAGS+= \
   -I$(STAGING_DIR)/usr/include/SDL \
@@ -45,7 +46,7 @@ define Package/gmenu2x
   SUBMENU:=app
   TITLE:=Gmenu2x
   URL:=http://projects.qi-hardware.com/index.php/p/gmenu2x/
-  DEPENDS:=+libsdl +libsdl-image +libsdl-gfx +sparsehash
+  DEPENDS:=+libsdl +libsdl-image +libsdl-ttf +libstdcpp +libsdl-gfx +sparsehash
 endef
 
 define Build/Configure
