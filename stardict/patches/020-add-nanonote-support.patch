@@ -1,0 +1,312 @@
+add CONFIG_NANONOTE support
+
+From: Xiangfu Liu <xiangfu@sharism.cc>
+
+
+---
+
+ configure.in          |   36 +++++++++++++++++++++++-------------
+ src/Makefile.am       |    6 +++++-
+ src/class_factory.cpp |    4 ++++
+ src/conf.cpp          |    4 ++++
+ src/desktop.cpp       |    2 +-
+ src/mainwin.cpp       |    7 +++++++
+ src/stardict.cpp      |   38 ++++++++++++++++++++++++--------------
+ 7 files changed, 68 insertions(+), 29 deletions(-)
+
+
+diff --git a/configure.in b/configure.in
+index 83d3d95..4b15e43 100644
+--- a/configure.in
++++ b/configure.in
+@@ -296,14 +296,18 @@ dnl ================================================================
+ AC_ARG_ENABLE(gnome-support, AC_HELP_STRING([--disable-gnome-support], [Disable gnome support]))
+ AC_ARG_ENABLE(gpe-support, AC_HELP_STRING([--enable-gpe-support], [Enable gpe support]))
+ AC_ARG_ENABLE(maemo-support, AC_HELP_STRING([--enable-maemo-support], [Enable maemo support]))
++AC_ARG_ENABLE(nanonote-support, AC_HELP_STRING([--enable-nanonote-support], [Enable Qi Hardware NanoNote support]))
+ AM_CONDITIONAL(GNOME_SUPPORT, test "x${enable_gpe_support}" != "xyes" && test "x${enable_maemo_support}" != "xyes" && test "x${enable_gnome_support}" != "xno")
+ AM_CONDITIONAL(GPE_SUPPORT, test "x${enable_gpe_support}" = "xyes")
+ AM_CONDITIONAL(MAEMO_SUPPORT, test "x${enable_maemo_support}" = "xyes")
++AM_CONDITIONAL(NANONOTE_SUPPORT, test "x${enable_nanonote_support}" = "xyes")
+ 
+ if test "x${enable_gpe_support}" = "xyes" ; then
+   DEP_MODULES="gtk+-2.0 >= 2.12 glib-2.0 >= 2.14 gthread-2.0 libgpewidget >= 0.109"
+ elif test "x${enable_maemo_support}" = "xyes" ; then
+   DEP_MODULES="gtk+-2.0 >= 2.12 gthread-2.0 gconf-2.0 >= 2.6 hildon-libs >= 0.12"
++elif test "x${enable_nanonote_support}" = "xyes" ; then
++  DEP_MODULES="gtk+-2.0 >= 2.12 gthread-2.0 gconf-2.0 >= 2.6"
+ elif test "x${enable_gnome_support}" = "xno" ; then
+   DEP_MODULES="gtk+-2.0 >= 2.12 gthread-2.0"
+ else
+@@ -329,6 +333,11 @@ elif test "x${enable_maemo_support}" = "xyes" ; then
+ 	fi
+ 	AM_GCONF_SOURCE_2
+ 	AM_CONDITIONAL(SCHEMAS_INSTALL, test x$schemas_install = xtrue)
++elif test "x${enable_nanonote_support}" = "xyes" ; then
++        echo "Enable Qi Hardware NanoNote suppport";
++	AC_DEFINE([CONFIG_NANONOTE],[], [Compile with nanonote support])
++	AM_CONDITIONAL(SCHEMAS_INSTALL, test "x${enable_nanonote_support}" != "xyes")
++	AM_CONDITIONAL(GCONF_SCHEMAS_INSTALL, test "x${enable_nanonote_support}" != "xyes")
+ elif test "x${enable_gnome_support}" = "xno" ; then
+ 	echo "Disable gnome support";
+ 	AC_DEFINE([CONFIG_GTK],[], [Compile without gnome support])
+@@ -414,21 +423,21 @@ dnl ==========================================================================
+ 
+ # Checks for header files. need by Solaris.
+ AC_PATH_XTRA
+-if test -n "$X_CFLAGS"; then
+-CPPFLAGS="$CPPFLAGS $X_CFLAGS"
+-fi
+-if test -n "$X_LIBS"; then
+-LDFLAGS="$LDFLAGS $X_LIBS"
+-fi
+-if test -n "$X_PRE_LIBS"; then
+-LDFLAGS="$LDFLAGS $X_PRE_LIBS"
+-fi
+-if test -n "$X_EXTRA_LIBS"; then
+-LDFLAGS="$LDFLAGS $X_EXTRA_LIBS"
+-fi
++#if test -n "$X_CFLAGS"; then
++#CPPFLAGS="$CPPFLAGS $X_CFLAGS"
++#fi
++#if test -n "$X_LIBS"; then
++#LDFLAGS="$LDFLAGS $X_LIBS"
++#fi
++#if test -n "$X_PRE_LIBS"; then
++#LDFLAGS="$LDFLAGS $X_PRE_LIBS"
++#fi
++#if test -n "$X_EXTRA_LIBS"; then
++#LDFLAGS="$LDFLAGS $X_EXTRA_LIBS"
++#fi
+ 
+ # Checks for libraries.
+-AC_CHECK_LIB([X11], [main], , [AC_MSG_ERROR([X11 lib not found])])
++#AC_CHECK_LIB([X11], [main], , [AC_MSG_ERROR([X11 lib not found])])
+ 
+ AC_SUBST(STARDICT_LIBS)
+ AC_SUBST(STARDICT_CFLAGS)
+@@ -494,3 +503,4 @@ echo "
+ Type \"make\" to compile StarDict.
+ 
+ "
++
+diff --git a/src/Makefile.am b/src/Makefile.am
+index bca4861..1499775 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -34,9 +34,13 @@ CONFIG_FILE_MODULE = gconf_file.cpp gconf_file.hpp
+ else
+ CONFIG_FILE_MODULE = inifile.cpp inifile.hpp
+ endif
++if NANONOTE_SUPPORT
++X11_ISKEYSPRESSED_FILE_MODULE = 
++endif
+ else
+ CONFIG_FILE_MODULE = gconf_file.cpp gconf_file.hpp
+ IDL_FILE = GNOME_Stardict.idl
++X11_ISKEYSPRESSED_FILE_MODULE = x11_iskeyspressed.cpp x11_iskeyspressed.hpp 
+ 
+ IDL_SOURCES = \
+ 	GNOME_Stardict-stubs.c			\
+@@ -73,7 +77,7 @@ stardict_SOURCES = 			                \
+ 	class_factory.cpp class_factory.hpp     \
+ 	config_file.hpp              \
+ 	$(CONFIG_FILE_MODULE)                   \
+-	x11_iskeyspressed.cpp x11_iskeyspressed.hpp \
++	$(X11_ISKEYSPRESSED_FILE_MODULE) \
+ 	gtk_iskeyspressed.cpp gtk_iskeyspressed.hpp \
+ 	progresswin.cpp progresswin.hpp \
+ 	tray.cpp tray.hpp \
+diff --git a/src/class_factory.cpp b/src/class_factory.cpp
+index 8bff538..9285428 100644
+--- a/src/class_factory.cpp
++++ b/src/class_factory.cpp
+@@ -34,7 +34,9 @@
+ #  include "win32/win32_iskeyspressed.h"
+ #  include "win32/systray.h"
+ #else
++#ifndef CONFIG_NANONOTE
+ #  include "x11_iskeyspressed.hpp"
++#endif
+ #  include "docklet.h"
+ #endif
+ 
+@@ -53,6 +55,8 @@ void *PlatformFactory::create_class_by_name(const std::string& name, void *param
+ 	} else if (name=="hotkeys") {
+ #ifdef _WIN32
+ 		return new win32_hotkeys();
++#elif defined(CONFIG_NANONOTE)
++		return NULL; 
+ #else
+ 		return new x11_hotkeys(GTK_WINDOW(param));
+ #endif
+diff --git a/src/conf.cpp b/src/conf.cpp
+index 2d0f89d..9f5e308 100644
+--- a/src/conf.cpp
++++ b/src/conf.cpp
+@@ -33,6 +33,10 @@
+ const int DEFAULT_WINDOW_WIDTH=238;
+ const int DEFAULT_WINDOW_HEIGHT=279;
+ const int DEFAULT_HPANED_POS=79;
++#elif defined(CONFIG_NANONOTE)
++const int DEFAULT_WINDOW_WIDTH=320;
++const int DEFAULT_WINDOW_HEIGHT=240;
++const int DEFAULT_HPANED_POS=79;
+ #else
+ const int DEFAULT_WINDOW_WIDTH=463;
+ const int DEFAULT_WINDOW_HEIGHT=321;
+diff --git a/src/desktop.cpp b/src/desktop.cpp
+index 9d08caf..4f95bcb 100644
+--- a/src/desktop.cpp
++++ b/src/desktop.cpp
+@@ -37,7 +37,7 @@
+ 
+ #include "desktop.hpp"
+ 
+-#if defined(CONFIG_GTK) || defined(CONFIG_GPE) || defined(CONFIG_MAEMO)
++#if defined(CONFIG_GTK) || defined(CONFIG_GPE) || defined(CONFIG_MAEMO) || defined(CONFIG_NANONOTE)
+ static void spawn_command(const gchar *exe, const gchar *arg)
+ {
+   gchar *qarg = g_shell_quote(arg);
+diff --git a/src/mainwin.cpp b/src/mainwin.cpp
+index 7005f7b..15e6543 100644
+--- a/src/mainwin.cpp
++++ b/src/mainwin.cpp
+@@ -129,10 +129,12 @@ void TopWin::Create(GtkWidget *vbox)
+ 	gtk_box_pack_start(GTK_BOX(hbox),button,false,false,0);
+ 	gtk_widget_set_tooltip_text(button,_("Go Back - Right button: history (Alt+Left)"));
+ 
++#ifndef CONFIG_NANONOTE
+ 	GtkWidget *label;
+ 	label = gtk_label_new("\t");
+ 	gtk_widget_show(label);
+ 	gtk_box_pack_start(GTK_BOX(hbox),label,false,false,0);
++#endif
+ 
+ 	button=gtk_button_new();
+ 	gtk_container_add(GTK_CONTAINER(button),gtk_image_new_from_stock(GTK_STOCK_HOME,GTK_ICON_SIZE_BUTTON));
+@@ -1249,6 +1251,7 @@ void LeftWin::Create(GtkWidget *hbox, bool has_treedict)
+ 		gtk_widget_show(vbox);
+ 	gtk_box_pack_start(GTK_BOX(hbox),vbox, false, false, 0);
+ 
++#ifndef CONFIG_NANONOTE
+ 	GtkWidget *wazard_button = gtk_radio_button_new(NULL);
+ 	GTK_WIDGET_UNSET_FLAGS (wazard_button, GTK_CAN_FOCUS);
+ 	gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(wazard_button), false);
+@@ -1323,6 +1326,7 @@ void LeftWin::Create(GtkWidget *hbox, bool has_treedict)
+ 	g_signal_connect(G_OBJECT(button),"enter_notify_event", G_CALLBACK(stardict_on_enter_notify), NULL);
+ 	gtk_box_pack_end(GTK_BOX(vbox),button,false,false,0);
+ 	gtk_widget_set_tooltip_text(button,_("Previous word (Alt+Up)"));
++#endif
+ }
+ 
+ void LeftWin::on_wazard_button_toggled(GtkToggleButton *button, LeftWin *oLeftWin)
+@@ -2665,6 +2669,7 @@ void MidWin::Create(GtkWidget *vbox)
+ 
+ 	notebook = gtk_notebook_new();
+ 	gtk_widget_show(notebook);
++	gtk_widget_set_size_request(GTK_WIDGET(notebook), 50, 20);
+ 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), false);
+ 	gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook),false);
+ 
+@@ -2711,6 +2716,7 @@ void BottomWin::Destroy()
+ 
+ void BottomWin::Create(GtkWidget *vbox)
+ {
++#ifndef CONFIG_NANONOTE
+ 	GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
+ 	gtk_widget_show(hbox);
+ #ifdef CONFIG_GPE
+@@ -2827,6 +2833,7 @@ void BottomWin::Create(GtkWidget *vbox)
+ 	g_signal_connect(G_OBJECT(button),"enter_notify_event", G_CALLBACK(stardict_on_enter_notify), NULL);
+ 	gtk_box_pack_end(GTK_BOX(hbox),button,false,false,0);
+ 	gtk_widget_set_tooltip_text(button,_("Search an Internet dictionary - Right button: website list"));
++#endif
+ }
+ 
+ void BottomWin::on_link_eventbox_clicked(GtkWidget *widget, GdkEventButton *event, BottomWin *oBottomWin)
+diff --git a/src/stardict.cpp b/src/stardict.cpp
+index 326ca4a..8b8b8cf 100644
+--- a/src/stardict.cpp
++++ b/src/stardict.cpp
+@@ -351,9 +351,9 @@ void AppCore::Create(gchar *queryword)
+ 	oTopWin.Create(vbox);
+ 	oMidWin.Create(vbox);
+ 	oBottomWin.Create(vbox);
+-	unlock_keys.reset(static_cast<hotkeys *>(PlatformFactory::create_class_by_name("hotkeys",
+-										       GTK_WINDOW(window))));
+-	unlock_keys->set_comb(combnum2str(conf->get_int_at("dictionary/scan_modifier_key")));
++	//unlock_keys.reset(static_cast<hotkeys *>(PlatformFactory::create_class_by_name("hotkeys",
++	//									       GTK_WINDOW(window))));
++	//unlock_keys->set_comb(combnum2str(conf->get_int_at("dictionary/scan_modifier_key")));
+ 	oFloatWin.Create();
+ 	bool scan=conf->get_bool_at("dictionary/scan_selection");
+ 	oDockLet.reset(PlatformFactory::create_tray_icon(window, scan,
+@@ -2005,10 +2005,20 @@ private:
+ 
+ void AppCore::PopupPrefsDlg()
+ {
++    static std::list<std::string> posb_combs;
++
++    if (posb_combs.empty()) {
++        posb_combs.push_back("Win");
++        posb_combs.push_back("Shift");
++        posb_combs.push_back("Alt");
++        posb_combs.push_back("Ctrl");
++        posb_combs.push_back("Ctrl+Alt");
++    }
++
+ 	if (!prefs_dlg) {
+ 		prefs_dlg = new PrefsDlg(GTK_WINDOW(window),
+-					 get_impl(oAppSkin.icon),
+-					 unlock_keys->possible_combs());
++                                 get_impl(oAppSkin.icon),
++                                 posb_combs);
+ 		bool enbcol =
+ 			conf->get_bool_at("dictionary/enable_collation");
+ 		int colf =
+@@ -2153,17 +2163,17 @@ void AppCore::Quit()
+ 	if (!conf->get_bool_at("main_window/maximized")) {
+ 		gint width, height;
+ 		gtk_window_get_size(GTK_WINDOW(window), &width, &height);
+-    conf->set_int_at("main_window/window_width", width);
+-    conf->set_int_at("main_window/window_height", height);
++		conf->set_int_at("main_window/window_width", width);
++		conf->set_int_at("main_window/window_height", height);
+ 	}
+ 	gint pos = gtk_paned_get_position(GTK_PANED(oMidWin.hpaned));
+-  conf->set_int_at("main_window/hpaned_pos", pos);
++	conf->set_int_at("main_window/hpaned_pos", pos);
+ 
+ 	if (conf->get_bool_at("floating_window/lock")) {
+ 		gint x, y;
+ 		gtk_window_get_position(GTK_WINDOW(oFloatWin.FloatWindow), &x, &y);
+-    conf->set_int_at("floating_window/lock_x", x);
+-    conf->set_int_at("floating_window/lock_y", y);
++		conf->set_int_at("floating_window/lock_x", x);
++		conf->set_int_at("floating_window/lock_y", y);
+ 	}
+ 
+ 	End();
+@@ -2171,9 +2181,9 @@ void AppCore::Quit()
+ #ifdef CONFIG_GNOME
+ 	bonobo_object_unref (stardict_app_server);
+ #endif
+-   unlock_keys.reset(0);
+-	 conf.reset(0);
+-	 gtk_main_quit();
++	unlock_keys.reset(0);
++	conf.reset(0);
++	gtk_main_quit();
+ }
+ 
+ void AppCore::on_main_win_hide_list_changed(const baseconfval* hideval)
+@@ -2439,7 +2449,7 @@ int main(int argc,char **argv)
+ 			g_warning("Cannot create directory %s.", userdir.c_str());
+ 	}
+     g_thread_init (NULL);
+-#if defined(_WIN32) || defined(CONFIG_GTK) || defined(CONFIG_MAEMO)
++#if defined(_WIN32) || defined(CONFIG_GTK) || defined(CONFIG_MAEMO) || defined(CONFIG_NANONOTE)
+ 	gtk_set_locale();
+ 	gtk_init(&argc, &argv);
+ #endif
