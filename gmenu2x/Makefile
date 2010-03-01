@@ -63,7 +63,7 @@ define Package/gmenu2x/install
 		$(PKG_INSTALL_DIR)/usr/bin/gmenu2x \
 		$(1)/usr/share/gmenu2x/
 	
-	$(CP) \
+	$(INSTALL_BIN) \
 		$(PKG_BUILD_DIR)/gmenu2x.sh \
 		$(1)/usr/bin/gmenu2x
 
