@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libsdl-ttf
 PKG_VERSION:=2.0.9
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=SDL_ttf-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.libsdl.org/projects/SDL_ttf/release/
@@ -32,7 +32,19 @@ define Package/libsdl-ttf/description
   SDL_ttf is a TrueType font rendering library that is used with the SDL library, and almost as portable. It depends on freetype2 to handle the TrueType font data. It allows a programmer to use multiple TrueType fonts without having to code a font rendering routine themselves. With the power of outline fonts and antialiasing, high quality text output can be obtained without much effort.
 endef
 
-CONFIGURE_ARGS += --without-x
+PKG_FIXUP:=libtool
+
+TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
+
+CONFIGURE_ARGS += \
+       --with-sdl-exec-prefix=$(STAGING_DIR) \
+       --without-x \
+       LIBS="-lSDL"
+
+TARGET_LDFLAGS+= \
+       -Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
+       -L$(STAGING_DIR)/usr/lib/libintl/lib \
+       -L$(STAGING_DIR)/usr/lib/libiconv/lib
 
 define Build/InstallDev
 	$(INSTALL_DIR) \
