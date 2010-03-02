@@ -5,14 +5,14 @@ From: Xiangfu Liu <xiangfu@sharism.cc>
 
 ---
 
- configure.in          |   36 +++++++++++++++++++++++-------------
- src/Makefile.am       |    6 +++++-
- src/class_factory.cpp |    4 ++++
- src/conf.cpp          |    4 ++++
- src/desktop.cpp       |    2 +-
- src/mainwin.cpp       |    7 +++++++
- src/stardict.cpp      |   38 ++++++++++++++++++++++++--------------
- 7 files changed, 68 insertions(+), 29 deletions(-)
+ configure.in          |   36 +++++++++++++++++---------
+ src/Makefile.am       |    6 ++++
+ src/class_factory.cpp |    6 ++++
+ src/conf.cpp          |    4 +++
+ src/desktop.cpp       |    2 +
+ src/mainwin.cpp       |   10 +++++++
+ src/stardict.cpp      |   67 ++++++++++++++++++++++++++++++++++++-------------
+ 7 files changed, 96 insertions(+), 35 deletions(-)
 
 
 diff --git a/configure.in b/configure.in
@@ -118,7 +118,7 @@ index bca4861..1499775 100644
  	progresswin.cpp progresswin.hpp \
  	tray.cpp tray.hpp \
 diff --git a/src/class_factory.cpp b/src/class_factory.cpp
-index 8bff538..9285428 100644
+index 8bff538..653111e 100644
 --- a/src/class_factory.cpp
 +++ b/src/class_factory.cpp
 @@ -34,7 +34,9 @@
@@ -131,9 +131,12 @@ index 8bff538..9285428 100644
  #  include "docklet.h"
  #endif
  
-@@ -53,6 +55,8 @@ void *PlatformFactory::create_class_by_name(const std::string& name, void *param
+@@ -51,8 +53,10 @@ void *PlatformFactory::create_class_by_name(const std::string& name, void *param
+ 		return new inifile(get_user_config_dir()+ G_DIR_SEPARATOR_S "stardict.cfg");
+ #endif
  	} else if (name=="hotkeys") {
- #ifdef _WIN32
+-#ifdef _WIN32
++#if defined(_WIN32)
  		return new win32_hotkeys();
 +#elif defined(CONFIG_NANONOTE)
 +		return NULL; 
@@ -169,7 +172,7 @@ index 9d08caf..4f95bcb 100644
  {
    gchar *qarg = g_shell_quote(arg);
 diff --git a/src/mainwin.cpp b/src/mainwin.cpp
-index 7005f7b..15e6543 100644
+index 7005f7b..0b77b0c 100644
 --- a/src/mainwin.cpp
 +++ b/src/mainwin.cpp
 @@ -129,10 +129,12 @@ void TopWin::Create(GtkWidget *vbox)
@@ -201,7 +204,19 @@ index 7005f7b..15e6543 100644
  }
  
  void LeftWin::on_wazard_button_toggled(GtkToggleButton *button, LeftWin *oLeftWin)
-@@ -2665,6 +2669,7 @@ void MidWin::Create(GtkWidget *vbox)
+@@ -1807,7 +1811,10 @@ void TextWin::ShowTips()
+   query_result = TEXT_WIN_TIPS;
+   view->set_text(
+ 	  _("        Welcome to StarDict!\n\n"
+-	    "   Press Ctrl+Q to quit. Press Alt+Z to iconify the window or Alt+X to hide the window.\n"
++	    "   Press Ctrl+Q to quit. \n"
++#ifndef CONFIG_NANONOTE
++        "   Press Alt+Z to iconify the window or Alt+X to hide the window.\n"
++#endif
+ 	    "   Press Alt+C or ESC to clear the input entry's text.\n"
+ 	    "   Press Space key to move focus to the input entry.\n"
+ 	    "   If the query word was not found, you can press Tab key to select the first word in the word list.\n"
+@@ -2665,6 +2672,7 @@ void MidWin::Create(GtkWidget *vbox)
  
  	notebook = gtk_notebook_new();
  	gtk_widget_show(notebook);
@@ -209,40 +224,96 @@ index 7005f7b..15e6543 100644
  	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), false);
  	gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook),false);
  
-@@ -2711,6 +2716,7 @@ void BottomWin::Destroy()
+diff --git a/src/stardict.cpp b/src/stardict.cpp
+index 326ca4a..2d4acb8 100644
+--- a/src/stardict.cpp
++++ b/src/stardict.cpp
+@@ -214,7 +214,9 @@ void AppCore::do_send_http_request(const char* shost, const char* sfile, get_htt
  
- void BottomWin::Create(GtkWidget *vbox)
+ void AppCore::set_news(const char *news, const char *links)
  {
 +#ifndef CONFIG_NANONOTE
- 	GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
- 	gtk_widget_show(hbox);
- #ifdef CONFIG_GPE
-@@ -2827,6 +2833,7 @@ void BottomWin::Create(GtkWidget *vbox)
- 	g_signal_connect(G_OBJECT(button),"enter_notify_event", G_CALLBACK(stardict_on_enter_notify), NULL);
- 	gtk_box_pack_end(GTK_BOX(hbox),button,false,false,0);
- 	gtk_widget_set_tooltip_text(button,_("Search an Internet dictionary - Right button: website list"));
+ 	gpAppFrame->oBottomWin.set_news(news, links);
 +#endif
  }
  
- void BottomWin::on_link_eventbox_clicked(GtkWidget *widget, GdkEventButton *event, BottomWin *oBottomWin)
-diff --git a/src/stardict.cpp b/src/stardict.cpp
-index 326ca4a..8b8b8cf 100644
---- a/src/stardict.cpp
-+++ b/src/stardict.cpp
-@@ -351,9 +351,9 @@ void AppCore::Create(gchar *queryword)
+ void AppCore::show_netdict_resp(NetDictResponse *resp, bool ismainwin)
+@@ -350,12 +352,13 @@ void AppCore::Create(gchar *queryword)
+ 	gtk_container_add(GTK_CONTAINER(window),vbox);
  	oTopWin.Create(vbox);
  	oMidWin.Create(vbox);
++	oFloatWin.Create();
++	bool scan=conf->get_bool_at("dictionary/scan_selection");
++#ifndef CONFIG_NANONOTE
  	oBottomWin.Create(vbox);
--	unlock_keys.reset(static_cast<hotkeys *>(PlatformFactory::create_class_by_name("hotkeys",
--										       GTK_WINDOW(window))));
--	unlock_keys->set_comb(combnum2str(conf->get_int_at("dictionary/scan_modifier_key")));
-+	//unlock_keys.reset(static_cast<hotkeys *>(PlatformFactory::create_class_by_name("hotkeys",
-+	//									       GTK_WINDOW(window))));
-+	//unlock_keys->set_comb(combnum2str(conf->get_int_at("dictionary/scan_modifier_key")));
- 	oFloatWin.Create();
- 	bool scan=conf->get_bool_at("dictionary/scan_selection");
+ 	unlock_keys.reset(static_cast<hotkeys *>(PlatformFactory::create_class_by_name("hotkeys",
+ 										       GTK_WINDOW(window))));
+ 	unlock_keys->set_comb(combnum2str(conf->get_int_at("dictionary/scan_modifier_key")));
+-	oFloatWin.Create();
+-	bool scan=conf->get_bool_at("dictionary/scan_selection");
  	oDockLet.reset(PlatformFactory::create_tray_icon(window, scan,
-@@ -2005,10 +2005,20 @@ private:
+ 							 oAppSkin));
+ 	oDockLet->on_quit_.connect(sigc::mem_fun(this, &AppCore::Quit));
+@@ -365,6 +368,7 @@ void AppCore::Create(gchar *queryword)
+ 		sigc::mem_fun(this, &AppCore::on_maximize));
+ 	oDockLet->on_middle_btn_click_.connect(
+ 		sigc::mem_fun(this, &AppCore::on_middle_button_click));
++#endif // CONFIG_NANONOTE
+ 	oSelection.Init();
+ #ifdef _WIN32
+ 	oClipboard.Init();
+@@ -393,7 +397,9 @@ void AppCore::Create(gchar *queryword)
+ 	//NOTICE: when docklet embedded failed,it should always show the window,but,how to detect the failure?
+ 	// As stardict is FOR GNOME,so i don't want to consider the case that haven't the Notification area applet.
+ 	if (!hide_option && (queryword || !hide)) {
++#ifndef CONFIG_NANONOTE
+ 		oDockLet->hide_state();
++#endif
+ 		gtk_widget_show(window);
+ 	} else {
+ // This may be needed, so gtk_window_get_screen() in gtk_iskeyspressed.cpp can always work.
+@@ -423,8 +429,12 @@ void AppCore::Create(gchar *queryword)
+ 
+ gboolean AppCore::on_delete_event(GtkWidget * window, GdkEvent *event , AppCore *app)
+ {
++#ifndef CONFIG_NANONOTE
+ 	app->oDockLet->minimize_to_tray();
+-	return TRUE;
++#endif
++    g_print("Quitting..\n");
++    gtk_main_quit();
++	return FALSE;
+ }
+ 
+ gboolean AppCore::on_window_state_event(GtkWidget *window,
+@@ -432,12 +442,16 @@ gboolean AppCore::on_window_state_event(GtkWidget *window,
+ {
+ 	switch (event->changed_mask) {
+ 	case GDK_WINDOW_STATE_WITHDRAWN:
++#ifndef CONFIG_NANONOTE
+ 		if (conf->get_bool_at("dictionary/scan_selection"))
+ 			app->oDockLet->set_scan_mode(true);
+ 		else
+ 			app->oDockLet->set_scan_mode(false);
++#endif
+ 		if (!(event->new_window_state & GDK_WINDOW_STATE_WITHDRAWN)) {
++#ifndef CONFIG_NANONOTE
+ 			app->oDockLet->hide_state();
++#endif
+ 			if (app->oTopWin.get_text()[0])
+ 				gtk_widget_grab_focus(app->oMidWin.oTextWin.view->widget());
+ 		}
+@@ -475,7 +489,9 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
+ 	}
+ 	else if ((event->keyval==GDK_x || event->keyval==GDK_X) && only_mod1_pressed) {
+ 		if (event->type==GDK_KEY_PRESS) {
++#ifndef CONFIG_NANONOTE
+ 			oAppCore->oDockLet->minimize_to_tray();
++#endif
+ 		}
+ 	}
+ 	else if ((event->keyval==GDK_z || event->keyval==GDK_Z) && only_mod1_pressed) {
+@@ -2005,10 +2021,20 @@ private:
  
  void AppCore::PopupPrefsDlg()
  {
@@ -265,7 +336,27 @@ index 326ca4a..8b8b8cf 100644
  		bool enbcol =
  			conf->get_bool_at("dictionary/enable_collation");
  		int colf =
-@@ -2153,17 +2163,17 @@ void AppCore::Quit()
+@@ -2105,16 +2131,16 @@ void AppCore::End()
+ #endif
+ 	oFloatWin.End();
+ 
+-	oDockLet.reset(0);
+-
+ 	if (dict_manage_dlg)
+ 		dict_manage_dlg->Close();
+ 	if (prefs_dlg)
+ 		prefs_dlg->Close(); // After user open the preferences dialog, then choose quit in the notification icon, this dialog can be closed.
+ 	oTopWin.Destroy();
+ 	oMidWin.oIndexWin.oListWin.Destroy();
++#ifndef CONFIG_NANONOTE
++	oDockLet.reset(0);
+ 	oBottomWin.Destroy();
+-
++#endif
+ 	gtk_widget_destroy(window);
+ }
+ 
+@@ -2153,17 +2179,17 @@ void AppCore::Quit()
  	if (!conf->get_bool_at("main_window/maximized")) {
  		gint width, height;
  		gtk_window_get_size(GTK_WINDOW(window), &width, &height);
@@ -288,20 +379,48 @@ index 326ca4a..8b8b8cf 100644
  	}
  
  	End();
-@@ -2171,9 +2181,9 @@ void AppCore::Quit()
+@@ -2171,9 +2197,11 @@ void AppCore::Quit()
  #ifdef CONFIG_GNOME
  	bonobo_object_unref (stardict_app_server);
  #endif
 -   unlock_keys.reset(0);
 -	 conf.reset(0);
 -	 gtk_main_quit();
++#ifndef CONFIG_NANONOTE
 +	unlock_keys.reset(0);
++#endif
 +	conf.reset(0);
 +	gtk_main_quit();
  }
  
  void AppCore::on_main_win_hide_list_changed(const baseconfval* hideval)
-@@ -2439,7 +2449,7 @@ int main(int argc,char **argv)
+@@ -2198,12 +2226,13 @@ void AppCore::on_dict_scan_select_changed(const baseconfval* scanval)
+ 	bool scan = static_cast<const confval<bool> *>(scanval)->val_;
+ 
+ 	gtk_widget_set_sensitive(oFloatWin.StopButton, scan);
++#ifndef CONFIG_NANONOTE
+ 	if (scan != gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(oBottomWin.ScanSelectionCheckButton)))
+ 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(oBottomWin.ScanSelectionCheckButton), scan);
+-
+ 	oDockLet->set_scan_mode(scan);
+ 	if (GTK_WIDGET_VISIBLE(window))
+ 		oDockLet->hide_state();
++#endif
+ 	if (scan) {
+ 		bool lock=conf->get_bool_at("floating_window/lock");
+ 		if (lock && !oFloatWin.QueryingWord.empty())
+@@ -2263,8 +2292,10 @@ void AppCore::on_floatwin_lock_y_changed(const baseconfval* lock_y_val)
+ 
+ void AppCore::on_scan_modifier_key_changed(const baseconfval* keyval)
+ {
++#ifndef CONFIG_NANONOTE
+ 	int key = static_cast<const confval<int> *>(keyval)->val_;
+ 	unlock_keys->set_comb(combnum2str(key));
++#endif
+ }
+ 
+ gchar* GetPureEnglishAlpha(gchar *str)
+@@ -2439,7 +2470,7 @@ int main(int argc,char **argv)
  			g_warning("Cannot create directory %s.", userdir.c_str());
  	}
      g_thread_init (NULL);
