@@ -18,48 +18,28 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/sparsehash-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
+PKG_INSTALL:=1
+
 define Package/sparsehash
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=Sparsehash
+  BUILDONLY:=1
   URL:=http://code.google.com/p/google-sparsehash/
-  DEPENDS:=
 endef
 
 define Package/sparsehash/description
 	An extremely memory-efficient hash_map implementation. 2 bits/entry overhead! The SparseHash library contains several hash-map implementations, including implementations that optimize for space or speed.
 	These hashtable implementations are similar in API to SGI's hash_map class and the tr1 unordered_map class, but with different performance characteristics. It's easy to replace hash_map or unordered_map by sparse_hash_map or dense_hash_map in C++ code.
 endef
-# 
-# TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
-# 
-# CONFIGURE_ARGS += \
-# 	--with-sdl-exec-prefix=$(STAGING_DIR)
-# 
-# CONFIGURE_VARS += \
-# 	LIBS="-lSDL -ldirect -ldirectfb -lfusion"
-
-define Build/Compile
-	rm -rf $(PKG_INSTALL_DIR)
-	$(MAKE) -C $(PKG_BUILD_DIR) \
-		DESTDIR="$(PKG_INSTALL_DIR)" \
-		all install
-endef
 
 define Build/InstallDev
-	$(INSTALL_DIR) $(1)/usr/include/google $(1)/usr/lib
+	$(INSTALL_DIR) \
+		$(1)/usr/include/google
+
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/include/google/* \
 		$(1)/usr/include/google/
-# 	$(CP) \
-# 		$(PKG_INSTALL_DIR)/usr/lib/libSDL_image*.{a,so*} \
-# 		$(1)/usr/lib/
-endef
-
-define Package/sparsehash/install
-	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/include/google/ $(1)/usr/lib/
-	$(CP) $(PKG_INSTALL_DIR)/usr/share/doc/sparsehash-$(PKG_VERSION)/ $(1)/usr/doc/
 endef
 
 $(eval $(call BuildPackage,sparsehash))
