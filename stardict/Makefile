@@ -22,9 +22,8 @@ include $(INCLUDE_DIR)/package.mk
 define Package/stardict
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=+libintl +libiconv
+    DEPENDS:=+libintl +libiconv +libgconf2
     TITLE:=International Dictionary Software
-    URL:=
 endef
 
 define Package/stardict/description
