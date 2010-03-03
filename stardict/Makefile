@@ -62,7 +62,7 @@ define Package/stardict/install
 	$(INSTALL_DIR) \
 		$(1)/usr/bin \
 		$(1)/usr/share \
-		$(1)/usr/share/icons
+		$(1)/usr/share/pixmaps
 
 	$(INSTALL_BIN) \
 		$(PKG_INSTALL_DIR)/usr/bin/stardict \
@@ -70,7 +70,7 @@ define Package/stardict/install
 
 	$(INSTALL_DATA) \
 		$(PKG_INSTALL_DIR)/usr/share/pixmaps/stardict.png \
-		$(1)/usr/share/icons/
+		$(1)/usr/share/pixmaps/
 
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/share/stardict \
