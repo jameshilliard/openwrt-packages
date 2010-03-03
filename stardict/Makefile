@@ -22,9 +22,8 @@ include $(INCLUDE_DIR)/package.mk
 define Package/stardict
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=+libintl +libiconv
+    DEPENDS:=+libintl +libiconv +libgconf2
     TITLE:=International Dictionary Software
-    URL:=
 endef
 
 define Package/stardict/description
@@ -35,41 +34,47 @@ TARGET_CFLAGS+= -I$(STAGING_DIR)/usr/lib/libintl/include
 TARGET_LDFLAGS+= -L$(STAGING_DIR)/usr/lib/libintl/lib
 TARGET_LDFLAGS+= -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
-CONFIGURE_CMD=./autogen.sh
+CONFIGURE_CMD =./autogen.sh
 
-define Build/Configure
-	$(call Build/Configure/Default, \
-	        --disable-dependency-tracking \
-		--disable-libtool-lock \
-		--disable-spell \
-		--disable-gucharmap \
-		--disable-festival \
-		--disable-espeak \
-		--disable-dictdotcn \
-		--disable-advertisement \
-		--disable-man \
-		--disable-qqwry \
-		--disable-updateinfo \
-		--disable-htmlparse \
-		--disable-xdxfparse \
-		--disable-wordnet \
-		--disable-powerwordparse \
-		--disable-wikiparse \
-		--disable-schemas-install \
-		--disable-deprecations \
-		--disable-gnome-support \
-		--enable-nanonote-support \
-	)
-endef
+CONFIGURE_ARGS += \
+	--disable-dependency-tracking \
+	--disable-libtool-lock \
+	--disable-spell \
+	--disable-gucharmap \
+	--disable-festival \
+	--disable-espeak \
+	--disable-dictdotcn \
+	--disable-advertisement \
+	--disable-man \
+	--disable-qqwry \
+	--disable-updateinfo \
+	--disable-htmlparse \
+	--disable-xdxfparse \
+	--disable-wordnet \
+	--disable-powerwordparse \
+	--disable-wikiparse \
+	--disable-schemas-install \
+	--disable-deprecations \
+	--disable-gnome-support \
+	--enable-nanonote-support
 
 define Package/stardict/install
-	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_DIR) $(1)/usr/share
-	$(INSTALL_DIR) $(1)/usr/share/pixmaps
+	$(INSTALL_DIR) \
+		$(1)/usr/bin \
+		$(1)/usr/share \
+		$(1)/usr/share/icons
 
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/stardict $(1)/usr/bin/
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/share/pixmaps/stardict.png $(1)/usr/share/pixmaps/
-	$(CP) $(PKG_INSTALL_DIR)/usr/share/stardict $(1)/usr/share/
+	$(INSTALL_BIN) \
+		$(PKG_INSTALL_DIR)/usr/bin/stardict \
+		$(1)/usr/bin/
+
+	$(INSTALL_DATA) \
+		$(PKG_INSTALL_DIR)/usr/share/pixmaps/stardict.png \
+		$(1)/usr/share/icons/
+
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/share/stardict \
+		$(1)/usr/share/
 endef
 
 $(eval $(call BuildPackage,stardict))
