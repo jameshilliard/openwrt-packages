@@ -28,7 +28,8 @@ TARGET_CFLAGS += \
 TARGET_LDFLAGS += \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
 	-L$(STAGING_DIR)/usr/lib/libintl/lib/ \
-	-L$(STAGING_DIR)/usr/lib/libiconv/lib/
+	-L$(STAGING_DIR)/usr/lib/libiconv/lib/ \
+	-lSDL -lSDL_ttf
 
 define Package/dgclock
   SECTION:=xorg-apps
@@ -43,8 +44,12 @@ define Package/dgclock/description
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default, \
-	A320=1 \
+	( cd $(PKG_BUILD_DIR) ; \
+		mkdir bin obj ; \
+		$(TARGET_CC) -c $(TARGET_CFLAGS) -o obj/text.o src/text.c ; \
+		$(TARGET_CC) -c $(TARGET_CFLAGS) -o obj/settime.o src/settime.c ; \
+		$(TARGET_CC) -c $(TARGET_CFLAGS) -o obj/main.o src/main.c ; \
+		$(TARGET_CC) -o bin/dgclock obj/text.o obj/main.o obj/settime.o $(TARGET_LDFLAGS) ; \
 	)
 endef
 
@@ -55,7 +60,7 @@ define Package/dgclock/install
 		$(1)/usr/share/applications
         
 	$(INSTALL_BIN) \
-		$(PKG_BUILD_DIR)/bin/a320/dgclock \
+		$(PKG_BUILD_DIR)/bin/dgclock \
 		$(1)/usr/bin/
 
 	$(INSTALL_DATA) \
