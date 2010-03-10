@@ -1,0 +1,216 @@
+remove useless buttons
+
+From: Xiangfu Liu <xiangfu@sharism.cc>
+
+Signed-off-by: Xiangfu Liu <xiangfu@sharism.cc>
+---
+
+ src/mainwin.cpp  |   52 +++++++++++++++++++++++++++++-----------------------
+ src/stardict.cpp |    5 +++--
+ 2 files changed, 32 insertions(+), 25 deletions(-)
+
+
+diff --git a/src/mainwin.cpp b/src/mainwin.cpp
+index f7dac0b..ccd5adc 100644
+--- a/src/mainwin.cpp
++++ b/src/mainwin.cpp
+@@ -79,18 +79,6 @@ void TopWin::Create(GtkWidget *vbox)
+ 	gtk_box_pack_start(GTK_BOX(vbox),hbox,false,false,3);
+ #endif
+ 
+-	GtkWidget *button;
+-#ifndef CONFIG_GPE
+-	button = gtk_button_new_from_stock(GTK_STOCK_CLEAR);
+-	gtk_widget_show(button);
+-	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+-	GTK_WIDGET_UNSET_FLAGS (button, GTK_CAN_FOCUS);
+-	g_signal_connect(G_OBJECT(button),"clicked", G_CALLBACK(ClearCallback),this);
+-	g_signal_connect(G_OBJECT(button),"enter_notify_event", G_CALLBACK(stardict_on_enter_notify), NULL);
+-	gtk_box_pack_start(GTK_BOX(hbox),button,false,false,3);
+-	gtk_widget_set_tooltip_text(button,_("Clear the search box"));
+-#endif
+-
+ 	GtkListStore* list_store = gtk_list_store_new(1, G_TYPE_STRING);
+ 	LoadHistory(list_store);
+ 	WordCombo = gtk_combo_box_entry_new_with_model(GTK_TREE_MODEL(list_store), 0);
+@@ -106,7 +94,17 @@ void TopWin::Create(GtkWidget *vbox)
+ 			  G_CALLBACK (on_entry_activate), this);
+ 	gtk_box_pack_start(GTK_BOX(hbox),WordCombo,true,true,3);
+ 
+-#ifndef CONFIG_GPE
++#if !defined(CONFIG_NANONOTE) && !defined(CONFIG_GPE)
++	GtkWidget *button;
++	button = gtk_button_new_from_stock(GTK_STOCK_CLEAR);
++	gtk_widget_show(button);
++	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
++	GTK_WIDGET_UNSET_FLAGS (button, GTK_CAN_FOCUS);
++	g_signal_connect(G_OBJECT(button),"clicked", G_CALLBACK(ClearCallback),this);
++	g_signal_connect(G_OBJECT(button),"enter_notify_event", G_CALLBACK(stardict_on_enter_notify), NULL);
++	gtk_box_pack_start(GTK_BOX(hbox),button,false,false,3);
++	gtk_widget_set_tooltip_text(button,_("Clear the search box"));
++
+ 	button=gtk_button_new();
+ 	gtk_container_add(GTK_CONTAINER(button),gtk_image_new_from_stock(GTK_STOCK_FIND,GTK_ICON_SIZE_BUTTON));
+ 	gtk_widget_show_all(button);
+@@ -118,6 +116,7 @@ void TopWin::Create(GtkWidget *vbox)
+ 	gtk_widget_set_tooltip_text(button,_("Fuzzy Query"));
+ #endif
+ 
++#ifndef CONFIG_NANONOTE
+ 	button=gtk_button_new();
+ 	gtk_container_add(GTK_CONTAINER(button),gtk_image_new_from_stock(GTK_STOCK_UNDO,GTK_ICON_SIZE_BUTTON));
+ 	gtk_widget_show_all(button);
+@@ -129,12 +128,10 @@ void TopWin::Create(GtkWidget *vbox)
+ 	gtk_box_pack_start(GTK_BOX(hbox),button,false,false,0);
+ 	gtk_widget_set_tooltip_text(button,_("Go Back - Right button: history (Alt+Left)"));
+ 
+-#ifndef CONFIG_NANONOTE
+ 	GtkWidget *label;
+ 	label = gtk_label_new("\t");
+ 	gtk_widget_show(label);
+ 	gtk_box_pack_start(GTK_BOX(hbox),label,false,false,0);
+-#endif
+ 
+ 	button=gtk_button_new();
+ 	gtk_container_add(GTK_CONTAINER(button),gtk_image_new_from_stock(GTK_STOCK_HOME,GTK_ICON_SIZE_BUTTON));
+@@ -145,6 +142,7 @@ void TopWin::Create(GtkWidget *vbox)
+ 	g_signal_connect(G_OBJECT(button),"enter_notify_event", G_CALLBACK(stardict_on_enter_notify), NULL);
+ 	gtk_box_pack_start(GTK_BOX(hbox),button,false,false,0);
+ 	gtk_widget_set_tooltip_text(button,_("Show the main menu (Alt+M)"));
++#endif
+ }
+ 
+ void TopWin::Destroy(void)
+@@ -1246,6 +1244,10 @@ LeftWin::~LeftWin()
+ 
+ void LeftWin::Create(GtkWidget *hbox, bool has_treedict)
+ {
++	choosegroup_menu = NULL;
++	UpdateChooseGroup();
++
++#ifndef CONFIG_NANONOTE
+ 	vbox = gtk_vbox_new(FALSE, 3);
+ 	if (!conf->get_bool_at("main_window/hide_list"))
+ 		gtk_widget_show(vbox);
+@@ -1302,8 +1304,6 @@ void LeftWin::Create(GtkWidget *hbox, bool has_treedict)
+ 	g_signal_connect(G_OBJECT(choosegroup_button),"clicked", G_CALLBACK(on_choose_group_button_clicked),this);
+ 	gtk_box_pack_start(GTK_BOX(vbox),choosegroup_button,false,false,0);
+ 	gtk_widget_set_tooltip_text(choosegroup_button, _("Choose dict group"));
+-	choosegroup_menu = NULL;
+-	UpdateChooseGroup();
+ 
+ 	GtkWidget *button;
+ 	button=gtk_button_new();
+@@ -1325,6 +1325,7 @@ void LeftWin::Create(GtkWidget *hbox, bool has_treedict)
+ 	g_signal_connect(G_OBJECT(button),"enter_notify_event", G_CALLBACK(stardict_on_enter_notify), NULL);
+ 	gtk_box_pack_end(GTK_BOX(vbox),button,false,false,0);
+ 	gtk_widget_set_tooltip_text(button,_("Previous word (Alt+Up)"));
++#endif
+ }
+ 
+ void LeftWin::on_wazard_button_toggled(GtkToggleButton *button, LeftWin *oLeftWin)
+@@ -1493,12 +1494,13 @@ void ToolWin::Create(GtkWidget *vbox)
+ 	GtkWidget *hbox;
+ 	hbox = gtk_hbox_new(false,0);
+ 	gtk_widget_show(hbox);
+-#ifdef CONFIG_GPE
++#if defined(CONFIG_GPE) || defined(CONFIG_NANONOTE)
+ 	gtk_box_pack_start(GTK_BOX(vbox),hbox,false,false,0);
+ #else
+ 	gtk_box_pack_start(GTK_BOX(vbox),hbox,false,false,3);
+ #endif
+ 
++#ifndef CONFIG_NANONOTE
+ 	GtkWidget *image;
+ 	ShowListButton=gtk_button_new();
+ 	image = gtk_image_new_from_stock(GTK_STOCK_GOTO_LAST,GTK_ICON_SIZE_SMALL_TOOLBAR);
+@@ -1535,10 +1537,10 @@ void ToolWin::Create(GtkWidget *vbox)
+ 		gtk_widget_show(ShowListButton);
+ 	else
+ 		gtk_widget_show(HideListButton);
+-
++#endif /* CONFIG_NANONOTE */
+ 
+ 	GtkWidget *button;
+-#ifndef CONFIG_GPE
++#if !defined(CONFIG_NANONOTE) && !defined(CONFIG_GPE)
+ 	button=gtk_button_new();
+ 	gtk_container_add(GTK_CONTAINER(button),gtk_image_new_from_stock(GTK_STOCK_COPY,GTK_ICON_SIZE_SMALL_TOOLBAR));
+ 	gtk_widget_show_all(button);
+@@ -1549,8 +1551,10 @@ void ToolWin::Create(GtkWidget *vbox)
+ 	gtk_widget_set_tooltip_text(button,_("Copy"));
+ #endif
+ 
+-	PronounceWordMenuButton = gtk_menu_tool_button_new_from_stock(GTK_STOCK_EXECUTE);
+ 	UpdatePronounceMenu();
++
++#ifndef CONFIG_NANONOTE
++	PronounceWordMenuButton = gtk_menu_tool_button_new_from_stock(GTK_STOCK_EXECUTE);
+ 	gtk_widget_show(GTK_WIDGET(PronounceWordMenuButton));
+ 	GTK_WIDGET_UNSET_FLAGS (GTK_WIDGET(PronounceWordMenuButton), GTK_CAN_FOCUS);
+ 	gtk_container_forall(GTK_CONTAINER(PronounceWordMenuButton), unfocus_menu_button, this);
+@@ -1575,8 +1579,9 @@ void ToolWin::Create(GtkWidget *vbox)
+ 	gtk_box_pack_start(GTK_BOX(hbox),button,false,false,5);
+ #endif
+ 	gtk_widget_set_tooltip_text(button,_("Save to file (Alt+E)"));
++#endif /* CONFIG_NANONOTE */
+ 
+-#ifndef CONFIG_GPE
++#if !defined(CONFIG_NANONOTE) && !defined(CONFIG_GPE)
+ 	button=gtk_button_new();
+ 	gtk_container_add(GTK_CONTAINER(button),gtk_image_new_from_stock(GTK_STOCK_PRINT,GTK_ICON_SIZE_SMALL_TOOLBAR));
+ 	gtk_widget_show_all(button);
+@@ -1588,6 +1593,7 @@ void ToolWin::Create(GtkWidget *vbox)
+ 	gtk_widget_set_sensitive(button, false);
+ #endif
+ 
++#ifndef CONFIG_NANONOTE
+ 	button=gtk_button_new();
+ 	gtk_container_add(GTK_CONTAINER(button),gtk_image_new_from_stock(GTK_STOCK_FIND,GTK_ICON_SIZE_SMALL_TOOLBAR));
+ 	gtk_widget_show_all(button);
+@@ -1600,6 +1606,7 @@ void ToolWin::Create(GtkWidget *vbox)
+ 	gtk_box_pack_start(GTK_BOX(hbox),button,false,false,5);
+ #endif
+ 	gtk_widget_set_tooltip_text(button,_("Search in the definition text (Ctrl+F)"));
++#endif
+ }
+ 
+ void ToolWin::ShowListCallback(GtkWidget *widget, gpointer data)
+@@ -2691,7 +2698,6 @@ void MidWin::Create(GtkWidget *vbox)
+ 	oTransWin.Create(notebook);
+ }
+ 
+-
+ /*********************************************/
+ BottomWin::BottomWin()
+ {
+diff --git a/src/stardict.cpp b/src/stardict.cpp
+index 2d4acb8..b84f5c5 100644
+--- a/src/stardict.cpp
++++ b/src/stardict.cpp
+@@ -432,7 +432,7 @@ gboolean AppCore::on_delete_event(GtkWidget * window, GdkEvent *event , AppCore
+ #ifndef CONFIG_NANONOTE
+ 	app->oDockLet->minimize_to_tray();
+ #endif
+-    g_print("Quitting..\n");
++    g_print("by Windows Manager Quitting..\n");
+     gtk_main_quit();
+ 	return FALSE;
+ }
+@@ -506,7 +506,7 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
+ 	}
+ 	else if (event->keyval==GDK_F1 && (!(event->state & GDK_CONTROL_MASK)) && (!(event->state & GDK_MOD1_MASK)) && (!(event->state & GDK_SHIFT_MASK))) {
+ 		if (event->type==GDK_KEY_PRESS)
+-		  show_help(NULL);
++			show_help(NULL);
+ 	}
+ 	else if ((event->keyval==GDK_f || event->keyval==GDK_F) && only_ctrl_pressed) {
+ 		if (event->type==GDK_KEY_PRESS)
+@@ -588,6 +588,7 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
+ 					gtk_tree_model_get(model, &iter, 0, &word, -1);
+ 					oAppCore->ListClick(word);
+ 					g_free(word);
++					/* here to dispaly the result windows */
+ 				}
+ 			}
+ 		}

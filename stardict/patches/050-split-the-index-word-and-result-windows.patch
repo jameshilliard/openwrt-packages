@@ -1,0 +1,66 @@
+when search will only display the search index not the translate result
+
+From: Xiangfu Liu <xiangfu@sharism.cc>
+
+when press "enter" will goto the translate result text
+"esc" will go back or new search
+
+Signed-off-by: Xiangfu Liu <xiangfu@sharism.cc>
+---
+
+ src/mainwin.cpp  |    4 +++-
+ src/mainwin.h    |    1 +
+ src/stardict.cpp |    4 ++++
+ 3 files changed, 8 insertions(+), 1 deletions(-)
+
+
+diff --git a/src/mainwin.cpp b/src/mainwin.cpp
+index ccd5adc..eaa0650 100644
+--- a/src/mainwin.cpp
++++ b/src/mainwin.cpp
+@@ -2689,8 +2689,10 @@ void MidWin::Create(GtkWidget *vbox)
+ 	oLeftWin.Create(hbox, has_treedict);
+ 	gtk_box_pack_start(GTK_BOX(hbox),notebook, true, true, 0);
+ 
+-	GtkWidget *vbox1 = gtk_vbox_new(FALSE, 0);
++	vbox1 = gtk_vbox_new(FALSE, 0);
++#ifndef CONFIG_NANONOTE
+ 	gtk_widget_show(vbox1);
++#endif
+ 	oToolWin.Create(vbox1);
+ 	oTextWin.Create(vbox1);
+ 	gtk_paned_pack2(GTK_PANED(hpaned), vbox1, TRUE, FALSE);
+diff --git a/src/mainwin.h b/src/mainwin.h
+index c3589c6..569c978 100644
+--- a/src/mainwin.h
++++ b/src/mainwin.h
+@@ -307,6 +307,7 @@ class MidWin {
+ public:
+ 	GtkWidget* hpaned;
+ 	GtkWidget* notebook;
++	GtkWidget* vbox1;
+ 
+ 	LeftWin oLeftWin;
+ 	IndexWin oIndexWin;
+diff --git a/src/stardict.cpp b/src/stardict.cpp
+index b84f5c5..8dd64ac 100644
+--- a/src/stardict.cpp
++++ b/src/stardict.cpp
+@@ -588,6 +588,8 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
+ 					gtk_tree_model_get(model, &iter, 0, &word, -1);
+ 					oAppCore->ListClick(word);
+ 					g_free(word);
++					gtk_widget_hide(oAppCore->oMidWin.oIndexWin.notebook);
++					gtk_widget_show(oAppCore->oMidWin.vbox1);
+ 					/* here to dispaly the result windows */
+ 				}
+ 			}
+@@ -613,6 +615,8 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
+ 					oAppCore->oTopWin.InsertBackList();
+ 					oAppCore->oTopWin.SetText("");
+ 					oAppCore->oTopWin.grab_focus();
++					gtk_widget_show(oAppCore->oMidWin.oIndexWin.notebook);
++					gtk_widget_hide(oAppCore->oMidWin.vbox1);
+ 				} else {
+ 					if (!oAppCore->oTopWin.has_focus())
+ 						oAppCore->oTopWin.grab_focus();
