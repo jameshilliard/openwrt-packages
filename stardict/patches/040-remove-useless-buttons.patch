@@ -5,13 +5,13 @@ From: Xiangfu Liu <xiangfu@sharism.cc>
 Signed-off-by: Xiangfu Liu <xiangfu@sharism.cc>
 ---
 
- src/mainwin.cpp  |   47 ++++++++++++++++++++++++++---------------------
+ src/mainwin.cpp  |   52 +++++++++++++++++++++++++++++-----------------------
  src/stardict.cpp |    5 +++--
- 2 files changed, 29 insertions(+), 23 deletions(-)
+ 2 files changed, 32 insertions(+), 25 deletions(-)
 
 
 diff --git a/src/mainwin.cpp b/src/mainwin.cpp
-index f7dac0b..0361014 100644
+index f7dac0b..ccd5adc 100644
 --- a/src/mainwin.cpp
 +++ b/src/mainwin.cpp
 @@ -79,18 +79,6 @@ void TopWin::Create(GtkWidget *vbox)
@@ -109,7 +109,14 @@ index f7dac0b..0361014 100644
  }
  
  void LeftWin::on_wazard_button_toggled(GtkToggleButton *button, LeftWin *oLeftWin)
-@@ -1499,6 +1500,7 @@ void ToolWin::Create(GtkWidget *vbox)
+@@ -1493,12 +1494,13 @@ void ToolWin::Create(GtkWidget *vbox)
+ 	GtkWidget *hbox;
+ 	hbox = gtk_hbox_new(false,0);
+ 	gtk_widget_show(hbox);
+-#ifdef CONFIG_GPE
++#if defined(CONFIG_GPE) || defined(CONFIG_NANONOTE)
+ 	gtk_box_pack_start(GTK_BOX(vbox),hbox,false,false,0);
+ #else
  	gtk_box_pack_start(GTK_BOX(vbox),hbox,false,false,3);
  #endif
  
@@ -130,15 +137,19 @@ index f7dac0b..0361014 100644
  	button=gtk_button_new();
  	gtk_container_add(GTK_CONTAINER(button),gtk_image_new_from_stock(GTK_STOCK_COPY,GTK_ICON_SIZE_SMALL_TOOLBAR));
  	gtk_widget_show_all(button);
-@@ -1563,6 +1565,7 @@ void ToolWin::Create(GtkWidget *vbox)
- 	gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(PronounceWordMenuButton), _("Pronounce the word"));
- 	gtk_widget_set_sensitive(GTK_WIDGET(PronounceWordMenuButton), false);
+@@ -1549,8 +1551,10 @@ void ToolWin::Create(GtkWidget *vbox)
+ 	gtk_widget_set_tooltip_text(button,_("Copy"));
+ #endif
  
+-	PronounceWordMenuButton = gtk_menu_tool_button_new_from_stock(GTK_STOCK_EXECUTE);
+ 	UpdatePronounceMenu();
++
 +#ifndef CONFIG_NANONOTE
- 	button=gtk_button_new();
- 	gtk_container_add(GTK_CONTAINER(button),gtk_image_new_from_stock(GTK_STOCK_SAVE,GTK_ICON_SIZE_SMALL_TOOLBAR));
- 	gtk_widget_show_all(button);
-@@ -1575,8 +1578,9 @@ void ToolWin::Create(GtkWidget *vbox)
++	PronounceWordMenuButton = gtk_menu_tool_button_new_from_stock(GTK_STOCK_EXECUTE);
+ 	gtk_widget_show(GTK_WIDGET(PronounceWordMenuButton));
+ 	GTK_WIDGET_UNSET_FLAGS (GTK_WIDGET(PronounceWordMenuButton), GTK_CAN_FOCUS);
+ 	gtk_container_forall(GTK_CONTAINER(PronounceWordMenuButton), unfocus_menu_button, this);
+@@ -1575,8 +1579,9 @@ void ToolWin::Create(GtkWidget *vbox)
  	gtk_box_pack_start(GTK_BOX(hbox),button,false,false,5);
  #endif
  	gtk_widget_set_tooltip_text(button,_("Save to file (Alt+E)"));
@@ -149,7 +160,7 @@ index f7dac0b..0361014 100644
  	button=gtk_button_new();
  	gtk_container_add(GTK_CONTAINER(button),gtk_image_new_from_stock(GTK_STOCK_PRINT,GTK_ICON_SIZE_SMALL_TOOLBAR));
  	gtk_widget_show_all(button);
-@@ -1588,6 +1592,7 @@ void ToolWin::Create(GtkWidget *vbox)
+@@ -1588,6 +1593,7 @@ void ToolWin::Create(GtkWidget *vbox)
  	gtk_widget_set_sensitive(button, false);
  #endif
  
@@ -157,7 +168,7 @@ index f7dac0b..0361014 100644
  	button=gtk_button_new();
  	gtk_container_add(GTK_CONTAINER(button),gtk_image_new_from_stock(GTK_STOCK_FIND,GTK_ICON_SIZE_SMALL_TOOLBAR));
  	gtk_widget_show_all(button);
-@@ -1600,6 +1605,7 @@ void ToolWin::Create(GtkWidget *vbox)
+@@ -1600,6 +1606,7 @@ void ToolWin::Create(GtkWidget *vbox)
  	gtk_box_pack_start(GTK_BOX(hbox),button,false,false,5);
  #endif
  	gtk_widget_set_tooltip_text(button,_("Search in the definition text (Ctrl+F)"));
@@ -165,7 +176,7 @@ index f7dac0b..0361014 100644
  }
  
  void ToolWin::ShowListCallback(GtkWidget *widget, gpointer data)
-@@ -2691,7 +2697,6 @@ void MidWin::Create(GtkWidget *vbox)
+@@ -2691,7 +2698,6 @@ void MidWin::Create(GtkWidget *vbox)
  	oTransWin.Create(notebook);
  }
  

@@ -15,10 +15,10 @@ Signed-off-by: Xiangfu Liu <xiangfu@sharism.cc>
 
 
 diff --git a/src/mainwin.cpp b/src/mainwin.cpp
-index 0361014..77fa6f0 100644
+index ccd5adc..eaa0650 100644
 --- a/src/mainwin.cpp
 +++ b/src/mainwin.cpp
-@@ -2688,8 +2688,10 @@ void MidWin::Create(GtkWidget *vbox)
+@@ -2689,8 +2689,10 @@ void MidWin::Create(GtkWidget *vbox)
  	oLeftWin.Create(hbox, has_treedict);
  	gtk_box_pack_start(GTK_BOX(hbox),notebook, true, true, 0);
  
