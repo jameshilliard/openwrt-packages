@@ -1,0 +1,46 @@
+* disable networking
+
+From: Xiangfu Liu <xiangfu@sharism.cc>
+
+* disable scan work
+---
+
+ src/conf.cpp |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+
+diff --git a/src/conf.cpp b/src/conf.cpp
+index 9f5e308..fa89c1e 100644
+--- a/src/conf.cpp
++++ b/src/conf.cpp
+@@ -56,7 +56,7 @@ AppConf::AppConf() :
+ #else
+ 	add_entry("/apps/stardict/preferences/dictionary/use_custom_font", false);
+ #endif
+-	add_entry("/apps/stardict/preferences/network/enable_netdict", true);
++	add_entry("/apps/stardict/preferences/network/enable_netdict", false);
+ 	// Default stardictd server.
+ 	add_entry("/apps/stardict/preferences/network/server", std::string(_("dict.stardict.org")));
+ 	add_entry("/apps/stardict/preferences/network/port", 2628);
+@@ -69,18 +69,18 @@ AppConf::AppConf() :
+ 	add_entry("/apps/stardict/preferences/translate/engine", 0);
+ 	add_entry("/apps/stardict/preferences/translate/fromlang", 0);
+ 	add_entry("/apps/stardict/preferences/translate/tolang", 0);
+-	add_entry("/apps/stardict/preferences/dictionary/enable_sound_event", true);
++	add_entry("/apps/stardict/preferences/dictionary/enable_sound_event", false);
+ 	add_entry("/apps/stardict/preferences/dictionary/use_tts_program", false);
+ 	add_entry("/apps/stardict/preferences/dictionary/tts_program_cmdline", std::string());	
+ 	add_entry("/apps/stardict/preferences/main_window/hide_list", false);
+-	add_entry("/apps/stardict/preferences/dictionary/scan_selection", true);
++	add_entry("/apps/stardict/preferences/dictionary/scan_selection", false);
+ 	add_entry("/apps/stardict/preferences/dictionary/markup_search_word", false);
+ #ifdef _WIN32
+ 	add_entry("/apps/stardict/preferences/dictionary/scan_clipboard", false);
+ 	add_entry("/apps/stardict/preferences/dictionary/use_scan_hotkey", true);
+ 	add_entry("/apps/stardict/preferences/dictionary/use_mainwindow_hotkey", true);
+ #endif
+-	add_entry("/apps/stardict/preferences/notification_area_icon/query_in_floatwin", true);
++	add_entry("/apps/stardict/preferences/notification_area_icon/query_in_floatwin", false);
+ 	add_entry("/apps/stardict/preferences/dictionary/only_scan_while_modifier_key", false);
+ 	add_entry("/apps/stardict/preferences/dictionary/hide_floatwin_when_modifier_key_released", true);
+ 	add_entry("/apps/stardict/preferences/floating_window/pronounce_when_popup", false);
