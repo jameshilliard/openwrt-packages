@@ -8,6 +8,8 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://tukaani.org/xz
 PKG_MD5SUM:=f2073579b6da2fe35d453adee1aaf1b2
 
+PKG_FIXUP:=libtool
+
 include $(INCLUDE_DIR)/package.mk
 
 define Package/xz
