@@ -1,0 +1,98 @@
+fix scrolled the result text make the screen black
+
+From: Xiangfu Liu <xiangfu@sharism.cc>
+
+Signed-off-by: Xiangfu Liu <xiangfu@sharism.cc>
+---
+
+ src/pangoview.cpp |   16 ++++++++--------
+ src/stardict.cpp  |    7 +++++--
+ 2 files changed, 13 insertions(+), 10 deletions(-)
+
+
+diff --git a/src/pangoview.cpp b/src/pangoview.cpp
+index e400ac3..b386b6e 100644
+--- a/src/pangoview.cpp
++++ b/src/pangoview.cpp
+@@ -164,7 +164,7 @@ TextPangoWidget::TextPangoWidget()
+ 	textview_ = GTK_TEXT_VIEW(gtk_text_view_new());
+ 	gtk_widget_show(GTK_WIDGET(textview_));
+ 	gtk_text_view_set_editable(textview_, FALSE);
+-	gtk_text_view_set_cursor_visible(textview_, FALSE);
++	gtk_text_view_set_cursor_visible(textview_, TRUE);
+ 	gtk_text_view_set_wrap_mode(textview_, GTK_WRAP_WORD_CHAR);
+ 	gtk_text_view_set_left_margin(textview_, 5);
+ 	gtk_text_view_set_right_margin(textview_, 5);
+@@ -178,16 +178,14 @@ TextPangoWidget::TextPangoWidget()
+ 					   &iter_, 0);
+ 	scroll_win_ = GTK_SCROLLED_WINDOW(gtk_scrolled_window_new(NULL, NULL));
+ 	gtk_widget_show(GTK_WIDGET(scroll_win_));
+-
+-
+-	gtk_scrolled_window_set_policy(scroll_win_,
++	gtk_container_add(GTK_CONTAINER(scroll_win_), GTK_WIDGET(textview_));
++	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win_),
+ 				       //altought textview's set_wrap_mode will cause
+ 				       //this can be GTK_POLICY_NEVER,but...
+ 				       //there are widgets that may make this broken.
+-				       GTK_POLICY_AUTOMATIC,
+-				       GTK_POLICY_AUTOMATIC);
+-	gtk_container_add(GTK_CONTAINER(scroll_win_), GTK_WIDGET(textview_));
+-	gtk_scrolled_window_set_shadow_type(scroll_win_, GTK_SHADOW_IN);
++                                   GTK_POLICY_NEVER,
++                                   GTK_POLICY_AUTOMATIC);
++	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scroll_win_), GTK_SHADOW_IN);
+ }
+ 
+ void LabelPangoWidget::modify_bg(GtkStateType state, const GdkColor *color)
+@@ -233,6 +231,7 @@ void TextPangoWidget::do_set_text(const char *text)
+ 	tb_links_.clear();
+ 
+ 	gtk_text_buffer_set_text(buffer, text, -1);
++	gtk_text_view_place_cursor_onscreen (textview_);
+ }
+ 
+ void LabelPangoWidget::do_set_text(const char *text)
+@@ -296,6 +295,7 @@ void TextPangoWidget::do_append_pango_text(const char *str)
+ 
+     gtk_text_buffer_insert_markup(gtk_text_view_get_buffer(textview_),
+ 				  &iter_, str);
++	gtk_text_view_place_cursor_onscreen (textview_);
+ }
+ 
+ void TextPangoWidget::do_set_pango_text(const char *str)
+diff --git a/src/stardict.cpp b/src/stardict.cpp
+index 8dd64ac..ae5fb05 100644
+--- a/src/stardict.cpp
++++ b/src/stardict.cpp
+@@ -487,11 +487,10 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
+ 		if (event->type==GDK_KEY_PRESS)
+ 			oAppCore->Quit();
+ 	}
++#ifndef CONFIG_NANONOTE
+ 	else if ((event->keyval==GDK_x || event->keyval==GDK_X) && only_mod1_pressed) {
+ 		if (event->type==GDK_KEY_PRESS) {
+-#ifndef CONFIG_NANONOTE
+ 			oAppCore->oDockLet->minimize_to_tray();
+-#endif
+ 		}
+ 	}
+ 	else if ((event->keyval==GDK_z || event->keyval==GDK_Z) && only_mod1_pressed) {
+@@ -508,6 +507,7 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
+ 		if (event->type==GDK_KEY_PRESS)
+ 			show_help(NULL);
+ 	}
++#endif
+ 	else if ((event->keyval==GDK_f || event->keyval==GDK_F) && only_ctrl_pressed) {
+ 		if (event->type==GDK_KEY_PRESS)
+ 			oAppCore->oMidWin.oToolWin.do_search();
+@@ -623,6 +623,9 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
+ 				}
+ 			}
+ 			break;
++		case GDK_Return:
++			return_val=true;
++			break;
+ 		default:
+ 			return_val=false;
+ 			break;
