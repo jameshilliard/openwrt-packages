@@ -8,8 +8,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=fn-handle
-PKG_VERSION:=20091118
-PKG_REV:=a5903ed490cc104c9f3e9270c542e6cdacb4b069
+PKG_VERSION:=20100316
+PKG_REV:=748269bdcfd0cea82ff9e3a79f60a0c3bb3bd35b
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
@@ -23,7 +23,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/fn-handle
   SECTION:=utils
   CATEGORY:=Utilities
-  TITLE:=Vido
+  TITLE:=Ben NanoNote PowerOff Daemon
   URL:=http://projects.qi-hardware.com/index.php/f/fn-handle/
 endef
 
