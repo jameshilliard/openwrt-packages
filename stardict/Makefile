@@ -12,7 +12,7 @@ PKG_NAME:=stardict
 PKG_VERSION:=3.0.1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=http://downloads.sourceforge.net/stardict/
+PKG_SOURCE_URL:=http://stardictproject.googlecode.com/files/
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 PKG_INSTALL:=1

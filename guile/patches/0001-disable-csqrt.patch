@@ -1,0 +1,13 @@
+diff --git a/configure.in b/configure.in
+index 217ac83..c4c16fc 100644
+--- a/configure.in
++++ b/configure.in
+@@ -854,7 +854,7 @@ main (void)
+ }]])],
+     [guile_cv_use_csqrt=yes],
+     [guile_cv_use_csqrt="no, glibc 2.3 bug"],
+-    [guile_cv_use_csqrt="yes, hopefully (cross-compiling)"])])
++    [guile_cv_use_csqrt="no, Ben NanoNote (cross-compiling)"])])
+   case $guile_cv_use_csqrt in
+     yes*)
+       AC_DEFINE(HAVE_USABLE_CSQRT, 1, [Define to 1 if csqrt is bug-free])
