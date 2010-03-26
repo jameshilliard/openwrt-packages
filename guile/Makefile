@@ -24,7 +24,7 @@ define Package/guile
     TITLE:=guile
     SECTION:=lang
     CATEGORY:=Languages
-    DEPENDS:=+libgmp +libpthread +libltdl
+    DEPENDS:=+libgmp +libpthread +libltdl @BROKEN
     URL:=http://savannah.gnu.org/projects/guile/
 endef
 
@@ -34,7 +34,7 @@ endef
 
 TARGET_LDFLAGS+="-Wl,-rpath-link=$(STAGING_DIR)/usr/lib"
 
-CONFIGURE_ARGS += 
+CONFIGURE_ARGS += --without-threads
 
 define Package/guile/install
 	$(INSTALL_DIR) $(1)/usr/bin

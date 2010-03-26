@@ -23,9 +23,10 @@ include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 
 define Package/cxxtools
-    TITLE:=cxxtools
-    SECTION:=utils
-    CATEGORY:=Utilities
+  TITLE:=cxxtools
+  SECTION:=utils
+  CATEGORY:=Utilities
+  DEPENDS:=+tntnet
 endef
 
 define Build/Configure

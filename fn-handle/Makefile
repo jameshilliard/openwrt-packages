@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=fn-handle
 PKG_VERSION:=20100316
-PKG_REV:=748269bdcfd0cea82ff9e3a79f60a0c3bb3bd35b
+PKG_REV:=acacde7b404a544d214f4ee01231bf0193a7155d
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
