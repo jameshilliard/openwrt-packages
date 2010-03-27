@@ -1,5 +1,9 @@
+#
+# Copyright (C) 2010 emdete.de
+#
 # This is free software, licensed under the GNU General Public License
 # v3. See /LICENSE for more information.
+# 
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=bwbasic
