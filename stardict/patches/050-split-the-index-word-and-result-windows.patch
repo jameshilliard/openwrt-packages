@@ -8,17 +8,71 @@ when press "enter" will goto the translate result text
 Signed-off-by: Xiangfu Liu <xiangfu@sharism.cc>
 ---
 
- src/mainwin.cpp  |    4 +++-
+ src/mainwin.cpp  |   27 ++++++++++++++++++++-------
  src/mainwin.h    |    1 +
  src/stardict.cpp |    4 ++++
- 3 files changed, 8 insertions(+), 1 deletions(-)
+ 3 files changed, 25 insertions(+), 7 deletions(-)
 
 
 diff --git a/src/mainwin.cpp b/src/mainwin.cpp
-index ccd5adc..eaa0650 100644
+index ccd5adc..a1d6373 100644
 --- a/src/mainwin.cpp
 +++ b/src/mainwin.cpp
-@@ -2689,8 +2689,10 @@ void MidWin::Create(GtkWidget *vbox)
+@@ -165,8 +165,13 @@ void TopWin::on_entry_changed(GtkEntry *entry, TopWin *oTopWin)
+ 		return;
+ 	const gchar *sWord = gtk_entry_get_text(entry);
+ 	if(sWord[0]!='\0') {
++		gtk_widget_show(gpAppFrame->oMidWin.oIndexWin.notebook);
++		gtk_widget_hide(gpAppFrame->oMidWin.vbox1);
+ 		gpAppFrame->TopWinWordChange(sWord);
+ 	} else {
++		gtk_widget_hide(gpAppFrame->oMidWin.oIndexWin.notebook);
++		gtk_widget_show(gpAppFrame->oMidWin.vbox1);
++
+ 		gpAppFrame->oMidWin.oTextWin.queryWord.clear();
+ 		gpAppFrame->oMidWin.oIndexWin.oResultWin.Clear();
+ 		gpAppFrame->oMidWin.oTextWin.ShowTips();
+@@ -581,8 +586,13 @@ void TopWin::SetText(const gchar *word, bool notify)
+ 	if (!notify)
+ 		return;
+ 	if(word[0]!='\0') {
++		gtk_widget_show(gpAppFrame->oMidWin.oIndexWin.notebook);
++		gtk_widget_hide(gpAppFrame->oMidWin.vbox1);
+ 		gpAppFrame->TopWinWordChange(word);
+ 	} else {
++		gtk_widget_hide(gpAppFrame->oMidWin.oIndexWin.notebook);
++		gtk_widget_show(gpAppFrame->oMidWin.vbox1);
++
+ 		gpAppFrame->oMidWin.oTextWin.queryWord.clear();
+ 		gpAppFrame->oMidWin.oIndexWin.oResultWin.Clear();
+ 		gpAppFrame->oMidWin.oTextWin.ShowTips();
+@@ -1815,18 +1825,19 @@ void TextWin::ShowTips()
+ {
+   query_result = TEXT_WIN_TIPS;
+   view->set_text(
+-	  _("        Welcome to StarDict!\n\n"
++	  _("   Please type a word to start searching. \n\n"
++		"   Welcome to StarDict.\n"
+ 	    "   Press Ctrl+Q to quit. \n"
++	    "   Press Alt+C or ESC to clear the input entry's text.\n"
+ #ifndef CONFIG_NANONOTE
+         "   Press Alt+Z to iconify the window or Alt+X to hide the window.\n"
+-#endif
+-	    "   Press Alt+C or ESC to clear the input entry's text.\n"
+ 	    "   Press Space key to move focus to the input entry.\n"
+-	    "   If the query word was not found, you can press Tab key to select the first word in the word list.\n"
+ 	    "   After selected some text, clicking the middle mouse button on the main window's Definition area or on the notification area icon will look up that word.\n"
++	    "   When the floating window reports that a word was not found, double clicking will perform a fuzzy query.\n"
++#endif
++	    "   If the query word was not found, you can press Tab key to select the first word in the word list.\n"
+ 	    "   StarDict can match strings against patterns containing '*' (wildcard) and '?' (joker).\n"
+-	    "   Input a word beginning with \'/\' to do a Fuzzy query.\n"
+-	    "   When the floating window reports that a word was not found, double clicking will perform a fuzzy query.\n")
++	    "   Input a word beginning with \'/\' to do a Fuzzy query.\n")
+ 	  );
+   view->scroll_to(0);
+ }
+@@ -2689,8 +2700,10 @@ void MidWin::Create(GtkWidget *vbox)
  	oLeftWin.Create(hbox, has_treedict);
  	gtk_box_pack_start(GTK_BOX(hbox),notebook, true, true, 0);
  
@@ -43,10 +97,19 @@ index c3589c6..569c978 100644
  	LeftWin oLeftWin;
  	IndexWin oIndexWin;
 diff --git a/src/stardict.cpp b/src/stardict.cpp
-index b84f5c5..8dd64ac 100644
+index b84f5c5..07cb57a 100644
 --- a/src/stardict.cpp
 +++ b/src/stardict.cpp
-@@ -588,6 +588,8 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
+@@ -425,6 +425,8 @@ void AppCore::Create(gchar *queryword)
+ 	} else {
+ 		oMidWin.oTextWin.ShowInitFailed();
+ 	}
++	gtk_widget_hide(oMidWin.oIndexWin.notebook);
++	gtk_widget_show(oMidWin.vbox1);
+ }
+ 
+ gboolean AppCore::on_delete_event(GtkWidget * window, GdkEvent *event , AppCore *app)
+@@ -588,6 +590,8 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
  					gtk_tree_model_get(model, &iter, 0, &word, -1);
  					oAppCore->ListClick(word);
  					g_free(word);
@@ -55,12 +118,3 @@ index b84f5c5..8dd64ac 100644
  					/* here to dispaly the result windows */
  				}
  			}
-@@ -613,6 +615,8 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
- 					oAppCore->oTopWin.InsertBackList();
- 					oAppCore->oTopWin.SetText("");
- 					oAppCore->oTopWin.grab_focus();
-+					gtk_widget_show(oAppCore->oMidWin.oIndexWin.notebook);
-+					gtk_widget_hide(oAppCore->oMidWin.vbox1);
- 				} else {
- 					if (!oAppCore->oTopWin.has_focus())
- 						oAppCore->oTopWin.grab_focus();

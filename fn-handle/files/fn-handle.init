@@ -2,10 +2,12 @@
 # Copyright (C) 2008 OpenWrt.org
 START=40
 
-DEVICE="/dev/input/event0"
+DEVICE_PW="/dev/input/event0"
+DEVICE_KB="/dev/input/event1"
 
 start() {
-	fnkeys $DEVICE &
+	fnkeys $DEVICE_PW &
+	fnkeys $DEVICE_KB &
 }
 
 stop() {
