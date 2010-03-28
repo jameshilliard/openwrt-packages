@@ -6,8 +6,8 @@ Signed-off-by: Xiangfu Liu <xiangfu@sharism.cc>
 ---
 
  src/pangoview.cpp |   16 ++++++++--------
- src/stardict.cpp  |    7 +++++--
- 2 files changed, 13 insertions(+), 10 deletions(-)
+ src/stardict.cpp  |    9 +++++++--
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
 
 diff --git a/src/pangoview.cpp b/src/pangoview.cpp
@@ -62,10 +62,10 @@ index e400ac3..b386b6e 100644
  
  void TextPangoWidget::do_set_pango_text(const char *str)
 diff --git a/src/stardict.cpp b/src/stardict.cpp
-index 8dd64ac..ae5fb05 100644
+index 07cb57a..b4ade70 100644
 --- a/src/stardict.cpp
 +++ b/src/stardict.cpp
-@@ -487,11 +487,10 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
+@@ -489,11 +489,10 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
  		if (event->type==GDK_KEY_PRESS)
  			oAppCore->Quit();
  	}
@@ -78,7 +78,7 @@ index 8dd64ac..ae5fb05 100644
  		}
  	}
  	else if ((event->keyval==GDK_z || event->keyval==GDK_Z) && only_mod1_pressed) {
-@@ -508,6 +507,7 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
+@@ -510,6 +509,7 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
  		if (event->type==GDK_KEY_PRESS)
  			show_help(NULL);
  	}
@@ -86,11 +86,13 @@ index 8dd64ac..ae5fb05 100644
  	else if ((event->keyval==GDK_f || event->keyval==GDK_F) && only_ctrl_pressed) {
  		if (event->type==GDK_KEY_PRESS)
  			oAppCore->oMidWin.oToolWin.do_search();
-@@ -623,6 +623,9 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
+@@ -623,6 +623,11 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
  				}
  			}
  			break;
 +		case GDK_Return:
++			gtk_widget_hide(oAppCore->oMidWin.oIndexWin.notebook);
++			gtk_widget_show(oAppCore->oMidWin.vbox1);
 +			return_val=true;
 +			break;
  		default:
