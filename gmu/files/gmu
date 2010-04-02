@@ -1,0 +1,2 @@
+#!/bin/sh
+( cd /usr/share/gmu && /usr/bin/gmu.bin -e -d /etc/gmu -c gmu.nanonote.conf )
