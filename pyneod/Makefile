@@ -24,7 +24,7 @@ define Package/pyneod
   SUBMENU:=Python
   SECTION:=lang
   CATEGORY:=Languages
-  DEPENDS:=+python +python-pyneo
+  DEPENDS:=@BROKEN +python +python-pyneo
   TITLE:=Base lib for pyneo suite
   URL:=http://pyneo.org/
 endef
