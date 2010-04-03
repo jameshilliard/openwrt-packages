@@ -19,11 +19,21 @@ PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/stardict
+define Package/stardict/Default
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=+libintl +libiconv +libgconf2
+    DEPENDS:=stardict
     TITLE:=International Dictionary Software
+endef
+
+define Package/stardict
+    $(call Package/stardict/Default)
+    DEPENDS:=+libintl +libiconv +libgconf2
+endef
+
+define Package/stardict-dic-en-en
+    $(call Package/stardict/Default)
+    TITLE+=(dictionary: English <-> English)
 endef
 
 define Package/stardict/description
@@ -77,4 +87,15 @@ define Package/stardict/install
 		$(1)/usr/share/
 endef
 
+define Package/stardict-dic-en-en/install
+	$(INSTALL_DIR) \
+		$(1)/usr/share/stardict/dic
+
+	$(TAR) \
+		-C $(1)/usr/share/stardict/dic/ \
+		-jxf \
+		./files/stardict-english-2.4.2.tar.bz2
+endef
+
 $(eval $(call BuildPackage,stardict))
+$(eval $(call BuildPackage,stardict-dic-en-en))
