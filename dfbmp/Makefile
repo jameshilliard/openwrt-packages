@@ -11,7 +11,7 @@ PKG_NAME:=dfbmp
 PKG_VERSION:=0.1.1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://www.maui-systems.org/opensource/dfbmp/
+PKG_SOURCE_URL:=http://www.maui-systems.org/oss/dfbmp
 
 PKG_INSTALL:=1
 
