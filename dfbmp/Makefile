@@ -21,7 +21,7 @@ define Package/dfbmp
     TITLE:=dfbmp
     SECTION:=sound
     CATEGORY:=Sound
-    DEPENDS:=+libcurl +libfreetype +zlib
+    DEPENDS:=@BROKEN +libcurl +libfreetype +zlib
     URL:=http://www.maui-systems.org/opensource/dfbmp/index.php
 endef
 
