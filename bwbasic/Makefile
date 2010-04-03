@@ -22,7 +22,7 @@ define Package/bwbasic
   CATEGORY:=Utilities
   TITLE:=An bwbasic application
   URL:=http://pyneo.org/t/bwbasic
-  DEPENDS:=+libncurses
+  DEPENDS:=@BROKEN +libncurses
 endef
 #DEPENDS:=+libreadline +libtermcap
 
