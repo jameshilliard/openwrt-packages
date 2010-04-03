@@ -22,7 +22,7 @@ define Package/robots
   CATEGORY:=Utilities
   TITLE:=An robots application
   URL:=http://pyneo.org/t/robots
-  DEPENDS:=+libncurses
+  DEPENDS:=@BROKEN +libncurses
 endef
 
 define Package/robots/description
