@@ -25,6 +25,7 @@ define Package/links
     SECTION:=network
     CATEGORY:=Network
     URL:=http://links.twibright.com/
+    DEPENDS:=@BROKEN
 endef
 
 define Package/links/description
