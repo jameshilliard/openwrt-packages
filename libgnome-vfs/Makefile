@@ -21,7 +21,7 @@ define Package/gnome-vfs
     TITLE:=gnome-vfs
     SECTION:=libs
     CATEGORY:=Libraries
-    DEPENDS:=+libintl +libpopt +gnome-mime-data
+    DEPENDS:=@BROKEN +libintl +libpopt +gnome-mime-data
     URL:=
 endef
 
