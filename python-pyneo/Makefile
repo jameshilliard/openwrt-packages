@@ -24,7 +24,7 @@ define Package/python-pyneo
   SUBMENU:=Python
   SECTION:=lang
   CATEGORY:=Languages
-  DEPENDS:=+python
+  DEPENDS:=@BROKEN +python
   TITLE:=Base lib for pyneo suite
   URL:=http://pyneo.org/
 endef
