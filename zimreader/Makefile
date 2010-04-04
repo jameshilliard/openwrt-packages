@@ -30,7 +30,7 @@ define Package/zimreader
     TITLE:=zimreader
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=+zimlib +tntnet +libpthread
+    DEPENDS:=@BROKEN +zimlib +tntnet +libpthread
     URL:=http://openzim.org
 endef
 
