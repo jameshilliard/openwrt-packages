@@ -24,6 +24,7 @@ define Package/w3m
     SECTION:=network
     CATEGORY:=Network
     URL:=http://w3m.sourceforge.net/
+    DEPENDS:=@BROKEN
 endef
 
 define Package/w3m/description
