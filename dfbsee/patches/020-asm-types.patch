@@ -1,0 +1,12 @@
+*** DFBSee-0.7.4/src/rotate.c	2010-04-16 20:01:33.000000000 +0200
+--- b-DFBSee-0.7.4/src/rotate.c	2010-04-17 10:45:19.000000000 +0200
+***************
+*** 26,31 ****
+--- 26,32 ----
+  
+  #include "dfbsee.h"
+  #include "rotate.h"
++ #include <asm/types.h>
+  
+  
+  #define SWAP(a,b,tmp) { (tmp) = *(b); *(b) = *(a); *(a) = (tmp); }

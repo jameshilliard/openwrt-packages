@@ -1,0 +1,35 @@
+*** DFBSee-0.7.4/src/Makefile.am	2002-08-12 16:24:43.000000000 +0200
+--- b-DFBSee-0.7.4/src/Makefile.am	2010-04-17 12:39:26.000000000 +0200
+***************
+*** 42,46 ****
+  volume_tables_gen_INCLUDES =
+  volume_tables_gen_LDADD = -lm
+  
+! volume-tables.h: volume-tables-gen
+  	./volume-tables-gen > $(srcdir)/volume-tables.h
+--- 42,46 ----
+  volume_tables_gen_INCLUDES =
+  volume_tables_gen_LDADD = -lm
+  
+! volume-tables.header: volume-tables-gen
+  	./volume-tables-gen > $(srcdir)/volume-tables.h
+
+*** DFBSee-0.7.4/src/Makefile.in	2002-11-13 01:14:10.000000000 +0100
+--- b-DFBSee-0.7.4/src/Makefile.in	2010-04-17 12:45:26.000000000 +0200
+***************
+*** 402,408 ****
+  maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+  
+  
+! volume-tables.h: volume-tables-gen
+  	./volume-tables-gen > $(srcdir)/volume-tables.h
+  
+  # Tell versions [3.59,3.63) of GNU make to not export all variables.
+--- 402,408 ----
+  maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+  
+  
+! volume-tables.header: volume-tables-gen
+  	./volume-tables-gen > $(srcdir)/volume-tables.h
+  
+  # Tell versions [3.59,3.63) of GNU make to not export all variables.
