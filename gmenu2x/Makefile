@@ -46,7 +46,7 @@ define Package/gmenu2x
   SUBMENU:=app
   TITLE:=Gmenu2x
   URL:=http://projects.qi-hardware.com/index.php/p/gmenu2x/
-  DEPENDS:=+libsdl +libsdl-image +libsdl-ttf +libstdcpp +libsdl-gfx +sparsehash
+  DEPENDS:=+libsdl +libsdl-image +libsdl-ttf +libstdcpp +libsdl-gfx
 endef
 
 define Build/Configure
