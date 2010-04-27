@@ -20,6 +20,8 @@ PKG_SOURCE_VERSION:=$(PKG_REV)
 
 PKG_INSTALL:=1
 
+PKG_BUILD_DEPENDS:=sparsehash
+
 include $(INCLUDE_DIR)/package.mk
 
 TARGET_CFLAGS+= \
