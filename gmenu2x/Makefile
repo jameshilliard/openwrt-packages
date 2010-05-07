@@ -72,7 +72,10 @@ define Package/gmenu2x/install
 	$(CP) \
 		$(PKG_BUILD_DIR)/pandora/* \
 		$(1)/usr/share/gmenu2x/
-# 		
+	
+	rm -rf \
+		$(1)/usr/share/gmenu2x/sections/{emulators,games}
+ 		
 # 	$(INSTALL_DATA) \
 # 		$(PKG_INSTALL_DIR)/usr/share/gmenu2x/* \
 # 		$(1)/usr/share/gmenu2x/
