@@ -9,11 +9,11 @@ PKG_RELEASE:=1
 #ftp://ftp.gnu.org/pub/gnu/gcal/gcal-3.01.tar.gz
 
 PKG_SOURCE:=gcal-$(PKG_VERSION).tar.gz
-	PKG_SOURCE_URL:=ftp://ftp.gnu.org/pub/gnu/gcal/
-	PKG_MD5SUM:=65f3394653829fd77f6862045112ad4f
-	PKG_CAT:=zcat
+PKG_SOURCE_URL:=ftp://ftp.gnu.org/pub/gnu/gcal/
+PKG_MD5SUM:=65f3394653829fd77f6862045112ad4f
+PKG_CAT:=zcat
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/gcal-$(PKG_VERSION)
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
