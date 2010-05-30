@@ -1,0 +1,11 @@
+--- sc-7.15/Makefile	2001-11-06 01:37:05.000000000 +0100
++++ sc-7.15mod/Makefile	2010-05-26 13:42:54.000000000 +0200
+@@ -299,7 +299,7 @@
+ 
+ #########################################
+ # Use this for Linux
+-CC=gcc
++#CC=gcc
+ # Only use -Wall for testing, since it produces warnings that are of no
+ # real effect on the reliability of the program, but may concern some
+ # people who don't understand them.
