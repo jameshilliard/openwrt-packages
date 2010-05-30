@@ -1,0 +1,24 @@
+--- sdcv-0.4.2/src/lib/lib.cpp	2006-04-24 10:17:27.000000000 +0200
++++ sdcv-0.4.2m/src/lib/lib.cpp	2010-05-28 19:03:20.000000000 +0200
+@@ -5,10 +5,12 @@
+ #include <algorithm>
+ #include <cstring>
+ #include <cctype>
++#include <cstdlib>
+ 
+ #include <sys/stat.h>
+ #include <zlib.h>
+ #include <glib/gstdio.h>
++#include <stdlib.h>
+ 
+ #include "distance.h"
+ #include "file.hpp"
+@@ -513,7 +515,7 @@
+ {
+ 	fseek(idxfile, wordoffset[page_idx], SEEK_SET);
+ 	guint32 page_size=wordoffset[page_idx+1]-wordoffset[page_idx];
+-	fread(wordentry_buf, std::min(sizeof(wordentry_buf), page_size), 1, idxfile); //TODO: check returned values, deal with word entry that strlen>255.
++	fread(wordentry_buf, std::min((long)sizeof(wordentry_buf), (long)page_size), 1, idxfile); //TODO: check returned values, deal with word entry that strlen>255.
+ 	return wordentry_buf;
+ }
+ 

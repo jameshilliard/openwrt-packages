@@ -16,7 +16,7 @@ PKG_SOURCE_URL:=http://cdnetworks-kr-1.dl.sourceforge.net/project/sdcv/sdcv/0.4.
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
-PKG_INSTALL:=1
+PKG_INSTALL:=2
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -24,7 +24,7 @@ define Package/sdcv
     TITLE:=sdcv
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=@BROKEN +libintl
+    DEPENDS:=+libintl +libreadline +libiconv
     URL:=http://sdcv.sourceforge.net/
 endef
 
@@ -33,7 +33,7 @@ define Package/sdcv/description
 endef
 
 TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/lib/libintl/include
-TARGET_LDFLAGS+= -L$(STAGING_DIR)/usr/lib/libintl/lib
+TARGET_LDFLAGS+= -L$(STAGING_DIR)/usr/lib/libintl/lib -L$(STAGING_DIR)/usr/lib/libiconv/lib
 
 CONFIGURE_ARGS += 
 
