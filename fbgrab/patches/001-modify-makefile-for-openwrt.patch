@@ -1,0 +1,32 @@
+diff --git a/Makefile b/Makefile
+index 14c63cb..f4cb0b0 100644
+--- a/Makefile
++++ b/Makefile
+@@ -2,15 +2,20 @@
+ ### I think it's not worth to make such a small project
+ ### modular. So this is a simple gnu Makefile...
+ ###
++STRIP ?= strip
++INSTALL ?= install
++
++CFLAGS := $(CFLAGS) -g -Wall
+ 
+ fbgrab: fbgrab.c
+-	splint +posixlib fbgrab.c
+-	gcc -g -Wall fbgrab.c -lpng -lz -o fbgrab
++	$(CC) $(CFLAGS) $(LDFLAGS) fbgrab.c -lpng -lz -o fbgrab
++	$(STRIP) fbgrab
+ 
+ install:
+-	strip fbgrab
+-	install fbgrab /usr/bin/fbgrab
+-	install fbgrab.1.man /usr/man/man1/fbgrab.1
++	mkdir -p $(DESTDIR)/usr/bin/
++	mkdir -p $(DESTDIR)/usr/man/man1/
++	$(INSTALL) fbgrab $(DESTDIR)/usr/bin/fbgrab
++	$(INSTALL) fbgrab.1.man $(DESTDIR)/usr/man/man1/fbgrab.1
+ 
+ clean:
+-	rm -f fbgrab *~ \#*\#
+\ No newline at end of file
++	rm -f fbgrab *~ \#*\#
