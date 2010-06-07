@@ -29,7 +29,7 @@ define Package/imgv
 endef
 
 
-MAKE_FLAGS+= TARGETPATH=$(STAGING_DIR)
+MAKE_VARS += TARGETPATH=$(STAGING_DIR)
 
 define Package/imgv/install
 	$(INSTALL_DIR) $(1)/usr/bin
