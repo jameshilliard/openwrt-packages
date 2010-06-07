@@ -1,0 +1,1817 @@
+diff -crB yacas-1.2.2old/configure.in yacas-1.2.2new/configure.in
+*** yacas-1.2.2old/configure.in	2007-09-27 15:21:46.000000000 +0200
+--- yacas-1.2.2new/configure.in	2010-05-01 00:25:08.000000000 +0200
+***************
+*** 235,240 ****
+  	scripts/Makefile
+  	JavaYacas/Makefile
+  	tests/Makefile
+!         manmake/Makefile
+  	src/Makefile)
+  
+--- 235,240 ----
+  	scripts/Makefile
+  	JavaYacas/Makefile
+  	tests/Makefile
+!         #manmake/Makefile
+  	src/Makefile)
+  
+diff -crB yacas-1.2.2old/Makefile.am yacas-1.2.2new/Makefile.am
+*** yacas-1.2.2old/Makefile.am	2007-09-16 21:53:44.000000000 +0200
+--- yacas-1.2.2new/Makefile.am	2010-05-01 00:34:16.000000000 +0200
+***************
+*** 9,15 ****
+  ## suite in "tests". In addition, one of the tests to be run is generated in
+  ## "manmake".
+  
+! SUBDIRS = . docs src scripts manmake tests JavaYacas 
+  
+  ## A script to be installed in the directory for binaries
+  bin_SCRIPTS = 
+--- 9,15 ----
+  ## suite in "tests". In addition, one of the tests to be run is generated in
+  ## "manmake".
+  
+! SUBDIRS = . docs src scripts tests JavaYacas 
+  
+  ## A script to be installed in the directory for binaries
+  bin_SCRIPTS = 
+***************
+*** 25,36 ****
+  # the "distcheck" target does "make dvi", we want it to build the texdocs
+  dvi: texdocs
+  
+- texdocs:
+- 	cd manmake ; make ps-docs pdf-docs
+- 
+- # this target will create all HTML docs in case they are disabled by configure
+- 
+- htmldocs:
+- 	cd manmake; make manicon.html
+- 
+  
+--- 25,28 ----
+diff -crB yacas-1.2.2old/Makefile.in yacas-1.2.2new/Makefile.in
+*** yacas-1.2.2old/Makefile.in	2007-09-27 15:24:37.000000000 +0200
+--- yacas-1.2.2new/Makefile.in	2010-05-01 00:33:54.000000000 +0200
+***************
+*** 99,105 ****
+  psdir = @psdir@
+  scriptdir = @scriptdir@
+  
+! SUBDIRS = . docs src scripts manmake tests JavaYacas 
+  
+  bin_SCRIPTS = 
+  
+--- 99,105 ----
+  psdir = @psdir@
+  scriptdir = @scriptdir@
+  
+! SUBDIRS = . docs src scripts tests JavaYacas 
+  
+  bin_SCRIPTS = 
+  
+***************
+*** 470,482 ****
+  # the "distcheck" target does "make dvi", we want it to build the texdocs
+  dvi: texdocs
+  
+- texdocs:
+- 	cd manmake ; make ps-docs pdf-docs
+- 
+- # this target will create all HTML docs in case they are disabled by configure
+- 
+- htmldocs:
+- 	cd manmake; make manicon.html
+- # Tell versions [3.59,3.63) of GNU make to not export all variables.
+- # Otherwise a system limit (for SysV at least) may be exceeded.
+  .NOEXPORT:
+--- 470,473 ----
+diff -crB yacas-1.2.2old/manmake/Makefile.am yacas-1.2.2new/manmake/Makefile.am
+*** yacas-1.2.2old/manmake/Makefile.am	2007-09-16 21:53:45.000000000 +0200
+--- yacas-1.2.2new/manmake/Makefile.am	2010-05-01 00:27:47.000000000 +0200
+***************
+*** 1,250 ****
+! ## Makefile.am -- Process this file with automake to produce Makefile.in
+  
+! # $(srcdir) is the manmake/ directory and $(top_srcdir) is the Yacas tree
+! # so this file should work even if we are building Yacas in a different directory
+  
+! # newly compiled version of yacas in ../src (not necessarily under $(srcdir))
+! ouryacas = ../src/yacas --rootdir $(top_srcdir)/scripts/:../scripts/
+  
+! # top target
+! ## BOOKS_HTML is either "manicon.html" or empty
+! ## PS_DOCS    is either "ps-docs" or empty
+! ## PDF_DOCS   is either "pdf-docs" or empty
+! all-am: @BOOKS_HTML@ @PS_DOCS@ @PDF_DOCS@ hints
+  
+! noinst_PROGRAMS = manripper removeduplicates
+  
+! manripper_SOURCES = manripper.cpp 
+  
+! removeduplicates_SOURCES = removeduplicates.cpp
+  
+! hints: manripper removeduplicates $(REFSOURCES) $(REFPROGSOURCES) ref.book.txt refprog.book.txt
+! 	rm -f hints.unsorted
+! 	for file in ref.book.txt $(REFSOURCES) refprog.book.txt $(REFPROGSOURCES); do \
+! 	./manripper $(srcdir)/"$$file" >> hints.unsorted ; done
+! 	sort -t ":" hints.unsorted > hints.sorted
+! 	./removeduplicates hints.sorted hints.singlesorted
+! 	echo "::::" > tail.txt
+! 	cat hints.singlesorted tail.txt > hints
+  
+! ## ytxt2tex is to be installed in $(bindir). 
+! bin_SCRIPTS = ytxt2tex
+! ## It needs the following scripts:
+! ytxt2tex_DEPS = book2TeX.sh book2TeX.ys txt2yacasdoc.pl
+  
+! BOOKS = intro.book coding.book ref.book refprog.book essays.book \
+! 	Algo.book 
+  
+! BOOKSOURCES = intro.book.txt coding.book.txt ref.book.txt refprog.book.txt \
+! 	essays.book.txt Algo.book.txt 
+  
+! PS_DOCS = intro.book.ps coding.book.ps essays.book.ps ref.book.ps \
+! 	refprog.book.ps Algo.book.ps 
+  
+! PDF_DOCS = intro.book.pdf coding.book.pdf essays.book.pdf ref.book.pdf \
+! 	refprog.book.pdf Algo.book.pdf 
+  
+! # refprog.html is not listed because it is generated together with ref.html
+! HTMLBOOKS = intromanual.html codingmanual.html essaysmanual.html refmanual.html refprogmanual.html \
+! 	Algomanual.html 
+  
+! INTROCHAPTERS = FDL.chapt cl-options.chapt config.chapt addons.chapt  
+  
+  
+  
+! INTROSOURCES = FDL.chapt.txt cl-options.chapt.txt config.chapt.txt addons.chapt.txt 
+  
+  
+! ALGOCHAPTERS = algo-basic.chapt algo-numapprox.chapt \
+! 	algorithms-elemfunc.chapt algorithms-specfunc.chapt \
+! 	algorithms-numtheory.chapt algorithms-integration.chapt \
+! 	algorithms-multivar.chapt SturmSequences.chapt FDL.chapt \
+! 	algo-refs.chapt algo-contfrac.chapt algorithms-transforms.chapt
+  
+! ALGOSOURCES = algo-basic.chapt.txt algo-numapprox.chapt.txt \
+! 	algorithms-elemfunc.chapt.txt algorithms-specfunc.chapt.txt \
+! 	algorithms-numtheory.chapt.txt algorithms-integration.chapt.txt \
+! 	algorithms-multivar.chapt.txt SturmSequences.chapt.txt FDL.chapt.txt \
+! 	algo-refs.chapt.txt algo-contfrac.chapt.txt algorithms-transforms.chapt.txt
+  
+! REFCHAPTERS = arith.chapt calc.chapt complex.chapt solvers.chapt simplify.chapt ode.chapt linalg.chapt \
+! 	univar.chapt lists.chapt functional.chapt controlflow.chapt \
+! 	preds.chapt logic.chapt const.chapt vars.chapt io.chapt \
+! 	numtheory.chapt strings.chapt transforms.chapt cl-options.chapt \
+! 	probability-and-statistics.chapt FDL.chapt 
+  
+! REFSOURCES = arith.chapt.txt calc.chapt.txt complex.chapt.txt \
+! 	solvers.chapt.txt simplify.chapt.txt ode.chapt.txt \
+! 	linalg.chapt.txt univar.chapt.txt lists.chapt.txt cl-options.chapt.txt \
+! 	functional.chapt.txt controlflow.chapt.txt preds.chapt.txt \
+! 	logic.chapt.txt const.chapt.txt vars.chapt.txt io.chapt.txt \
+! 	numtheory.chapt.txt strings.chapt.txt transforms.chapt.txt \
+! 	probability-and-statistics.chapt.txt FDL.chapt.txt 
+  
+  
+! REFPROGCHAPTERS = FDL.chapt glossary.chapt \
+! 	GPL.chapt numerics.chapt
+! # GPL.chapt has no .txt source
+! REFPROGSOURCES = FDL.chapt.txt glossary.chapt.txt \
+! 	numerics.chapt.txt
+  
+! CODINGCHAPTERS = YacasDebugger.chapt FDL.chapt
+! CODINGSOURCES = YacasDebugger.chapt.txt FDL.chapt.txt
+  
+! ESSAYCHAPTERS = ABIN-grammar.chapt \
+! 	SimpleTools.chapt CVS-Howto.chapt YacasDocs.chapt \
+! 	wester-1994.chapt new.chapt paper.chapt \
+! 	wordproblems.chapt FDL.chapt BuildSystem.chapt 
+  
+! ESSAYSOURCES = ABIN-grammar.chapt.txt \
+! 	SimpleTools.chapt.txt CVS-Howto.chapt.txt YacasDocs.chapt.txt \
+!         paper.chapt.txt wester-1994.chapt.txt new.chapt.txt \
+! 	wordproblems.chapt.txt FDL.chapt.txt BuildSystem.chapt.txt 
+  
+  
+! # Yacas test code extracted from the docs
+! TESTCODESNIPPETS = wester-1994.yts ref.book.yts refprog.book.yts
+  
+! ## This means: build wester-1994.yts etc. if running tests
+! check_SCRIPTS = $(TESTCODESNIPPETS)
+  
+  
+! EXTRA_DIST = txt2example.pl book2txt.sh book2txt.ys \
+! 	book2xml.sh book2xml.ys \
+! 	book2ys.sh book2ys.ys ys2book.pl \
+! 	ytxt2tex $(ytxt2tex_DEPS) \
+! 	manualmaker indexmaker styleplain \
+! 	$(REFSOURCES) $(BOOKSOURCES) $(ESSAYSOURCES) $(CODINGSOURCES) \
+! 	$(INTROSOURCES) \
+! 	$(REFPROGSOURCES) $(ALGOSOURCES)  \
+! 	dummies hints
+  
+! # Stuff for automatic generation of Yacas books
+  
+! SUFFIXES = .chapt.txt .chapt .book.tex .book.txt .book .tex .dvi .ps .pdf .ys
+  
+! .chapt.txt.chapt:
+! 	perl $(srcdir)/txt2yacasdoc.pl < $< > $@
+  
+! .book.txt.book:
+! 	perl $(srcdir)/txt2yacasdoc.pl < $< > $@
+  
+! .book.book.tex: 
+! 	sh $(srcdir)/book2TeX.sh -run "$(ouryacas)" $< $@
+  
+! .tex.dvi:
+! 	latex $< > /dev/null
+! 	latex $< > /dev/null
+! # The perl filter is used to help the 'makeindex' command: 
+! # 1) replace \verb|...| by \verb=...= 
+! # 2) escape ()|@! using a preceding quote "
+! # Note that @ and ! are not always escaped because they are sometimes part of the index entry and sometimes control chars. Heuristics are used to guess correctly.
+! 	@perl -pe 's/(\\verb)\|([^|]*)\|/$$1=$$2=/g;s/([()|])/"$$1/g;if(/\@/){s/!/"!/g;};s/\@([^\\])/"\@$$1/g;'<$*.idx>$*.1.idx
+! 	@makeindex $*.1.idx -o $*.ind || echo "***Warning: a problem with 'makeindex'"
+! 	latex $< > /dev/null
+  
+! .dvi.ps:
+! 	dvips -q -o $@ $<
+! 	@echo "***Documentation created:" $*.ps
+  
+! .dvi.pdf:
+! 	pdflatex $* > /dev/null
+! 	@echo "***Documentation created:" $*.pdf
+  
+! .chapt.ys:
+! 	sh $(srcdir)/book2ys.sh -run "$(ouryacas)" $< $@
+  
+! .chapt.yts:
+! 	sh $(srcdir)/book2ys.sh -run "$(ouryacas)" $< $@
+  
+! # generate test code from book sources
+  
+! ref.book.yts: $(REFSOURCES) $(srcdir)/txt2example.pl
+! 	@echo "// tests for ref.book" > $@
+! 	for file in $(REFSOURCES); do perl $(srcdir)/txt2example.pl $(srcdir)/$$file >> $@; done
+  
+! refprog.book.yts: $(REFPROGSOURCES) $(srcdir)/txt2example.pl
+! 	@echo "// tests for refprog.book" > $@
+! 	for file in $(REFPROGSOURCES); do perl $(srcdir)/txt2example.pl $(srcdir)/$$file >> $@; done
+  
+  
+! # specify books that need chapters
+! essays.book.tex: essays.book $(ESSAYCHAPTERS)
+! ref.book.tex : ref.book $(REFCHAPTERS)
+! refprog.book.tex : refprog.book $(REFPROGCHAPTERS)
+! coding.book.tex : coding.book $(CODINGCHAPTERS)
+! intro.book.tex: intro.book $(INTROCHAPTERS)
+! Algo.book.tex: Algo.book $(ALGOCHAPTERS)
+  
+! # special "virtual" chapter built from corefunctions.h. This is printed by a special program "gencorefunctions", compiled together with yacas.
+  
+  
+! # special chapter copied from the GPL (need to replace "<" and ">")
+! GPL.chapt: $(top_srcdir)/COPYING
+! 	cat $(top_srcdir)/COPYING | sed -e 's,<,{<},g;s,>,{>},g;' | perl $(srcdir)/txt2yacasdoc.pl > $@
+  
+  
+  
+! ps-docs: $(PS_DOCS)
+! pdf-docs: $(PDF_DOCS)
+  
+! CLEANFILES = books.html *.tex *.dvi *.aux *.idx *.ind *.ilg *.toc *.log *.ps *.pdf *.funcs.js \
+! 	coding*.html intro*.html ref*.html essays*.html Algo*.html  *.o core *~ texdocs.c \
+! 	$(REFCHAPTERS) $(ESSAYCHAPTERS) $(REFPROGCHAPTERS) $(CODINGCHAPTERS)  \
+! 	$(TESTCODESNIPPETS) $(ALGOCHAPTERS) $(BOOKS) manicon.html 
+  
+! # The top HTML docs target is now "manicon.html" that is built by GenerateIndex().
+! # The dependence on $(HTMLBOOKS) is only to make sure that all HTML docs
+! # are built - in fact manicon.html is a constant file and has no dependencies.
+! manicon.html:  books.html $(HTMLBOOKS)
+  
+! # books.html only depends on top book files (*.book.txt).
+! books.html:  $(BOOKS) $(srcdir)/indexmaker $(srcdir)/styleplain
+! 	-echo '[DefaultDirectory("$(srcdir)/"); Use("indexmaker"); GenerateIndex();];' | $(ouryacas) -fpc
+  
+! intromanual.html : intro.book $(INTROCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("intro");];' | $(ouryacas) -fpc
+  
+! codingmanual.html : coding.book $(CODINGCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("coding");];' | $(ouryacas) -fpc
+  
+! essaysmanual.html : essays.book $(ESSAYCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("essays");];' | $(ouryacas) -fpc
+  
+! refmanual.html : ref.book $(REFCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("ref");];'    | $(ouryacas) -fpc
+  
+! refprogmanual.html : ref.book $(REFCHAPTERS) refprog.book $(REFPROGCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("refprog");];' | $(ouryacas) -fpc
+  
+! Algomanual.html : Algo.book $(ALGOCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("Algo");];' | $(ouryacas) -fpc
+  
+! ## Hook to install documentation
+! install-data-local: @INSTALL_HTML@ @INSTALL_PS@ install-scripts install-hints
+  
+! install-hints: hints
+! 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/documentation
+! 	$(INSTALL_DATA) hints $(DESTDIR)$(pkgdatadir)/documentation/hints
+  
+! install-scripts: $(ytxt2tex_DEPS)
+! 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/manmake/
+! 	-for file in $(ytxt2tex_DEPS); do \
+! 	   $(INSTALL_DATA) $(srcdir)/$$file $(DESTDIR)$(pkgdatadir)/manmake/$$file; \
+! 	done
+  
+! install-html: books.html 
+! 	$(mkinstalldirs) $(DESTDIR)$(htmldir)/
+! 	$(INSTALL_DATA) $(top_srcdir)/docs/yacaslogo.gif $(DESTDIR)$(htmldir)/
+! 	-for file in *.html; do \
+! 	   $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$file; \
+! 	done
+  
+! install-ps: ps-docs
+! 	$(mkinstalldirs) $(DESTDIR)$(psdir)/
+! 	-for file in $(PS_DOCS); do \
+! 	   $(INSTALL_DATA) $$file $(DESTDIR)$(psdir)/$$file; \
+! 	done
+  
+! #	   gzip $(DESTDIR)$(psdir)/$$file; 
+  
+--- 1,250 ----
+! # ## Makefile.am -- Process this file with automake to produce Makefile.in
+  
+! # # $(srcdir) is the manmake/ directory and $(top_srcdir) is the Yacas tree
+! # # so this file should work even if we are building Yacas in a different directory
+  
+! # # newly compiled version of yacas in ../src (not necessarily under $(srcdir))
+! # ouryacas = ../src/yacas --rootdir $(top_srcdir)/scripts/:../scripts/
+  
+! # # top target
+! # ## BOOKS_HTML is either "manicon.html" or empty
+! # ## PS_DOCS    is either "ps-docs" or empty
+! # ## PDF_DOCS   is either "pdf-docs" or empty
+! # all-am: @BOOKS_HTML@ @PS_DOCS@ @PDF_DOCS@ hints
+  
+! # noinst_PROGRAMS = manripper removeduplicates
+  
+! # manripper_SOURCES = manripper.cpp 
+  
+! # removeduplicates_SOURCES = removeduplicates.cpp
+  
+! # hints: manripper removeduplicates $(REFSOURCES) $(REFPROGSOURCES) ref.book.txt refprog.book.txt
+! # 	rm -f hints.unsorted
+! # 	for file in ref.book.txt $(REFSOURCES) refprog.book.txt $(REFPROGSOURCES); do \
+! # 	./manripper $(srcdir)/"$$file" >> hints.unsorted ; done
+! # 	sort -t ":" hints.unsorted > hints.sorted
+! # 	./removeduplicates hints.sorted hints.singlesorted
+! # 	echo "::::" > tail.txt
+! # 	cat hints.singlesorted tail.txt > hints
+  
+! # ## ytxt2tex is to be installed in $(bindir). 
+! # bin_SCRIPTS = ytxt2tex
+! # ## It needs the following scripts:
+! # ytxt2tex_DEPS = book2TeX.sh book2TeX.ys txt2yacasdoc.pl
+  
+! # BOOKS = intro.book coding.book ref.book refprog.book essays.book \
+! # 	Algo.book 
+  
+! # BOOKSOURCES = intro.book.txt coding.book.txt ref.book.txt refprog.book.txt \
+! # 	essays.book.txt Algo.book.txt 
+  
+! # PS_DOCS = intro.book.ps coding.book.ps essays.book.ps ref.book.ps \
+! # 	refprog.book.ps Algo.book.ps 
+  
+! # PDF_DOCS = intro.book.pdf coding.book.pdf essays.book.pdf ref.book.pdf \
+! # 	refprog.book.pdf Algo.book.pdf 
+  
+! # # refprog.html is not listed because it is generated together with ref.html
+! # HTMLBOOKS = intromanual.html codingmanual.html essaysmanual.html refmanual.html refprogmanual.html \
+! # 	Algomanual.html 
+  
+! # INTROCHAPTERS = FDL.chapt cl-options.chapt config.chapt addons.chapt  
+  
+  
+  
+! # INTROSOURCES = FDL.chapt.txt cl-options.chapt.txt config.chapt.txt addons.chapt.txt 
+  
+  
+! # ALGOCHAPTERS = algo-basic.chapt algo-numapprox.chapt \
+! # 	algorithms-elemfunc.chapt algorithms-specfunc.chapt \
+! # 	algorithms-numtheory.chapt algorithms-integration.chapt \
+! # 	algorithms-multivar.chapt SturmSequences.chapt FDL.chapt \
+! # 	algo-refs.chapt algo-contfrac.chapt algorithms-transforms.chapt
+  
+! # ALGOSOURCES = algo-basic.chapt.txt algo-numapprox.chapt.txt \
+! # 	algorithms-elemfunc.chapt.txt algorithms-specfunc.chapt.txt \
+! # 	algorithms-numtheory.chapt.txt algorithms-integration.chapt.txt \
+! # 	algorithms-multivar.chapt.txt SturmSequences.chapt.txt FDL.chapt.txt \
+! # 	algo-refs.chapt.txt algo-contfrac.chapt.txt algorithms-transforms.chapt.txt
+  
+! # REFCHAPTERS = arith.chapt calc.chapt complex.chapt solvers.chapt simplify.chapt ode.chapt linalg.chapt \
+! # 	univar.chapt lists.chapt functional.chapt controlflow.chapt \
+! # 	preds.chapt logic.chapt const.chapt vars.chapt io.chapt \
+! # 	numtheory.chapt strings.chapt transforms.chapt cl-options.chapt \
+! # 	probability-and-statistics.chapt FDL.chapt 
+  
+! # REFSOURCES = arith.chapt.txt calc.chapt.txt complex.chapt.txt \
+! # 	solvers.chapt.txt simplify.chapt.txt ode.chapt.txt \
+! # 	linalg.chapt.txt univar.chapt.txt lists.chapt.txt cl-options.chapt.txt \
+! # 	functional.chapt.txt controlflow.chapt.txt preds.chapt.txt \
+! # 	logic.chapt.txt const.chapt.txt vars.chapt.txt io.chapt.txt \
+! # 	numtheory.chapt.txt strings.chapt.txt transforms.chapt.txt \
+! # 	probability-and-statistics.chapt.txt FDL.chapt.txt 
+  
+  
+! # REFPROGCHAPTERS = FDL.chapt glossary.chapt \
+! # 	GPL.chapt numerics.chapt
+! # # GPL.chapt has no .txt source
+! # REFPROGSOURCES = FDL.chapt.txt glossary.chapt.txt \
+! # 	numerics.chapt.txt
+  
+! # CODINGCHAPTERS = YacasDebugger.chapt FDL.chapt
+! # CODINGSOURCES = YacasDebugger.chapt.txt FDL.chapt.txt
+  
+! # ESSAYCHAPTERS = ABIN-grammar.chapt \
+! # 	SimpleTools.chapt CVS-Howto.chapt YacasDocs.chapt \
+! # 	wester-1994.chapt new.chapt paper.chapt \
+! # 	wordproblems.chapt FDL.chapt BuildSystem.chapt 
+  
+! # ESSAYSOURCES = ABIN-grammar.chapt.txt \
+! # 	SimpleTools.chapt.txt CVS-Howto.chapt.txt YacasDocs.chapt.txt \
+! #         paper.chapt.txt wester-1994.chapt.txt new.chapt.txt \
+! # 	wordproblems.chapt.txt FDL.chapt.txt BuildSystem.chapt.txt 
+  
+  
+! # # Yacas test code extracted from the docs
+! # TESTCODESNIPPETS = wester-1994.yts ref.book.yts refprog.book.yts
+  
+! # ## This means: build wester-1994.yts etc. if running tests
+! # check_SCRIPTS = $(TESTCODESNIPPETS)
+  
+  
+! # EXTRA_DIST = txt2example.pl book2txt.sh book2txt.ys \
+! # 	book2xml.sh book2xml.ys \
+! # 	book2ys.sh book2ys.ys ys2book.pl \
+! # 	ytxt2tex $(ytxt2tex_DEPS) \
+! # 	manualmaker indexmaker styleplain \
+! # 	$(REFSOURCES) $(BOOKSOURCES) $(ESSAYSOURCES) $(CODINGSOURCES) \
+! # 	$(INTROSOURCES) \
+! # 	$(REFPROGSOURCES) $(ALGOSOURCES)  \
+! # 	dummies hints
+  
+! # # Stuff for automatic generation of Yacas books
+  
+! # SUFFIXES = .chapt.txt .chapt .book.tex .book.txt .book .tex .dvi .ps .pdf .ys
+  
+! # .chapt.txt.chapt:
+! # 	perl $(srcdir)/txt2yacasdoc.pl < $< > $@
+  
+! # .book.txt.book:
+! # 	perl $(srcdir)/txt2yacasdoc.pl < $< > $@
+  
+! # .book.book.tex: 
+! # 	sh $(srcdir)/book2TeX.sh -run "$(ouryacas)" $< $@
+  
+! # .tex.dvi:
+! # 	latex $< > /dev/null
+! # 	latex $< > /dev/null
+! # # The perl filter is used to help the 'makeindex' command: 
+! # # 1) replace \verb|...| by \verb=...= 
+! # # 2) escape ()|@! using a preceding quote "
+! # # Note that @ and ! are not always escaped because they are sometimes part of the index entry and sometimes control chars. Heuristics are used to guess correctly.
+! # 	@perl -pe 's/(\\verb)\|([^|]*)\|/$$1=$$2=/g;s/([()|])/"$$1/g;if(/\@/){s/!/"!/g;};s/\@([^\\])/"\@$$1/g;'<$*.idx>$*.1.idx
+! # 	@makeindex $*.1.idx -o $*.ind || echo "***Warning: a problem with 'makeindex'"
+! # 	latex $< > /dev/null
+  
+! # .dvi.ps:
+! # 	dvips -q -o $@ $<
+! # 	@echo "***Documentation created:" $*.ps
+  
+! # .dvi.pdf:
+! # 	pdflatex $* > /dev/null
+! # 	@echo "***Documentation created:" $*.pdf
+  
+! # .chapt.ys:
+! # 	sh $(srcdir)/book2ys.sh -run "$(ouryacas)" $< $@
+  
+! # .chapt.yts:
+! # 	sh $(srcdir)/book2ys.sh -run "$(ouryacas)" $< $@
+  
+! # # generate test code from book sources
+  
+! # ref.book.yts: $(REFSOURCES) $(srcdir)/txt2example.pl
+! # 	@echo "// tests for ref.book" > $@
+! # 	for file in $(REFSOURCES); do perl $(srcdir)/txt2example.pl $(srcdir)/$$file >> $@; done
+  
+! # refprog.book.yts: $(REFPROGSOURCES) $(srcdir)/txt2example.pl
+! # 	@echo "// tests for refprog.book" > $@
+! # 	for file in $(REFPROGSOURCES); do perl $(srcdir)/txt2example.pl $(srcdir)/$$file >> $@; done
+  
+  
+! # # specify books that need chapters
+! # essays.book.tex: essays.book $(ESSAYCHAPTERS)
+! # ref.book.tex : ref.book $(REFCHAPTERS)
+! # refprog.book.tex : refprog.book $(REFPROGCHAPTERS)
+! # coding.book.tex : coding.book $(CODINGCHAPTERS)
+! # intro.book.tex: intro.book $(INTROCHAPTERS)
+! # Algo.book.tex: Algo.book $(ALGOCHAPTERS)
+  
+! # # special "virtual" chapter built from corefunctions.h. This is printed by a special program "gencorefunctions", compiled together with yacas.
+  
+  
+! # # special chapter copied from the GPL (need to replace "<" and ">")
+! # GPL.chapt: $(top_srcdir)/COPYING
+! # 	cat $(top_srcdir)/COPYING | sed -e 's,<,{<},g;s,>,{>},g;' | perl $(srcdir)/txt2yacasdoc.pl > $@
+  
+  
+  
+! # ps-docs: $(PS_DOCS)
+! # pdf-docs: $(PDF_DOCS)
+  
+! # CLEANFILES = books.html *.tex *.dvi *.aux *.idx *.ind *.ilg *.toc *.log *.ps *.pdf *.funcs.js \
+! # 	coding*.html intro*.html ref*.html essays*.html Algo*.html  *.o core *~ texdocs.c \
+! # 	$(REFCHAPTERS) $(ESSAYCHAPTERS) $(REFPROGCHAPTERS) $(CODINGCHAPTERS)  \
+! # 	$(TESTCODESNIPPETS) $(ALGOCHAPTERS) $(BOOKS) manicon.html 
+  
+! # # The top HTML docs target is now "manicon.html" that is built by GenerateIndex().
+! # # The dependence on $(HTMLBOOKS) is only to make sure that all HTML docs
+! # # are built - in fact manicon.html is a constant file and has no dependencies.
+! # manicon.html:  books.html $(HTMLBOOKS)
+  
+! # # books.html only depends on top book files (*.book.txt).
+! # books.html:  $(BOOKS) $(srcdir)/indexmaker $(srcdir)/styleplain
+! # 	-echo '[DefaultDirectory("$(srcdir)/"); Use("indexmaker"); GenerateIndex();];' | $(ouryacas) -fpc
+  
+! # intromanual.html : intro.book $(INTROCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! # 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("intro");];' | $(ouryacas) -fpc
+  
+! # codingmanual.html : coding.book $(CODINGCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! # 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("coding");];' | $(ouryacas) -fpc
+  
+! # essaysmanual.html : essays.book $(ESSAYCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! # 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("essays");];' | $(ouryacas) -fpc
+  
+! # refmanual.html : ref.book $(REFCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! # 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("ref");];'    | $(ouryacas) -fpc
+  
+! # refprogmanual.html : ref.book $(REFCHAPTERS) refprog.book $(REFPROGCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! # 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("refprog");];' | $(ouryacas) -fpc
+  
+! # Algomanual.html : Algo.book $(ALGOCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! # 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("Algo");];' | $(ouryacas) -fpc
+  
+! # ## Hook to install documentation
+! # install-data-local: @INSTALL_HTML@ @INSTALL_PS@ install-scripts install-hints
+  
+! # install-hints: hints
+! # 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/documentation
+! # 	$(INSTALL_DATA) hints $(DESTDIR)$(pkgdatadir)/documentation/hints
+  
+! # install-scripts: $(ytxt2tex_DEPS)
+! # 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/manmake/
+! # 	-for file in $(ytxt2tex_DEPS); do \
+! # 	   $(INSTALL_DATA) $(srcdir)/$$file $(DESTDIR)$(pkgdatadir)/manmake/$$file; \
+! # 	done
+  
+! # install-html: books.html 
+! # 	$(mkinstalldirs) $(DESTDIR)$(htmldir)/
+! # 	$(INSTALL_DATA) $(top_srcdir)/docs/yacaslogo.gif $(DESTDIR)$(htmldir)/
+! # 	-for file in *.html; do \
+! # 	   $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$file; \
+! # 	done
+  
+! # install-ps: ps-docs
+! # 	$(mkinstalldirs) $(DESTDIR)$(psdir)/
+! # 	-for file in $(PS_DOCS); do \
+! # 	   $(INSTALL_DATA) $$file $(DESTDIR)$(psdir)/$$file; \
+! # 	done
+  
+! # #	   gzip $(DESTDIR)$(psdir)/$$file; 
+  
+diff -crB yacas-1.2.2old/manmake/Makefile.in yacas-1.2.2new/manmake/Makefile.in
+*** yacas-1.2.2old/manmake/Makefile.in	2007-09-27 15:24:37.000000000 +0200
+--- yacas-1.2.2new/manmake/Makefile.in	2010-05-01 00:27:59.000000000 +0200
+***************
+*** 1,598 ****
+! # Makefile.in generated by automake 1.6.3 from Makefile.am.
+! # @configure_input@
+  
+! # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002
+! # Free Software Foundation, Inc.
+! # This Makefile.in is free software; the Free Software Foundation
+! # gives unlimited permission to copy and/or distribute it,
+! # with or without modifications, as long as this notice is preserved.
+! 
+! # This program is distributed in the hope that it will be useful,
+! # but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+! # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+! # PARTICULAR PURPOSE.
+! 
+! @SET_MAKE@
+! 
+! # $(srcdir) is the manmake/ directory and $(top_srcdir) is the Yacas tree
+! # so this file should work even if we are building Yacas in a different directory
+! SHELL = @SHELL@
+! 
+! srcdir = @srcdir@
+! top_srcdir = @top_srcdir@
+! VPATH = @srcdir@
+! prefix = @prefix@
+! exec_prefix = @exec_prefix@
+! 
+! bindir = @bindir@
+! sbindir = @sbindir@
+! libexecdir = @libexecdir@
+! datadir = @datadir@
+! sysconfdir = @sysconfdir@
+! sharedstatedir = @sharedstatedir@
+! localstatedir = @localstatedir@
+! libdir = @libdir@
+! infodir = @infodir@
+! mandir = @mandir@
+! includedir = @includedir@
+! oldincludedir = /usr/include
+! pkgdatadir = $(datadir)/@PACKAGE@
+! pkglibdir = $(libdir)/@PACKAGE@
+! pkgincludedir = $(includedir)/@PACKAGE@
+! top_builddir = ..
+! 
+! ACLOCAL = @ACLOCAL@
+! AUTOCONF = @AUTOCONF@
+! AUTOMAKE = @AUTOMAKE@
+! AUTOHEADER = @AUTOHEADER@
+! 
+! am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
+! INSTALL = @INSTALL@
+! INSTALL_PROGRAM = @INSTALL_PROGRAM@
+! INSTALL_DATA = @INSTALL_DATA@
+! install_sh_DATA = $(install_sh) -c -m 644
+! install_sh_PROGRAM = $(install_sh) -c
+! install_sh_SCRIPT = $(install_sh) -c
+! INSTALL_SCRIPT = @INSTALL_SCRIPT@
+! INSTALL_HEADER = $(INSTALL_DATA)
+! transform = @program_transform_name@
+! NORMAL_INSTALL = :
+! PRE_INSTALL = :
+! POST_INSTALL = :
+! NORMAL_UNINSTALL = :
+! PRE_UNINSTALL = :
+! POST_UNINSTALL = :
+! host_alias = @host_alias@
+! host_triplet = @host@
+! 
+! EXEEXT = @EXEEXT@
+! OBJEXT = @OBJEXT@
+! PATH_SEPARATOR = @PATH_SEPARATOR@
+! AMTAR = @AMTAR@
+! AR = @AR@
+! AWK = @AWK@
+! BOOKS_HTML = @BOOKS_HTML@
+! CC = @CC@
+! CHECK_ARCHIVE = @CHECK_ARCHIVE@
+! COMPRESSOR_PRG = @COMPRESSOR_PRG@
+! CPP = @CPP@
+! CXX = @CXX@
+! DEPDIR = @DEPDIR@
+! INSTALL_ARCHIVE = @INSTALL_ARCHIVE@
+! INSTALL_HTML = @INSTALL_HTML@
+! INSTALL_PS = @INSTALL_PS@
+! INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+! PACKAGE = @PACKAGE@
+! 
+! PDF_DOCS = intro.book.pdf coding.book.pdf essays.book.pdf ref.book.pdf \
+! 	refprog.book.pdf Algo.book.pdf 
+! 
+! 
+! PS_DOCS = intro.book.ps coding.book.ps essays.book.ps ref.book.ps \
+! 	refprog.book.ps Algo.book.ps 
+! 
+! RELEASE = @RELEASE@
+! SCRIPTS_DAT = @SCRIPTS_DAT@
+! STRIP = @STRIP@
+! VERSION = @VERSION@
+! am__include = @am__include@
+! am__quote = @am__quote@
+! have_dvips = @have_dvips@
+! have_gzip = @have_gzip@
+! have_latex = @have_latex@
+! have_makeindex = @have_makeindex@
+! have_pdflatex = @have_pdflatex@
+! have_perl = @have_perl@
+! htmldir = @htmldir@
+! install_sh = @install_sh@
+! psdir = @psdir@
+! scriptdir = @scriptdir@
+! 
+! # newly compiled version of yacas in ../src (not necessarily under $(srcdir))
+! ouryacas = ../src/yacas --rootdir $(top_srcdir)/scripts/:../scripts/
+! 
+! noinst_PROGRAMS = manripper removeduplicates
+! 
+! manripper_SOURCES = manripper.cpp 
+! 
+! removeduplicates_SOURCES = removeduplicates.cpp
+! 
+! bin_SCRIPTS = ytxt2tex
+! ytxt2tex_DEPS = book2TeX.sh book2TeX.ys txt2yacasdoc.pl
+! 
+! BOOKS = intro.book coding.book ref.book refprog.book essays.book \
+! 	Algo.book 
+! 
+! 
+! BOOKSOURCES = intro.book.txt coding.book.txt ref.book.txt refprog.book.txt \
+! 	essays.book.txt Algo.book.txt 
+! 
+! 
+! # refprog.html is not listed because it is generated together with ref.html
+! HTMLBOOKS = intromanual.html codingmanual.html essaysmanual.html refmanual.html refprogmanual.html \
+! 	Algomanual.html 
+! 
+! 
+! INTROCHAPTERS = FDL.chapt cl-options.chapt config.chapt addons.chapt  
+! 
+! INTROSOURCES = FDL.chapt.txt cl-options.chapt.txt config.chapt.txt addons.chapt.txt 
+! 
+! ALGOCHAPTERS = algo-basic.chapt algo-numapprox.chapt \
+! 	algorithms-elemfunc.chapt algorithms-specfunc.chapt \
+! 	algorithms-numtheory.chapt algorithms-integration.chapt \
+! 	algorithms-multivar.chapt SturmSequences.chapt FDL.chapt \
+! 	algo-refs.chapt algo-contfrac.chapt algorithms-transforms.chapt
+! 
+! 
+! ALGOSOURCES = algo-basic.chapt.txt algo-numapprox.chapt.txt \
+! 	algorithms-elemfunc.chapt.txt algorithms-specfunc.chapt.txt \
+! 	algorithms-numtheory.chapt.txt algorithms-integration.chapt.txt \
+! 	algorithms-multivar.chapt.txt SturmSequences.chapt.txt FDL.chapt.txt \
+! 	algo-refs.chapt.txt algo-contfrac.chapt.txt algorithms-transforms.chapt.txt
+! 
+! 
+! REFCHAPTERS = arith.chapt calc.chapt complex.chapt solvers.chapt simplify.chapt ode.chapt linalg.chapt \
+! 	univar.chapt lists.chapt functional.chapt controlflow.chapt \
+! 	preds.chapt logic.chapt const.chapt vars.chapt io.chapt \
+! 	numtheory.chapt strings.chapt transforms.chapt cl-options.chapt \
+! 	probability-and-statistics.chapt FDL.chapt 
+! 
+! 
+! REFSOURCES = arith.chapt.txt calc.chapt.txt complex.chapt.txt \
+! 	solvers.chapt.txt simplify.chapt.txt ode.chapt.txt \
+! 	linalg.chapt.txt univar.chapt.txt lists.chapt.txt cl-options.chapt.txt \
+! 	functional.chapt.txt controlflow.chapt.txt preds.chapt.txt \
+! 	logic.chapt.txt const.chapt.txt vars.chapt.txt io.chapt.txt \
+! 	numtheory.chapt.txt strings.chapt.txt transforms.chapt.txt \
+! 	probability-and-statistics.chapt.txt FDL.chapt.txt 
+! 
+! 
+! REFPROGCHAPTERS = FDL.chapt glossary.chapt \
+! 	GPL.chapt numerics.chapt
+! 
+! # GPL.chapt has no .txt source
+! REFPROGSOURCES = FDL.chapt.txt glossary.chapt.txt \
+! 	numerics.chapt.txt
+! 
+! 
+! CODINGCHAPTERS = YacasDebugger.chapt FDL.chapt
+! CODINGSOURCES = YacasDebugger.chapt.txt FDL.chapt.txt
+! 
+! ESSAYCHAPTERS = ABIN-grammar.chapt \
+! 	SimpleTools.chapt CVS-Howto.chapt YacasDocs.chapt \
+! 	wester-1994.chapt new.chapt paper.chapt \
+! 	wordproblems.chapt FDL.chapt BuildSystem.chapt 
+! 
+! 
+! ESSAYSOURCES = ABIN-grammar.chapt.txt \
+! 	SimpleTools.chapt.txt CVS-Howto.chapt.txt YacasDocs.chapt.txt \
+!         paper.chapt.txt wester-1994.chapt.txt new.chapt.txt \
+! 	wordproblems.chapt.txt FDL.chapt.txt BuildSystem.chapt.txt 
+! 
+! 
+! # Yacas test code extracted from the docs
+! TESTCODESNIPPETS = wester-1994.yts ref.book.yts refprog.book.yts
+! 
+! check_SCRIPTS = $(TESTCODESNIPPETS)
+! 
+! EXTRA_DIST = txt2example.pl book2txt.sh book2txt.ys \
+! 	book2xml.sh book2xml.ys \
+! 	book2ys.sh book2ys.ys ys2book.pl \
+! 	ytxt2tex $(ytxt2tex_DEPS) \
+! 	manualmaker indexmaker styleplain \
+! 	$(REFSOURCES) $(BOOKSOURCES) $(ESSAYSOURCES) $(CODINGSOURCES) \
+! 	$(INTROSOURCES) \
+! 	$(REFPROGSOURCES) $(ALGOSOURCES)  \
+! 	dummies hints
+! 
+! 
+! 
+! # Stuff for automatic generation of Yacas books
+! SUFFIXES = .chapt.txt .chapt .book.tex .book.txt .book .tex .dvi .ps .pdf .ys
+! 
+! CLEANFILES = books.html *.tex *.dvi *.aux *.idx *.ind *.ilg *.toc *.log *.ps *.pdf *.funcs.js \
+! 	coding*.html intro*.html ref*.html essays*.html Algo*.html  *.o core *~ texdocs.c \
+! 	$(REFCHAPTERS) $(ESSAYCHAPTERS) $(REFPROGCHAPTERS) $(CODINGCHAPTERS)  \
+! 	$(TESTCODESNIPPETS) $(ALGOCHAPTERS) $(BOOKS) manicon.html 
+! 
+! subdir = manmake
+! mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+! CONFIG_HEADER = $(top_builddir)/config.h
+! CONFIG_CLEAN_FILES =
+! noinst_PROGRAMS = manripper$(EXEEXT) removeduplicates$(EXEEXT)
+! PROGRAMS = $(noinst_PROGRAMS)
+! 
+! am_manripper_OBJECTS = manripper.$(OBJEXT)
+! manripper_OBJECTS = $(am_manripper_OBJECTS)
+! manripper_LDADD = $(LDADD)
+! manripper_DEPENDENCIES =
+! manripper_LDFLAGS =
+! am_removeduplicates_OBJECTS = removeduplicates.$(OBJEXT)
+! removeduplicates_OBJECTS = $(am_removeduplicates_OBJECTS)
+! removeduplicates_LDADD = $(LDADD)
+! removeduplicates_DEPENDENCIES =
+! removeduplicates_LDFLAGS =
+! SCRIPTS = $(bin_SCRIPTS)
+! 
+! 
+! DEFS = @DEFS@
+! DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
+! CPPFLAGS = @CPPFLAGS@
+! LDFLAGS = @LDFLAGS@
+! LIBS = @LIBS@
+! depcomp = $(SHELL) $(top_srcdir)/depcomp
+! am__depfiles_maybe = depfiles
+! @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/manripper.Po \
+! @AMDEP_TRUE@	./$(DEPDIR)/removeduplicates.Po
+! CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+! 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+! CXXLD = $(CXX)
+! CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+! 	-o $@
+! CXXFLAGS = @CXXFLAGS@
+! CFLAGS = @CFLAGS@
+! COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+! 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+! CCLD = $(CC)
+! LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+! DIST_SOURCES = $(manripper_SOURCES) $(removeduplicates_SOURCES)
+! DIST_COMMON = README Makefile.am Makefile.in
+! SOURCES = $(manripper_SOURCES) $(removeduplicates_SOURCES)
+! 
+! all: all-am
+! 
+! .SUFFIXES:
+! .SUFFIXES: .chapt.txt .chapt .book.tex .book.txt .book .tex .dvi .ps .pdf .ys .cpp .o .obj .yts
+! $(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+! 	cd $(top_srcdir) && \
+! 	  $(AUTOMAKE) --gnu  manmake/Makefile
+! Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
+! 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
+! 
+! clean-noinstPROGRAMS:
+! 	-test -z "$(noinst_PROGRAMS)" || rm -f $(noinst_PROGRAMS)
+! manripper$(EXEEXT): $(manripper_OBJECTS) $(manripper_DEPENDENCIES) 
+! 	@rm -f manripper$(EXEEXT)
+! 	$(CXXLINK) $(manripper_LDFLAGS) $(manripper_OBJECTS) $(manripper_LDADD) $(LIBS)
+! removeduplicates$(EXEEXT): $(removeduplicates_OBJECTS) $(removeduplicates_DEPENDENCIES) 
+! 	@rm -f removeduplicates$(EXEEXT)
+! 	$(CXXLINK) $(removeduplicates_LDFLAGS) $(removeduplicates_OBJECTS) $(removeduplicates_LDADD) $(LIBS)
+! binSCRIPT_INSTALL = $(INSTALL_SCRIPT)
+! install-binSCRIPTS: $(bin_SCRIPTS)
+! 	@$(NORMAL_INSTALL)
+! 	$(mkinstalldirs) $(DESTDIR)$(bindir)
+! 	@list='$(bin_SCRIPTS)'; for p in $$list; do \
+! 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+! 	  if test -f $$d$$p; then \
+! 	    f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
+! 	    echo " $(binSCRIPT_INSTALL) $$d$$p $(DESTDIR)$(bindir)/$$f"; \
+! 	    $(binSCRIPT_INSTALL) $$d$$p $(DESTDIR)$(bindir)/$$f; \
+! 	  else :; fi; \
+! 	done
+! 
+! uninstall-binSCRIPTS:
+! 	@$(NORMAL_UNINSTALL)
+! 	@list='$(bin_SCRIPTS)'; for p in $$list; do \
+! 	  f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
+! 	  echo " rm -f $(DESTDIR)$(bindir)/$$f"; \
+! 	  rm -f $(DESTDIR)$(bindir)/$$f; \
+! 	done
+! 
+! mostlyclean-compile:
+! 	-rm -f *.$(OBJEXT) core *.core
+! 
+! distclean-compile:
+! 	-rm -f *.tab.c
+! 
+! @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manripper.Po@am__quote@
+! @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/removeduplicates.Po@am__quote@
+! 
+! distclean-depend:
+! 	-rm -rf ./$(DEPDIR)
+! 
+! .cpp.o:
+! @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+! @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+! @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+! 	$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+! 
+! .cpp.obj:
+! @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+! @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+! @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+! 	$(CXXCOMPILE) -c -o $@ `cygpath -w $<`
+! CXXDEPMODE = @CXXDEPMODE@
+! uninstall-info-am:
+! 
+! ETAGS = etags
+! ETAGSFLAGS =
+! 
+! tags: TAGS
+! 
+! ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
+! 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
+! 	unique=`for i in $$list; do \
+! 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+! 	  done | \
+! 	  $(AWK) '    { files[$$0] = 1; } \
+! 	       END { for (i in files) print i; }'`; \
+! 	mkid -fID $$unique
+! 
+! TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+! 		$(TAGS_FILES) $(LISP)
+! 	tags=; \
+! 	here=`pwd`; \
+! 	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
+! 	unique=`for i in $$list; do \
+! 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+! 	  done | \
+! 	  $(AWK) '    { files[$$0] = 1; } \
+! 	       END { for (i in files) print i; }'`; \
+! 	test -z "$(ETAGS_ARGS)$$tags$$unique" \
+! 	  || $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
+! 	     $$tags $$unique
+! 
+! GTAGS:
+! 	here=`$(am__cd) $(top_builddir) && pwd` \
+! 	  && cd $(top_srcdir) \
+! 	  && gtags -i $(GTAGS_ARGS) $$here
+! 
+! distclean-tags:
+! 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH
+! DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+! 
+! top_distdir = ..
+! distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
+! 
+! distdir: $(DISTFILES)
+! 	@list='$(DISTFILES)'; for file in $$list; do \
+! 	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
+! 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
+! 	  if test "$$dir" != "$$file" && test "$$dir" != "."; then \
+! 	    dir="/$$dir"; \
+! 	    $(mkinstalldirs) "$(distdir)$$dir"; \
+! 	  else \
+! 	    dir=''; \
+! 	  fi; \
+! 	  if test -d $$d/$$file; then \
+! 	    if test -d $(srcdir)/$$file && test $$d != $(srcdir); then \
+! 	      cp -pR $(srcdir)/$$file $(distdir)$$dir || exit 1; \
+! 	    fi; \
+! 	    cp -pR $$d/$$file $(distdir)$$dir || exit 1; \
+! 	  else \
+! 	    test -f $(distdir)/$$file \
+! 	    || cp -p $$d/$$file $(distdir)/$$file \
+! 	    || exit 1; \
+! 	  fi; \
+! 	done
+! check-am: all-am
+! 	$(MAKE) $(AM_MAKEFLAGS) $(check_SCRIPTS)
+! check: check-am
+! all-am: Makefile $(PROGRAMS) $(SCRIPTS)
+! 
+! installdirs:
+! 	$(mkinstalldirs) $(DESTDIR)$(bindir)
+! 
+! install: install-am
+! install-exec: install-exec-am
+! install-data: install-data-am
+! uninstall: uninstall-am
+! 
+! install-am: all-am
+! 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+! 
+! installcheck: installcheck-am
+! install-strip:
+! 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+! 	  INSTALL_STRIP_FLAG=-s \
+! 	  `test -z '$(STRIP)' || \
+! 	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
+! mostlyclean-generic:
+! 
+! clean-generic:
+! 	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
+! 
+! distclean-generic:
+! 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+! 
+! maintainer-clean-generic:
+! 	@echo "This command is intended for maintainers to use"
+! 	@echo "it deletes files that may require special tools to rebuild."
+! clean: clean-am
+! 
+! clean-am: clean-generic clean-noinstPROGRAMS mostlyclean-am
+! 
+! distclean: distclean-am
+! 
+! distclean-am: clean-am distclean-compile distclean-depend \
+! 	distclean-generic distclean-tags
+! 
+! dvi: dvi-am
+! 
+! dvi-am:
+! 
+! info: info-am
+! 
+! info-am:
+! 
+! install-data-am: install-data-local
+! 
+! install-exec-am: install-binSCRIPTS
+! 
+! install-info: install-info-am
+! 
+! install-man:
+! 
+! installcheck-am:
+! 
+! maintainer-clean: maintainer-clean-am
+! 
+! maintainer-clean-am: distclean-am maintainer-clean-generic
+! 
+! mostlyclean: mostlyclean-am
+! 
+! mostlyclean-am: mostlyclean-compile mostlyclean-generic
+! 
+! uninstall-am: uninstall-binSCRIPTS uninstall-info-am
+! 
+! .PHONY: GTAGS all all-am check check-am clean clean-generic \
+! 	clean-noinstPROGRAMS distclean distclean-compile \
+! 	distclean-depend distclean-generic distclean-tags distdir dvi \
+! 	dvi-am info info-am install install-am install-binSCRIPTS \
+! 	install-data install-data-am install-data-local install-exec \
+! 	install-exec-am install-info install-info-am install-man \
+! 	install-strip installcheck installcheck-am installdirs \
+! 	maintainer-clean maintainer-clean-generic mostlyclean \
+! 	mostlyclean-compile mostlyclean-generic tags uninstall \
+! 	uninstall-am uninstall-binSCRIPTS uninstall-info-am
+! 
+! 
+! # top target
+! all-am: @BOOKS_HTML@ @PS_DOCS@ @PDF_DOCS@ hints
+! 
+! hints: manripper removeduplicates $(REFSOURCES) $(REFPROGSOURCES) ref.book.txt refprog.book.txt
+! 	rm -f hints.unsorted
+! 	for file in ref.book.txt $(REFSOURCES) refprog.book.txt $(REFPROGSOURCES); do \
+! 	./manripper $(srcdir)/"$$file" >> hints.unsorted ; done
+! 	sort -t ":" hints.unsorted > hints.sorted
+! 	./removeduplicates hints.sorted hints.singlesorted
+! 	echo "::::" > tail.txt
+! 	cat hints.singlesorted tail.txt > hints
+! 
+! .chapt.txt.chapt:
+! 	perl $(srcdir)/txt2yacasdoc.pl < $< > $@
+! 
+! .book.txt.book:
+! 	perl $(srcdir)/txt2yacasdoc.pl < $< > $@
+! 
+! .book.book.tex: 
+! 	sh $(srcdir)/book2TeX.sh -run "$(ouryacas)" $< $@
+! 
+! .tex.dvi:
+! 	latex $< > /dev/null
+! 	latex $< > /dev/null
+! # The perl filter is used to help the 'makeindex' command: 
+! # 1) replace \verb|...| by \verb=...= 
+! # 2) escape ()|@! using a preceding quote "
+! # Note that @ and ! are not always escaped because they are sometimes part of the index entry and sometimes control chars. Heuristics are used to guess correctly.
+! 	@perl -pe 's/(\\verb)\|([^|]*)\|/$$1=$$2=/g;s/([()|])/"$$1/g;if(/\@/){s/!/"!/g;};s/\@([^\\])/"\@$$1/g;'<$*.idx>$*.1.idx
+! 	@makeindex $*.1.idx -o $*.ind || echo "***Warning: a problem with 'makeindex'"
+! 	latex $< > /dev/null
+! 
+! .dvi.ps:
+! 	dvips -q -o $@ $<
+! 	@echo "***Documentation created:" $*.ps
+! 
+! .dvi.pdf:
+! 	pdflatex $* > /dev/null
+! 	@echo "***Documentation created:" $*.pdf
+! 
+! .chapt.ys:
+! 	sh $(srcdir)/book2ys.sh -run "$(ouryacas)" $< $@
+! 
+! .chapt.yts:
+! 	sh $(srcdir)/book2ys.sh -run "$(ouryacas)" $< $@
+! 
+! # generate test code from book sources
+! 
+! ref.book.yts: $(REFSOURCES) $(srcdir)/txt2example.pl
+! 	@echo "// tests for ref.book" > $@
+! 	for file in $(REFSOURCES); do perl $(srcdir)/txt2example.pl $(srcdir)/$$file >> $@; done
+! 
+! refprog.book.yts: $(REFPROGSOURCES) $(srcdir)/txt2example.pl
+! 	@echo "// tests for refprog.book" > $@
+! 	for file in $(REFPROGSOURCES); do perl $(srcdir)/txt2example.pl $(srcdir)/$$file >> $@; done
+! 
+! # specify books that need chapters
+! essays.book.tex: essays.book $(ESSAYCHAPTERS)
+! ref.book.tex : ref.book $(REFCHAPTERS)
+! refprog.book.tex : refprog.book $(REFPROGCHAPTERS)
+! coding.book.tex : coding.book $(CODINGCHAPTERS)
+! intro.book.tex: intro.book $(INTROCHAPTERS)
+! Algo.book.tex: Algo.book $(ALGOCHAPTERS)
+! 
+! # special "virtual" chapter built from corefunctions.h. This is printed by a special program "gencorefunctions", compiled together with yacas.
+! 
+! # special chapter copied from the GPL (need to replace "<" and ">")
+! GPL.chapt: $(top_srcdir)/COPYING
+! 	cat $(top_srcdir)/COPYING | sed -e 's,<,{<},g;s,>,{>},g;' | perl $(srcdir)/txt2yacasdoc.pl > $@
+! 
+! ps-docs: $(PS_DOCS)
+! pdf-docs: $(PDF_DOCS)
+! 
+! # The top HTML docs target is now "manicon.html" that is built by GenerateIndex().
+! # The dependence on $(HTMLBOOKS) is only to make sure that all HTML docs
+! # are built - in fact manicon.html is a constant file and has no dependencies.
+! manicon.html:  books.html $(HTMLBOOKS)
+! 
+! # books.html only depends on top book files (*.book.txt).
+! books.html:  $(BOOKS) $(srcdir)/indexmaker $(srcdir)/styleplain
+! 	-echo '[DefaultDirectory("$(srcdir)/"); Use("indexmaker"); GenerateIndex();];' | $(ouryacas) -fpc
+! 
+! intromanual.html : intro.book $(INTROCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("intro");];' | $(ouryacas) -fpc
+! 
+! codingmanual.html : coding.book $(CODINGCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("coding");];' | $(ouryacas) -fpc
+! 
+! essaysmanual.html : essays.book $(ESSAYCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("essays");];' | $(ouryacas) -fpc
+! 
+! refmanual.html : ref.book $(REFCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("ref");];'    | $(ouryacas) -fpc
+! 
+! refprogmanual.html : ref.book $(REFCHAPTERS) refprog.book $(REFPROGCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("refprog");];' | $(ouryacas) -fpc
+! 
+! Algomanual.html : Algo.book $(ALGOCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("Algo");];' | $(ouryacas) -fpc
+! 
+! install-data-local: @INSTALL_HTML@ @INSTALL_PS@ install-scripts install-hints
+! 
+! install-hints: hints
+! 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/documentation
+! 	$(INSTALL_DATA) hints $(DESTDIR)$(pkgdatadir)/documentation/hints
+! 
+! install-scripts: $(ytxt2tex_DEPS)
+! 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/manmake/
+! 	-for file in $(ytxt2tex_DEPS); do \
+! 	   $(INSTALL_DATA) $(srcdir)/$$file $(DESTDIR)$(pkgdatadir)/manmake/$$file; \
+! 	done
+! 
+! install-html: books.html 
+! 	$(mkinstalldirs) $(DESTDIR)$(htmldir)/
+! 	$(INSTALL_DATA) $(top_srcdir)/docs/yacaslogo.gif $(DESTDIR)$(htmldir)/
+! 	-for file in *.html; do \
+! 	   $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$file; \
+! 	done
+! 
+! install-ps: ps-docs
+! 	$(mkinstalldirs) $(DESTDIR)$(psdir)/
+! 	-for file in $(PS_DOCS); do \
+! 	   $(INSTALL_DATA) $$file $(DESTDIR)$(psdir)/$$file; \
+! 	done
+! 
+! #	   gzip $(DESTDIR)$(psdir)/$$file; 
+! # Tell versions [3.59,3.63) of GNU make to not export all variables.
+! # Otherwise a system limit (for SysV at least) may be exceeded.
+! .NOEXPORT:
+--- 1,598 ----
+! # # Makefile.in generated by automake 1.6.3 from Makefile.am.
+! # # @configure_input@
+  
+! # # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002
+! # # Free Software Foundation, Inc.
+! # # This Makefile.in is free software; the Free Software Foundation
+! # # gives unlimited permission to copy and/or distribute it,
+! # # with or without modifications, as long as this notice is preserved.
+! 
+! # # This program is distributed in the hope that it will be useful,
+! # # but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+! # # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+! # # PARTICULAR PURPOSE.
+! 
+! # @SET_MAKE@
+! 
+! # # $(srcdir) is the manmake/ directory and $(top_srcdir) is the Yacas tree
+! # # so this file should work even if we are building Yacas in a different directory
+! # SHELL = @SHELL@
+! 
+! # srcdir = @srcdir@
+! # top_srcdir = @top_srcdir@
+! # VPATH = @srcdir@
+! # prefix = @prefix@
+! # exec_prefix = @exec_prefix@
+! 
+! # bindir = @bindir@
+! # sbindir = @sbindir@
+! # libexecdir = @libexecdir@
+! # datadir = @datadir@
+! # sysconfdir = @sysconfdir@
+! # sharedstatedir = @sharedstatedir@
+! # localstatedir = @localstatedir@
+! # libdir = @libdir@
+! # infodir = @infodir@
+! # mandir = @mandir@
+! # includedir = @includedir@
+! # oldincludedir = /usr/include
+! # pkgdatadir = $(datadir)/@PACKAGE@
+! # pkglibdir = $(libdir)/@PACKAGE@
+! # pkgincludedir = $(includedir)/@PACKAGE@
+! # top_builddir = ..
+! 
+! # ACLOCAL = @ACLOCAL@
+! # AUTOCONF = @AUTOCONF@
+! # AUTOMAKE = @AUTOMAKE@
+! # AUTOHEADER = @AUTOHEADER@
+! 
+! # am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
+! # INSTALL = @INSTALL@
+! # INSTALL_PROGRAM = @INSTALL_PROGRAM@
+! # INSTALL_DATA = @INSTALL_DATA@
+! # install_sh_DATA = $(install_sh) -c -m 644
+! # install_sh_PROGRAM = $(install_sh) -c
+! # install_sh_SCRIPT = $(install_sh) -c
+! # INSTALL_SCRIPT = @INSTALL_SCRIPT@
+! # INSTALL_HEADER = $(INSTALL_DATA)
+! # transform = @program_transform_name@
+! # NORMAL_INSTALL = :
+! # PRE_INSTALL = :
+! # POST_INSTALL = :
+! # NORMAL_UNINSTALL = :
+! # PRE_UNINSTALL = :
+! # POST_UNINSTALL = :
+! # host_alias = @host_alias@
+! # host_triplet = @host@
+! 
+! # EXEEXT = @EXEEXT@
+! # OBJEXT = @OBJEXT@
+! # PATH_SEPARATOR = @PATH_SEPARATOR@
+! # AMTAR = @AMTAR@
+! # AR = @AR@
+! # AWK = @AWK@
+! # BOOKS_HTML = @BOOKS_HTML@
+! # CC = @CC@
+! # CHECK_ARCHIVE = @CHECK_ARCHIVE@
+! # COMPRESSOR_PRG = @COMPRESSOR_PRG@
+! # CPP = @CPP@
+! # CXX = @CXX@
+! # DEPDIR = @DEPDIR@
+! # INSTALL_ARCHIVE = @INSTALL_ARCHIVE@
+! # INSTALL_HTML = @INSTALL_HTML@
+! # INSTALL_PS = @INSTALL_PS@
+! # INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+! # PACKAGE = @PACKAGE@
+! 
+! # PDF_DOCS = intro.book.pdf coding.book.pdf essays.book.pdf ref.book.pdf \
+! # 	refprog.book.pdf Algo.book.pdf 
+! 
+! 
+! # PS_DOCS = intro.book.ps coding.book.ps essays.book.ps ref.book.ps \
+! # 	refprog.book.ps Algo.book.ps 
+! 
+! # RELEASE = @RELEASE@
+! # SCRIPTS_DAT = @SCRIPTS_DAT@
+! # STRIP = @STRIP@
+! # VERSION = @VERSION@
+! # am__include = @am__include@
+! # am__quote = @am__quote@
+! # have_dvips = @have_dvips@
+! # have_gzip = @have_gzip@
+! # have_latex = @have_latex@
+! # have_makeindex = @have_makeindex@
+! # have_pdflatex = @have_pdflatex@
+! # have_perl = @have_perl@
+! # htmldir = @htmldir@
+! # install_sh = @install_sh@
+! # psdir = @psdir@
+! # scriptdir = @scriptdir@
+! 
+! # # newly compiled version of yacas in ../src (not necessarily under $(srcdir))
+! # ouryacas = ../src/yacas --rootdir $(top_srcdir)/scripts/:../scripts/
+! 
+! # noinst_PROGRAMS = manripper removeduplicates
+! 
+! # manripper_SOURCES = manripper.cpp 
+! 
+! # removeduplicates_SOURCES = removeduplicates.cpp
+! 
+! # bin_SCRIPTS = ytxt2tex
+! # ytxt2tex_DEPS = book2TeX.sh book2TeX.ys txt2yacasdoc.pl
+! 
+! # BOOKS = intro.book coding.book ref.book refprog.book essays.book \
+! # 	Algo.book 
+! 
+! 
+! # BOOKSOURCES = intro.book.txt coding.book.txt ref.book.txt refprog.book.txt \
+! # 	essays.book.txt Algo.book.txt 
+! 
+! 
+! # # refprog.html is not listed because it is generated together with ref.html
+! # HTMLBOOKS = intromanual.html codingmanual.html essaysmanual.html refmanual.html refprogmanual.html \
+! # 	Algomanual.html 
+! 
+! 
+! # INTROCHAPTERS = FDL.chapt cl-options.chapt config.chapt addons.chapt  
+! 
+! # INTROSOURCES = FDL.chapt.txt cl-options.chapt.txt config.chapt.txt addons.chapt.txt 
+! 
+! # ALGOCHAPTERS = algo-basic.chapt algo-numapprox.chapt \
+! # 	algorithms-elemfunc.chapt algorithms-specfunc.chapt \
+! # 	algorithms-numtheory.chapt algorithms-integration.chapt \
+! # 	algorithms-multivar.chapt SturmSequences.chapt FDL.chapt \
+! # 	algo-refs.chapt algo-contfrac.chapt algorithms-transforms.chapt
+! 
+! 
+! # ALGOSOURCES = algo-basic.chapt.txt algo-numapprox.chapt.txt \
+! # 	algorithms-elemfunc.chapt.txt algorithms-specfunc.chapt.txt \
+! # 	algorithms-numtheory.chapt.txt algorithms-integration.chapt.txt \
+! # 	algorithms-multivar.chapt.txt SturmSequences.chapt.txt FDL.chapt.txt \
+! # 	algo-refs.chapt.txt algo-contfrac.chapt.txt algorithms-transforms.chapt.txt
+! 
+! 
+! # REFCHAPTERS = arith.chapt calc.chapt complex.chapt solvers.chapt simplify.chapt ode.chapt linalg.chapt \
+! # 	univar.chapt lists.chapt functional.chapt controlflow.chapt \
+! # 	preds.chapt logic.chapt const.chapt vars.chapt io.chapt \
+! # 	numtheory.chapt strings.chapt transforms.chapt cl-options.chapt \
+! # 	probability-and-statistics.chapt FDL.chapt 
+! 
+! 
+! # REFSOURCES = arith.chapt.txt calc.chapt.txt complex.chapt.txt \
+! # 	solvers.chapt.txt simplify.chapt.txt ode.chapt.txt \
+! # 	linalg.chapt.txt univar.chapt.txt lists.chapt.txt cl-options.chapt.txt \
+! # 	functional.chapt.txt controlflow.chapt.txt preds.chapt.txt \
+! # 	logic.chapt.txt const.chapt.txt vars.chapt.txt io.chapt.txt \
+! # 	numtheory.chapt.txt strings.chapt.txt transforms.chapt.txt \
+! # 	probability-and-statistics.chapt.txt FDL.chapt.txt 
+! 
+! 
+! # REFPROGCHAPTERS = FDL.chapt glossary.chapt \
+! # 	GPL.chapt numerics.chapt
+! 
+! # # GPL.chapt has no .txt source
+! # REFPROGSOURCES = FDL.chapt.txt glossary.chapt.txt \
+! # 	numerics.chapt.txt
+! 
+! 
+! # CODINGCHAPTERS = YacasDebugger.chapt FDL.chapt
+! # CODINGSOURCES = YacasDebugger.chapt.txt FDL.chapt.txt
+! 
+! # ESSAYCHAPTERS = ABIN-grammar.chapt \
+! # 	SimpleTools.chapt CVS-Howto.chapt YacasDocs.chapt \
+! # 	wester-1994.chapt new.chapt paper.chapt \
+! # 	wordproblems.chapt FDL.chapt BuildSystem.chapt 
+! 
+! 
+! # ESSAYSOURCES = ABIN-grammar.chapt.txt \
+! # 	SimpleTools.chapt.txt CVS-Howto.chapt.txt YacasDocs.chapt.txt \
+! #         paper.chapt.txt wester-1994.chapt.txt new.chapt.txt \
+! # 	wordproblems.chapt.txt FDL.chapt.txt BuildSystem.chapt.txt 
+! 
+! 
+! # # Yacas test code extracted from the docs
+! # TESTCODESNIPPETS = wester-1994.yts ref.book.yts refprog.book.yts
+! 
+! # check_SCRIPTS = $(TESTCODESNIPPETS)
+! 
+! # EXTRA_DIST = txt2example.pl book2txt.sh book2txt.ys \
+! # 	book2xml.sh book2xml.ys \
+! # 	book2ys.sh book2ys.ys ys2book.pl \
+! # 	ytxt2tex $(ytxt2tex_DEPS) \
+! # 	manualmaker indexmaker styleplain \
+! # 	$(REFSOURCES) $(BOOKSOURCES) $(ESSAYSOURCES) $(CODINGSOURCES) \
+! # 	$(INTROSOURCES) \
+! # 	$(REFPROGSOURCES) $(ALGOSOURCES)  \
+! # 	dummies hints
+! 
+! 
+! 
+! # # Stuff for automatic generation of Yacas books
+! # SUFFIXES = .chapt.txt .chapt .book.tex .book.txt .book .tex .dvi .ps .pdf .ys
+! 
+! # CLEANFILES = books.html *.tex *.dvi *.aux *.idx *.ind *.ilg *.toc *.log *.ps *.pdf *.funcs.js \
+! # 	coding*.html intro*.html ref*.html essays*.html Algo*.html  *.o core *~ texdocs.c \
+! # 	$(REFCHAPTERS) $(ESSAYCHAPTERS) $(REFPROGCHAPTERS) $(CODINGCHAPTERS)  \
+! # 	$(TESTCODESNIPPETS) $(ALGOCHAPTERS) $(BOOKS) manicon.html 
+! 
+! # subdir = manmake
+! # mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+! # CONFIG_HEADER = $(top_builddir)/config.h
+! # CONFIG_CLEAN_FILES =
+! # noinst_PROGRAMS = manripper$(EXEEXT) removeduplicates$(EXEEXT)
+! # PROGRAMS = $(noinst_PROGRAMS)
+! 
+! # am_manripper_OBJECTS = manripper.$(OBJEXT)
+! # manripper_OBJECTS = $(am_manripper_OBJECTS)
+! # manripper_LDADD = $(LDADD)
+! # manripper_DEPENDENCIES =
+! # manripper_LDFLAGS =
+! # am_removeduplicates_OBJECTS = removeduplicates.$(OBJEXT)
+! # removeduplicates_OBJECTS = $(am_removeduplicates_OBJECTS)
+! # removeduplicates_LDADD = $(LDADD)
+! # removeduplicates_DEPENDENCIES =
+! # removeduplicates_LDFLAGS =
+! # SCRIPTS = $(bin_SCRIPTS)
+! 
+! 
+! # DEFS = @DEFS@
+! # DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
+! # CPPFLAGS = @CPPFLAGS@
+! # LDFLAGS = @LDFLAGS@
+! # LIBS = @LIBS@
+! # depcomp = $(SHELL) $(top_srcdir)/depcomp
+! # am__depfiles_maybe = depfiles
+! # @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/manripper.Po \
+! # @AMDEP_TRUE@	./$(DEPDIR)/removeduplicates.Po
+! # CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+! # 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+! # CXXLD = $(CXX)
+! # CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+! # 	-o $@
+! # CXXFLAGS = @CXXFLAGS@
+! # CFLAGS = @CFLAGS@
+! # COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+! # 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+! # CCLD = $(CC)
+! # LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+! # DIST_SOURCES = $(manripper_SOURCES) $(removeduplicates_SOURCES)
+! # DIST_COMMON = README Makefile.am Makefile.in
+! # SOURCES = $(manripper_SOURCES) $(removeduplicates_SOURCES)
+! 
+! # all: all-am
+! 
+! # .SUFFIXES:
+! # .SUFFIXES: .chapt.txt .chapt .book.tex .book.txt .book .tex .dvi .ps .pdf .ys .cpp .o .obj .yts
+! # $(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+! # 	cd $(top_srcdir) && \
+! # 	  $(AUTOMAKE) --gnu  manmake/Makefile
+! # Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
+! # 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
+! 
+! # clean-noinstPROGRAMS:
+! # 	-test -z "$(noinst_PROGRAMS)" || rm -f $(noinst_PROGRAMS)
+! # manripper$(EXEEXT): $(manripper_OBJECTS) $(manripper_DEPENDENCIES) 
+! # 	@rm -f manripper$(EXEEXT)
+! # 	$(CXXLINK) $(manripper_LDFLAGS) $(manripper_OBJECTS) $(manripper_LDADD) $(LIBS)
+! # removeduplicates$(EXEEXT): $(removeduplicates_OBJECTS) $(removeduplicates_DEPENDENCIES) 
+! # 	@rm -f removeduplicates$(EXEEXT)
+! # 	$(CXXLINK) $(removeduplicates_LDFLAGS) $(removeduplicates_OBJECTS) $(removeduplicates_LDADD) $(LIBS)
+! # binSCRIPT_INSTALL = $(INSTALL_SCRIPT)
+! # install-binSCRIPTS: $(bin_SCRIPTS)
+! # 	@$(NORMAL_INSTALL)
+! # 	$(mkinstalldirs) $(DESTDIR)$(bindir)
+! # 	@list='$(bin_SCRIPTS)'; for p in $$list; do \
+! # 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+! # 	  if test -f $$d$$p; then \
+! # 	    f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
+! # 	    echo " $(binSCRIPT_INSTALL) $$d$$p $(DESTDIR)$(bindir)/$$f"; \
+! # 	    $(binSCRIPT_INSTALL) $$d$$p $(DESTDIR)$(bindir)/$$f; \
+! # 	  else :; fi; \
+! # 	done
+! 
+! # uninstall-binSCRIPTS:
+! # 	@$(NORMAL_UNINSTALL)
+! # 	@list='$(bin_SCRIPTS)'; for p in $$list; do \
+! # 	  f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
+! # 	  echo " rm -f $(DESTDIR)$(bindir)/$$f"; \
+! # 	  rm -f $(DESTDIR)$(bindir)/$$f; \
+! # 	done
+! 
+! # mostlyclean-compile:
+! # 	-rm -f *.$(OBJEXT) core *.core
+! 
+! # distclean-compile:
+! # 	-rm -f *.tab.c
+! 
+! # @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manripper.Po@am__quote@
+! # @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/removeduplicates.Po@am__quote@
+! 
+! # distclean-depend:
+! # 	-rm -rf ./$(DEPDIR)
+! 
+! # .cpp.o:
+! # @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+! # @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+! # @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+! # 	$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+! 
+! # .cpp.obj:
+! # @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+! # @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+! # @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+! # 	$(CXXCOMPILE) -c -o $@ `cygpath -w $<`
+! # CXXDEPMODE = @CXXDEPMODE@
+! # uninstall-info-am:
+! 
+! # ETAGS = etags
+! # ETAGSFLAGS =
+! 
+! # tags: TAGS
+! 
+! # ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
+! # 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
+! # 	unique=`for i in $$list; do \
+! # 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+! # 	  done | \
+! # 	  $(AWK) '    { files[$$0] = 1; } \
+! # 	       END { for (i in files) print i; }'`; \
+! # 	mkid -fID $$unique
+! 
+! # TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+! # 		$(TAGS_FILES) $(LISP)
+! # 	tags=; \
+! # 	here=`pwd`; \
+! # 	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
+! # 	unique=`for i in $$list; do \
+! # 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+! # 	  done | \
+! # 	  $(AWK) '    { files[$$0] = 1; } \
+! # 	       END { for (i in files) print i; }'`; \
+! # 	test -z "$(ETAGS_ARGS)$$tags$$unique" \
+! # 	  || $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
+! # 	     $$tags $$unique
+! 
+! # GTAGS:
+! # 	here=`$(am__cd) $(top_builddir) && pwd` \
+! # 	  && cd $(top_srcdir) \
+! # 	  && gtags -i $(GTAGS_ARGS) $$here
+! 
+! # distclean-tags:
+! # 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH
+! # DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+! 
+! # top_distdir = ..
+! # distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
+! 
+! # distdir: $(DISTFILES)
+! # 	@list='$(DISTFILES)'; for file in $$list; do \
+! # 	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
+! # 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
+! # 	  if test "$$dir" != "$$file" && test "$$dir" != "."; then \
+! # 	    dir="/$$dir"; \
+! # 	    $(mkinstalldirs) "$(distdir)$$dir"; \
+! # 	  else \
+! # 	    dir=''; \
+! # 	  fi; \
+! # 	  if test -d $$d/$$file; then \
+! # 	    if test -d $(srcdir)/$$file && test $$d != $(srcdir); then \
+! # 	      cp -pR $(srcdir)/$$file $(distdir)$$dir || exit 1; \
+! # 	    fi; \
+! # 	    cp -pR $$d/$$file $(distdir)$$dir || exit 1; \
+! # 	  else \
+! # 	    test -f $(distdir)/$$file \
+! # 	    || cp -p $$d/$$file $(distdir)/$$file \
+! # 	    || exit 1; \
+! # 	  fi; \
+! # 	done
+! # check-am: all-am
+! # 	$(MAKE) $(AM_MAKEFLAGS) $(check_SCRIPTS)
+! # check: check-am
+! # all-am: Makefile $(PROGRAMS) $(SCRIPTS)
+! 
+! # installdirs:
+! # 	$(mkinstalldirs) $(DESTDIR)$(bindir)
+! 
+! # install: install-am
+! # install-exec: install-exec-am
+! # install-data: install-data-am
+! # uninstall: uninstall-am
+! 
+! # install-am: all-am
+! # 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+! 
+! # installcheck: installcheck-am
+! # install-strip:
+! # 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+! # 	  INSTALL_STRIP_FLAG=-s \
+! # 	  `test -z '$(STRIP)' || \
+! # 	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
+! # mostlyclean-generic:
+! 
+! # clean-generic:
+! # 	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
+! 
+! # distclean-generic:
+! # 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+! 
+! # maintainer-clean-generic:
+! # 	@echo "This command is intended for maintainers to use"
+! # 	@echo "it deletes files that may require special tools to rebuild."
+! # clean: clean-am
+! 
+! # clean-am: clean-generic clean-noinstPROGRAMS mostlyclean-am
+! 
+! # distclean: distclean-am
+! 
+! # distclean-am: clean-am distclean-compile distclean-depend \
+! # 	distclean-generic distclean-tags
+! 
+! # dvi: dvi-am
+! 
+! # dvi-am:
+! 
+! # info: info-am
+! 
+! # info-am:
+! 
+! # install-data-am: install-data-local
+! 
+! # install-exec-am: install-binSCRIPTS
+! 
+! # install-info: install-info-am
+! 
+! # install-man:
+! 
+! # installcheck-am:
+! 
+! # maintainer-clean: maintainer-clean-am
+! 
+! # maintainer-clean-am: distclean-am maintainer-clean-generic
+! 
+! # mostlyclean: mostlyclean-am
+! 
+! # mostlyclean-am: mostlyclean-compile mostlyclean-generic
+! 
+! # uninstall-am: uninstall-binSCRIPTS uninstall-info-am
+! 
+! # .PHONY: GTAGS all all-am check check-am clean clean-generic \
+! # 	clean-noinstPROGRAMS distclean distclean-compile \
+! # 	distclean-depend distclean-generic distclean-tags distdir dvi \
+! # 	dvi-am info info-am install install-am install-binSCRIPTS \
+! # 	install-data install-data-am install-data-local install-exec \
+! # 	install-exec-am install-info install-info-am install-man \
+! # 	install-strip installcheck installcheck-am installdirs \
+! # 	maintainer-clean maintainer-clean-generic mostlyclean \
+! # 	mostlyclean-compile mostlyclean-generic tags uninstall \
+! # 	uninstall-am uninstall-binSCRIPTS uninstall-info-am
+! 
+! 
+! # # top target
+! # all-am: @BOOKS_HTML@ @PS_DOCS@ @PDF_DOCS@ hints
+! 
+! # hints: manripper removeduplicates $(REFSOURCES) $(REFPROGSOURCES) ref.book.txt refprog.book.txt
+! # 	rm -f hints.unsorted
+! # 	for file in ref.book.txt $(REFSOURCES) refprog.book.txt $(REFPROGSOURCES); do \
+! # 	./manripper $(srcdir)/"$$file" >> hints.unsorted ; done
+! # 	sort -t ":" hints.unsorted > hints.sorted
+! # 	./removeduplicates hints.sorted hints.singlesorted
+! # 	echo "::::" > tail.txt
+! # 	cat hints.singlesorted tail.txt > hints
+! 
+! # .chapt.txt.chapt:
+! # 	perl $(srcdir)/txt2yacasdoc.pl < $< > $@
+! 
+! # .book.txt.book:
+! # 	perl $(srcdir)/txt2yacasdoc.pl < $< > $@
+! 
+! # .book.book.tex: 
+! # 	sh $(srcdir)/book2TeX.sh -run "$(ouryacas)" $< $@
+! 
+! # .tex.dvi:
+! # 	latex $< > /dev/null
+! # 	latex $< > /dev/null
+! # # The perl filter is used to help the 'makeindex' command: 
+! # # 1) replace \verb|...| by \verb=...= 
+! # # 2) escape ()|@! using a preceding quote "
+! # # Note that @ and ! are not always escaped because they are sometimes part of the index entry and sometimes control chars. Heuristics are used to guess correctly.
+! # 	@perl -pe 's/(\\verb)\|([^|]*)\|/$$1=$$2=/g;s/([()|])/"$$1/g;if(/\@/){s/!/"!/g;};s/\@([^\\])/"\@$$1/g;'<$*.idx>$*.1.idx
+! # 	@makeindex $*.1.idx -o $*.ind || echo "***Warning: a problem with 'makeindex'"
+! # 	latex $< > /dev/null
+! 
+! # .dvi.ps:
+! # 	dvips -q -o $@ $<
+! # 	@echo "***Documentation created:" $*.ps
+! 
+! # .dvi.pdf:
+! # 	pdflatex $* > /dev/null
+! # 	@echo "***Documentation created:" $*.pdf
+! 
+! # .chapt.ys:
+! # 	sh $(srcdir)/book2ys.sh -run "$(ouryacas)" $< $@
+! 
+! # .chapt.yts:
+! # 	sh $(srcdir)/book2ys.sh -run "$(ouryacas)" $< $@
+! 
+! # # generate test code from book sources
+! 
+! # ref.book.yts: $(REFSOURCES) $(srcdir)/txt2example.pl
+! # 	@echo "// tests for ref.book" > $@
+! # 	for file in $(REFSOURCES); do perl $(srcdir)/txt2example.pl $(srcdir)/$$file >> $@; done
+! 
+! # refprog.book.yts: $(REFPROGSOURCES) $(srcdir)/txt2example.pl
+! # 	@echo "// tests for refprog.book" > $@
+! # 	for file in $(REFPROGSOURCES); do perl $(srcdir)/txt2example.pl $(srcdir)/$$file >> $@; done
+! 
+! # # specify books that need chapters
+! # essays.book.tex: essays.book $(ESSAYCHAPTERS)
+! # ref.book.tex : ref.book $(REFCHAPTERS)
+! # refprog.book.tex : refprog.book $(REFPROGCHAPTERS)
+! # coding.book.tex : coding.book $(CODINGCHAPTERS)
+! # intro.book.tex: intro.book $(INTROCHAPTERS)
+! # Algo.book.tex: Algo.book $(ALGOCHAPTERS)
+! 
+! # # special "virtual" chapter built from corefunctions.h. This is printed by a special program "gencorefunctions", compiled together with yacas.
+! 
+! # # special chapter copied from the GPL (need to replace "<" and ">")
+! # GPL.chapt: $(top_srcdir)/COPYING
+! # 	cat $(top_srcdir)/COPYING | sed -e 's,<,{<},g;s,>,{>},g;' | perl $(srcdir)/txt2yacasdoc.pl > $@
+! 
+! # ps-docs: $(PS_DOCS)
+! # pdf-docs: $(PDF_DOCS)
+! 
+! # # The top HTML docs target is now "manicon.html" that is built by GenerateIndex().
+! # # The dependence on $(HTMLBOOKS) is only to make sure that all HTML docs
+! # # are built - in fact manicon.html is a constant file and has no dependencies.
+! # manicon.html:  books.html $(HTMLBOOKS)
+! 
+! # # books.html only depends on top book files (*.book.txt).
+! # books.html:  $(BOOKS) $(srcdir)/indexmaker $(srcdir)/styleplain
+! # 	-echo '[DefaultDirectory("$(srcdir)/"); Use("indexmaker"); GenerateIndex();];' | $(ouryacas) -fpc
+! 
+! # intromanual.html : intro.book $(INTROCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! # 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("intro");];' | $(ouryacas) -fpc
+! 
+! # codingmanual.html : coding.book $(CODINGCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! # 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("coding");];' | $(ouryacas) -fpc
+! 
+! # essaysmanual.html : essays.book $(ESSAYCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! # 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("essays");];' | $(ouryacas) -fpc
+! 
+! # refmanual.html : ref.book $(REFCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! # 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("ref");];'    | $(ouryacas) -fpc
+! 
+! # refprogmanual.html : ref.book $(REFCHAPTERS) refprog.book $(REFPROGCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! # 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("refprog");];' | $(ouryacas) -fpc
+! 
+! # Algomanual.html : Algo.book $(ALGOCHAPTERS) $(srcdir)/manualmaker $(srcdir)/styleplain
+! # 	-@echo '[DefaultDirectory("$(srcdir)/"); Use("manualmaker"); GenerateBook("Algo");];' | $(ouryacas) -fpc
+! 
+! # install-data-local: @INSTALL_HTML@ @INSTALL_PS@ install-scripts install-hints
+! 
+! # install-hints: hints
+! # 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/documentation
+! # 	$(INSTALL_DATA) hints $(DESTDIR)$(pkgdatadir)/documentation/hints
+! 
+! # install-scripts: $(ytxt2tex_DEPS)
+! # 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/manmake/
+! # 	-for file in $(ytxt2tex_DEPS); do \
+! # 	   $(INSTALL_DATA) $(srcdir)/$$file $(DESTDIR)$(pkgdatadir)/manmake/$$file; \
+! # 	done
+! 
+! # install-html: books.html 
+! # 	$(mkinstalldirs) $(DESTDIR)$(htmldir)/
+! # 	$(INSTALL_DATA) $(top_srcdir)/docs/yacaslogo.gif $(DESTDIR)$(htmldir)/
+! # 	-for file in *.html; do \
+! # 	   $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$file; \
+! # 	done
+! 
+! # install-ps: ps-docs
+! # 	$(mkinstalldirs) $(DESTDIR)$(psdir)/
+! # 	-for file in $(PS_DOCS); do \
+! # 	   $(INSTALL_DATA) $$file $(DESTDIR)$(psdir)/$$file; \
+! # 	done
+! 
+! # #	   gzip $(DESTDIR)$(psdir)/$$file; 
+! # # Tell versions [3.59,3.63) of GNU make to not export all variables.
+! # # Otherwise a system limit (for SysV at least) may be exceeded.
+! # .NOEXPORT:
+diff -crB yacas-1.2.2old/src/Makefile.in yacas-1.2.2new/src/Makefile.in
+*** yacas-1.2.2old/src/Makefile.in	2007-09-27 15:24:38.000000000 +0200
+--- yacas-1.2.2new/src/Makefile.in	2010-05-01 00:08:09.000000000 +0200
+***************
+*** 597,603 ****
+  $(srcdir)/platmath.cpp: fastprimes.c
+  
+  fastprimes.c: mkfastprimes
+! 	./mkfastprimes > fastprimes.c
+  
+  clean-compile:
+  	test -z "libyacasplatform.a" || rm -rf libyacasplatform.a
+--- 597,603 ----
+  $(srcdir)/platmath.cpp: fastprimes.c
+  
+  fastprimes.c: mkfastprimes
+! 	/tmp/mkfastprimes > fastprimes.c
+  
+  clean-compile:
+  	test -z "libyacasplatform.a" || rm -rf libyacasplatform.a

@@ -1,0 +1,451 @@
+Only in gnugo-3.8: config.h
+Only in gnugo-3.8: config.log
+Only in gnugo-3.8: config.status
+Only in gnugo-3.8/doc: Makefile
+Only in gnugo-3.8/engine: aftermath.o
+Only in gnugo-3.8/engine: boardlib.o
+Only in gnugo-3.8/engine: board.o
+Only in gnugo-3.8/engine: breakin.o
+Only in gnugo-3.8/engine: cache.o
+Only in gnugo-3.8/engine: clock.o
+Only in gnugo-3.8/engine: combination.o
+Only in gnugo-3.8/engine: .deps
+Only in gnugo-3.8/engine: dragon.o
+Only in gnugo-3.8/engine: endgame.o
+Only in gnugo-3.8/engine: filllib.o
+Only in gnugo-3.8/engine: fuseki.o
+Only in gnugo-3.8/engine: genmove.o
+Only in gnugo-3.8/engine: globals.o
+Only in gnugo-3.8/engine: handicap.o
+Only in gnugo-3.8/engine: hash.o
+Only in gnugo-3.8/engine: influence.o
+Only in gnugo-3.8/engine: interface.o
+Only in gnugo-3.8/engine: libboard.a
+Only in gnugo-3.8/engine: libengine.a
+Only in gnugo-3.8/engine: Makefile
+Only in gnugo-3.8/engine: matchpat.o
+Only in gnugo-3.8/engine: montecarlo.o
+Only in gnugo-3.8/engine: movelist.o
+Only in gnugo-3.8/engine: move_reasons.o
+Only in gnugo-3.8/engine: optics.o
+Only in gnugo-3.8/engine: oracle.o
+Only in gnugo-3.8/engine: owl.o
+Only in gnugo-3.8/engine: persistent.o
+Only in gnugo-3.8/engine: printutils.o
+Only in gnugo-3.8/engine: readconnect.o
+Only in gnugo-3.8/engine: reading.o
+Only in gnugo-3.8/engine: semeai.o
+Only in gnugo-3.8/engine: sgfdecide.o
+Only in gnugo-3.8/engine: sgffile.o
+Only in gnugo-3.8/engine: shapes.o
+Only in gnugo-3.8/engine: showbord.o
+Only in gnugo-3.8/engine: surround.o
+Only in gnugo-3.8/engine: unconditional.o
+Only in gnugo-3.8/engine: utils.o
+Only in gnugo-3.8/engine: value_moves.o
+Only in gnugo-3.8/engine: worm.o
+Only in gnugo-3.8/interface: .deps
+Only in gnugo-3.8/interface: gmp.o
+Only in gnugo-3.8/interface: gnugo
+Only in gnugo-3.8/interface: gtp.o
+Only in gnugo-3.8/interface: main.o
+Only in gnugo-3.8/interface: Makefile
+Only in gnugo-3.8/interface: play_ascii.o
+Only in gnugo-3.8/interface: play_gmp.o
+Only in gnugo-3.8/interface: play_gtp.o
+Only in gnugo-3.8/interface: play_solo.o
+Only in gnugo-3.8/interface: play_test.o
+Only in gnugo-3.8: Makefile
+Only in gnugo-3.8/patterns: aa_attackpat.c
+Only in gnugo-3.8/patterns: aa_attackpat.o
+Only in gnugo-3.8/patterns: apatterns.c
+Only in gnugo-3.8/patterns: apatterns.o
+Only in gnugo-3.8/patterns: barriers.c
+Only in gnugo-3.8/patterns: barriers.o
+Only in gnugo-3.8/patterns: conn.c
+Only in gnugo-3.8/patterns: connections.o
+Only in gnugo-3.8/patterns: conn.o
+Only in gnugo-3.8/patterns: .deps
+Only in gnugo-3.8/patterns: dfa.o
+Only in gnugo-3.8/patterns: dpatterns.c
+Only in gnugo-3.8/patterns: dpatterns.o
+Only in gnugo-3.8/patterns: endgame.c
+Only in gnugo-3.8/patterns: endgame.o
+Only in gnugo-3.8/patterns: eyes.c
+Only in gnugo-3.8/patterns: eyes.o
+Only in gnugo-3.8/patterns: fuseki13.c
+Only in gnugo-3.8/patterns: fuseki13.o
+Only in gnugo-3.8/patterns: fuseki19.c
+Only in gnugo-3.8/patterns: fuseki19.o
+Only in gnugo-3.8/patterns: fuseki9.c
+Only in gnugo-3.8/patterns: fuseki9.o
+Only in gnugo-3.8/patterns: fusekipat.c
+Only in gnugo-3.8/patterns: fusekipat.o
+Only in gnugo-3.8/patterns: globals.o
+Only in gnugo-3.8/patterns: handipat.c
+Only in gnugo-3.8/patterns: handipat.o
+Only in gnugo-3.8/patterns: helpers.o
+Only in gnugo-3.8/patterns: influence.c
+Only in gnugo-3.8/patterns: influence.o
+Only in gnugo-3.8/patterns: joseki
+Only in gnugo-3.8/patterns: josekidb.c
+Only in gnugo-3.8/patterns: josekidb.o
+Only in gnugo-3.8/patterns: joseki.o
+Only in gnugo-3.8/patterns: libpatterns.a
+Only in gnugo-3.8/patterns: Makefile
+diff -crB gnugo-3.8/patterns/Makefile.am gnugo-3.8mod/patterns/Makefile.am
+*** gnugo-3.8/patterns/Makefile.am	2009-02-17 22:41:31.000000000 +0100
+--- gnugo-3.8mod/patterns/Makefile.am	2010-04-02 18:23:23.000000000 +0200
+***************
+*** 139,192 ****
+  	./joseki JT $(srcdir)/takamoku.sgf >takamoku.db
+  
+  patterns.c : $(srcdir)/patterns.db $(srcdir)/patterns2.db mkpat$(EXEEXT)
+! 	./mkpat -b pat -i $(srcdir)/patterns.db -i$(srcdir)/patterns2.db \
+                 -o patterns.c
+  
+  josekidb.c : $(DBBUILT) mkpat$(EXEEXT)
+! 	./mkpat -C joseki $(DBBUILT_INPUT) -o josekidb.c
+  
+  apatterns.c : $(srcdir)/attack.db mkpat$(EXEEXT)
+! 	./mkpat -X attpat -i $(srcdir)/attack.db -o apatterns.c
+  
+  dpatterns.c : $(srcdir)/defense.db mkpat$(EXEEXT)
+! 	./mkpat defpat -i $(srcdir)/defense.db -o dpatterns.c
+  
+  conn.c : $(srcdir)/conn.db mkpat$(EXEEXT)
+! 	./mkpat -c conn -i $(srcdir)/conn.db -o conn.c
+  
+  endgame.c : $(srcdir)/endgame.db mkpat$(EXEEXT)
+! 	./mkpat -b endpat -i $(srcdir)/endgame.db -o endgame.c
+  
+  eyes.c: $(srcdir)/eyes.db mkeyes$(EXEEXT)
+  	./mkeyes < $(srcdir)/eyes.db >eyes.c
+  
+  influence.c : $(srcdir)/influence.db mkpat$(EXEEXT)
+! 	./mkpat -c influencepat -i $(srcdir)/influence.db -o influence.c
+  
+  barriers.c : $(srcdir)/barriers.db mkpat$(EXEEXT)
+! 	./mkpat -c -b barrierspat -i $(srcdir)/barriers.db -o barriers.c
+  
+  aa_attackpat.c : $(srcdir)/aa_attackpats.db $(srcdir)/aa_attackpats.dtr mkpat$(EXEEXT)
+! 	./mkpat $(DFAFLAGS) -b -t $(srcdir)/aa_attackpats.dtr aa_attackpat \
+                 -i $(srcdir)/aa_attackpats.db -o aa_attackpat.c
+  
+  owl_attackpat.c : $(srcdir)/owl_attackpats.db $(srcdir)/owl_attackpats.dtr mkpat$(EXEEXT)
+! 	./mkpat $(DFAFLAGS) -b -t $(srcdir)/owl_attackpats.dtr owl_attackpat \
+                 -i $(srcdir)/owl_attackpats.db -o owl_attackpat.c
+  
+  oraclepat.c : $(srcdir)/oracle.db mkpat$(EXEEXT)
+! 	./mkpat -b oracle -i $(srcdir)/oracle.db -o oraclepat.c
+  
+  owl_vital_apat.c : $(srcdir)/owl_vital_apats.db $(srcdir)/owl_vital_apats.dtr mkpat$(EXEEXT)
+! 	./mkpat $(DFAFLAGS) -b -t $(srcdir)/owl_vital_apats.dtr owl_vital_apat \
+                 -i $(srcdir)/owl_vital_apats.db -o owl_vital_apat.c
+  
+  owl_defendpat.c : $(srcdir)/owl_defendpats.db $(srcdir)/owl_defendpats.dtr mkpat$(EXEEXT)
+! 	./mkpat $(DFAFLAGS) -b -t $(srcdir)/owl_defendpats.dtr owl_defendpat \
+                 -i $(srcdir)/owl_defendpats.db -o owl_defendpat.c
+  
+  fusekipat.c : $(srcdir)/fuseki.db mkpat$(EXEEXT)
+! 	./mkpat -b fusekipat -i $(srcdir)/fuseki.db -o fusekipat.c
+  
+  fuseki9.c : $(srcdir)/fuseki9.dbz uncompress_fuseki$(EXEEXT)
+  	./uncompress_fuseki 9 $(srcdir)/fuseki9.dbz c >fuseki9.c
+--- 139,192 ----
+  	./joseki JT $(srcdir)/takamoku.sgf >takamoku.db
+  
+  patterns.c : $(srcdir)/patterns.db $(srcdir)/patterns2.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -b pat -i $(srcdir)/patterns.db -i$(srcdir)/patterns2.db \
+                 -o patterns.c
+  
+  josekidb.c : $(DBBUILT) mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -C joseki $(DBBUILT_INPUT) -o josekidb.c
+  
+  apatterns.c : $(srcdir)/attack.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -X attpat -i $(srcdir)/attack.db -o apatterns.c
+  
+  dpatterns.c : $(srcdir)/defense.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat defpat -i $(srcdir)/defense.db -o dpatterns.c
+  
+  conn.c : $(srcdir)/conn.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -c conn -i $(srcdir)/conn.db -o conn.c
+  
+  endgame.c : $(srcdir)/endgame.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -b endpat -i $(srcdir)/endgame.db -o endgame.c
+  
+  eyes.c: $(srcdir)/eyes.db mkeyes$(EXEEXT)
+  	./mkeyes < $(srcdir)/eyes.db >eyes.c
+  
+  influence.c : $(srcdir)/influence.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -c influencepat -i $(srcdir)/influence.db -o influence.c
+  
+  barriers.c : $(srcdir)/barriers.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -c -b barrierspat -i $(srcdir)/barriers.db -o barriers.c
+  
+  aa_attackpat.c : $(srcdir)/aa_attackpats.db $(srcdir)/aa_attackpats.dtr mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat $(DFAFLAGS) -b -t $(srcdir)/aa_attackpats.dtr aa_attackpat \
+                 -i $(srcdir)/aa_attackpats.db -o aa_attackpat.c
+  
+  owl_attackpat.c : $(srcdir)/owl_attackpats.db $(srcdir)/owl_attackpats.dtr mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat $(DFAFLAGS) -b -t $(srcdir)/owl_attackpats.dtr owl_attackpat \
+                 -i $(srcdir)/owl_attackpats.db -o owl_attackpat.c
+  
+  oraclepat.c : $(srcdir)/oracle.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -b oracle -i $(srcdir)/oracle.db -o oraclepat.c
+  
+  owl_vital_apat.c : $(srcdir)/owl_vital_apats.db $(srcdir)/owl_vital_apats.dtr mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat $(DFAFLAGS) -b -t $(srcdir)/owl_vital_apats.dtr owl_vital_apat \
+                 -i $(srcdir)/owl_vital_apats.db -o owl_vital_apat.c
+  
+  owl_defendpat.c : $(srcdir)/owl_defendpats.db $(srcdir)/owl_defendpats.dtr mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat $(DFAFLAGS) -b -t $(srcdir)/owl_defendpats.dtr owl_defendpat \
+                 -i $(srcdir)/owl_defendpats.db -o owl_defendpat.c
+  
+  fusekipat.c : $(srcdir)/fuseki.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -b fusekipat -i $(srcdir)/fuseki.db -o fusekipat.c
+  
+  fuseki9.c : $(srcdir)/fuseki9.dbz uncompress_fuseki$(EXEEXT)
+  	./uncompress_fuseki 9 $(srcdir)/fuseki9.dbz c >fuseki9.c
+***************
+*** 198,204 ****
+  	./uncompress_fuseki 19 $(srcdir)/fuseki19.dbz c >fuseki19.c
+  
+  handipat.c : $(srcdir)/handicap.db mkpat$(EXEEXT)
+! 	./mkpat -b handipat -i $(srcdir)/handicap.db -o handipat.c
+  
+  mcpat.c : $(MC_DB) mkmcpat$(EXEEXT)
+  	./mkmcpat $(MC_DB) > mcpat.c
+--- 198,204 ----
+  	./uncompress_fuseki 19 $(srcdir)/fuseki19.dbz c >fuseki19.c
+  
+  handipat.c : $(srcdir)/handicap.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -b handipat -i $(srcdir)/handicap.db -o handipat.c
+  
+  mcpat.c : $(MC_DB) mkmcpat$(EXEEXT)
+  	./mkmcpat $(MC_DB) > mcpat.c
+diff -crB gnugo-3.8/patterns/Makefile.in gnugo-3.8mod/patterns/Makefile.in
+*** gnugo-3.8/patterns/Makefile.in	2009-02-18 01:50:06.000000000 +0100
+--- gnugo-3.8mod/patterns/Makefile.in	2010-04-02 20:30:00.000000000 +0200
+***************
+*** 614,703 ****
+  	cd $(distdir) && rm $(GGBUILTSOURCES)
+  
+  gogo.db : $(srcdir)/gogo.sgf joseki$(EXEEXT)
+! 	./joseki JG $(srcdir)/gogo.sgf >gogo.db
+  
+  hoshi_keima.db : $(srcdir)/hoshi_keima.sgf joseki$(EXEEXT)
+! 	./joseki JHK $(srcdir)/hoshi_keima.sgf >hoshi_keima.db
+  
+  hoshi_other.db : $(srcdir)/hoshi_other.sgf joseki$(EXEEXT)
+! 	./joseki JHO $(srcdir)/hoshi_other.sgf >hoshi_other.db
+  
+  komoku.db : $(srcdir)/komoku.sgf joseki$(EXEEXT)
+! 	./joseki JK $(srcdir)/komoku.sgf >komoku.db
+  
+  sansan.db : $(srcdir)/sansan.sgf joseki$(EXEEXT)
+! 	./joseki JS $(srcdir)/sansan.sgf >sansan.db
+  
+  mokuhazushi.db : $(srcdir)/mokuhazushi.sgf joseki$(EXEEXT)
+! 	./joseki JM $(srcdir)/mokuhazushi.sgf >mokuhazushi.db
+  
+  takamoku.db : $(srcdir)/takamoku.sgf joseki$(EXEEXT)
+! 	./joseki JT $(srcdir)/takamoku.sgf >takamoku.db
+  
+  patterns.c : $(srcdir)/patterns.db $(srcdir)/patterns2.db mkpat$(EXEEXT)
+! 	./mkpat -b pat -i $(srcdir)/patterns.db -i$(srcdir)/patterns2.db \
+                 -o patterns.c
+  
+  josekidb.c : $(DBBUILT) mkpat$(EXEEXT)
+! 	./mkpat -C joseki $(DBBUILT_INPUT) -o josekidb.c
+  
+  apatterns.c : $(srcdir)/attack.db mkpat$(EXEEXT)
+! 	./mkpat -X attpat -i $(srcdir)/attack.db -o apatterns.c
+  
+  dpatterns.c : $(srcdir)/defense.db mkpat$(EXEEXT)
+! 	./mkpat defpat -i $(srcdir)/defense.db -o dpatterns.c
+  
+  conn.c : $(srcdir)/conn.db mkpat$(EXEEXT)
+! 	./mkpat -c conn -i $(srcdir)/conn.db -o conn.c
+  
+  endgame.c : $(srcdir)/endgame.db mkpat$(EXEEXT)
+! 	./mkpat -b endpat -i $(srcdir)/endgame.db -o endgame.c
+  
+  eyes.c: $(srcdir)/eyes.db mkeyes$(EXEEXT)
+! 	./mkeyes < $(srcdir)/eyes.db >eyes.c
+  
+  influence.c : $(srcdir)/influence.db mkpat$(EXEEXT)
+! 	./mkpat -c influencepat -i $(srcdir)/influence.db -o influence.c
+  
+  barriers.c : $(srcdir)/barriers.db mkpat$(EXEEXT)
+! 	./mkpat -c -b barrierspat -i $(srcdir)/barriers.db -o barriers.c
+  
+  aa_attackpat.c : $(srcdir)/aa_attackpats.db $(srcdir)/aa_attackpats.dtr mkpat$(EXEEXT)
+! 	./mkpat $(DFAFLAGS) -b -t $(srcdir)/aa_attackpats.dtr aa_attackpat \
+                 -i $(srcdir)/aa_attackpats.db -o aa_attackpat.c
+  
+  owl_attackpat.c : $(srcdir)/owl_attackpats.db $(srcdir)/owl_attackpats.dtr mkpat$(EXEEXT)
+! 	./mkpat $(DFAFLAGS) -b -t $(srcdir)/owl_attackpats.dtr owl_attackpat \
+                 -i $(srcdir)/owl_attackpats.db -o owl_attackpat.c
+  
+  oraclepat.c : $(srcdir)/oracle.db mkpat$(EXEEXT)
+! 	./mkpat -b oracle -i $(srcdir)/oracle.db -o oraclepat.c
+  
+  owl_vital_apat.c : $(srcdir)/owl_vital_apats.db $(srcdir)/owl_vital_apats.dtr mkpat$(EXEEXT)
+! 	./mkpat $(DFAFLAGS) -b -t $(srcdir)/owl_vital_apats.dtr owl_vital_apat \
+                 -i $(srcdir)/owl_vital_apats.db -o owl_vital_apat.c
+  
+  owl_defendpat.c : $(srcdir)/owl_defendpats.db $(srcdir)/owl_defendpats.dtr mkpat$(EXEEXT)
+! 	./mkpat $(DFAFLAGS) -b -t $(srcdir)/owl_defendpats.dtr owl_defendpat \
+                 -i $(srcdir)/owl_defendpats.db -o owl_defendpat.c
+  
+  fusekipat.c : $(srcdir)/fuseki.db mkpat$(EXEEXT)
+! 	./mkpat -b fusekipat -i $(srcdir)/fuseki.db -o fusekipat.c
+  
+  fuseki9.c : $(srcdir)/fuseki9.dbz uncompress_fuseki$(EXEEXT)
+! 	./uncompress_fuseki 9 $(srcdir)/fuseki9.dbz c >fuseki9.c
+  
+  fuseki13.c : $(srcdir)/fuseki13.dbz uncompress_fuseki$(EXEEXT)
+! 	./uncompress_fuseki 13 $(srcdir)/fuseki13.dbz c >fuseki13.c
+  
+  fuseki19.c : $(srcdir)/fuseki19.dbz uncompress_fuseki$(EXEEXT)
+! 	./uncompress_fuseki 19 $(srcdir)/fuseki19.dbz c >fuseki19.c
+  
+  handipat.c : $(srcdir)/handicap.db mkpat$(EXEEXT)
+! 	./mkpat -b handipat -i $(srcdir)/handicap.db -o handipat.c
+  
+  mcpat.c : $(MC_DB) mkmcpat$(EXEEXT)
+! 	./mkmcpat $(MC_DB) > mcpat.c
+  # Tell versions [3.59,3.63) of GNU make to not export all variables.
+  # Otherwise a system limit (for SysV at least) may be exceeded.
+  .NOEXPORT:
+--- 614,703 ----
+  	cd $(distdir) && rm $(GGBUILTSOURCES)
+  
+  gogo.db : $(srcdir)/gogo.sgf joseki$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/joseki JG $(srcdir)/gogo.sgf >gogo.db
+  
+  hoshi_keima.db : $(srcdir)/hoshi_keima.sgf joseki$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/joseki JHK $(srcdir)/hoshi_keima.sgf >hoshi_keima.db
+  
+  hoshi_other.db : $(srcdir)/hoshi_other.sgf joseki$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/joseki JHO $(srcdir)/hoshi_other.sgf >hoshi_other.db
+  
+  komoku.db : $(srcdir)/komoku.sgf joseki$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/joseki JK $(srcdir)/komoku.sgf >komoku.db
+  
+  sansan.db : $(srcdir)/sansan.sgf joseki$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/joseki JS $(srcdir)/sansan.sgf >sansan.db
+  
+  mokuhazushi.db : $(srcdir)/mokuhazushi.sgf joseki$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/joseki JM $(srcdir)/mokuhazushi.sgf >mokuhazushi.db
+  
+  takamoku.db : $(srcdir)/takamoku.sgf joseki$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/joseki JT $(srcdir)/takamoku.sgf >takamoku.db
+  
+  patterns.c : $(srcdir)/patterns.db $(srcdir)/patterns2.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -b pat -i $(srcdir)/patterns.db -i$(srcdir)/patterns2.db \
+                 -o patterns.c
+  
+  josekidb.c : $(DBBUILT) mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -C joseki $(DBBUILT_INPUT) -o josekidb.c
+  
+  apatterns.c : $(srcdir)/attack.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -X attpat -i $(srcdir)/attack.db -o apatterns.c
+  
+  dpatterns.c : $(srcdir)/defense.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat defpat -i $(srcdir)/defense.db -o dpatterns.c
+  
+  conn.c : $(srcdir)/conn.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -c conn -i $(srcdir)/conn.db -o conn.c
+  
+  endgame.c : $(srcdir)/endgame.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -b endpat -i $(srcdir)/endgame.db -o endgame.c
+  
+  eyes.c: $(srcdir)/eyes.db mkeyes$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkeyes < $(srcdir)/eyes.db >eyes.c
+  
+  influence.c : $(srcdir)/influence.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -c influencepat -i $(srcdir)/influence.db -o influence.c
+  
+  barriers.c : $(srcdir)/barriers.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -c -b barrierspat -i $(srcdir)/barriers.db -o barriers.c
+  
+  aa_attackpat.c : $(srcdir)/aa_attackpats.db $(srcdir)/aa_attackpats.dtr mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat $(DFAFLAGS) -b -t $(srcdir)/aa_attackpats.dtr aa_attackpat \
+                 -i $(srcdir)/aa_attackpats.db -o aa_attackpat.c
+  
+  owl_attackpat.c : $(srcdir)/owl_attackpats.db $(srcdir)/owl_attackpats.dtr mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat $(DFAFLAGS) -b -t $(srcdir)/owl_attackpats.dtr owl_attackpat \
+                 -i $(srcdir)/owl_attackpats.db -o owl_attackpat.c
+  
+  oraclepat.c : $(srcdir)/oracle.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -b oracle -i $(srcdir)/oracle.db -o oraclepat.c
+  
+  owl_vital_apat.c : $(srcdir)/owl_vital_apats.db $(srcdir)/owl_vital_apats.dtr mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat $(DFAFLAGS) -b -t $(srcdir)/owl_vital_apats.dtr owl_vital_apat \
+                 -i $(srcdir)/owl_vital_apats.db -o owl_vital_apat.c
+  
+  owl_defendpat.c : $(srcdir)/owl_defendpats.db $(srcdir)/owl_defendpats.dtr mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat $(DFAFLAGS) -b -t $(srcdir)/owl_defendpats.dtr owl_defendpat \
+                 -i $(srcdir)/owl_defendpats.db -o owl_defendpat.c
+  
+  fusekipat.c : $(srcdir)/fuseki.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -b fusekipat -i $(srcdir)/fuseki.db -o fusekipat.c
+  
+  fuseki9.c : $(srcdir)/fuseki9.dbz uncompress_fuseki$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/uncompress_fuseki 9 $(srcdir)/fuseki9.dbz c >fuseki9.c
+  
+  fuseki13.c : $(srcdir)/fuseki13.dbz uncompress_fuseki$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/uncompress_fuseki 13 $(srcdir)/fuseki13.dbz c >fuseki13.c
+  
+  fuseki19.c : $(srcdir)/fuseki19.dbz uncompress_fuseki$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/uncompress_fuseki 19 $(srcdir)/fuseki19.dbz c >fuseki19.c
+  
+  handipat.c : $(srcdir)/handicap.db mkpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkpat -b handipat -i $(srcdir)/handicap.db -o handipat.c
+  
+  mcpat.c : $(MC_DB) mkmcpat$(EXEEXT)
+! 	/home/ruben/openwrt-xburst/testcode/gnugo-3.8/patterns/mkmcpat $(MC_DB) > mcpat.c
+  # Tell versions [3.59,3.63) of GNU make to not export all variables.
+  # Otherwise a system limit (for SysV at least) may be exceeded.
+  .NOEXPORT:
+Only in gnugo-3.8/patterns: mcpat.c
+Only in gnugo-3.8/patterns: mcpat.o
+Only in gnugo-3.8/patterns: mkeyes
+Only in gnugo-3.8/patterns: mkeyes.o
+Only in gnugo-3.8/patterns: mkmcpat
+Only in gnugo-3.8/patterns: mkmcpat.o
+Only in gnugo-3.8/patterns: mkpat
+Only in gnugo-3.8/patterns: mkpat.o
+Only in gnugo-3.8/patterns: oraclepat.c
+Only in gnugo-3.8/patterns: oraclepat.o
+Only in gnugo-3.8/patterns: owl_attackpat.c
+Only in gnugo-3.8/patterns: owl_attackpat.o
+Only in gnugo-3.8/patterns: owl_defendpat.c
+Only in gnugo-3.8/patterns: owl_defendpat.o
+Only in gnugo-3.8/patterns: owl_vital_apat.c
+Only in gnugo-3.8/patterns: owl_vital_apat.o
+Only in gnugo-3.8/patterns: patterns.c
+Only in gnugo-3.8/patterns: patterns.o
+Only in gnugo-3.8/patterns: transform.o
+Only in gnugo-3.8/patterns: uncompress_fuseki
+Only in gnugo-3.8/patterns: uncompress_fuseki.o
+Only in gnugo-3.8/regression: Makefile
+Only in gnugo-3.8/sgf: .deps
+Only in gnugo-3.8/sgf: libsgf.a
+Only in gnugo-3.8/sgf: Makefile
+Only in gnugo-3.8/sgf: sgfgen
+Only in gnugo-3.8/sgf: sgfgen.o
+Only in gnugo-3.8/sgf: sgfnode.o
+Only in gnugo-3.8/sgf: sgftree.o
+Only in gnugo-3.8/sgf: sgf_utils.o
+Only in gnugo-3.8: stamp-h1
+Only in gnugo-3.8/utils: .deps
+Only in gnugo-3.8/utils: getopt1.o
+Only in gnugo-3.8/utils: getopt.o
+Only in gnugo-3.8/utils: gg_utils.o
+Only in gnugo-3.8/utils: libutils.a
+Only in gnugo-3.8/utils: Makefile
+Only in gnugo-3.8/utils: random.o
+Only in gnugo-3.8/utils: winsocket.o
