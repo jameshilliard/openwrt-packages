@@ -42,9 +42,9 @@ define Package/catdoc/install
 	$(INSTALL_DIR) $(1)/usr/share/catdoc/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/charsets/*.* $(1)/usr/share/catdoc/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/charsets/ascii.spc $(1)/usr/share/catdoc/ascii.specchars
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/charsets/ascii.rpl $(1)/usr/share/catdoc/ascii.rplchars
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/charsets/ascii.rpl $(1)/usr/share/catdoc/ascii.replchars
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/charsets/tex.spc $(1)/usr/share/catdoc/tex.specchars
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/charsets/tex.rpl $(1)/usr/share/catdoc/tex.rplchars
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/charsets/tex.rpl $(1)/usr/share/catdoc/tex.replchars
 endef
 
 $(eval $(call BuildPackage,catdoc))
