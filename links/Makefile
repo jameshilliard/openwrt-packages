@@ -25,7 +25,7 @@ define Package/links
     SECTION:=network
     CATEGORY:=Network
     URL:=http://links.twibright.com/
-    DEPENDS:=@BROKEN
+    DEPENDS:=+libpng +libtiff
 endef
 
 define Package/links/description
@@ -40,6 +40,11 @@ CONFIGURE_ARGS += --enable-graphics \
   --without-atheos \
   --without-x \
   --without-fb
+
+TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/directfb
+
+CONFIGURE_VARS += \
+	DIRECTFB_CONFIG="$(STAGING_DIR)/root-xburst/usr/bin/directfb-config"
 
 define Package/links/install
 	$(INSTALL_DIR) $(1)/usr/bin
