@@ -1,0 +1,22 @@
+openwrt will take care of install.
+
+From: Xiangfu Liu <xiangfu@sharism.cc>
+
+Signed-off-by: Xiangfu Liu <xiangfu@sharism.cc>
+---
+ Makefile |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index aae3eaa..ce8b65e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -15,7 +15,7 @@ OPTS = -O2
+ #-malign-jumps=2
+ 
+ # Define where you want Frotz installed.  Usually this is /usr/local
+-PREFIX = /usr/local
++PREFIX = /tmp
+ 
+ MAN_PREFIX = $(PREFIX)
+ #MAN_PREFIX = /usr/local/share

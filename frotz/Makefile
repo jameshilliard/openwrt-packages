@@ -11,9 +11,9 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/frotz
     TITLE:=frotz
-    SECTION:=utils
-    CATEGORY:=Utilities
-    DEPENDS:=@BROKEN +libncurses
+    SECTION:=games
+    CATEGORY:=Games
+    DEPENDS:=+libncurses
     URL:=http://frotz.sourceforge.net/
 endef
 
