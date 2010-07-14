@@ -34,6 +34,7 @@ EXTRA_CFLAGS += \
         -I$(STAGING_DIR)/usr/include
 
 EXTRA_LDFLAGS += \
+	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
         -L$(STAGING_DIR)/usr/lib/libintl/lib \
         -L$(STAGING_DIR)/usr/lib/libiconv/lib -lm
 
@@ -48,9 +49,6 @@ endef
 define Package/mcabber/install
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/mcabber $(1)/usr/bin/
-	$(INSTALL_DIR) $(1)/usr/share/
-	$(INSTALL_DIR) $(1)/usr/share/mcabber/
-	$(INSTALL_DIR) $(1)/usr/share/mcabber/help/
 	$(INSTALL_DIR) $(1)/usr/share/mcabber/help/en/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/doc/help/en/*.txt $(1)/usr/share/mcabber/help/en/
 endef
