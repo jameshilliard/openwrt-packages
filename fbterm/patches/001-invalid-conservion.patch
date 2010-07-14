@@ -1,0 +1,12 @@
+--- fbterm-1.6/src/lib/io.cpp_orig	2010-06-19 19:00:18.037920330 +0400
++++ fbterm-1.6/src/lib/io.cpp	2010-06-19 19:01:02.622595041 +0400
+@@ -188,7 +188,8 @@
+ 	s8 outbuf[outlen];
+ 
+ 	size_t nconv, left, total = len;
+-	s8 *outptr, *inptr = buf;
++	s8 *outptr = buf;
++	const char *inptr = buf;
+ 
+ 	while (total) {
+ 		outptr = outbuf;
