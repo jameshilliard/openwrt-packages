@@ -1,0 +1,11 @@
+--- a/vterm.c	2010-06-20 11:45:25.027920481 +0400
++++ b/vterm.c	2010-06-20 11:45:32.394920713 +0400
+@@ -795,7 +795,7 @@
+ tvterm_put_otherCS_char(TVterm *p, u_char ch)
+ {
+ 	int rev;
+-	char *inbuf;
++	const char *inbuf;
+ 	size_t inbuflen;
+ 	char *outbuf;
+ 	size_t outbuflen;

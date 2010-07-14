@@ -1,0 +1,11 @@
+--- a/fbcommon.c	2010-06-19 22:33:15.744920495 +0400
++++ b/fbcommon.c	2010-06-19 22:33:36.347047734 +0400
+@@ -46,7 +46,7 @@
+ #endif
+ #include <linux/vt.h>
+ #include <linux/fb.h>
+-#include <asm/page.h>
++#include <asm-generic/page.h>
+ 
+ #include "mytypes.h"
+ #include "fbcommon.h"

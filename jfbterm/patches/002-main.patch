@@ -1,0 +1,25 @@
+--- a/main.c	2010-06-20 12:41:23.797920527 +0400
++++ b/main.c	2010-06-20 22:08:46.443043724 +0400
+@@ -185,6 +185,7 @@
+ 	p->gConfFile = FILE_JFBTERM_CONF;
+ 	p->gConfEncoding = NULL;
+ 
++	signal(SIGCHLD, sigchld);
+ 	atexit(tapp_final_at_exit);
+ }
+ 
+@@ -193,10 +194,12 @@
+         struct vt_stat vts;
+         int cfd;
+         int vfd;
+-        int vtNum;
++        int vtNum = 0;
+         int child;
+         char vtty[128];
+-        int mode;
++        int mode = 0;
++
++	memset(&vts, 0, sizeof(struct vt_stat));
+ 
+         cfd = util_privilege_open("/dev/console", O_WRONLY);
+         if (cfd < 0 && 

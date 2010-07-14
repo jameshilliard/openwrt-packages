@@ -1,0 +1,11 @@
+--- a/configure.in	2010-06-20 12:48:58.356043542 +0400
++++ b/configure.in	2010-06-20 12:48:47.550195355 +0400
+@@ -33,7 +33,7 @@
+ AC_FUNC_MMAP
+ AC_TYPE_SIGNAL
+ AC_FUNC_VPRINTF
+-AC_CHECK_FUNCS(select strdup strerror ioperm)
++AC_CHECK_FUNCS(select strdup strerror)
+ 
+ dnl setup options.
+ AC_PATH_PROGS(jfb_gzip_path, gunzip, :)

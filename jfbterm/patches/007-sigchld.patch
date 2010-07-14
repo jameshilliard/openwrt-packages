@@ -1,0 +1,20 @@
+--- a/term.c	2010-06-20 22:10:17.197918007 +0400
++++ b/term.c	2010-06-21 16:16:36.829840350 +0400
+@@ -100,7 +100,7 @@
+ 
+ void tterm_final(TTerm* p)
+ {
+-	tterm_reset_utmp(p);
++	//tterm_reset_utmp(p);
+ 	tvterm_final(&(p->vterm));
+ }
+ 
+@@ -172,7 +172,7 @@
+ 	    exit(1);
+ 	}
+ 	/* parent */
+-	tterm_set_utmp(p);
++	//tterm_set_utmp(p);
+ 	signal(SIGCHLD, sigchld);
+ 	atexit(application_final);
+ 

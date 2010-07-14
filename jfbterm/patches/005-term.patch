@@ -1,0 +1,10 @@
+--- a/term.h	2010-06-20 20:22:20.620998681 +0400
++++ b/term.h	2010-06-20 20:22:48.435043158 +0400
+@@ -45,6 +45,7 @@
+ 
+ void tterm_start(TTerm* p, const char* tn, const char* en);
+ 
++void sigchld(int sig);
+ extern TTerm gTerm;
+ 
+ #endif /* INCLUDE_TERM_H */
