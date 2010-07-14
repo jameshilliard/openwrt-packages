@@ -1,0 +1,24 @@
+diff -cB scummvm-1.1.1/configure scummvm-1.1.1.mod/configure
+*** scummvm-1.1.1/configure	2010-04-01 00:51:54.000000000 +0200
+--- scummvm-1.1.1.mod/configure	2010-06-15 22:34:20.735635566 +0200
+***************
+*** 696,701 ****
+--- 696,703 ----
+  	--disable-keymapper)      _keymapper=no   ;;
+  	--enable-text-console)    _text_console=yes ;;
+  	--disable-text-console)   _text_console=no ;;
++ 	--disable-nls) ;;
++ 	--disable-ipv6) ;;
+  	--with-fluidsynth-prefix=*)
+  		arg=`echo $ac_option | cut -d '=' -f 2`
+  		FLUIDSYNTH_CFLAGS="-I$arg/include"
+***************
+*** 810,816 ****
+  		engine_disable `echo $ac_option | cut -d '-' -f 4-`
+  		;;
+  	*)
+- 		option_error
+  		;;
+  	esac;
+  done;
+--- 812,817 ----
