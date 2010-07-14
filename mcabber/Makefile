@@ -48,9 +48,12 @@ endef
 
 define Package/mcabber/install
 	$(INSTALL_DIR) $(1)/usr/bin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/mcabber $(1)/usr/bin/
 	$(INSTALL_DIR) $(1)/usr/share/mcabber/help/en/
+	$(INSTALL_DIR) $(1)/root/.mcabber/
+
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/mcabber $(1)/usr/bin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/doc/help/en/*.txt $(1)/usr/share/mcabber/help/en/
+	$(INSTALL_DATA) ./files/mcabberrc.example $(1)/root/.mcabber/mcabberrc
 endef
 
 $(eval $(call BuildPackage,mcabber))
