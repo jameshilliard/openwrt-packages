@@ -21,8 +21,8 @@ define Package/fbterm
   CATEGORY:=Utilities
   TITLE:=FbTerm, a fast FrameBuffer based TERMinal emulator for linux
   URL:=http://code.google.com/p/fbterm/
-  SUBMENU:=terminal
-  DEPENDS:=libiconv
+  SUBMENU:=Terminal
+  DEPENDS:=+libiconv
 endef
 
 define Package/fbterm/description

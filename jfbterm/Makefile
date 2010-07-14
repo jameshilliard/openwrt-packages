@@ -22,8 +22,8 @@ define Package/jfbterm
   CATEGORY:=Utilities
   TITLE:=J framebuffer terminal / Multilingual Enhancement
   URL:=http://jfbterm.sourceforge.jp
-  SUBMENU:=terminal
-  DEPENDS:=libiconv
+  SUBMENU:=Terminal
+  DEPENDS:=+libiconv
 endef
 
 define Package/jfbterm/description
