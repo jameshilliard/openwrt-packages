@@ -1,0 +1,24 @@
+remove "root" check.
+
+From: Xiangfu Liu <xiangfu@sharism.cc>
+
+Signed-off-by: Xiangfu Liu <xiangfu@sharism.cc>
+---
+ src/curses/ux_init.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/curses/ux_init.c b/src/curses/ux_init.c
+index e9baff1..c8bbbd2 100644
+--- a/src/curses/ux_init.c
++++ b/src/curses/ux_init.c
+@@ -140,8 +140,8 @@ void os_process_arguments (int argc, char *argv[])
+     char configfile[FILENAME_MAX + 1];
+ 
+     if ((getuid() == 0) || (geteuid() == 0)) {
+-        printf("I won't run as root!\n");
+-        exit(1);
++	printf("be carefull, I am run as root!\n");
++        //exit(1);
+     }
+ 
+     if ((home = getenv("HOME")) == NULL) {
