@@ -64,7 +64,7 @@ define Package/gmenu2x/install
 	$(INSTALL_BIN) \
 		$(PKG_INSTALL_DIR)/usr/bin/gmenu2x \
 		$(1)/usr/share/gmenu2x/
-	
+
 	$(INSTALL_BIN) \
 		$(PKG_BUILD_DIR)/gmenu2x.sh \
 		$(1)/usr/bin/gmenu2x
@@ -72,16 +72,13 @@ define Package/gmenu2x/install
 	$(CP) \
 		$(PKG_BUILD_DIR)/pandora/* \
 		$(1)/usr/share/gmenu2x/
-	
+
+	$(CP) \
+		./files/input.conf \
+		$(1)/usr/share/gmenu2x/
+
 	rm -rf \
 		$(1)/usr/share/gmenu2x/sections/{emulators,games}
- 		
-# 	$(INSTALL_DATA) \
-# 		$(PKG_INSTALL_DIR)/usr/share/gmenu2x/* \
-# 		$(1)/usr/share/gmenu2x/
-# 		
-# 		$(PKG_INSTALL_DIR)/usr/bin/gmenu2x \
-# 		$(1)/usr/bin
 endef
 
 $(eval $(call BuildPackage,gmenu2x))
