@@ -10,7 +10,15 @@ diff -u bsd-games-2.17/tetris/input.c bsd-games-2.17-p/tetris/input.c
  again:
  	set[0].fd = STDIN_FILENO;
  	set[0].events = POLLIN;
-Файлы bsd-games-2.17/tetris/input.o и bsd-games-2.17-p/tetris/input.o различаются
+diff -u bsd-games-2.17/tetris/pathnames.h.in bsd-games-2.17-p/tetris/pathnames.h.in
+--- bsd-games-2.17/tetris/pathnames.h.in	2003-12-17 05:47:37.000000000 +0300
++++ bsd-games-2.17-p/tetris/pathnames.h.in	2010-07-27 11:42:20.386554141 +0400
+@@ -34,4 +34,4 @@
+  *	@(#)pathnames.h	8.1 (Berkeley) 5/31/93
+  */
+ 
+-#define _PATH_SCOREFILE	"@tetris_scorefile@"
++#define _PATH_SCOREFILE	"/usr/share/games/tetris-bsd.scores"
 diff -u bsd-games-2.17/tetris/screen.c bsd-games-2.17-p/tetris/screen.c
 --- bsd-games-2.17/tetris/screen.c	2004-01-27 23:52:07.000000000 +0300
 +++ bsd-games-2.17-p/tetris/screen.c	2010-07-26 22:04:34.422151495 +0400
@@ -31,7 +39,6 @@ diff -u bsd-games-2.17/tetris/screen.c bsd-games-2.17-p/tetris/screen.c
  	newtt.c_oflag &= ~OXTABS;
  	newtt.c_cc[VMIN] = 1;
  	newtt.c_cc[VTIME] = 0;
-Файлы bsd-games-2.17/tetris/screen.o и bsd-games-2.17-p/tetris/screen.o различаются
 diff -u bsd-games-2.17/tetris/shapes.c bsd-games-2.17-p/tetris/shapes.c
 --- bsd-games-2.17/tetris/shapes.c	2003-12-17 05:47:37.000000000 +0300
 +++ bsd-games-2.17-p/tetris/shapes.c	2010-07-27 09:30:41.267111585 +0400

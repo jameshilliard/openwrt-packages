@@ -48,7 +48,7 @@ endef
 define Package/tetris/install
 	$(INSTALL_DIR) \
 		$(1)/usr/bin \
-		$(1)/var/games
+		$(1)/usr/share/games
 
 	$(INSTALL_BIN) \
 		$(PKG_BUILD_DIR)/tetris/tetris \
