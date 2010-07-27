@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=NanoMap
 PKG_VERSION:=0.3
-PKG_REV:=012268a764a05e3b7226a248dd81b247713d6f2f
+PKG_REV:=f550a9a873eeb83ce8f1783b7e047717043db77e
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
@@ -32,7 +32,7 @@ endef
 MAKE_VARS += TARGETPATH=$(STAGING_DIR)
 
 define Build/Configure
-	$(STAGING_DIR)/usr/bin/qmake -spec $(STAGING_DIR)/usr/share/mkspecs/qws/linux-openwrt-g++ -o $(PKG_BUILD_DIR)/Makefile $(PKG_BUILD_DIR)/nanomap.pro
+	$(STAGING_DIR_HOST)/bin/qmake -spec $(STAGING_DIR)/usr/share/mkspecs/qws/linux-openwrt-g++ -o $(PKG_BUILD_DIR)/Makefile $(PKG_BUILD_DIR)/nanomap.pro
 endef
 
 define Package/NanoMap/install
