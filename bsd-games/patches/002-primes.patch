@@ -1,0 +1,73 @@
+diff -u bsd-games-2.17/primes/pattern.c bsd-games-2.17-p/primes/pattern.c
+--- bsd-games-2.17/primes/pattern.c	2003-12-17 05:47:37.000000000 +0300
++++ bsd-games-2.17-p/primes/pattern.c	2010-07-27 09:07:23.122817978 +0400
+@@ -33,13 +33,13 @@
+  */
+ 
+ #include <sys/cdefs.h>
+-#ifndef lint
++/*#ifndef lint
+ #if 0
+ static char sccsid[] = "@(#)pattern.c	8.1 (Berkeley) 5/31/93";
+ #else
+ __RCSID("$NetBSD: pattern.c,v 1.6 2003/08/07 09:37:33 agc Exp $");
+ #endif
+-#endif /* not lint */
++#endif */ /* not lint */
+ 
+ /*
+  * pattern - the Eratosthenes sieve on odd numbers for 3,5,7,11 and 13
+diff -u bsd-games-2.17/primes/primes.c bsd-games-2.17-p/primes/primes.c
+--- bsd-games-2.17/primes/primes.c	2004-01-27 23:52:07.000000000 +0300
++++ bsd-games-2.17-p/primes/primes.c	2010-07-27 09:07:52.303319233 +0400
+@@ -33,18 +33,18 @@
+  */
+ 
+ #include <sys/cdefs.h>
+-#ifndef lint
++/*#ifndef lint
+ __COPYRIGHT("@(#) Copyright (c) 1989, 1993\n\
+ 	The Regents of the University of California.  All rights reserved.\n");
+-#endif /* not lint */
++#endif */ /* not lint */
+ 
+-#ifndef lint
++/*#ifndef lint
+ #if 0
+ static char sccsid[] = "@(#)primes.c	8.5 (Berkeley) 5/10/95";
+ #else
+ __RCSID("$NetBSD: primes.c,v 1.12 2004/01/27 20:30:30 jsm Exp $");
+ #endif
+-#endif /* not lint */
++#endif */ /* not lint */
+ 
+ /*
+  * primes - generate a table of primes between two values
+diff -u bsd-games-2.17/primes/primes.h bsd-games-2.17-p/primes/primes.h
+--- bsd-games-2.17/primes/primes.h	2003-12-17 05:47:37.000000000 +0300
++++ bsd-games-2.17-p/primes/primes.h	2010-07-27 10:03:25.333608205 +0400
+@@ -48,3 +48,5 @@
+ 
+ /* bytes in sieve table (must be > 3*5*7*11) */
+ #define	TABSIZE		256*1024
++
++int isblank(int c);
+diff -u bsd-games-2.17/primes/pr_tbl.c bsd-games-2.17-p/primes/pr_tbl.c
+--- bsd-games-2.17/primes/pr_tbl.c	2003-12-17 05:47:37.000000000 +0300
++++ bsd-games-2.17-p/primes/pr_tbl.c	2010-07-27 09:08:15.198301714 +0400
+@@ -33,13 +33,13 @@
+  */
+ 
+ #include <sys/cdefs.h>
+-#ifndef lint
++/* #ifndef lint
+ #if 0
+ static char sccsid[] = "@(#)pr_tbl.c	8.1 (Berkeley) 5/31/93";
+ #else
+ __RCSID("$NetBSD: pr_tbl.c,v 1.7 2003/08/07 09:37:33 agc Exp $");
+ #endif
+-#endif /* not lint */
++#endif */ /* not lint */
+ 
+ /*
+  * prime - prime table

@@ -1,0 +1,71 @@
+diff -u bsd-games-2.17/tetris/input.c bsd-games-2.17-p/tetris/input.c
+--- bsd-games-2.17/tetris/input.c	2003-12-17 05:47:37.000000000 +0300
++++ bsd-games-2.17-p/tetris/input.c	2010-07-26 22:04:34.422302192 +0400
+@@ -85,7 +85,7 @@
+ 		endtv = *tvp;
+ 		timeout = tvp->tv_sec * 1000 + tvp->tv_usec / 1000;
+ 	} else
+-		timeout = INFTIM;
++		timeout = -1;
+ again:
+ 	set[0].fd = STDIN_FILENO;
+ 	set[0].events = POLLIN;
+Файлы bsd-games-2.17/tetris/input.o и bsd-games-2.17-p/tetris/input.o различаются
+diff -u bsd-games-2.17/tetris/screen.c bsd-games-2.17-p/tetris/screen.c
+--- bsd-games-2.17/tetris/screen.c	2004-01-27 23:52:07.000000000 +0300
++++ bsd-games-2.17-p/tetris/screen.c	2010-07-26 22:04:34.422151495 +0400
+@@ -73,7 +73,7 @@
+ extern char	PC, *BC, *UP;	/* tgoto requires globals: ugh! */
+ static char BCdefault[] = "\b";
+ #ifndef NCURSES_VERSION
+-short	ospeed;
++speed_t	ospeed;
+ #endif
+ 
+ static char
+@@ -287,6 +287,7 @@
+ 		stop("tcgetattr() fails");
+ 	newtt = oldtt;
+ 	newtt.c_lflag &= ~(ICANON|ECHO);
++#define OXTABS XTABS
+ 	newtt.c_oflag &= ~OXTABS;
+ 	newtt.c_cc[VMIN] = 1;
+ 	newtt.c_cc[VTIME] = 0;
+Файлы bsd-games-2.17/tetris/screen.o и bsd-games-2.17-p/tetris/screen.o различаются
+diff -u bsd-games-2.17/tetris/shapes.c bsd-games-2.17-p/tetris/shapes.c
+--- bsd-games-2.17/tetris/shapes.c	2003-12-17 05:47:37.000000000 +0300
++++ bsd-games-2.17-p/tetris/shapes.c	2010-07-27 09:30:41.267111585 +0400
+@@ -83,7 +83,7 @@
+ 	const struct shape *shape;
+ 	int pos;
+ {
+-	int *o = shape->off;
++	const int *o = shape->off;
+ 
+ 	if (board[pos] || board[pos + *o++] || board[pos + *o++] ||
+ 	    board[pos + *o])
+@@ -100,7 +100,7 @@
+ 	const struct shape *shape;
+ 	int pos, onoff;
+ {
+-	int *o = shape->off;
++	const int *o = shape->off;
+ 
+ 	board[pos] = onoff;
+ 	board[pos + *o++] = onoff;
+diff -u bsd-games-2.17/tetris/tetris.c bsd-games-2.17-p/tetris/tetris.c
+--- bsd-games-2.17/tetris/tetris.c	2004-01-27 23:52:07.000000000 +0300
++++ bsd-games-2.17-p/tetris/tetris.c	2010-07-26 22:04:34.430557133 +0400
+@@ -35,10 +35,10 @@
+  */
+ 
+ #include <sys/cdefs.h>
+-#ifndef lint
++/*#ifndef lint
+ __COPYRIGHT("@(#) Copyright (c) 1992, 1993\n\
+ 	The Regents of the University of California.  All rights reserved.\n");
+-#endif /* not lint */
++#endif*/ /* not lint */
+ 
+ /*
+  * Tetris (or however it is spelled).
