@@ -1,0 +1,12 @@
+--- odt2txt-0.4/Makefile	2008-06-23 21:32:28.000000000 +0200
++++ odt2txt-0.4m/Makefile	2010-07-23 14:19:20.706059237 +0200
+@@ -10,9 +10,7 @@
+ CFLAGS = -O2
+ endif
+ 
+-ifdef NO_ICONV
+ CFLAGS += -DNO_ICONV
+-endif
+ 
+ KUNZIP_OBJS = kunzip/fileio.o kunzip/zipfile.o
+ OBJ = odt2txt.o regex.o mem.o strbuf.o $(KUNZIP_OBJS)

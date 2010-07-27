@@ -1,0 +1,21 @@
+--- quickcalc-1.26/Makefile	1999-07-25 16:33:21.000000000 +0200
++++ quickcalc-1.26m/Makefile	2010-07-23 13:13:02.888135597 +0200
+@@ -3,7 +3,8 @@
+ #CPPFLAGS = -DC_DEBUG -g
+ 
+ CC = gcc
+-CFLAGS = -O2 -Wall
++CFLAGS+= -O2 -Wall
++LDLIBS+=$(LDFLAGS) -lm -lreadline -lncurses
+ SHELL = /bin/sh
+ 
+ OBJS = qc.o error.o disp_ans.o text.o calc_str.o lex.yy.o
+@@ -11,7 +12,7 @@
+ all : qc
+ 
+ qc : $(OBJS)
+-	$(CC) $(OBJS) -lm -lreadline -lncurses -o qc
++	$(CC) $(OBJS) $(LDLIBS) -o $(@)
+ 
+ qc.o : qc.c version.h
+ 
