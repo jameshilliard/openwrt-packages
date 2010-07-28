@@ -1,0 +1,13 @@
+--- snownews-1.5.12/Makefile	2009-09-17 08:44:27.000000000 +0200
++++ snownews-1.5.12m/Makefile	2010-07-28 12:14:11.000000000 +0200
+@@ -6,7 +6,9 @@
+ 
+ ### Compiler/linker flags   ###
+ ### Generated via configure ###
+-include platform_settings
++PREFIX=  /usr
++CFLAGS=  -Wall -Wno-format-y2k -O2 -DLOCALEPATH="\"$(LOCALEPATH)\"" -DOS=\"Linux\" -I/usr/include/libxml2 $(EXTRA_CFLAGS) 
++LDFLAGS= -lncurses -lcrypto -lxml2 $(EXTRA_LDFLAGS) 
+ 
+ ### Object files ###
+ OBJFILES= main.o netio.o interface.o xmlparse.o updatecheck.o conversions.o dialog.o ui-support.o categories.o about.o cookies.o setup.o net-support.o digcalc.o filters.o io-internal.o os-support.o zlib_interface.o support.o
