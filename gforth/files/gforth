@@ -1,4 +1,0 @@
-#! /bin/sh
-# Can't cross-build gforth.fi image file.  Instead load sources on startup.
-exec $0-bin -m 1M -i kernl32l.fi \
-     exboot.fs startup.fs arch/mips/asm.fs arch/mips/disasm.fs "$@"

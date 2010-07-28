@@ -2,11 +2,19 @@
 #
 # Copyright (C) 2010 David Kühling.  License: GPLv2+
 
+## Note for tuning: In theory you could strip down the resulting packages size
+## a lot, if you removed gforth and gforth-fast executables and only included
+## the (somewhat slower) gforth-itc and/or gforth-ditc interpreter binary that
+## rely on classic indirect threaded code without the (code-bloating) engine
+## optimizations.
+##
+## Also we could create multiple packages here 'gforth-minimal' and 'gforth'?
+
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gforth
 PKG_VERSION:=0.7.0-20100725
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://mosquito.dyndns.tv/~spock/
@@ -69,12 +77,26 @@ endef
 # todo: compiler options / tuning (openwrt sets bad defaults?)
 # todo: either gcc 3.4 or -Os makes primitives use doubly-indirect dispatch :(
 
-CROSS_PREFORTH=$(PKG_BUILD_DIR)/preforth
+## Configuration of the target gforth
+FORTHSIZES=--dictionary-size=1M \
+	--data-stack-size=16k \
+	--fp-stack-size=16k \
+	--return-stack-size=16k \
+	--locals-stack-size=16k
 
-## here we call configure, then patch the cross-GForth source tree to replace
-## the 'preforth' script with a script that calls our host-compiled GForth
+CROSS_CONFIGURE_VARS += FORTHSIZES="$(FORTHSIZES)" \
+	skipcode=".skip 16"
+
+CROSS_PREFORTH = $(PKG_BUILD_DIR)/preforth
+
+## Here we call configure, then patch the cross-GForth source tree to replace
+## the 'preforth' script with a script that calls our host-compiled GForth.
+## We also extract the name of the GForth kernel image used for the target
+## architecture.
 define Build/Configure
 	$(call Build/Configure/Default,)
+	echo "@kernel_fi@" > $(PKG_BUILD_DIR)/kernel_fi.in
+	cd $(PKG_BUILD_DIR) && ./config.status --file kernel_fi
 	echo "#!/bin/sh" > $(CROSS_PREFORTH)
 	echo "export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib;" >> $(CROSS_PREFORTH)
 	echo '$(STAGING_DIR_HOST)/bin/gforth -i $(STAGING_DIR_HOST)/lib/gforth/$(PKG_VERSION)/gforth.fi "$$$$@"' >> $(CROSS_PREFORTH)
@@ -84,7 +106,10 @@ endef
 ## Compilation is pretty manual to only build the parts we need.  By default
 ## the GForth Makefile attempts to auto-tune by recursively calling itself for
 ## compilation, then running the GForth binary through unit-tests.  This won't
-## work with a cross-compile environment
+## work with a cross-compile environment.
+##
+## todo: find out the correct kernel image and rename it 'kernel.fi', so we
+## can find it without adapting postinst script.
 define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) kernel/version.fs gforth-ditc \
 		engine/prim-fast.i engine/prim_lab-fast.i engine/prim_names-fast.i \
@@ -155,8 +180,8 @@ GFORTH_FI_SRC = \
 LIBCC_SRC = cstr.fs unix/socket.fs
 LIBCC_DIST_SRC = libffi.fs fflib.fs $(LIBCC_SRC)
 
-# todo: strip down
-FORTH_SRC = $(GFORTH_FI_SRC) $(LIBCC_DIST_SRC) \
+# todo: strip down (really?)
+GFORTH_SRC = $(GFORTH_FI_SRC) $(LIBCC_DIST_SRC) \
 	ans-report.fs ansi.fs answords.fs \
 	colorize.fs comp-i.fs complex.fs \
 	depth-changes.fs dosekey.fs doskey.fs ds2texi.fs \
@@ -181,20 +206,41 @@ FORTH_SRC = $(GFORTH_FI_SRC) $(LIBCC_DIST_SRC) \
 	add.fs lib.fs oldlib.fs sieve.fs \
 	endtry-iferror.fs recover-endtry.fs
 
-FS_INSTALL_DIR=/usr/share/gforth/$(PKG_VERSION)
+GFORTH_BIN = gforth gforth-fast gforthmi
 
+GFORTH_SHARE_DIR = /usr/share/gforth/$(PKG_VERSION)
+GFORTH_LIB_DIR = /usr/lib/gforth/$(PKG_VERSION)
+GFORTH_BIN_DIR = /usr/bin
+
+## Select files for package.  Note how we rename the GForth kernel image to
+## 'kernel.fi' here, so that 'postinst' can refer to it without depending on
+## architecture-specific naming.
 define Package/gforth/install
-	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_DIR) $(1)/usr/lib/gforth
-	$(INSTALL_DIR) $(1)/$(FS_INSTALL_DIR)
-	$(INSTALL_DIR) $(1)/usr/share/gforth/site-forth
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/gforth-fast $(1)/usr/bin/gforth-fast-bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/gforth $(1)/usr/bin/gforth-bin
-	$(INSTALL_BIN) files/gforth $(1)/usr/bin/gforth
-	$(INSTALL_BIN) files/gforth $(1)/usr/bin/gforth-fast
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/kernl32l.fi $(1)/$(FS_INSTALL_DIR)
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/siteinit.fs $(1)/usr/share/gforth/site-forth
-	$(call pkg_install_files,$(FORTH_SRC),$(PKG_BUILD_DIR),$(1)/$(FS_INSTALL_DIR))
+	$(INSTALL_DIR) $(1)/$(GFORTH_BIN_DIR)
+	$(INSTALL_DIR) $(1)/$(GFORTH_SHARE_DIR)
+	$(INSTALL_DIR) $(1)/$(GFORTH_LIB_DIR)
+	$(INSTALL_DIR) $(1)/$(GFORTH_SHARE_DIR)/../site-forth
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/$$$$(cat $(PKG_BUILD_DIR)/kernel_fi) $(1)/$(GFORTH_SHARE_DIR)/kernel.fi
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/gforth-ditc $(1)/$(GFORTH_LIB_DIR)/
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/siteinit.fs $(1)/$(GFORTH_SHARE_DIR)/../site-forth/
+	$(call pkg_install_bin,$(GFORTH_BIN),$(PKG_BUILD_DIR),$(1)/$(GFORTH_BIN_DIR))
+	$(call pkg_install_files,$(GFORTH_SRC),$(PKG_BUILD_DIR),$(1)/$(GFORTH_SHARE_DIR))
+endef
+
+FORTHKFLAGS= --die-on-signal -i kernel.fi
+
+## Directly after installation load the source once and generate a
+## corresponding interpreter image.  GForth needs that for quick startup.
+define Package/gforth/postinst
+#! /bin/sh
+echo "Creating GForth interpreter image..."
+export GFORTH="$(GFORTH_BIN_DIR)/gforth $(FORTHSIZES) $(FORTHKFLAGS) $(STARTUP)"
+gforthmi $(GFORTH_LIB_DIR)/gforth.fi $(FORTHSIZES) $(FORTHKFLAGS) $(STARTUP)
+endef
+
+define Package/gforth/prerm
+#! /bin/sh
+rm -f $(GFORTH_LIB_DIR)/gforth.fi
 endef
 
 $(eval $(call HostBuild))
