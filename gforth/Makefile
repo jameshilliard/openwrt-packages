@@ -6,17 +6,17 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gforth
 PKG_VERSION:=0.7.0-20100725
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://mosquito.dyndns.tv/~spock/
 PKG_MD5SUM:=f030bdfe42a9be32889d5b4c8cb37856
 
-PKG_BUILD_DEPENDS:= gforth/host libldtl/host
+PKG_BUILD_DEPENDS:= gforth/host libltdl/host
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
-include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/host-build.mk
+include $(INCLUDE_DIR)/package.mk
 
 # for now: override download and use local gforth sources
 # remove the prepare.stamp if updating tgz
@@ -44,33 +44,47 @@ endef
 
 HOST_CONFIGURE_VARS += LTDL_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib 
 
-# found this in the libtool Makefile.  does it help us?
-#export GLOBAL_LIBDIR=$(STAGING_DIR)/usr/lib
+## The host-GForth uses -ltdl to link against the staging dir version of
+## libltdl.  However, when the host-GForth runs, it won't find that library,
+## as no library path is encoded into the ltdl dependency (why?).  So here we
+## override LD_LIBRARY_PATH for all the build steps that might run the
+## host-GForth.
 
 define Host/Configure
-	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib; $(call Host/Configure/Default)
+	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib; \
+	$(call Host/Configure/Default)
 endef
 
-# define Host/Compile
-# 	$(MAKE) -C $(HOST_BUILD_DIR) 
-# endef
+define Host/Compile
+	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib; \
+	$(call Host/Compile/Default)
+endef
 
-# define Host/Install
-# 	$(MAKE) -C $(HOST_BUILD_DIR) \
-# 		DESTDIR="$(STAGING_DIR_HOST)" \
-# 		install
-# endef
+define Host/Install
+	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib; \
+	$(call Host/Install/Default)
+endef
 
 # todo: skipcode=
 # todo: compiler options / tuning (openwrt sets bad defaults?)
+# todo: either gcc 3.4 or -Os makes primitives use doubly-indirect dispatch :(
 
+CROSS_PREFORTH=$(PKG_BUILD_DIR)/preforth
+
+## here we call configure, then patch the cross-GForth source tree to replace
+## the 'preforth' script with a script that calls our host-compiled GForth
 define Build/Configure
 	$(call Build/Configure/Default,)
-	echo "#!/bin/sh" > $(PKG_BUILD_DIR)/preforth
-	echo '$(STAGING_DIR_HOST)/bin/gforth -i $(STAGING_DIR_HOST)/lib/gforth/$(PKG_VERSION)/gforth.fi "$$$$@"' >> $(PKG_BUILD_DIR)/preforth
+	echo "#!/bin/sh" > $(CROSS_PREFORTH)
+	echo "export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib;" >> $(CROSS_PREFORTH)
+	echo '$(STAGING_DIR_HOST)/bin/gforth -i $(STAGING_DIR_HOST)/lib/gforth/$(PKG_VERSION)/gforth.fi "$$$$@"' >> $(CROSS_PREFORTH)
 	chmod a+x $(PKG_BUILD_DIR)/preforth
 endef
 
+## Compilation is pretty manual to only build the parts we need.  By default
+## the GForth Makefile attempts to auto-tune by recursively calling itself for
+## compilation, then running the GForth binary through unit-tests.  This won't
+## work with a cross-compile environment
 define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) kernel/version.fs gforth-ditc \
 		engine/prim-fast.i engine/prim_lab-fast.i engine/prim_names-fast.i \
@@ -83,6 +97,10 @@ define Build/Compile
             cp engine/gforth-ll-reg ./gforth && \
 	    cp engine/gforth-fast-ll-reg ./gforth-fast
 endef
+
+##
+## define lists of GForth's sources to package for loading in the target system
+##
 
 STARTUP	= exboot.fs startup.fs arch/mips/asm.fs arch/mips/disasm.fs
 
