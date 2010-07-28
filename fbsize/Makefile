@@ -20,11 +20,11 @@ define Package/fbsize
 endef
 
 define Package/fbsize/description
-  fbsize, a dummy utility to show current terminal size (might be handy)
+  fbsize, a small utility to show current terminal size (might be handy)
 endef
 
 define Build/Compile
-	$(TARGET_CC) -o fbsize ./files/fbsize.c
+	$(TARGET_CC) -o $(PKG_BUILD_DIR)/fbsize ./files/fbsize.c
 endef
 
 define Package/fbsize/install
@@ -32,7 +32,7 @@ define Package/fbsize/install
 		$(1)/usr/bin
 
 	$(INSTALL_BIN) \
-		fbsize \
+		$(PKG_BUILD_DIR)/fbsize \
 		$(1)/usr/bin/fbsize
 
 endef
