@@ -1,6 +1,9 @@
 # Makefile for OpenWRT for cross-compiling GForth
 #
-# Copyright (C) 2010 David Kühling.  License: GPLv2+
+# Copyright (C) 1995,1996,1997,1998,2000,2003,2006,2007,2008,2009 Free
+# Software Foundation, Inc.
+#
+# Copyright (C) 2010 David Kühling.  License: GPLv3+
 
 ## Note for tuning: In theory you could strip down the resulting packages size
 ## a lot, if you removed gforth and gforth-fast executables and only included
@@ -14,7 +17,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gforth
 PKG_VERSION:=0.7.0-20100725
-PKG_RELEASE:=5
+PKG_RELEASE:=9
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://mosquito.dyndns.tv/~spock/
@@ -50,7 +53,11 @@ define Package/gforth/description
   language.
 endef
 
-HOST_CONFIGURE_VARS += LTDL_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib 
+HOST_CONFIGURE_VARS += LTDL_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib
+
+## Engine's dispatch would be crippled when compiling with -Os, also dynamic
+## superinstructions don't seem to work in that case
+EXTRA_CFLAGS += -O2
 
 ## The host-GForth uses -ltdl to link against the staging dir version of
 ## libltdl.  However, when the host-GForth runs, it won't find that library,
@@ -84,8 +91,7 @@ FORTHSIZES=--dictionary-size=1M \
 	--return-stack-size=16k \
 	--locals-stack-size=16k
 
-CROSS_CONFIGURE_VARS += FORTHSIZES="$(FORTHSIZES)" \
-	skipcode=".skip 16"
+CONFIGURE_VARS += FORTHSIZES="$(FORTHSIZES)"
 
 CROSS_PREFORTH = $(PKG_BUILD_DIR)/preforth
 
