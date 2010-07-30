@@ -1,0 +1,20 @@
+--- physfs-2.0.0/CMakeLists.txt	2009-03-23 06:13:28.000000000 +0100
++++ physfs-2.0.0m/CMakeLists.txt	2010-07-28 20:16:16.893088173 +0200
+@@ -44,7 +44,7 @@
+ # Add some gcc-specific command lines.
+ IF(CMAKE_COMPILER_IS_GNUCC)
+     # Always build with debug symbols...you can strip it later.
+-    ADD_DEFINITIONS(-g -pipe -Werror -fsigned-char)
++    ADD_DEFINITIONS(-g -Werror -fsigned-char)
+ 
+     # Stupid BeOS generates warnings in the system headers.
+     IF(NOT BEOS)
+@@ -315,7 +315,7 @@
+     SET(PHYSFS_INSTALL_TARGETS ${PHYSFS_INSTALL_TARGETS} ";test_physfs")
+ ENDIF(PHYSFS_BUILD_TEST)
+ 
+-OPTION(PHYSFS_BUILD_WX_TEST "Build wxWidgets test program." TRUE)
++OPTION(PHYSFS_BUILD_WX_TEST "Build wxWidgets test program." FALSE)
+ MARK_AS_ADVANCED(PHYSFS_BUILD_WX_TEST)
+ IF(PHYSFS_BUILD_WX_TEST)
+     SET(wxWidgets_USE_LIBS base core adv)
