@@ -21,6 +21,7 @@ define Package/mathomatic
 	CATEGORY:=Utilities
 	TITLE:=Calc
 	URL:=http://www.panix.com/~gesslein/
+	DEPENDS:=+libreadline
 endef
 
 define Package/mathomatic/description
