@@ -2,20 +2,20 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=centerim
 PKG_VERSION:=4.22.9
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 
 PKG_SOURCE:=centerim-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.centerim.org/download/releases
-	#PKG_MD5SUM:=89c0d76f2c0aabe1cf1c80eae7a13e8f
-	PKG_CAT:=zcat
+PKG_MD5SUM:=c43911508205e0277529230c8316a298
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/centerim-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/centerim
-	SECTION:=utils
-	CATEGORY:=Utilities
+	SECTION:=net
+	CATEGORY:=Network
+	SUBMENU:=Instant Messaging
 	DEPENDS:=+libncurses +libreadline
 	TITLE:=Universal IM client
 	URL:=http://www.centerim.org
@@ -26,9 +26,11 @@ define Package/centerim/description
 	Works in a character terminal.
 endef
 
+CONFIGURE_VARS+=ac_cv_lib_ncurses_initscr=yes ac_cv_path_GPGME_CONFIG=""
+
 define Build/Configure
 	$(call Build/Configure/Default, \
-		--prefix=/usr --with-linux-headers="$(LINUX_DIR)" \
+		--prefix=/usr \
 	)
 endef
 
