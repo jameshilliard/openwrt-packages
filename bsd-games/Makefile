@@ -37,6 +37,10 @@ define Build/Compile
 	cd $(PKG_BUILD_DIR)/primes; \
 	$(TARGET_CC) -c -O2 -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings pattern.c pr_tbl.c primes.c; \
 	$(TARGET_CC) -lm -o primes pattern.o pr_tbl.o primes.o
+
+#Building worm
+	cd $(PKG_BUILD_DIR)/worm; \
+	$(TARGET_CC) -lncurses -L$(STAGING_DIR)/usr/lib -I$(STAGING_DIR)/usr/include -O2 -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings -o worm worm.c
 endef
 
 define Package/tetris
@@ -69,5 +73,21 @@ define Package/primes/install
 		$(1)/usr/bin/primes
 endef
 
+define Package/worm
+$(call Package/bsd-games)
+  TITLE:=The growing worm game
+  DEPENDS:=+libncurses
+endef
+
+define Package/worm/install
+	$(INSTALL_DIR) \
+		$(1)/usr/bin
+
+	$(INSTALL_BIN) \
+		$(PKG_BUILD_DIR)/worm/worm \
+		$(1)/usr/bin/worm
+endef
+
 $(eval $(call BuildPackage,tetris))
 $(eval $(call BuildPackage,primes))
+$(eval $(call BuildPackage,worm))
