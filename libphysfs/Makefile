@@ -1,3 +1,7 @@
+                                                                     
+                                                                     
+                                                                     
+                                             
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libphysfs
@@ -42,14 +46,26 @@ define Build/Configure
 	 TARGET_CPPFLAGS="$(TARGET_CPPFLAGS)" \
 	 TARGET_CFLAGS="$(TARGET_CFLAGS)" \
 	 TARGET_LDFLAGS="$(TARGET_LDFLAGS)" \
-	cmake $(PKG_BUILD_DIR));$
+	cmake .);$
 	$(call Build/Compile/Default)$
 endef
 
+define Build/Compile
+	$(MAKE) -C $(PKG_BUILD_DIR) \
+		DESTDIR="$(PKG_INSTALL_DIR)" \
+		all install
+endef
+
+define Build/InstallDev
+	mkdir -p $(1)/usr/include
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/include/physfs.h $(1)/usr/include/
+	mkdir -p $(1)/usr/lib
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/lib/libphysfs.so* $(1)/usr/lib/
+endef
 
 define Package/libphysfs/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libphysfs.so.2.0.0 $(1)/usr/lib/
+	$(CP) $(PKG_BUILD_DIR)/libphysfs.so* $(1)/usr/lib/
 endef
 
 $(eval $(call BuildPackage,libphysfs))
