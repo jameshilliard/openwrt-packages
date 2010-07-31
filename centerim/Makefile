@@ -16,7 +16,7 @@ define Package/centerim
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=Instant Messaging
-	DEPENDS:=+libncurses +libreadline
+	DEPENDS:=+libncurses +libreadline +gpgme
 	TITLE:=Universal IM client
 	URL:=http://www.centerim.org
 endef
@@ -26,7 +26,7 @@ define Package/centerim/description
 	Works in a character terminal.
 endef
 
-CONFIGURE_VARS+=ac_cv_lib_ncurses_initscr=yes ac_cv_path_GPGME_CONFIG=""
+CONFIGURE_VARS+=ac_cv_lib_ncurses_initscr=yes
 
 define Build/Configure
 	$(call Build/Configure/Default, \
