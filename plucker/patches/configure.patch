@@ -1,0 +1,19 @@
+--- plucker-1.8/configure	2004-05-19 17:19:43.000000000 +0200
++++ plucker-1.8m/configure	2010-07-31 17:14:40.040292498 +0200
+@@ -4655,6 +4655,7 @@
+   has_jpeg_library=no
+ fi
+ 
++BUILD_UNPLUCK=yes
+ 
+ if test "$BUILD_UNPLUCK" != "yes"; then
+   echo "$as_me:$LINENO: result: libunpluck will not be built, by request" >&5
+@@ -4670,6 +4671,8 @@
+   BUILD_UNPLUCK=no
+ fi
+ 
++BUILD_UNPLUCK=yes
++
+ if test "$BUILD_EXPLODE" = "no" ; then
+    echo "$as_me:$LINENO: result: explode will not be built, by request" >&5
+ echo "${ECHO_T}explode will not be built, by request" >&6
