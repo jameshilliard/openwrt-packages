@@ -24,7 +24,7 @@ define Package/NanoMap
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=Qt4-based map viewer
-	DEPENDS:=@BROKEN +qt4 +qt4-gui +qt4-network
+	DEPENDS:=+qt4 +qt4-gui +qt4-network
 	URL:=http://projects.qi-hardware.com/index.php/p/nanomap/
 endef
 
@@ -32,7 +32,7 @@ endef
 MAKE_VARS += TARGETPATH=$(STAGING_DIR)
 
 define Build/Configure
-	$(STAGING_DIR_HOST)/bin/qmake -spec $(STAGING_DIR)/usr/share/mkspecs/qws/linux-openwrt-g++ -o $(PKG_BUILD_DIR)/Makefile $(PKG_BUILD_DIR)/nanomap.pro
+	$(call Build/Configure/Qmake,nanomap)
 endef
 
 define Package/NanoMap/install
