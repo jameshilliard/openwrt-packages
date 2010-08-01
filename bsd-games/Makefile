@@ -37,6 +37,21 @@ define Build/Compile
 	cd $(PKG_BUILD_DIR)/primes; \
 	$(TARGET_CC) -c -O2 -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings pattern.c pr_tbl.c primes.c; \
 	$(TARGET_CC) -lm -o primes pattern.o pr_tbl.o primes.o
+
+#Building worm
+	cd $(PKG_BUILD_DIR)/worm; \
+	$(TARGET_CC) -lncurses -L$(STAGING_DIR)/usr/lib -I$(STAGING_DIR)/usr/include -O2 -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings -o worm worm.c
+
+#Building backgammon
+	cd $(PKG_BUILD_DIR)/backgammon; \
+	cd common_source; \
+	$(TARGET_CC) -c -O2 -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings -I$(STAGING_DIR)/usr/include -DEXEC_PATH=\"/usr/bin/backgammon\" -DTEACH_PATH=\"/usr/bin/teachgammon\" allow.c board.c check.c fancy.c init.c odds.c one.c save.c subs.c table.c; \
+	cd ../backgammon; \
+	$(TARGET_CC) -c -O2 -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings -I$(STAGING_DIR)/usr/include -I$(PKG_BUILD_DIR)/backgammon/common_source extra.c main.c move.c text.c version.c; \
+	$(TARGET_CC) -lncurses -L$(STAGING_DIR)/usr/lib -o backgammon $(ECHO) ../common_source/*.o ../backgammon/*.o; \
+	cd ../teachgammon; \
+	$(TARGET_CC) -c -O2 -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings -I$(STAGING_DIR)/usr/include -I$(PKG_BUILD_DIR)/backgammon/common_source data.c teach.c ttext1.c ttext2.c tutor.c; \
+	$(TARGET_CC) -lncurses -L$(STAGING_DIR)/usr/lib -o teachgammon $(ECHO) ../common_source/*.o ../teachgammon/*.o
 endef
 
 define Package/tetris
@@ -69,5 +84,41 @@ define Package/primes/install
 		$(1)/usr/bin/primes
 endef
 
+define Package/worm
+$(call Package/bsd-games)
+  TITLE:=The growing worm game
+  DEPENDS:=+libncurses
+endef
+
+define Package/worm/install
+	$(INSTALL_DIR) \
+		$(1)/usr/bin
+
+	$(INSTALL_BIN) \
+		$(PKG_BUILD_DIR)/worm/worm \
+		$(1)/usr/bin/worm
+endef
+
+define Package/backgammon
+$(call Package/bsd-games)
+  TITLE:=the game of backgammon
+  DEPENDS:=+libncurses
+endef
+
+define Package/backgammon/install
+	$(INSTALL_DIR) \
+		$(1)/usr/bin
+
+	$(INSTALL_BIN) \
+		$(PKG_BUILD_DIR)/backgammon/backgammon/backgammon \
+		$(1)/usr/bin/backgammon
+
+	$(INSTALL_BIN) \
+		$(PKG_BUILD_DIR)/backgammon/teachgammon/teachgammon \
+		$(1)/usr/bin/teachgammon
+endef
+
 $(eval $(call BuildPackage,tetris))
 $(eval $(call BuildPackage,primes))
+$(eval $(call BuildPackage,worm))
+$(eval $(call BuildPackage,backgammon))

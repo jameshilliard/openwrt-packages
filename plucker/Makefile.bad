@@ -1,0 +1,51 @@
+include $(TOPDIR)/rules.mk
+
+PKG_NAME:=plucker
+PKG_VERSION:=1.8
+PKG_RELEASE:=1
+
+PKG_SOURCE:=$(PKG_NAME)_src-$(PKG_VERSION).tar.bz2
+	PKG_SOURCE_URL:=http://downloads.plkr.org/1.8/
+	PKG_CAT:=bzip2 -cd
+
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+
+
+include $(INCLUDE_DIR)/package.mk
+
+define Package/plucker
+	SECTION:=utils
+	CATEGORY:=Utilities
+	TITLE:=Plucker files reader (PDB)
+	DEPENDS:=+zlib +libintl +libiconv +libgconf2 +gtk +jpeg +pixman +fontconfig +libfreetype +pango +atk +libpng +DirectFB
+	URL=http://www.plkr.org
+endef
+
+define Package/plucker/description
+    Plucker can view files made by the Plucker Distiller (Project Gutenberg books, for example).
+endef
+
+#TARGET_CFLAGS+=-"I$(STAGING_DIR)/usr/include/gtk-2.0 -I$(STAGING_DIR)/usr/include"
+
+define Build/Configure
+	$(call Build/Configure/Default, \
+	--prefix=/usr \
+	--disable-palmosbuild \
+	--disable-docbuild \
+	--disable-java-distiller\
+	--enable-gtkviewer\
+	--enable-unplug \
+	--disable-explode \
+	--disable-desktopbuild, \
+	LIBS="-L$(STAGING_DIR)/usr/lib/libintl/lib -L$(STAGING_DIR)/usr/lib/libiconv/lib -L$(STAGING_DIR)/usr/lib" \
+	GTK2LIBS="-latk -lpixman -lfontconfig -lpng"\
+	)
+endef
+
+
+define Package/plucker/install
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/viewer-GTK+2-POSIX/plucker $(1)/usr/bin/
+endef
+
+$(eval $(call BuildPackage,plucker))

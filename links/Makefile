@@ -21,8 +21,9 @@ PKG_INSTALL:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/links
-    TITLE:=links
-    SECTION:=network
+    TITLE:=Text and graphics WWW browser
+    SUBMENU:=Web
+    SECTION:=net
     CATEGORY:=Network
     URL:=http://links.twibright.com/
     DEPENDS:=+libpng +libtiff

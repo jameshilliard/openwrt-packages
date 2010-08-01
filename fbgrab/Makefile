@@ -1,6 +1,5 @@
 #
-# Copyright (C) 2010 Qi Hardware Inc.
-# Author: Xiangfu Liu <xiangfu@sharism.com>
+# Author: Xiangfu Liu <xiangfu@sharism.cc>
 # 
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.

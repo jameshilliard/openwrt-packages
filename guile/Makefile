@@ -6,6 +6,9 @@
 # See /LICENSE for more information.
 #
 
+# modified 02/05/2010
+# author: jmoore@zedstar.org
+
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=guile
@@ -24,7 +27,7 @@ define Package/guile
     TITLE:=guile
     SECTION:=lang
     CATEGORY:=Languages
-    DEPENDS:=+libgmp +libpthread +libltdl @BROKEN
+    DEPENDS:=+libgmp +libpthread +libltdl +libncurses +libreadline
     URL:=http://savannah.gnu.org/projects/guile/
 endef
 
@@ -34,7 +37,12 @@ endef
 
 TARGET_LDFLAGS+="-Wl,-rpath-link=$(STAGING_DIR)/usr/lib"
 
-CONFIGURE_ARGS += --without-threads
+# should fix issue with threads
+CONFIGURE_ARGS += --without-threads --without-gettext
+
+define Build/Compile
+        (cd $(PKG_BUILD_DIR); autoreconf --force --install || exit 0);
+endef
 
 define Package/guile/install
 	$(INSTALL_DIR) $(1)/usr/bin

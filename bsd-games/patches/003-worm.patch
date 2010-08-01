@@ -1,0 +1,26 @@
+diff -u bsd-games-2.17/worm/worm.c bsd-games-2.17-p/worm/worm.c
+--- bsd-games-2.17/worm/worm.c	2004-01-27 23:52:07.000000000 +0300
++++ bsd-games-2.17-p/worm/worm.c	2010-07-31 21:36:08.313419076 +0400
+@@ -30,18 +30,18 @@
+  */
+ 
+ #include <sys/cdefs.h>
+-#ifndef lint
++/*#ifndef lint
+ __COPYRIGHT("@(#) Copyright (c) 1980, 1993\n\
+ 	The Regents of the University of California.  All rights reserved.\n");
+-#endif /* not lint */
++#endif */ /* not lint */
+ 
+-#ifndef lint
++/* #ifndef lint
+ #if 0
+ static char sccsid[] = "@(#)worm.c	8.1 (Berkeley) 5/31/93";
+ #else
+ __RCSID("$NetBSD: worm.c,v 1.25 2004/01/27 20:30:31 jsm Exp $");
+ #endif
+-#endif /* not lint */
++#endif */ /* not lint */
+ 
+ /*
+  * Worm.  Written by Michael Toy
