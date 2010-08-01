@@ -12,6 +12,7 @@ PKG_RELEASE:=1
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://downloads.sourceforge.net/project/freedroid/freedroidClassic/FreedroidClassic-1.0.2/
 PKG_CAT:=zcat
+PKG_MD5SUM:=585a65f61c2cd308ab45d5c514f695dc
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/freedroid-$(PKG_VERSION)
 
@@ -22,19 +23,15 @@ define Package/freedroid
   SECTION:=games
   CATEGORY:=Games
   URL:=http://freedroid.sourceforge.net/
-  DEPENDS:=libsdl-image libsdl-mixer libvorbis
+  DEPENDS:=+libsdl-image +libsdl-mixer +libvorbis
 endef
 
 define Package/freedroid/description
   A free clone of the C64-classic "Paradroid"
 endef
 
-CONFIGURE_VARS:=LDFLAGS="-Wl,-rpath-link=$(STAGING_DIR)/usr/lib"
-CONFIGURE_ARGS:=--prefix=/usr
-
-define Build/Configure
-  $(call Build/Configure/Default)
-endef
+CONFIGURE_VARS+=LDFLAGS="-Wl,-rpath-link=$(STAGING_DIR)/usr/lib" ac_cv_lib_vorbis_ov_open="yes"
+CONFIGURE_ARGS+=--with-x="no"
 
 define Package/freedroid/install
 	$(INSTALL_DIR) \
