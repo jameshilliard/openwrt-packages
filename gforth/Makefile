@@ -18,7 +18,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=gforth
 PKG_SNAPSHOT_DATE=20100725
 PKG_VERSION=0.7.0-$(PKG_SNAPSHOT_DATE)
-PKG_RELEASE:=10
+PKG_RELEASE:=11
 
 PKG_BUILD_DEPENDS:= gforth/host libltdl/host
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
@@ -92,10 +92,6 @@ define Host/Install
 	$(call Host/Install/Default)
 endef
 
-# todo: skipcode=
-# todo: compiler options / tuning (openwrt sets bad defaults?)
-# todo: either gcc 3.4 or -Os makes primitives use doubly-indirect dispatch :(
-
 ## Configuration of the target gforth
 FORTHSIZES=--dictionary-size=1M \
 	--data-stack-size=16k \
@@ -110,11 +106,14 @@ CROSS_PREFORTH = $(PKG_BUILD_DIR)/preforth
 ## Here we call configure, then patch the cross-GForth source tree to replace
 ## the 'preforth' script with a script that calls our host-compiled GForth.
 ## We also extract the name of the GForth kernel image used for the target
-## architecture.
+## architecture, and the source files used by GForth for implementing the
+## assembler/disassembler for the target architecture.
 define Build/Configure
 	$(call Build/Configure/Default,)
 	echo "@kernel_fi@" > $(PKG_BUILD_DIR)/kernel_fi.in
 	cd $(PKG_BUILD_DIR) && ./config.status --file kernel_fi
+	echo "@asm_fs@ @disasm_fs@" > $(PKG_BUILD_DIR)/asm_fs.in
+	cd $(PKG_BUILD_DIR) && ./config.status --file asm_fs
 	echo "#!/bin/sh" > $(CROSS_PREFORTH)
 	echo "export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib;" >> $(CROSS_PREFORTH)
 	echo '$(STAGING_DIR_HOST)/bin/gforth -i $(STAGING_DIR_HOST)/lib/gforth/$(PKG_VERSION)/gforth.fi "$$$$@"' >> $(CROSS_PREFORTH)
@@ -126,8 +125,10 @@ endef
 ## compilation, then running the GForth binary through unit-tests.  This won't
 ## work with a cross-compile environment.
 ##
-## todo: find out the correct kernel image and rename it 'kernel.fi', so we
-## can find it without adapting postinst script.
+## Todo: we currently always build the -ll-reg version of the engine.  On
+## 64-bit architectures this might not work?  Damn it, why is the check for
+## 'long long' in the Gforth Makefile, not the configure script?
+## Todo: develop a clean upstream patch to configure/Makefile
 define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) kernel/version.fs gforth-ditc \
 		engine/prim-fast.i engine/prim_lab-fast.i engine/prim_names-fast.i \
@@ -144,8 +145,6 @@ endef
 ##
 ## define lists of GForth's sources to package for loading in the target system
 ##
-
-STARTUP	= exboot.fs startup.fs arch/mips/asm.fs arch/mips/disasm.fs
 
 GFORTH_FI_SRC = \
 	assert.fs \
@@ -192,8 +191,14 @@ GFORTH_FI_SRC = \
 	vt100.fs \
 	vt100key.fs \
 	wordinfo.fs \
+	arch/386/asm.fs arch/386/disasm.fs \
+	arch/amd64/asm.fs arch/amd64/disasm.fs \
+	arch/alpha/asm.fs arch/alpha/disasm.fs arch/alpha/testasm.fs\
+	arch/arm/asm.fs arch/arm/disasm.fs \
+	arch/arm/testdisasm.fs arch/arm/testdisasm.out arch/arm/Makefile \
 	arch/mips/asm.fs arch/mips/disasm.fs arch/mips/insts.fs \
-	arch/mips/testasm.fs arch/mips/testdisasm.fs 
+	arch/mips/testasm.fs arch/mips/testdisasm.fs \
+	arch/power/asm.fs arch/power/disasm.fs arch/power/inst.fs
 
 LIBCC_SRC = cstr.fs unix/socket.fs
 LIBCC_DIST_SRC = libffi.fs fflib.fs $(LIBCC_SRC)
@@ -247,6 +252,12 @@ endef
 
 FORTHKFLAGS= --die-on-signal -i kernel.fi
 
+## make sure this is never evaluated before the configure step ran, else
+## $(shell) below is going to fail!  We use the $(shell) to use the correct
+## Gforth assembler implementation that was chosen by gforth's configure
+## script, when building the forth image.
+STARTUP	= exboot.fs startup.fs $(shell cat $(PKG_BUILD_DIR)/asm_fs)
+
 ## Directly after installation load the source once and generate a
 ## corresponding interpreter image.  GForth needs that for quick startup.
 define Package/gforth/postinst
@@ -263,3 +274,8 @@ endef
 
 $(eval $(call HostBuild))
 $(eval $(call BuildPackage,gforth))
+
+# The following comments configure the Emacs editor.  Just ignore them.
+# Local Variables:
+# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/gforth/compile -j2 V=99"
+# End:
