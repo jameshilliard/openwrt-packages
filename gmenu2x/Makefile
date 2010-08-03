@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=gmenu2x
 PKG_VERSION:=20100222
 PKG_REV:= 745321edf9101688ac1ffe3a0bff5773f08b36db
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=git://projects.qi-hardware.com/gmenu2x.git
