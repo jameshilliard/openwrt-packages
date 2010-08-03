@@ -1,5 +1,5 @@
 --- gmenu2x/src/filedialog.cpp	2010-08-03 12:18:26.000000000 +0200
-+++ gmenu2xm/src/filedialog.cpp	2010-08-03 13:31:40.000000000 +0200
++++ gmenu2xm/src/filedialog.cpp	2010-08-03 15:08:13.000000000 +0200
 @@ -35,7 +35,7 @@
  	this->text = text;
  	this->filter = filter;
@@ -23,7 +23,7 @@
  			case FD_ACTION_GOUP: {
  				string::size_type p = path().rfind("/");
 -				if (p==string::npos || path().substr(0,11)!="/card" || p<4)
-+				if (p==string::npos || path().substr(0,11)!="/" || p<4)
++				if (p==string::npos)
  					return false;
  				else
  					setPath( path().substr(0,p) );
