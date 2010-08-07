@@ -16,9 +16,10 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gforth
-PKG_SNAPSHOT_DATE=20100725
+PKG_SNAPSHOT_DATE=20100807
 PKG_VERSION=0.7.0-$(PKG_SNAPSHOT_DATE)
-PKG_RELEASE:=11
+PKG_RELEASE:=4
+
 
 PKG_BUILD_DEPENDS:= gforth/host libltdl/host
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
@@ -28,7 +29,8 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=\
 	http://user.cs.tu-berlin.de/~dvdkhlng/ \
 	http://mosquito.dyndns.tv/~spock/
-PKG_MD5SUM:=f030bdfe42a9be32889d5b4c8cb37856
+#PKG_SOURCE_URL:= file://~/forth/gforth/
+PKG_MD5SUM:=fb1d0dee4836dab57fd3eadbd5fc1922
 
 # Alternate download #1 via CVS: this doesn't work, as CVS is missing the
 # kernel.fi images needed for boot-strapping :(
@@ -37,17 +39,6 @@ PKG_MD5SUM:=f030bdfe42a9be32889d5b4c8cb37856
 # PKG_SOURCE_URL=:pserver:anonymous@c1.complang.tuwien.ac.at:/nfs/unsafe/cvs-repository/src-master
 # PKG_SOURCE_SUBDIR:=gforth
 # PKG_SOURCE:=gforth-$(PKG_SNAPSHOT_DATE).tar.gz
-
-# alternate download #2: use local sources
-# remove the prepare.stamp if updating tgz
-# define Build/Prepare
-# 	mkdir -p $(PKG_BUILD_DIR)
-# 	(cd $(PKG_BUILD_DIR)/.. && tar -xzvf -) < ~/forth/gforth/$(PKG_SOURCE)
-# endef
-# define Host/Prepare
-# 	mkdir -p $(HOST_BUILD_DIR)
-# 	(cd $(HOST_BUILD_DIR)/.. && tar -xzvf -) < ~/forth/gforth/$(PKG_SOURCE)
-# endef
 
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
