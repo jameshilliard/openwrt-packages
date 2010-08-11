@@ -19,6 +19,7 @@ PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=$(PKG_REV)
 
 include $(INCLUDE_DIR)/package.mk
+$(call include_mk,qmake.mk)
 
 define Package/NanoMap
 	SECTION:=utils
@@ -29,7 +30,7 @@ define Package/NanoMap
 endef
 
 
-MAKE_VARS += TARGETPATH=$(STAGING_DIR)
+TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Build/Configure
 	$(call Build/Configure/Qmake,nanomap)
