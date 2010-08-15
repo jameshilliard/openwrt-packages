@@ -62,7 +62,7 @@ diff -u bsd-games-2.17/tetris/shapes.c bsd-games-2.17-p/tetris/shapes.c
  	board[pos + *o++] = onoff;
 diff -u bsd-games-2.17/tetris/tetris.c bsd-games-2.17-p/tetris/tetris.c
 --- bsd-games-2.17/tetris/tetris.c	2004-01-27 23:52:07.000000000 +0300
-+++ bsd-games-2.17-p/tetris/tetris.c	2010-07-26 22:04:34.430557133 +0400
++++ bsd-games-2.17-p/tetris/tetris.c	2010-08-12 12:21:29.685301361 +0400
 @@ -35,10 +35,10 @@
   */
  
@@ -76,3 +76,12 @@ diff -u bsd-games-2.17/tetris/tetris.c bsd-games-2.17-p/tetris/tetris.c
  
  /*
   * Tetris (or however it is spelled).
+@@ -145,7 +145,7 @@
+ 		exit(1);
+ 	close(fd);
+ 
+-	keys = "jkl pq";
++	keys = "aks pq";
+ 
+ 	while ((ch = getopt(argc, argv, "k:l:ps")) != -1)
+ 		switch(ch) {

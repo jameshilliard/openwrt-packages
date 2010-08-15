@@ -32,9 +32,9 @@ define Build/Configure
 endef
 
 define Package/kbd/install
-	$(INSTALL_DIR) $(1)/usr/sbin
-	for f in setfont psfxtable setmetamode unicode_stop kbdrate loadkeys kbd_mode showconsolefont loadunimap unicode_start deallocvt openvt getkeycodes showkey setleds cad chvt mapscrn fgconsole setkeycodes; do \
-            $(INSTALL_BIN) $(PKG_BUILD_DIR)/src/$$$$f $(1)/usr/sbin;\
+	$(INSTALL_DIR) $(1)/usr/bin
+	for f in setfont psfxtable setmetamode unicode_stop kbdrate loadkeys kbd_mode showconsolefont loadunimap unicode_start deallocvt openvt getkeycodes showkey setleds cad chvt mapscrn fgconsole setkeycodes dumpkeys; do \
+            $(INSTALL_BIN) $(PKG_BUILD_DIR)/src/$$$$f $(1)/usr/bin;\
 	done
 endef
 

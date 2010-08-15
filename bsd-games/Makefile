@@ -29,7 +29,7 @@ CFLAGS:=
 define Build/Compile
 #Building tetris
 	cd $(PKG_BUILD_DIR)/tetris; \
-	mv pathnames.h.in pathnames.h; \
+	cp pathnames.h.in pathnames.h; \
 	$(TARGET_CC) -c -O2 -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings -I$(STAGING_DIR)/usr/include input.c screen.c shapes.c scores.c tetris.c; \
 	$(TARGET_CC) -lncurses -L$(STAGING_DIR)/usr/lib -o tetris input.o screen.o shapes.o scores.o tetris.o
 

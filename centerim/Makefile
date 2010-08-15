@@ -16,7 +16,7 @@ define Package/centerim
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=Instant Messaging
-	DEPENDS:=+libncurses +libreadline +gpgme
+	DEPENDS:=+libncurses +libreadline +gpgme +libopenssl +libcurl
 	TITLE:=Universal IM client
 	URL:=http://www.centerim.org
 endef
