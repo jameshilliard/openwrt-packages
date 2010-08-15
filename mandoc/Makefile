@@ -4,10 +4,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mandoc
 PKG_VERSION:=1.10.4
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
-PKG_SOURCE:=mdocml.tar.gz
+PKG_SOURCE:=mdocml-1.10.4.tar.gz
 PKG_SOURCE_URL:=http://mdocml.bsd.lv/snapshots/
+PKG_MD5SUM:=f23e40cd64f4312b0c4e2d72e7999298
 PKG_CAT:=zcat
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/mdocml-$(PKG_VERSION)
@@ -19,7 +20,6 @@ define Package/mandoc
 	CATEGORY:=Utilities
 	TITLE:=mandoc
 	URL:=http://mdocml.bsd.lv/
-    DEPENDS:=@BROKEN
 endef
 
 define Package/mandoc/demandocription
