@@ -8,11 +8,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmu
-PKG_VERSION:=0.7.0
+PKG_VERSION:=0.7.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://wejp.k.vu/wp-content/uploads/2010/03/
+PKG_SOURCE_URL:=http://wejp.k.vu/files/
 PKG_MD5SUM:=88a4f12e6388dfd58fc0c8162c3a99c7
 
 include $(INCLUDE_DIR)/package.mk
