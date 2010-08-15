@@ -19,6 +19,7 @@ define Package/mandoc
 	CATEGORY:=Utilities
 	TITLE:=mandoc
 	URL:=http://mdocml.bsd.lv/
+    DEPENDS:=@BROKEN
 endef
 
 define Package/mandoc/demandocription
