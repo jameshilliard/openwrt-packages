@@ -15,11 +15,20 @@ PKG_SOURCE:=kbd-$(PKG_VERSION).tar.gz
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/kbd
+define Package/kbd/Default
   SECTION:=utils
   CATEGORY:=Utilities
-  TITLE:=Keyboard and console utilities for Linux
   URL:=ftp://ftp.kernel.org/pub/linux/utils/kbd
+endef
+
+define Package/kbd
+  $(call Package/kbd/Default)
+  TITLE:=Keyboard and console utilities for Linux
+endef
+
+define Package/kbd-console-fonts
+  $(call Package/kbd/Default)
+  TITLE:=Console fonts for Linux
 endef
 
 define Package/kbd/description
@@ -38,4 +47,10 @@ define Package/kbd/install
 	done
 endef
 
+define Package/kbd-console-fonts/install
+	$(INSTALL_DIR) $(1)/usr/share/consolefonts
+	$(CP) $(PKG_BUILD_DIR)/data/consolefonts/* $(1)/usr/share/consolefonts/
+endef
+
 $(eval $(call BuildPackage,kbd))
+$(eval $(call BuildPackage,kbd-console-fonts))
