@@ -6,7 +6,7 @@
 # See /LICENSE for more information.
 #
 
-# modified 02/05/2010
+# modified 16/08/2010
 # author: jmoore@zedstar.org
 
 include $(TOPDIR)/rules.mk
@@ -19,6 +19,7 @@ PKG_SOURCE_URL:=http://ftp.gnu.org/gnu/guile/
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
+PKG_FIXUP:=libtool
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -39,6 +40,22 @@ TARGET_LDFLAGS+="-Wl,-rpath-link=$(STAGING_DIR)/usr/lib"
 
 # should fix issue with threads
 CONFIGURE_ARGS += --without-threads --without-gettext
+
+define Build/InstallDev
+	$(INSTALL_DIR) \
+		$(1)/usr/include \
+		$(1)/usr/lib \
+		$(1)/usr/lib/pkgconfig
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/lib/* \
+		$(1)/usr/lib/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/include/* \
+		$(1)/usr/include/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig \
+		$(1)/usr/lib/
+endef
 
 define Build/Compile
         (cd $(PKG_BUILD_DIR); autoreconf --force --install || exit 0);
