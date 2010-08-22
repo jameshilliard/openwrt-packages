@@ -9,6 +9,8 @@
 # modified 16/08/2010
 # author: jmoore@zedstar.org
 
+# install the "guile" in your HOST pc for compile this package
+
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=guile

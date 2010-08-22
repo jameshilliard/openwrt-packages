@@ -13,7 +13,7 @@ PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://wejp.k.vu/files/
-PKG_MD5SUM:=88a4f12e6388dfd58fc0c8162c3a99c7
+PKG_MD5SUM:=62653037d2046d992626eaf6d0a365e3
 
 include $(INCLUDE_DIR)/package.mk
 
