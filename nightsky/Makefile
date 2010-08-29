@@ -6,12 +6,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=nightsky
-PKG_VERSION:=20100827
+PKG_VERSION:=20100829
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/$(PKG_NAME)
-PKG_MD5SUM:=cabbad95d87a3a80f3fe47e716b59239
+PKG_MD5SUM:=fa2ab06368988678aa14319aa3f07aac
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
@@ -29,6 +29,7 @@ define Package/nightsky/description
   Nightsky is a very basic rendering of the stars in the sky for devices that aren't powerful enough to run Stellarium
 endef
 
+TARGET_CFLAGS+=-DNANONOTE
 TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Package/nightsky/install
