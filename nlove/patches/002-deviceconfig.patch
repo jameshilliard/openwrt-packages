@@ -1,0 +1,20 @@
+--- sdltest-2.1.0/common/config.h	2010-08-04 11:41:07.000000000 +0200
++++ sdltest-2.1.0m/common/config.h	2010-08-10 15:09:02.000000000 +0200
+@@ -35,6 +35,8 @@
+ #	define LOVE_MACOS 1
+ #endif
+ 
++#define LOVE_LINUX 1
++
+ // Endianness.
+ #if defined(__i386__) || defined(__i386)
+ #	define LOVE_LITTLE_ENDIAN 1
+@@ -43,6 +45,8 @@
+ #	define LOVE_BIG_ENDIAN 1
+ #endif
+ 
++#define LOVE_LITTLE_ENDIAN 1
++
+ // Warnings.
+ #ifndef _CRT_SECURE_NO_WARNINGS
+ #	define _CRT_SECURE_NO_WARNINGS
