@@ -16,7 +16,7 @@ define Package/centerim
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=Instant Messaging
-	DEPENDS:=+libncurses +libreadline +gpgme +libopenssl +libcurl +libgnutls-extra
+	DEPENDS:=+libncurses +libreadline +gpgme +libopenssl +libcurl
 	TITLE:=Universal IM client
 	URL:=http://www.centerim.org
 endef
@@ -31,6 +31,7 @@ CONFIGURE_VARS+=ac_cv_lib_ncurses_initscr=yes
 define Build/Configure
 	$(call Build/Configure/Default, \
 		--prefix=/usr \
+		--with-openssl=$(STAGING_DIR)/usr/lib \
 	)
 endef
 
