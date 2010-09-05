@@ -16,7 +16,7 @@ define Package/nlove
 	SECTION:=games
 	CATEGORY:=Games
 	TITLE:=LÖVE
-	DEPENDS:=+libphysfs libsdl libsdl-image libsdl-gfx libsdl-mixer
+	DEPENDS:=+libphysfs +libsdl +libsdl-image +libsdl-gfx +libsdl-mixer +lua
 	URL:=http://bartbes.ath.cx/
 endef
 
