@@ -1,10 +1,3 @@
-#
-# Copyright (C) 2006 OpenWrt.org
-#
-# This is free software, licensed under the GNU General Public License v2.
-# See /LICENSE for more information.
-#
-
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=snownews
@@ -33,7 +26,7 @@ endef
 
 define Build/Configure
 	$(call Build/Compile/Default,\
-	EXTRA_CFLAGS="-I$(STAGING_DIR)/usr/lib/libintl/include -I$(STAGING_DIR)/usr/lib/libiconv/include -I$(STAGING_DIR)/usr/include"\
+	EXTRA_CFLAGS="-I$(STAGING_DIR)/usr/lib/libintl/include -I$(STAGING_DIR)/usr/lib/libiconv/include -I$(STAGING_DIR)/usr/include -I$(STAGING_DIR)/usr/include/libxml2/ "\
 	EXTRA_LDFLAGS="-L$(STAGING_DIR)/usr/lib/ -L$(STAGING_DIR)/usr/lib/libintl/lib -L$(STAGING_DIR)/usr/lib/libiconv/lib -liconv -lcharset -lintl -lm -lz "\
 		)
 endef
