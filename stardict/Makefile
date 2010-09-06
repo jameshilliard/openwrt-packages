@@ -28,7 +28,7 @@ endef
 
 define Package/stardict
     $(call Package/stardict/Default)
-    DEPENDS:=+libintl +libiconv +libgconf2
+    DEPENDS:=+libintl +libiconv +libgconf2 +gtk2
 endef
 
 define Package/stardict-dic-en-en
