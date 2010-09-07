@@ -1,0 +1,86 @@
+diff -u -x '*.o' -x 'moc_*' -x '*~' -x Makefile -x NanoMap nanomap-master_orig/downloadwidget.cpp nanomap-master/downloadwidget.cpp
+--- nanomap-master_orig/downloadwidget.cpp	2010-07-29 16:24:38.000000000 +0400
++++ nanomap-master/downloadwidget.cpp	2010-09-04 00:05:14.000000000 +0400
+@@ -26,6 +26,7 @@
+ #include <QtCore/QFile>
+ #include <QtGui/QLayout>
+ #include <QtGui/QPushButton>
++#include <QtGui/QCheckBox>
+ #include <QtNetwork/QNetworkReply>
+ #include <QtNetwork/QNetworkRequest>
+ 
+@@ -40,7 +41,8 @@
+     m_right(new QLabel("E 0", this)),
+     m_bottom(new QLabel("N 0", this)),
+     m_levelSpinBox(new QSpinBox(this)),
+-    m_dlProgress(new QProgressBar(this))
++    m_dlProgress(new QProgressBar(this)),
++    m_checkbox(new QCheckBox("S&kip already downloaded tiles", this))
+ {
+     QGridLayout *layout = new QGridLayout(this);
+     layout->setContentsMargins(0, 0, 0, 0);
+@@ -65,16 +67,19 @@
+     m_levelSpinBox->setRange(0, 18);
+     layout->addWidget(m_levelSpinBox, 3, 2, 1, 2);
+ 
++    m_checkbox->setChecked(false);
++    layout->addWidget(m_checkbox, 4, 0, 1, 0);
++
+     m_dlProgress->setFormat("%v / %m");
+-    layout->addWidget(m_dlProgress, 4, 0, 1, 4);
++    layout->addWidget(m_dlProgress, 5, 0, 1, 4);
+ 
+     QPushButton *start = new QPushButton("&Start", this);
+     connect(start, SIGNAL(clicked()), this, SLOT(startDownload()));
+-    layout->addWidget(start, 5, 0, 1, 2);
++    layout->addWidget(start, 6, 0, 1, 2);
+ 
+     QPushButton *back = new QPushButton("&Back", this);
+     connect(back, SIGNAL(clicked()), this, SIGNAL(back()));
+-    layout->addWidget(back, 5, 2, 1, 2);
++    layout->addWidget(back, 6, 2, 1, 2);
+ 
+     connect(m_manager, SIGNAL(finished(QNetworkReply*)),
+             this, SLOT(replyFinished(QNetworkReply*)));
+@@ -145,9 +150,19 @@
+             }
+         }
+         if (!m_dlList.isEmpty()) {
+-            QUrl url(m_dlList.takeFirst());
+-            m_manager->get(QNetworkRequest(url));
+-        }
++	    int count = m_dlList.count();
++	    for (int i = 0; i < count; ++i) {
++            	QUrl url(m_dlList.takeFirst());
++	    	QFile file_my(QDir::homePath()+"/Maps/OSM"+url.path());
++	    	if (!file_my.exists() || m_checkbox->checkState() == Qt::Unchecked) {	    	    
++            	    	m_manager->get(QNetworkRequest(url));
++			break;
++	    	} else {
++			int n = m_dlProgress->value();
++			m_dlProgress->setValue(n+1);
++	    	}
++	    }
++	}
+         int n = m_dlProgress->value();
+         m_dlProgress->setValue(n+1);
+     }
+diff -u -x '*.o' -x 'moc_*' -x '*~' -x Makefile -x NanoMap nanomap-master_orig/downloadwidget.h nanomap-master/downloadwidget.h
+--- nanomap-master_orig/downloadwidget.h	2010-07-29 16:24:38.000000000 +0400
++++ nanomap-master/downloadwidget.h	2010-09-03 23:29:57.000000000 +0400
+@@ -24,6 +24,7 @@
+ #include <QtGui/QProgressBar>
+ #include <QtGui/QSpinBox>
+ #include <QtGui/QWidget>
++#include <QtGui/QCheckBox>
+ #include <QtNetwork/QNetworkAccessManager>
+ 
+ class DownloadWidget : public QWidget
+@@ -56,6 +57,7 @@
+     QLabel *m_up, *m_left, *m_right, *m_bottom;
+     QSpinBox *m_levelSpinBox;
+     QProgressBar *m_dlProgress;
++    QCheckBox *m_checkbox;
+ 
+ };
+ 
