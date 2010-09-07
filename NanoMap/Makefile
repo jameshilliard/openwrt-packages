@@ -25,7 +25,7 @@ define Package/NanoMap
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=Qt4-based map viewer
-	DEPENDS:=+qt4 +qt4-gui +qt4-network
+	DEPENDS:=+qt4 +qt4-gui +qt4-network +dejavu-fonts-ttf
 	URL:=http://projects.qi-hardware.com/index.php/p/nanomap/
 endef
 
