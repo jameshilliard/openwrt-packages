@@ -32,7 +32,7 @@ endef
 
 define Build/Configure
         $(call Build/Configure/Default, \
-                --with-pth=no --with-gpg="" --with-gpgsm="" \
+		--with-pth=no --with-gpg="/usr/bin/gpg" --with-gpgsm="" \
 		--with-gpgconf="" --with-g13="" \
 		--enable-shared --enable-static \
         )
