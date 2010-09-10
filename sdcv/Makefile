@@ -24,7 +24,7 @@ define Package/sdcv
     TITLE:=sdcv
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=+libintl +libreadline +libiconv
+    DEPENDS:=+libintl +libreadline +libiconv +glib2
     URL:=http://sdcv.sourceforge.net/
 endef
 
