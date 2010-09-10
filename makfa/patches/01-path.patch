@@ -1,0 +1,22 @@
+diff --git a/makfa b/makfa
+index 488007e..a19a5c8 100755
+--- a/makfa
++++ b/makfa
+@@ -485,7 +485,7 @@ class Type(Command):
+ 
+ class Updater(object):
+ 
+-    def __init__(self, lang='en', filename=os.path.expanduser('~/makfa.dump')):
++    def __init__(self, lang='en', filename='/var/lib/makfa/makfa.dump'):
+         self.db = {'order': [], 'entries': {}}
+         url = 'http://jbovlaste.lojban.org/export/xml-export.html?lang=%s'
+         tree = etree.parse(urllib.urlopen(url % lang))
+@@ -615,7 +615,7 @@ class Filter(object):
+ 
+ class Dictionary(object):
+ 
+-    def __init__(self, filename=os.path.expanduser('~/makfa.dump')):
++    def __init__(self, filename='/var/lib/makfa/makfa.dump'):
+         try:
+             self._db = pickle.load(open(filename))
+         except:

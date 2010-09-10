@@ -1,0 +1,63 @@
+diff --git a/makfa b/makfa
+index af7a8b7..488007e 100755
+--- a/makfa
++++ b/makfa
+@@ -296,19 +296,16 @@ class Update(object):
+     """Update dictionary."""
+ 
+     def __init__(self):
+-        self.parser = OptionParser(usage='makfa update [language]',
++        self.parser = OptionParser(usage='makfa update [language] [filename]',
+                                    description=self.__class__.__doc__)
+ 
+     def parse(self, argv):
+         options, args = self.parser.parse_args(argv)
+         print 'Updating dictionary...'
+-        if args:
+-            try:
+-                Updater(args[0])
+-            except SyntaxError:
+-                print 'Invalid language code.'
+-        else:
+-            Updater()
++        try:
++            Updater(*args)
++        except SyntaxError:
++            print 'Invalid language code.'
+ 
+ 
+ class Find(object):
+@@ -488,7 +485,7 @@ class Type(Command):
+ 
+ class Updater(object):
+ 
+-    def __init__(self, lang='en'):
++    def __init__(self, lang='en', filename=os.path.expanduser('~/makfa.dump')):
+         self.db = {'order': [], 'entries': {}}
+         url = 'http://jbovlaste.lojban.org/export/xml-export.html?lang=%s'
+         tree = etree.parse(urllib.urlopen(url % lang))
+@@ -506,7 +503,7 @@ class Updater(object):
+                 self.db['entries'][word]['places'][place] = []
+             self.db['entries'][word]['places'][place]. \
+                 append((valsi.get('word'), sense))
+-        pickle.dump(self.db, open(os.path.expanduser('~/.makfa.dump'), 'w'), -1)
++        pickle.dump(self.db, open(filename, 'w'), -1)
+ 
+     def _save(self, valsi):
+         word = valsi.get('word')
+@@ -618,12 +615,12 @@ class Filter(object):
+ 
+ class Dictionary(object):
+ 
+-    def __init__(self):
++    def __init__(self, filename=os.path.expanduser('~/makfa.dump')):
+         try:
+-            self._db = pickle.load(open(os.path.expanduser('~/.makfa.dump')))
++            self._db = pickle.load(open(filename))
+         except:
+             print >>sys.stderr, '(Fetching dictionary, this may take a minute.)'
+-            self._db = Updater().db
++            self._db = Updater(filename=filename).db
+         self._longest = max(map(len, self))
+ 
+     def definition(self, entry):
