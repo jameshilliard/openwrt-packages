@@ -8,7 +8,7 @@ Signed-off-by: Xiangfu Liu <xiangfu@sharism.cc>
  1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index aae3eaa..ce8b65e 100644
+index aae3eaa..3515b33 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -15,7 +15,7 @@ OPTS = -O2
@@ -16,7 +16,7 @@ index aae3eaa..ce8b65e 100644
  
  # Define where you want Frotz installed.  Usually this is /usr/local
 -PREFIX = /usr/local
-+PREFIX = /tmp
++PREFIX = $(DESTDIR)/usr/local
  
  MAN_PREFIX = $(PREFIX)
  #MAN_PREFIX = /usr/local/share
