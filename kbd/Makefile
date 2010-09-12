@@ -62,6 +62,7 @@ define Package/kbd-console-maps/install
 	$(INSTALL_DIR) $(1)/usr/share/kbd/keymaps/i386/include
 	$(CP) $(PKG_BUILD_DIR)/data/keymaps/i386/qwerty/* $(1)/usr/share/kbd/keymaps/i386/qwerty/
 	$(CP) $(PKG_BUILD_DIR)/data/keymaps/i386/include/* $(1)/usr/share/kbd/keymaps/i386/include/
+	$(CP) $(FILES_DIR)/ben_ru_uni.map.gz $(1)/usr/share/kbd/keymaps/
 endef
 
 $(eval $(call BuildPackage,kbd))
