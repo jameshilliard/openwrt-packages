@@ -31,6 +31,11 @@ define Package/kbd-console-fonts
   TITLE:=Console fonts for Linux
 endef
 
+define Package/kbd-console-maps
+  $(call Package/kbd/Default)
+  TITLE:=Console maps for Linux
+endef
+
 define Package/kbd/description
   Keyboard and console utilities for Linux
 endef
@@ -48,9 +53,17 @@ define Package/kbd/install
 endef
 
 define Package/kbd-console-fonts/install
-	$(INSTALL_DIR) $(1)/usr/share/consolefonts
-	$(CP) $(PKG_BUILD_DIR)/data/consolefonts/* $(1)/usr/share/consolefonts/
+	$(INSTALL_DIR) $(1)/usr/share/kbd/consolefonts
+	$(CP) $(PKG_BUILD_DIR)/data/consolefonts/* $(1)/usr/share/kbd/consolefonts/
+endef
+
+define Package/kbd-console-maps/install
+	$(INSTALL_DIR) $(1)/usr/share/kbd/keymaps/i386/qwerty
+	$(INSTALL_DIR) $(1)/usr/share/kbd/keymaps/i386/include
+	$(CP) $(PKG_BUILD_DIR)/data/keymaps/i386/qwerty/* $(1)/usr/share/kbd/keymaps/i386/qwerty/
+	$(CP) $(PKG_BUILD_DIR)/data/keymaps/i386/include/* $(1)/usr/share/kbd/keymaps/i386/include/
 endef
 
 $(eval $(call BuildPackage,kbd))
 $(eval $(call BuildPackage,kbd-console-fonts))
+$(eval $(call BuildPackage,kbd-console-maps))
