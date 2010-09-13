@@ -16,7 +16,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gforth
-PKG_SNAPSHOT_DATE=20100807
+PKG_SNAPSHOT_DATE=2010913
 PKG_VERSION=0.7.0-$(PKG_SNAPSHOT_DATE)
 PKG_RELEASE:=4
 
@@ -30,7 +30,7 @@ PKG_SOURCE_URL:=\
 	http://user.cs.tu-berlin.de/~dvdkhlng/ \
 	http://mosquito.dyndns.tv/~spock/
 #PKG_SOURCE_URL:= file://~/forth/gforth/
-PKG_MD5SUM:=fb1d0dee4836dab57fd3eadbd5fc1922
+PKG_MD5SUM:=4b52f42aac9c78121dedeca7aa998b37
 
 # Alternate download #1 via CVS: this doesn't work, as CVS is missing the
 # kernel.fi images needed for boot-strapping :(
