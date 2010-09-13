@@ -1,0 +1,17 @@
+--- a/Makefile	2010-09-10 12:28:16.497302519 +0400
++++ b/Makefile	2010-09-10 12:27:40.307427782 +0400
+@@ -58,11 +58,11 @@
+ 
+ install: OpenJPEG
+ 	install -d '$(DESTDIR)$(INSTALL_LIBDIR)' '$(DESTDIR)$(INSTALL_INCLUDE)'
+-	install -m 644 -o root -g root $(STATICLIB) '$(DESTDIR)$(INSTALL_LIBDIR)'
++	install -m 644 $(STATICLIB) '$(DESTDIR)$(INSTALL_LIBDIR)'
+ 	ranlib '$(DESTDIR)$(INSTALL_LIBDIR)/$(STATICLIB)'
+-	install -m 755 -o root -g root $(SHAREDLIB) '$(DESTDIR)$(INSTALL_LIBDIR)'
++	install -m 755 $(SHAREDLIB) '$(DESTDIR)$(INSTALL_LIBDIR)'
+ 	ln -sf $(SHAREDLIB) '$(DESTDIR)$(INSTALL_LIBDIR)/$(LIBNAME)'
+-	install -m 644 -o root -g root libopenjpeg/openjpeg.h '$(DESTDIR)$(INSTALL_INCLUDE)'
++	install -m 644 libopenjpeg/openjpeg.h '$(DESTDIR)$(INSTALL_INCLUDE)'
+ 	-ldconfig
+ 
+ clean:
