@@ -23,7 +23,7 @@ define Package/jfbterm
   TITLE:=J framebuffer terminal / Multilingual Enhancement
   URL:=http://jfbterm.sourceforge.jp
   SUBMENU:=Terminal
-  DEPENDS:=+libiconv
+  DEPENDS:=+libiconv +unifont
 endef
 
 define Package/jfbterm/description
