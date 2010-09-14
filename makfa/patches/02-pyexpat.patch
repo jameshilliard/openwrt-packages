@@ -1,0 +1,20 @@
+diff --git a/makfa b/makfa
+index 488007e..ab66740 100755
+--- a/makfa
++++ b/makfa
+@@ -8,7 +8,6 @@ import re
+ import sys
+ import textwrap
+ import urllib
+-import xml.etree.cElementTree as etree
+ 
+ 
+ 
+@@ -486,6 +485,7 @@ class Type(Command):
+ class Updater(object):
+ 
+     def __init__(self, lang='en', filename='/var/lib/makfa/makfa.dump'):
++        import xml.etree.cElementTree as etree
+         self.db = {'order': [], 'entries': {}}
+         url = 'http://jbovlaste.lojban.org/export/xml-export.html?lang=%s'
+         tree = etree.parse(urllib.urlopen(url % lang))
