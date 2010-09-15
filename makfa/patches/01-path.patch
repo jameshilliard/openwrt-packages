@@ -7,7 +7,7 @@ index 488007e..a19a5c8 100755
  class Updater(object):
  
 -    def __init__(self, lang='en', filename=os.path.expanduser('~/makfa.dump')):
-+    def __init__(self, lang='en', filename='/var/lib/makfa/makfa.dump'):
++    def __init__(self, lang='en', filename='/usr/share/makfa/makfa.dump'):
          self.db = {'order': [], 'entries': {}}
          url = 'http://jbovlaste.lojban.org/export/xml-export.html?lang=%s'
          tree = etree.parse(urllib.urlopen(url % lang))
@@ -16,7 +16,7 @@ index 488007e..a19a5c8 100755
  class Dictionary(object):
  
 -    def __init__(self, filename=os.path.expanduser('~/makfa.dump')):
-+    def __init__(self, filename='/var/lib/makfa/makfa.dump'):
++    def __init__(self, filename='/usr/share/makfa/makfa.dump'):
          try:
              self._db = pickle.load(open(filename))
          except:

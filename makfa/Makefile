@@ -39,7 +39,7 @@ endef
 
 define Package/makfa/install
 	$(INSTALL_DIR) \
-		$(1)/var/lib/$(PKG_NAME) \
+		$(1)/usr/share/$(PKG_NAME) \
 		$(1)/usr/bin
 
 	$(INSTALL_BIN) \
@@ -48,7 +48,7 @@ define Package/makfa/install
 
 	$(INSTALL_DATA) \
 		$(PKG_BUILD_DIR)/makfa.dump \
-		$(1)/var/lib/$(PKG_NAME)/
+		$(1)/usr/share/$(PKG_NAME)/
 endef
 
 $(eval $(call BuildPackage,makfa))
