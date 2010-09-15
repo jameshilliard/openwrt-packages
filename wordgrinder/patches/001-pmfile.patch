@@ -1,5 +1,5 @@
---- wordgrinder-0.3.3/pmfile	2009-12-13 14:44:53.000000000 +0100
-+++ wordgrinder-0.3.3/pmfile-openwrt	2010-08-15 16:06:45.000000000 +0200
+--- a/pmfile	2009-12-13 06:44:53.000000000 -0700
++++ b/pmfile	2010-09-14 22:36:03.000000000 -0600
 @@ -12,6 +12,9 @@
  DATE = "13 December 2009"
  VERSION = "0.3.3"
@@ -7,38 +7,32 @@
 +STAGING_DIR = os.getenv("STAGING_DIR")
 +CCOMPILER = os.getenv("TARGET_CC")
 +LUAC = "cat %in% > %out%"
-
+ 
  -----------------------------------------------------------------------------
  -- User configurable settings start here!
 @@ -19,8 +22,8 @@
  -- Where do you want WordGrinder installed? By default, it goes into your
  -- home directory.
-
+ 
 -PREFIX = HOME
 --- PREFIX = "/usr/local"
 +-- PREFIX = HOME
 +PREFIX = "/usr/"
-
+ 
  -- What build flags do you want to use? (Not including -g or -Os, which are
  -- added later automatically.)
-@@ -32,10 +35,12 @@
-
- -- Any other build options go in these three sections. Note the lack of -l, -D
- -- or -I. We need the XOPEN stuff to make the wide-character curses library
- -- work.
-
+@@ -36,6 +39,8 @@
+ 
  CLIBRARIES = {
  	'm',
 +	'crypt',
 +	'dl',
  }
-
+ 
  CDEFINES = {
-@@ -43,10 +48,10 @@
- 	'FILEFORMAT=%FILEFORMAT%',
- 	'PREFIX="%PREFIX%"'
+@@ -45,8 +50,8 @@
  }
-
+ 	
  CINCLUDES = {
 -	"/usr/include/ncursesw",
 -	"/usr/include/lua5.1",
@@ -46,12 +40,9 @@
 +	"%STAGING_DIR%/usr/include/",
  	"src/c"
  }
-
-@@ -211,11 +216,11 @@
- 		'_XOPEN_SOURCE_EXTENDED',
- 		'_XOPEN_SOURCE',
- 	},
-
+ 
+@@ -214,8 +219,8 @@
+ 	
  	CLIBRARIES = {
  		PARENT,
 -		'ncursesw',
@@ -60,21 +51,13 @@
 +		'%STAGING_DIR%/usr/lib/liblua.a'
  	}
  }
-
-@@ -238,15 +243,15 @@
- 		"EMULATED_WCWIDTH",
- 		"BUILTIN_LFS",
- 	},
-
- 	CINCLUDES = {
- 		PARENT,
- 		"src/c/luacore"
- 	},
-
+ 
+@@ -246,7 +251,7 @@
+ 	
  	CLIBRARIES = {
  		PARENT,
 -		'ncursesw',
 +		'%STAGING_DIR%/usr/lib/ncursesw.a',
  	},
-
+ 
  	install = pm.install("bin/wordgrinder-static")
