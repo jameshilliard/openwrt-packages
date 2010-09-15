@@ -1,0 +1,18 @@
+--- a/makfa	2010-09-14 20:40:00.000000000 -0600
++++ b/makfa	2010-09-14 20:37:31.000000000 -0600
+@@ -8,7 +8,6 @@
+ import sys
+ import textwrap
+ import urllib
+-import xml.etree.cElementTree as etree
+ 
+ 
+ 
+@@ -486,6 +485,7 @@
+ class Updater(object):
+ 
+     def __init__(self, lang='en', filename='/usr/share/makfa/makfa.dump'):
++        import xml.etree.cElementTree as etree
+         self.db = {'order': [], 'entries': {}}
+         url = 'http://jbovlaste.lojban.org/export/xml-export.html?lang=%s'
+         tree = etree.parse(urllib.urlopen(url % lang))
