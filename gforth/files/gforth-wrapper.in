@@ -1,0 +1,50 @@
+#! /bin/sh
+#
+# Part of gforth package for OpenWrt: Wrapper to call check for and create
+# Gforth image before running executable.
+#
+# Copyright (C) 2010 David Kuehling <dvdkhlng TA gmx TOD de> 
+#
+# License: GPLv3+, NO WARRANTY
+#
+dirname=$(dirname "$0")
+binary=$dirname/$(basename "$0").real
+
+GFORTH_LIB_DIR=/usr/lib/gforth/@PACKAGE_VERSION@
+GFORTH_FI=$GFORTH_LIB_DIR/gforth.fi
+
+# try to (re)generate the gforth.fi image file
+do_update(){
+    $dirname/gforth-update-image &> /dev/null
+    status=$?
+    [ $status = 0 ] && return 0
+
+cat<<EOF
+  Gforth image $GFORTH_FI 
+  is missing and regeneration failed:
+
+  '$dirname/gforth-update-image' 
+  aborted with  exit code $status.
+
+  Try to re-run 'gforth-update-image'  manually to
+  see what is wrong.  Also  please report this 
+  problem to  <discussion@lists.qi-hardware.com>
+  and/or <dvdkhlng ta gmx tod de>.
+
+  As a workaround, you can run a kernel-only Gforth
+  (with reduced functionality), using:
+
+  $binary -i @kernel_fi@
+EOF
+
+  exec false
+}
+
+if ! [ -f "$GFORTH_FI" ]; then
+    do_update
+fi
+
+# if everything is ok, we'll come here and run the actual Gforth executable
+# (gforth.real, gforth-fast.real etc.)
+exec "$binary" "$@"
+

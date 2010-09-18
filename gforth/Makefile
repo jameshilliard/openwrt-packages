@@ -16,12 +16,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gforth
-PKG_SNAPSHOT_DATE=2010913
+PKG_SNAPSHOT_DATE=20100918
 PKG_VERSION=0.7.0-$(PKG_SNAPSHOT_DATE)
-PKG_RELEASE:=4
+PKG_RELEASE:=1
 
-
-PKG_BUILD_DEPENDS:= gforth/host libltdl/host
+PKG_BUILD_DEPENDS:= gforth/host libltdl/host libtool/host libffi
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_FIXUP:=libtool
 
@@ -30,7 +29,7 @@ PKG_SOURCE_URL:=\
 	http://user.cs.tu-berlin.de/~dvdkhlng/ \
 	http://mosquito.dyndns.tv/~spock/
 #PKG_SOURCE_URL:= file://~/forth/gforth/
-PKG_MD5SUM:=4b52f42aac9c78121dedeca7aa998b37
+PKG_MD5SUM:=f912b58c2434a9e1df7d4f8db75636da
 
 # Alternate download #1 via CVS: this doesn't work, as CVS is missing the
 # kernel.fi images needed for boot-strapping :(
@@ -56,34 +55,39 @@ define Package/gforth/description
   language.
 endef
 
-HOST_CONFIGURE_VARS += LTDL_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib
-
-## Engine's dispatch would be crippled when compiling with -Os, also dynamic
-## superinstructions don't seem to work in that case
-EXTRA_CFLAGS += -O2
-
 ## The host-GForth uses -ltdl to link against the staging dir version of
 ## libltdl.  However, when the host-GForth runs, it won't find that library,
 ## as no library path is encoded into the ltdl dependency (why?).  So here we
 ## override LD_LIBRARY_PATH for all the build steps that might run the
 ## host-GForth.
+HOST_CONFIGURE_VARS += LTDL_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib \
+	no_dynamic_default=1 \
+	LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib
+
+## Engine's dispatch would be crippled when compiling with -Os, also dynamic
+## superinstructions don't seem to work in that case
+EXTRA_CFLAGS += -O2
 
 define Host/Configure
-	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib; \
 	$(call Host/Configure/Default)
 endef
 
+## On the host, we only compile and install minimum number of gforth
+## components
 define Host/Compile
 	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib; \
-	$(call Host/Compile/Default)
+	$(call Host/Compile/Default, gforth gforth.fi)
 endef
 
 define Host/Install
 	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib; \
-	$(call Host/Install/Default)
+	$(INSTALL_DIR) $(STAGING_DIR_HOST)/bin
+	$(INSTALL_DIR) $(STAGING_DIR_HOST)/lib
+	$(INSTALL_BIN) $(HOST_BUILD_DIR)/gforth $(STAGING_DIR_HOST)/bin/
+	$(INSTALL_DATA) $(HOST_BUILD_DIR)/gforth.fi $(STAGING_DIR_HOST)/lib/
 endef
 
-## Configuration of the target gforth
+## Configuration of the target gforth (see also gforth-update-image.in!)
 FORTHSIZES=--dictionary-size=1M \
 	--data-stack-size=16k \
 	--fp-stack-size=16k \
@@ -91,8 +95,10 @@ FORTHSIZES=--dictionary-size=1M \
 	--locals-stack-size=16k
 
 CONFIGURE_VARS += FORTHSIZES="$(FORTHSIZES)"
-
+PKG_BUILD_LIBCC_DIR = $(PKG_BUILD_DIR)/lib/gforth/$(PKG_VERSION)/libcc-named/
 CROSS_PREFORTH = $(PKG_BUILD_DIR)/preforth
+LIBCC_BUILD_SRC = cstr.fs unix/socket.fs
+MAKE_VARS += libccdir=$(GFORTH_LIBCC_DIR)
 
 ## Here we call configure, then patch the cross-GForth source tree to replace
 ## the 'preforth' script with a script that calls our host-compiled GForth.
@@ -101,14 +107,28 @@ CROSS_PREFORTH = $(PKG_BUILD_DIR)/preforth
 ## assembler/disassembler for the target architecture.
 define Build/Configure
 	$(call Build/Configure/Default,)
-	echo "@kernel_fi@" > $(PKG_BUILD_DIR)/kernel_fi.in
-	cd $(PKG_BUILD_DIR) && ./config.status --file kernel_fi
-	echo "@asm_fs@ @disasm_fs@" > $(PKG_BUILD_DIR)/asm_fs.in
-	cd $(PKG_BUILD_DIR) && ./config.status --file asm_fs
+	cp ./files/gforth-update-image.in ./files/gforth-wrapper.in \
+		$(PKG_BUILD_DIR)/
+	cd $(PKG_BUILD_DIR) && ./config.status --file gforth-update-image \
+		&& ./config.status --file gforth-wrapper
 	echo "#!/bin/sh" > $(CROSS_PREFORTH)
 	echo "export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib;" >> $(CROSS_PREFORTH)
-	echo '$(STAGING_DIR_HOST)/bin/gforth -i $(STAGING_DIR_HOST)/lib/gforth/$(PKG_VERSION)/gforth.fi "$$$$@"' >> $(CROSS_PREFORTH)
+	echo '$(STAGING_DIR_HOST)/bin/gforth -i $(STAGING_DIR_HOST)/lib/gforth.fi "$$$$@"' >> $(CROSS_PREFORTH)
 	chmod a+x $(PKG_BUILD_DIR)/preforth
+endef
+
+## Forth code snippet used for pre-compiling Gforth's libcc based C-interface
+## wrappers on the host, so they can be used on the target. Use $(call) to
+## substitute $(1) with a list of Gforth's interface definition files (such as
+## 'cstr.fs' etc).
+define GforthLibccCompile 
+   s" $(PKG_BUILD_LIBCC_DIR)" libcc-named-dir-v 2! \
+   libcc-path clear-path \
+   libcc-named-dir libcc-path also-path \
+   :noname 2drop s" $(GFORTH_LIBCC_DIR)" ; is replace-rpath \
+   : end-c-library  try end-c-library endtry-iferror then ; \
+   $(1:%=include $(PKG_BUILD_DIR)/%) \
+   bye
 endef
 
 ## Compilation is pretty manual to only build the parts we need.  By default
@@ -121,16 +141,25 @@ endef
 ## 'long long' in the Gforth Makefile, not the configure script?
 ## Todo: develop a clean upstream patch to configure/Makefile
 define Build/Compile
-	$(MAKE) -C $(PKG_BUILD_DIR) kernel/version.fs gforth-ditc \
+	$(call Build/Compile/Default,kernel/version.fs gforth-ditc \
 		engine/prim-fast.i engine/prim_lab-fast.i engine/prim_names-fast.i \
 		engine/prim_superend-fast.i engine/profile-fast.i \
 		engine/prim_num-fast.i engine/prim_grp-fast.i \
-		engine/costs-fast.i engine/super2-fast.i
-	$(MAKE) -C $(PKG_BUILD_DIR)/engine gforth-fast-ll-reg gforth-ll-reg \
-		OPT=-ll-reg OPTDEFINES="-DFORCE_LL -DFORCE_REG" OPTOBJECTS=
-	cd $(PKG_BUILD_DIR) && \
-            cp engine/gforth-ll-reg ./gforth && \
-	    cp engine/gforth-fast-ll-reg ./gforth-fast
+		engine/costs-fast.i engine/super2-fast.i)
+	$(call Build/Compile/Default, -C $(PKG_BUILD_DIR)/engine \
+		gforth-fast-ll-reg gforth-ll-reg \
+		OPT=-ll-reg OPTDEFINES="-DFORCE_LL -DFORCE_REG" OPTOBJECTS=)
+
+	cp $(PKG_BUILD_DIR)/engine/gforth-ll-reg \
+		$(PKG_BUILD_DIR)/gforth
+	cp $(PKG_BUILD_DIR)/engine/gforth-fast-ll-reg \
+		$(PKG_BUILD_DIR)/gforth-fast
+
+	rm -rf $(PKG_BUILD_DIR)/lib/gforth/$(PKG_VERSION)/libcc-named/
+	export includedir=$(PKG_BUILD_DIR)/include; \
+	$(PKG_BUILD_DIR)/preforth $(PKG_BUILD_DIR)/envos.fs \
+		$(PKG_BUILD_DIR)/libcc.fs \
+		 -e '$(call GforthLibccCompile,$(LIBCC_BUILD_SRC))'
 endef
 
 ##
@@ -220,42 +249,68 @@ GFORTH_SRC = $(GFORTH_FI_SRC) $(LIBCC_DIST_SRC) \
 	add.fs lib.fs oldlib.fs sieve.fs \
 	endtry-iferror.fs recover-endtry.fs
 
-GFORTH_BIN = gforth gforth-fast gforthmi
-
 GFORTH_SHARE_DIR = /usr/share/gforth/$(PKG_VERSION)
 GFORTH_LIB_DIR = /usr/lib/gforth/$(PKG_VERSION)
+GFORTH_LIBCC_DIR = $(GFORTH_LIB_DIR)/libcc-named
 GFORTH_BIN_DIR = /usr/bin
+GFORTH_WRAPPED_BIN = gforth gforth-fast 
 
 ## Select files for package.  Note how we rename the GForth kernel image to
 ## 'kernel.fi' here, so that 'postinst' can refer to it without depending on
 ## architecture-specific naming.
 define Package/gforth/install
+        # create directories
 	$(INSTALL_DIR) $(1)/$(GFORTH_BIN_DIR)
 	$(INSTALL_DIR) $(1)/$(GFORTH_SHARE_DIR)
 	$(INSTALL_DIR) $(1)/$(GFORTH_LIB_DIR)
+	$(INSTALL_DIR) $(1)/$(GFORTH_LIBCC_DIR)
 	$(INSTALL_DIR) $(1)/$(GFORTH_SHARE_DIR)/../site-forth
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/$$$$(cat $(PKG_BUILD_DIR)/kernel_fi) $(1)/$(GFORTH_SHARE_DIR)/kernel.fi
+
+        # install low-level gforth binaries (for image generation)
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/gforth-ditc $(1)/$(GFORTH_LIB_DIR)/
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/siteinit.fs $(1)/$(GFORTH_SHARE_DIR)/../site-forth/
-	$(call pkg_install_bin,$(GFORTH_BIN),$(PKG_BUILD_DIR),$(1)/$(GFORTH_BIN_DIR))
-	$(call pkg_install_files,$(GFORTH_SRC),$(PKG_BUILD_DIR),$(1)/$(GFORTH_SHARE_DIR))
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/gforthmi $(1)/$(GFORTH_BIN_DIR)/
+
+        # Install (empty) site-init script
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/siteinit.fs \
+		$(1)/$(GFORTH_SHARE_DIR)/../site-forth/
+
+        # install the correct Gforth kernel image
+	echo "$(INSTALL_DATA) $(PKG_BUILD_DIR)/@kernel_fi@ $(1)/$(GFORTH_SHARE_DIR)/" > $(PKG_BUILD_DIR)/install-kernel.sh.in
+	$(PKG_BUILD_DIR)/config.status --file $(PKG_BUILD_DIR)/install-kernel.sh
+	. $(PKG_BUILD_DIR)/install-kernel.sh
+
+        # install updating script and wrap gforth interpreter binaries so that 
+        # image is generated on first attempt to run the interpreter.
+	$(call pkg_install_bin, \
+		gforth-wrapper gforth-update-image, \
+		$(PKG_BUILD_DIR),$(1)/$(GFORTH_BIN_DIR))
+	for i in $(GFORTH_WRAPPED_BIN); do \
+	  ln -sf gforth-wrapper $(1)/$(GFORTH_BIN_DIR)/$$$$i; \
+	  $(INSTALL_BIN) $(PKG_BUILD_DIR)/$$$$i \
+		$(1)/$(GFORTH_BIN_DIR)/$$$$i.real; \
+	done
+
+        # install Gforth sources (for generating gforth.fi)
+	$(call pkg_install_files, \
+		$(GFORTH_SRC), \
+		$(PKG_BUILD_DIR), \
+		$(1)/$(GFORTH_SHARE_DIR))
+
+        # install pre-generated C-interface wrappers (libcc)
+	-for i in $(LIBCC_BUILD_SRC); do \
+	  libtool --mode=install $(INSTALL_BIN) \
+		$(PKG_BUILD_LIBCC_DIR)/`basename $$$$i .fs`.la \
+		$(1)/$(GFORTH_LIBCC_DIR)/; \
+	done
+	-libtool --finish $(1)/$(GFORTH_LIBCC_DIR)
+	-rm -f $(1)/$(GFORTH_LIBCC_DIR)/*.a
 endef
 
-FORTHKFLAGS= --die-on-signal -i kernel.fi
-
-## make sure this is never evaluated before the configure step ran, else
-## $(shell) below is going to fail!  We use the $(shell) to use the correct
-## Gforth assembler implementation that was chosen by gforth's configure
-## script, when building the forth image.
-STARTUP	= exboot.fs startup.fs $(shell cat $(PKG_BUILD_DIR)/asm_fs)
-
-## Directly after installation load the source once and generate a
-## corresponding interpreter image.  GForth needs that for quick startup.
+## Directly after installation generate updated interpreter image from
+## installed source code.
 define Package/gforth/postinst
 #! /bin/sh
-echo "Creating GForth interpreter image..."
-export GFORTH="$(GFORTH_BIN_DIR)/gforth $(FORTHSIZES) $(FORTHKFLAGS) $(STARTUP)"
-gforthmi $(GFORTH_LIB_DIR)/gforth.fi $(FORTHSIZES) $(FORTHKFLAGS) $(STARTUP)
+$(GFORTH_BIN_DIR)/gforth-update-image
 endef
 
 define Package/gforth/prerm

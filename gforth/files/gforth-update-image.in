@@ -1,0 +1,60 @@
+#! /bin/sh
+#
+# Part of gforth package for OpenWrt: update Gforth pre-compiled interpreter
+# image from installed sources
+#
+# Copyright (C) 2010 David Kuehling <dvdkhlng TA gmx TOD de> 
+#
+# License: GPLv3+, NO WARRANTY
+#
+
+# Rationale for choice of stack sizes, see Gforth Manual chapter 13.6
+FORTHSIZES="--dictionary-size=1M \
+	--data-stack-size=16k \
+	--fp-stack-size=15872 \
+	--return-stack-size=15360 \
+	--locals-stack-size=14848"
+
+STARTUP="exboot.fs startup.fs @asm_fs@ @disasm_fs@"
+
+FORTHKFLAGS="--die-on-signal -i @kernel_fi@"
+
+GFORTH_SHARE_DIR=/usr/share/gforth/@PACKAGE_VERSION@
+GFORTH_LIB_DIR=/usr/lib/gforth/@PACKAGE_VERSION@
+GFORTH_BIN_DIR=/usr/bin
+
+GFORTH_FI=${GFORTH_LIB_DIR}/gforth.fi
+
+echo "Creating Gforth interpreter image..."
+
+mkdir -p $GFORTH_LIB_DIR
+
+check_writable(){
+    if [ -f $GFORTH_FI ] && ! [ -w $GFORTH_FI ]; then
+	return 1
+    elif ! [ -w $GFORTH_LIB_DIR ]; then
+	return 1
+    fi
+
+    return 0
+}
+
+if ! check_writable; then
+    cat <<EOF
+  You do not have permissions to  create/modify the
+  image file:
+    $GFORTH_FI
+
+  Are you not root?
+EOF
+    exec false
+fi
+
+export libccdir=${GFORTH_LIB_DIR}/libcc-named
+export GFORTH="/usr/bin/gforth.real ${FORTHSIZES} ${FORTHKFLAGS} ${STARTUP}"
+gforthmi ${GFORTH_FI}.new ${FORTHSIZES} ${FORTHKFLAGS} ${STARTUP} &&
+mv -f ${GFORTH_FI}.new ${GFORTH_FI}
+exit $?
+
+
+
