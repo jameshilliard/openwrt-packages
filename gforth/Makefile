@@ -29,7 +29,8 @@ PKG_SOURCE_URL:=\
 	http://user.cs.tu-berlin.de/~dvdkhlng/ \
 	http://mosquito.dyndns.tv/~spock/
 #PKG_SOURCE_URL:= file://~/forth/gforth/
-PKG_MD5SUM:=f912b58c2434a9e1df7d4f8db75636da
+PKG_MD5SUM:=5ada9cc3f72fea8ea002bbae4b39d118
+#f912b58c2434a9e1df7d4f8db75636da
 
 # Alternate download #1 via CVS: this doesn't work, as CVS is missing the
 # kernel.fi images needed for boot-strapping :(
@@ -302,7 +303,7 @@ define Package/gforth/install
 		$(PKG_BUILD_LIBCC_DIR)/`basename $$$$i .fs`.la \
 		$(1)/$(GFORTH_LIBCC_DIR)/; \
 	done
-	-libtool --finish $(1)/$(GFORTH_LIBCC_DIR)
+#	-libtool --finish $(1)/$(GFORTH_LIBCC_DIR)
 	-rm -f $(1)/$(GFORTH_LIBCC_DIR)/*.a
 endef
 
