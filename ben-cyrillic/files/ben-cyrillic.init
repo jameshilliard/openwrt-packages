@@ -1,0 +1,8 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2008 OpenWrt.org
+START=41
+
+start() {
+	/usr/sbin/russian.sh
+}
+
