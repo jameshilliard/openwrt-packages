@@ -33,6 +33,11 @@ define Package/links/description
     Text and graphics WWW browser
 endef
 
+define Build/Prepare
+	$(call Build/Prepare/Default)
+	$(CP) $(FILES_DIR)/directfb-config $(PKG_BUILD_DIR)
+endef
+
 CONFIGURE_ARGS += --enable-graphics \
   --enable-debuglevel=0 \
   --without-gpm \
@@ -45,7 +50,8 @@ CONFIGURE_ARGS += --enable-graphics \
 TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/directfb
 
 CONFIGURE_VARS += \
-	DIRECTFB_CONFIG="$(STAGING_DIR)/root-xburst/usr/bin/directfb-config"
+	DIRECTFB_CONFIG="$(PKG_BUILD_DIR)/directfb-config $(STAGING_DIR)"
+#DIRECTFB_CONFIG="$(STAGING_DIR)/root-xburst/usr/bin/directfb-config"
 
 define Package/links/install
 	$(INSTALL_DIR) $(1)/usr/bin
