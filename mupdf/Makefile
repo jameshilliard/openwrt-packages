@@ -20,7 +20,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/mupdf/Default
   URL:=http://mupdf.com
-  DEPENDS:=+jbig2dec +openjpeg +zlib +libfreetype
+  DEPENDS:=+jbig2dec +openjpeg +zlib +libfreetype +libjpeg
 endef
 
 define Package/mupdf
