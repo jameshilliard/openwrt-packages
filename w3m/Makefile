@@ -11,29 +11,39 @@ PKG_NAME:=w3m
 PKG_VERSION:=0.5.2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://nchc.dl.sourceforge.net/project/w3m/w3m/w3m-0.5.2/
-
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
-
-PKG_INSTALL:=1
+PKG_SOURCE_URL:=@SF/$(PKG_NAME)
+PKG_MD5SUM:=ba06992d3207666ed1bf2dcf7c72bf58
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/w3m
     TITLE:=w3m
+    SUBMENU:=Web
     SECTION:=network
     CATEGORY:=Network
     URL:=http://w3m.sourceforge.net/
-    DEPENDS:=@BROKEN
+    DEPENDS:=+libopenssl +gc
 endef
 
 define Package/w3m/description
     w3m is a text-based web browser
 endef
 
+define Build/Prepare
+	$(call Build/Prepare/Default)
+	$(CP) $(FILES_DIR)/functable.c $(PKG_BUILD_DIR)
+	$(CP) $(FILES_DIR)/tagtable.c $(PKG_BUILD_DIR)
+endef
+
+CONFIGURE_ARGS += --with-ssl=$(STAGING_DIR)/usr \
+		  --with-gc=$(STAGING_DIR)/usr/lib
+
+CONFIGURE_VARS += ac_cv_lib_gc_GC_init=yes
+
+
 define Package/w3m/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/w3m $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/w3m $(1)/usr/bin/
 endef
 
 $(eval $(call BuildPackage,w3m))

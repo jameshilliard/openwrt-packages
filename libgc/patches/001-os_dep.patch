@@ -1,0 +1,19 @@
+--- gc-7.2alpha4.orig/os_dep.c	2010-09-25 17:47:19.651870610 +0400
++++ gc-7.2alpha4/os_dep.c	2010-09-25 21:40:13.382745526 +0400
+@@ -1211,7 +1211,7 @@
+ {
+     pthread_attr_t attr;
+     size_t size;
+-
++/*
+     if (pthread_getattr_np(pthread_self(), &attr) != 0) {
+         WARN("pthread_getattr_np failed\n", 0);
+         return GC_UNIMPLEMENTED;
+@@ -1219,6 +1219,7 @@
+     if (pthread_attr_getstack(&attr, &(b -> mem_base), &size) != 0) {
+         ABORT("pthread_attr_getstack failed");
+     }
++    */
+     pthread_attr_destroy(&attr);
+ #   ifdef STACK_GROWS_DOWN
+         b -> mem_base = (char *)(b -> mem_base) + size;

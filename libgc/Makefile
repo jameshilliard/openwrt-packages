@@ -8,10 +8,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gc
-PKG_VERSION:=7.1
+PKG_VERSION:=7.2alpha4
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/
+PKG_MD5SUM:=0a6785ebb61c6e2b50c3952c3bbf9ea1
 
 PKG_INSTALL:=1
 
@@ -22,7 +23,6 @@ define Package/gc
     SECTION:=libs
     CATEGORY:=Libraries
     URL:=http://www.hpl.hp.com/personal/Hans_Boehm/gc/
-    DEPENDS:=@BROKEN
 endef
 
 define Package/gc/description
@@ -30,6 +30,8 @@ define Package/gc/description
 endef
 
 TARGET_CFLAGS+="-I./include"
+
+TARGET_LDFLAGS+=-lpthread
 
 define Build/Configure
 	$(call Build/Configure/Default, \
@@ -57,9 +59,9 @@ endef
 
 define Package/gc/install
 	$(INSTALL_DIR) \
-		$(1)/usr/lib \
+		$(1)/usr/lib
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/lib{cord,gc}.la \
+		$(PKG_INSTALL_DIR)/usr/lib/lib{cord,gc}.so* \
 		$(1)/usr/lib/
 endef
 
