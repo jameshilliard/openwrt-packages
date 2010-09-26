@@ -21,7 +21,7 @@ define Package/MPlayer
   CATEGORY:=Multimedia
   TITLE:=MPlayer, the movie player
   URL:=http://www.mplayerhq.hu
-  DEPENDS:=+libjpeg +libpng +directfb +zlib +libsdl +libmad @BUILD_PATENTED
+  DEPENDS:=+libjpeg +libpng +directfb +zlib +libsdl +libfreetype +fontconfig +libiconv +libmad @BUILD_PATENTED
 endef
 
 define Package/MPlayer/description
@@ -34,10 +34,14 @@ CONFIGURE_ARGS := --target=mips \
 		  --enable-cross-compile \
 		  --prefix=/usr \
 		  --with-sdl-config=$(STAGING_DIR)/usr/bin/sdl-config \
+		  --with-freetype-config=$(STAGING_DIR)/host/bin/freetype-config \
 		  --enable-rpath \
-		  --extra-cflags=-I$(STAGING_DIR)/usr/include/directfb \
+		  --extra-cflags="-I$(STAGING_DIR)/usr/include/directfb \
+		  -I$(STAGING_DIR)/usr/lib/libiconv/include" \
+		  --extra-ldflags="-L$(STAGING_DIR)/usr/lib/libiconv/lib" \
 		  --host-cc=gcc \
-		  --enable-fbdev
+		  --enable-fbdev \
+		  --enable-menu
 
 define Package/MPlayer/install
 	$(INSTALL_DIR) \
