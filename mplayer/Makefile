@@ -41,15 +41,20 @@ CONFIGURE_ARGS := --target=mips \
 		  --extra-ldflags="-L$(STAGING_DIR)/usr/lib/libiconv/lib" \
 		  --host-cc=gcc \
 		  --enable-fbdev \
+		  --confdir=/usr/share/mplayer \
 		  --enable-menu
 
 define Package/MPlayer/install
 	$(INSTALL_DIR) \
-		$(1)/usr/bin
+		$(1)/usr/bin \
+		$(1)/usr/share/mplayer
 
 	$(INSTALL_BIN) \
 		$(PKG_BUILD_DIR)/mplayer \
 		$(1)/usr/bin/mplayer
+	$(INSTALL_DATA) \
+		$(FILES_DIR)/input.conf \
+		$(1)/usr/share/mplayer
 
 endef
 
