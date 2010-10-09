@@ -27,6 +27,7 @@ define Package/makfa
   CATEGORY:=Languages
   SUBMENU:=Lojban
   SECTION:=lang
+  DEPENDS:=+python
 endef
 
 define Package/jbofihe/description
@@ -40,7 +41,7 @@ endef
 # on the host machine and copy it into the package.
 #
 define Build/Compile
-	$(PYTHON) $(PKG_BUILD_DIR)/makfa update en $(PKG_BUILD_DIR)/makfa.dump
+	python $(PKG_BUILD_DIR)/makfa update en $(PKG_BUILD_DIR)/makfa.dump
 endef
 
 define Package/makfa/install
@@ -56,5 +57,9 @@ define Package/makfa/install
 		$(PKG_BUILD_DIR)/makfa.dump \
 		$(1)/usr/share/$(PKG_NAME)/
 endef
+
+$(eval $(call RequireCommand,python, \
+	Please install Python 2.x \
+))
 
 $(eval $(call BuildPackage,makfa))
