@@ -1,0 +1,23 @@
+--- jbofihe-0.38.orig/Makefile.in	2010-10-07 18:32:18.000000000 -0600
++++ jbofihe-0.38/Makefile.in	2010-10-07 18:32:39.000000000 -0600
+@@ -148,16 +148,16 @@
+ morf_enc.c : mk_enctab.pl
+ 	perl mk_enctab.pl > morf_enc.c 2>morf_enc.err
+ 
+-morf_dfa.c : morf_nfa.in dfasyn/dfasyn
+-	dfasyn/dfasyn -v -r morf_dfa.report morf_nfa.in -o morf_dfa.c
++morf_dfa.c : morf_nfa.in
++	dfasyn/dfasyn_host -v -r morf_dfa.report morf_nfa.in -o morf_dfa.c
+ 
+ bctest : bccheck.c bctables.c
+ 	$(CC) $(CFLAGS) -o bctest -DTEST=1 bccheck.c
+ 
+ bccheck.o : bccheck.c bctables.c
+ 
+-bctables.c : bctables.in dfasyn/dfasyn
+-	dfasyn/dfasyn -v -r bctables.report < bctables.in > bctables.c
++bctables.c : bctables.in
++	dfasyn/dfasyn_host -v -r bctables.report < bctables.in > bctables.c
+     
+ dfasyn/dfasyn:
+ 	(cd dfasyn && make all)

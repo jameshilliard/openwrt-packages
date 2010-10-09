@@ -1,0 +1,84 @@
+diff -urN --exclude=.svn --exclude=RCS --exclude=CVS jbofihe-0.38.orig/cmafihe.1 jbofihe-0.38.openwrt/cmafihe.1
+--- jbofihe-0.38.orig/cmafihe.1	2001-09-15 16:10:37.000000000 -0600
++++ jbofihe-0.38/cmafihe.1	2010-10-05 15:12:06.000000000 -0600
+@@ -70,7 +70,7 @@
+ .B http://www.lojban.org/
+ Home page of the Lojban community
+ .TP
+-.B http://www.rrbcurnow.freeuk.com/lojban/
++.B http://www.rc0.org.uk/lojban/
+ My Lojban page.
+ .SH AUTHOR
+ Richard Curnow
+diff -urN --exclude=.svn --exclude=RCS --exclude=CVS jbofihe-0.38.orig/jbofihe.1 jbofihe-0.38.openwrt/jbofihe.1
+--- jbofihe-0.38.orig/jbofihe.1	2001-09-15 16:10:39.000000000 -0600
++++ jbofihe-0.38.openwrt/jbofihe.1	2010-10-05 15:12:10.000000000 -0600
+@@ -162,7 +162,7 @@
+ .B http://go.to/jbofihe
+ Home page for the jbofihe project
+ .TP
+-.B http://www.rrbcurnow.freeuk.com/lojban/
++.B http://www.rc0.org.uk/lojban/
+ My Lojban page.
+ .TP
+ .B http://www.lojban.org/
+diff -urN --exclude=.svn --exclude=RCS --exclude=CVS jbofihe-0.38.orig/jvocuhadju.1 jbofihe-0.38.openwrt/jvocuhadju.1
+--- jbofihe-0.38.orig/jvocuhadju.1	2001-09-15 16:10:39.000000000 -0600
++++ jbofihe-0.38.openwrt/jvocuhadju.1	2010-10-05 15:12:14.000000000 -0600
+@@ -59,7 +59,7 @@
+ .B http://www.lojban.org/
+ Home page of the Lojban community
+ .TP
+-.B http://www.rrbcurnow.freeuk.com/lojban/
++.B http://www.rc0.org.uk/lojban/
+ My Lojban page.
+ .SH AUTHOR
+ Richard Curnow
+diff -urN --exclude=.svn --exclude=RCS --exclude=CVS jbofihe-0.38.orig/README jbofihe-0.38.openwrt/README
+--- jbofihe-0.38.orig/README	2001-09-15 16:10:36.000000000 -0600
++++ jbofihe-0.38.openwrt/README	2010-10-05 15:12:31.000000000 -0600
+@@ -9,7 +9,7 @@
+         or http://go.to/jbofihe
+          
+          My page for Lojban-related things generally is :
+-           http://www.rrbcurnow.freeuk.com/lojban
++           http://www.rc0.org.uk/lojban/
+ 
+ ================
+ WHAT IS JBOFIHE?
+diff -urN --exclude=.svn --exclude=RCS --exclude=CVS jbofihe-0.38.orig/README.DOS jbofihe-0.38.openwrt/README.DOS
+--- jbofihe-0.38.orig/README.DOS	2001-09-15 16:10:36.000000000 -0600
++++ jbofihe-0.38.openwrt/README.DOS	2010-10-05 15:12:38.000000000 -0600
+@@ -10,7 +10,7 @@
+         or http://go.to/jbofihe
+          
+          My page for Lojban-related things generally is :
+-           http://www.rrbcurnow.freeuk.com/lojban
++           http://www.rc0.org.uk/lojban/
+ 
+ ================
+ WHAT IS JBOFIHE?
+diff -urN --exclude=.svn --exclude=RCS --exclude=CVS jbofihe-0.38.orig/smujajgau.1 jbofihe-0.38.openwrt/smujajgau.1
+--- jbofihe-0.38.orig/smujajgau.1	2001-09-15 16:10:42.000000000 -0600
++++ jbofihe-0.38.openwrt/smujajgau.1	2010-10-05 15:11:53.000000000 -0600
+@@ -197,7 +197,7 @@
+ .B http://go.to/jbofihe
+ Home page for the jbofihe project
+ .TP
+-.B http://www.rrbcurnow.freeuk.com/lojban/
++.B http://www.rc0.org.uk/lojban/
+ My Lojban page.
+ .TP
+ .B http://www.lojban.org/
+diff -urN --exclude=.svn --exclude=RCS --exclude=CVS jbofihe-0.38.orig/vlatai.1 jbofihe-0.38.openwrt/vlatai.1
+--- jbofihe-0.38.orig/vlatai.1	2001-09-15 16:10:43.000000000 -0600
++++ jbofihe-0.38.openwrt/vlatai.1	2010-10-05 15:12:45.000000000 -0600
+@@ -37,7 +37,7 @@
+ .B http://www.lojban.org/
+ Home page of the Lojban community
+ .TP
+-.B http://www.rrbcurnow.freeuk.com/lojban/
++.B http://www.rc0.org.uk/lojban/
+ My Lojban page.
+ .SH AUTHOR
+ Richard Curnow

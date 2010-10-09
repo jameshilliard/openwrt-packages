@@ -1,0 +1,100 @@
+#
+# Copyright (C) 2010 qi-hardware.com
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
+
+include $(TOPDIR)/rules.mk
+
+PKG_NAME:=jbofihe
+PKG_VERSION:=0.38
+PKG_RELEASE:=1
+
+PKG_BUILD_DEPENDS:= jbofihe/host lojban-wordlists/host
+
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=http://www.rpcurnow.force9.co.uk/jbofihe/
+PKG_MD5SUM:=7e2cc9149da705c7a774029fb5247248
+
+include $(INCLUDE_DIR)/host-build.mk
+include $(INCLUDE_DIR)/package.mk
+
+define Package/jbofihe
+  TITLE:=Lojban Language Parser
+  URL:=http://www.rc0.org.uk/jbofihe/
+  MAINTAINER:=".alyn.post" <alyn.post@lodockikumazvati.org>
+  CATEGORY:=Languages
+  SUBMENU:=Lojban
+  SECTION:=lang
+  DEPENDS:=+libc
+endef
+
+define Package/jbofihe/description
+  A parser for the Lojban language.
+endef
+
+define Host/Configure
+	(	cd "$(HOST_BUILD_DIR)"; \
+		perl config.pl \
+	)
+endef
+
+define Host/Compile
+	$(call Host/Compile/Default,dfasyn/dfasyn smujajgau uncom)
+endef
+
+define Host/Install
+	$(INSTALL_DIR) $(STAGING_DIR_HOST)/bin
+	$(INSTALL_BIN) $(HOST_BUILD_DIR)/smujajgau $(STAGING_DIR_HOST)/bin/
+endef
+
+
+define Build/Configure
+	(	cd "$(PKG_BUILD_DIR)" && \
+		perl config.pl --prefix=/usr \
+	)
+	ln -s "$(DL_DIR)/lujvo.txt" "$(PKG_BUILD_DIR)"
+	ln -s "$(DL_DIR)/NORALUJV.txt" "$(PKG_BUILD_DIR)"
+	ln -s "$(HOST_BUILD_DIR)/uncom" "$(PKG_BUILD_DIR)/uncom_host"
+	ln -s "$(HOST_BUILD_DIR)/dfasyn/dfasyn" \
+	      "$(PKG_BUILD_DIR)/dfasyn/dfasyn_host"
+	ln -s "$(STAGING_DIR_HOST)/bin/smujajgau" \
+	      "$(PKG_BUILD_DIR)/smujajgau_host"
+endef
+
+define Build/Compile
+	$(call Build/Compile/Default,all)
+endef
+
+JBOFIHE_BIN_DIR = /usr/bin
+JBOFIHE_MAN_DIR = /usr/share/man/man1
+JBOFIHE_LIB_DIR = /usr/lib/$(PKG_NAME)
+
+define Package/jbofihe/install
+	$(INSTALL_DIR) \
+		$(1)/$(JBOFIHE_MAN_DIR) \
+		$(1)/$(JBOFIHE_LIB_DIR) \
+		$(1)/$(JBOFIHE_BIN_DIR)
+
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/cmafihe    $(1)/$(JBOFIHE_BIN_DIR)
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/jbofihe    $(1)/$(JBOFIHE_BIN_DIR)
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/jvocuhadju $(1)/$(JBOFIHE_BIN_DIR)
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/smujajgau  $(1)/$(JBOFIHE_BIN_DIR)
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/vlatai     $(1)/$(JBOFIHE_BIN_DIR)
+
+	$(INSTALL_DATA) \
+		$(PKG_BUILD_DIR)/cmafihe.1 \
+		$(PKG_BUILD_DIR)/jbofihe.1 \
+		$(PKG_BUILD_DIR)/jvocuhadju.1 \
+		$(PKG_BUILD_DIR)/smujajgau.1 \
+		$(PKG_BUILD_DIR)/vlatai.1 \
+		$(1)/$(JBOFIHE_MAN_DIR)
+
+	$(INSTALL_DATA) \
+		$(PKG_BUILD_DIR)/smujmaji.dat \
+		$(1)/$(JBOFIHE_LIB_DIR)
+endef
+
+$(eval $(call HostBuild))
+$(eval $(call BuildPackage,jbofihe))
