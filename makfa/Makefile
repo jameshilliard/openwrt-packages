@@ -21,10 +21,11 @@ PKG_SOURCE_VERSION:=$(PKG_REV)
 include $(INCLUDE_DIR)/package.mk
 
 define Package/makfa
-  SECTION:=education
-  CATEGORY:=Education
   TITLE:=Lojban Dictionary
   URL:=http://gittub.com/lojban/makfa-cli
+  CATEGORY:=Languages
+  SUBMENU:=Lojban
+  SECTION:=lang
 endef
 
 define Package/jbofihe/description
