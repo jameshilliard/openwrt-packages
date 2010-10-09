@@ -23,6 +23,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/makfa
   TITLE:=Lojban Dictionary
   URL:=http://gittub.com/lojban/makfa-cli
+  MAINTAINER:=".alyn.post" <alyn.post@lodockikumazvati.org>
   CATEGORY:=Languages
   SUBMENU:=Lojban
   SECTION:=lang
