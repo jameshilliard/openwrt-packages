@@ -27,6 +27,10 @@ define Package/makfa
   URL:=http://gittub.com/lojban/makfa-cli
 endef
 
+define Package/jbofihe/description
+  A Lojban dictionary.
+endef
+
 define Build/Configure
 endef
 
