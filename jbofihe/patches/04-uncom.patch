@@ -1,0 +1,24 @@
+--- jbofihe-0.38.orig/Makefile.in	2001-09-15 16:10:36.000000000 -0600
++++ jbofihe-0.38/Makefile.in	2010-10-06 16:58:31.000000000 -0600
+@@ -64,8 +64,8 @@
+ %.s : %.c
+ 	$(CC) $(CFLAGS) -S $<
+ 
+-rpc2x_nc.y : rpc2x.y uncom
+-	./uncom < rpc2x.y > rpc2x_nc.y
++rpc2x_nc.y : rpc2x.y
++	./uncom_host < rpc2x.y > rpc2x_nc.y
+ 
+ rpc2x_act.y nonterm.h nonterm.c : rpc2x_nc.y
+ 	perl ./action.perl < rpc2x_nc.y > rpc2x_act.y
+@@ -78,8 +78,8 @@
+ 	perl add_trace_to_tabc.pl < rpc2x_act.tab.c > rpc_tab.c
+ 
+ # Create grammar that will only recognize text with all elidable cmavo present
+-rpc2x_full_nc.y : rpc2x.y terminator.pl uncom
+-	perl terminator.pl < rpc2x.y | ./uncom > rpc2x_full_nc.y
++rpc2x_full_nc.y : rpc2x.y terminator.pl
++	perl terminator.pl < rpc2x.y | ./uncom_host > rpc2x_full_nc.y
+ 
+ rpc2x_full_act.y : rpc2x_full_nc.y
+ 	perl ./action.perl -nononterm < rpc2x_full_nc.y > rpc2x_full_act.y

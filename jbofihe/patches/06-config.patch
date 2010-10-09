@@ -1,0 +1,11 @@
+--- jbofihe-0.38.orig/config.pl 	2001-09-15 16:10:37.000000000 -0600
++++ jbofihe-0.38/config.pl	2010-10-07 23:28:56.000000000 -0600
+@@ -62,7 +62,7 @@
+     $cmafihe_ldopts="";
+ }
+ 
+-$optdebug = $debug ? " -g -Wall" : " -O2";
++$optdebug = $debug ? " -g -Wall" : "";
+ if ($profile) {
+     $optdebug .= " -pg";
+ }

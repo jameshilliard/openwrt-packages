@@ -1,0 +1,11 @@
+--- jbofihe-0.38.orig/Makefile.in	2001-09-15 16:10:36.000000000 -0600
++++ jbofihe-0.38/Makefile.in	2010-10-06 16:58:31.000000000 -0600
+@@ -30,7 +30,7 @@
+ CMAFIHE_LDOPTS=@@CMAFIHE_LDOPTS@@
+ 
+ CC=gcc
+-CFLAGS= @@OPTDEBUG@@ @@DEFINES@@ -DDEFAULT_DICTIONARY=\"$(DICTIONARY)\"
++CFLAGS+= @@OPTDEBUG@@ @@DEFINES@@ -DDEFAULT_DICTIONARY=\"$(DICTIONARY)\"
+ 
+ OBJS2 = main.o lex1.o lex2.o cmavotab.o rpc_tab.o functions.o \
+         categ.o nonterm.o tree.o translate.o latex.o \

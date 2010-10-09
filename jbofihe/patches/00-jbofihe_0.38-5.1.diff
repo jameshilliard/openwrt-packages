@@ -1,0 +1,412 @@
+--- jbofihe-0.38.orig/dictaccs.c
++++ jbofihe-0.38/dictaccs.c
+@@ -131,8 +131,8 @@
+     mmap_base = mmap(NULL, sb.st_size, PROT_READ, MAP_SHARED, fileno(in), 0);
+     result = (int) mmap_base;
+ 
+-    if (result < 0) {
+-      perror("Could not mmap the dictionary data\n");
++    if (result == -1) {
++      perror("Could not mmap the dictionary data");
+       exit(1);
+     }
+ 
+--- jbofihe-0.38.orig/categ.c
++++ jbofihe-0.38/categ.c
+@@ -31,6 +31,7 @@
+ #include "rpc_tab.h"
+ #include "functions.h"
+ #include "stag.h"
++#include <string.h>
+ 
+ /*++++++++++++++++++++++++++++++
+   Look for any cmavo of selma'o JA and back up to where the 'jek'
+--- jbofihe-0.38.orig/functions.c
++++ jbofihe-0.38/functions.c
+@@ -25,6 +25,7 @@
+ #include <assert.h>
+ #include <stdlib.h>
+ #include <ctype.h>
++#include <string.h>
+ #include "functions.h"
+ #include "nonterm.h"
+ #include "rpc_tab.h"
+--- jbofihe-0.38.orig/Makefile.in
++++ jbofihe-0.38/Makefile.in
+@@ -107,10 +107,10 @@
+ 	cat gismu_cmavo.dict places.dat extradict patterns | perl dict2inc.pl > dictdata.c
+ 
+ stag.c : stag.tab.c
+-	sed -e 's/YYSTYPE/STAG_YYSTYPE/g;' < stag.tab.c > stag.c
++	cp stag.tab.c stag.c
+ 
+ stag.h : stag.tab.h
+-	sed -e 's/YYSTYPE/STAG_YYSTYPE/g;' < stag.tab.h > stag.h
++	cp stag.tab.h stag.h
+ 
+ stag.tab.c stag.tab.h : stag.y
+ 	bison -v -d -p stag_ stag.y
+@@ -176,8 +176,8 @@
+ dictionary : smujajgau gismu_cmavo.dict
+ 	rm -f $(DICTNAME)
+ 	./smujajgau $(DICTNAME) gismu_cmavo.dict
+-	if [ -r lujvo-list ]; then \
+-        perl lujvod.pl < ./lujvo-list > lujvo.dict ;\
++	if [ -r lujvo.txt ]; then \
++        perl lujvod.pl < ./lujvo.txt > lujvo.dict ;\
+         ./smujajgau $(DICTNAME) lujvo.dict ;\
+     fi
+ 	if [ -r NORALUJV.txt ]; then \
+@@ -214,7 +214,7 @@
+ 
+ clean:
+ 	-(cd dfasyn && make clean)
+-	-rm *.output *.tab.c *_tab.c rpc_full.c *.o \
++	rm -f *.output *.tab.c *_tab.c rpc_full.c *.o \
+         jbofihe cmafihe smujajgau vlatai jvocuhadju \
+         *.dict uncom.c uncom.o uncom \
+         morf_lex.c morfvlex.c morf_enc.c morf*_dfa.c \
+@@ -222,7 +222,8 @@
+         stag.c stag.h stag.tab.c stag.tab.h \
+         rpc2x_nc.y rpc2x_act.y rpc2x_full_nc.y rpc2x_full_act.y \
+         canonluj.inc version.h \
+-        nonterm.c nonterm.h morf_dfa.report morf_lex.err
++        nonterm.c nonterm.h morf_dfa.report morf_lex.err \
++        bctables.c bctables.report bctest rpc_tab.h cm_scan.c
+ 
+ # Specify in this perverse way so that the $-Name construction doesn't get replaced on checkout!
+ 
+--- jbofihe-0.38.orig/output2elide.pl
++++ jbofihe-0.38/output2elide.pl
+@@ -31,7 +31,7 @@
+ 
+ while (<>) {
+     # Read rules
+-    if (/^rule\s+([0-9]+)\s+subscript/) {
++    if (/^\s+([0-9]+)\s+/) {
+         $losubscript = $1 unless (defined $losubscript);
+         $hisubscript = $1;
+     }
+@@ -67,7 +67,7 @@
+         next;
+     }
+ 
+-    if (/^\s+([^ \t]+)\s+shift, and go to state ([0-9]+)/) {
++    if (/^\s+([^ \t\$]+)\s+shift, and go to state ([0-9]+)/) {
+         $code = $codes{$1};
+         if (!defined $code) {
+             print STDERR "No code for $1 in state $state\n";
+--- jbofihe-0.38.orig/cm_translate.c
++++ jbofihe-0.38/cm_translate.c
+@@ -117,8 +117,8 @@
+     mmap_base = mmap(NULL, sb.st_size, PROT_READ, MAP_SHARED, fileno(in), 0);
+     result = (int) mmap_base;
+ 
+-    if (result < 0) {
+-      perror("Could not mmap the dictionary data\n");
++    if (result == -1) {
++      perror("Could not mmap the dictionary data");
+       exit(1);
+     }
+ 
+--- jbofihe-0.38.orig/morf.c
++++ jbofihe-0.38/morf.c
+@@ -32,6 +32,8 @@
+  * 
+  *********************************************************************/
+ 
++#include <stdlib.h>
++
+ #ifdef TEST_MORF
+ #include <stdio.h>
+ #include <string.h>
+--- jbofihe-0.38.orig/lex2.c
++++ jbofihe-0.38/lex2.c
+@@ -539,7 +539,7 @@
+     }
+     
+ done_this_block:
+-
++      continue;
+   }
+ 
+ }
+--- jbofihe-0.38.orig/output2table.pl
++++ jbofihe-0.38/output2table.pl
+@@ -26,7 +26,7 @@
+ $prefix = shift || die "No prefix specified";
+ 
+ while (<>) {
+-    last if (/^Grammar/);
++    last if (/^  Number, Line, Rule/);
+ }
+ 
+ @lhs = ();
+@@ -40,11 +40,11 @@
+     chomp;
+     last if (/^\s*$/);
+ 
+-    m{^rule ([0-9]+) +([a-zA-Z0-9_]+) \-\>[ \t](.*)$} || die "Unmatched rule [$_];";
++    m{^\s+([0-9]+)\s+([0-9]+)\s+([a-zA-Z0-9_]+) \-\>[ \t](.*)$} || die "Unmatched rule [$_];";
+ 
+     $number = $1;
+-    $lhs = $2;
+-    $rhs = $3;
++    $lhs = $3;
++    $rhs = $4;
+     if ($rhs =~ m{/\* empty \*/}) {
+         @r = ();
+     } else {
+--- jbofihe-0.38.orig/uncom.l
++++ jbofihe-0.38/uncom.l
+@@ -30,13 +30,10 @@
+  *********************************************************************/
+ 
+ %{
+-#ifndef yywrap
+-#define yywrap() 1
+-#endif
+-
+ static int depth = 0;
+ %}
+ 
++%option noyywrap
+ %x COMMENT
+ 
+ %%
+--- jbofihe-0.38.orig/dfasyn/Makefile
++++ jbofihe-0.38/dfasyn/Makefile
+@@ -43,5 +43,5 @@
+ scan.o : scan.c parse.h n2d.h
+ 
+ clean:
+-	rm dfasyn *.o scan.c parse.c parse.h parse.output
++	rm -f dfasyn *.o scan.c parse.c parse.h parse.output
+ 
+--- jbofihe-0.38.orig/dfasyn/parse.y
++++ jbofihe-0.38/dfasyn/parse.y
+@@ -94,7 +94,7 @@
+                 |                      STRING { add_tok_to_abbrev(curabbrev, $1); }
+                 ;
+ 
+-token : STRING { (void) lookup_token($1, CREATE_MUST_NOT_EXIST); }
++token : STRING { (void) lookup_token($1, CREATE_MUST_NOT_EXIST); } ;
+ 
+ instance_decl_seq : /* empty */ | instance_decl_seq instance_decl ;
+ 
+--- jbofihe-0.38.orig/debian/dirs
++++ jbofihe-0.38/debian/dirs
+@@ -0,0 +1 @@
++usr/bin
+--- jbofihe-0.38.orig/debian/docs
++++ jbofihe-0.38/debian/docs
+@@ -0,0 +1,4 @@
++NEWS
++README
++README.PLIST
++contrib/emacs_functions
+--- jbofihe-0.38.orig/debian/control
++++ jbofihe-0.38/debian/control
+@@ -0,0 +1,19 @@
++Source: jbofihe
++Section: misc
++Priority: optional
++Maintainer: Theodore Reed <treed@surreality.us>
++Build-Depends: debhelper (>> 3.0.0), lojban-common (>= 1.4), flex, bison
++Standards-Version: 3.6.1
++
++Package: jbofihe
++Architecture: any
++Depends: ${shlibs:Depends}
++Description: A parser for the lojban language
++ jbofihe is a command-line driven program with the following functions:
++ .
++  * Checking grammatical correctness of Lojban text
++  * Displaying successfully analysed text with nesting of grammatical
++    constructs shown (either inline or as a tree)
++  * Displaying approximate word-for-word English translations of the Lojban
++    words, with some limited 'part-of-speech' adjustment of the English forms.
++  * Showing which sumti fill each of the places of each selbri
+--- jbofihe-0.38.orig/debian/changelog
++++ jbofihe-0.38/debian/changelog
+@@ -0,0 +1,67 @@
++jbofihe (0.38-5.1) unstable; urgency=low
++
++  * Non-maintainer upload.
++  * Applied patch by Peter Green (except for the -Werror changes) to fix build
++    error. (closes: #521952) 
++
++ -- Michael Banck <mbanck@debian.org>  Sun, 29 Nov 2009 00:34:26 +0100
++
++jbofihe (0.38-5) unstable; urgency=low
++
++  * s/lujvo-list/lujvo.txt/ in the rules file and Makefile.in to match a
++  change in the lojban-common package.
++  * Update build-depends to lojban-common 1.4 to reflect this change.
++
++ -- Theodore Reed <treed@surreality.us>  Sat, 14 May 2005 20:56:37 -0700
++
++jbofihe (0.38-4) unstable; urgency=low
++
++  * New maintainer. (closes: #221307)
++  * Change build depends to flex. Unsure why flex-old was needed.
++  * Similarly with bison. Not sure why bison-1.35 was needed.
++  * Apply mmap patch. (closes: #276677)
++  * Apply FTBFS fix patch. (closes: #258923, 189911)
++  
++ -- Theodore Reed <treed@surreality.us>  Mon, 11 Apr 2005 20:06:21 -0700
++
++jbofihe (0.38-3.1) unstable; urgency=low
++
++  * NMU.
++  * Change build depends to flex-old and bison-1.35 (closes: #189911).
++
++ -- Matthias Klose <doko@debian.org>  Mon, 17 Nov 2003 20:12:52 +0100
++
++jbofihe (0.38-3) unstable; urgency=low
++
++  * Change build-deps to lock to bison 1.75-1.79.
++  * Bison changed something again! *grr*
++
++ -- JP Sugarbroad <taral@taral.net>  Wed, 30 Oct 2002 11:17:20 -0600
++
++jbofihe (0.38-2) unstable; urgency=low
++
++  * Change build-dep to reflect necessary bison version.
++  * Someone please tell the bison people to stop changing the -v output!
++
++ -- JP Sugarbroad <taral@taral.net>  Thu, 14 Mar 2002 11:45:14 -0600
++
++jbofihe (0.38-1) unstable; urgency=low
++
++  * Update to latest version. (closes: #119777)
++
++ -- JP Sugarbroad <taral@taral.net>  Thu, 25 Oct 2001 14:18:31 -0500
++
++jbofihe (0.36b-1) unstable; urgency=low
++
++  * New maintainer.
++  * Update to latest version.
++  * Regenerate dictionary on build (closes: #102247)
++  * lojban-common's been around for ages (closes: #94456)
++
++ -- JP Sugarbroad <taral@taral.net>  Mon, 25 Jun 2001 17:43:14 -0500
++
++jbofihe (0.36-1) unstable; urgency=low
++
++  * Initial Release.
++
++ -- John Leuner <jewel@debian.org>  Fri, 30 Mar 2001 05:31:14 +0000
+--- jbofihe-0.38.orig/debian/copyright
++++ jbofihe-0.38/debian/copyright
+@@ -0,0 +1,26 @@
++This package was (re-)debianized by JP Sugarbroad <taral@taral.net> on
++Mon, 25 Jun 2001 17:38:09 -0500.
++
++It was downloaded from http://go.to/jbofihe/
++
++Upstream Author: <jbofihe@go.to>
++
++Copyright:
++
++   This package is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; version 2 dated June, 1991.
++
++   This package is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this package; if not, write to the Free Software
++   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
++   02111-1307, USA.
++
++On Debian GNU/Linux systems, the complete text of the GNU General
++Public License can be found in `/usr/share/common-licenses/GPL'.
++
+--- jbofihe-0.38.orig/debian/rules
++++ jbofihe-0.38/debian/rules
+@@ -0,0 +1,81 @@
++#!/usr/bin/make -f
++
++# Uncomment this to turn on verbose mode.
++#export DH_VERBOSE=1
++
++# This is the debhelper compatability version to use.
++export DH_COMPAT=3
++
++configure: configure-stamp
++configure-stamp:
++	dh_testdir
++
++	mkdir -p bin
++	ln -sf /usr/bin/bison-1.35 bin/bison
++	PATH=`pwd`/bin:$$PATH \
++		perl config.pl --prefix=/usr
++
++	touch configure-stamp
++
++build: configure-stamp build-stamp
++build-stamp:
++	dh_testdir
++
++	ln -sf /usr/share/lojban/lujvo.txt .
++	ln -sf /usr/share/lojban/NORALUJV.txt .
++
++	#work arround an issue with including multiple bision parsers in one
++	#C source file
++	PATH=`pwd`/bin:$$PATH $(MAKE) stag.h
++	sed -i s/YYTOKENTYPE/STAGYYTOKENTYPE/ stag.h
++	sed -i s/yytokentype/stagyytokentype/ stag.h
++
++	PATH=`pwd`/bin:$$PATH $(MAKE) all
++	touch build-stamp
++
++clean:
++	dh_testdir
++	dh_testroot
++	rm -f build-stamp configure-stamp
++	rm -rf bin
++
++	-$(MAKE) clean
++	rm -rf Makefile smujmaji.dat lujvo.txt NORALUJV.txt n2d
++
++	dh_clean
++
++install: DH_OPTIONS=
++install: build
++	dh_testdir
++	dh_testroot
++	dh_clean -k
++	dh_installdirs
++
++	PATH=`pwd`/bin:$$PATH \
++		$(MAKE) install \
++			PREFIX=$(CURDIR)/debian/jbofihe/usr \
++			MANDIR=$(CURDIR)/debian/jbofihe/usr/share/man/man1
++
++binary-indep:;
++# Nothing to do
++
++binary-arch: build install
++	dh_testdir
++	dh_testroot
++	dh_installdocs
++#	dh_installman
++	dh_installchangelogs
++	dh_strip
++	dh_link
++	dh_compress
++	dh_fixperms
++	dh_installdeb
++	dh_shlibdeps
++	dh_gencontrol
++	dh_md5sums
++	dh_builddeb
++
++binary: binary-indep binary-arch
++.PHONY: build clean binary-indep binary-arch binary install configure
++
++# vim:noet:nosta:nolist:

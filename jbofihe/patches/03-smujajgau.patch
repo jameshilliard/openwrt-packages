@@ -1,0 +1,32 @@
+--- jbofihe-0.38.orig/Makefile.in	2001-09-15 16:10:36.000000000 -0600
++++ jbofihe-0.38/Makefile.in	2010-10-06 16:58:31.000000000 -0600
+@@ -173,23 +173,23 @@
+ 	perl mkdict.pl > gismu_cmavo.dict
+     
+ 
+-dictionary : smujajgau gismu_cmavo.dict
++dictionary : gismu_cmavo.dict
+ 	rm -f $(DICTNAME)
+-	./smujajgau $(DICTNAME) gismu_cmavo.dict
++	./smujajgau_host $(DICTNAME) gismu_cmavo.dict
+ 	if [ -r lujvo.txt ]; then \
+         perl lujvod.pl < ./lujvo.txt > lujvo.dict ;\
+-        ./smujajgau $(DICTNAME) lujvo.dict ;\
++        ./smujajgau_host $(DICTNAME) lujvo.dict ;\
+     fi
+ 	if [ -r NORALUJV.txt ]; then \
+         perl noralujv.pl > noralujv.dict ;\
+-        ./smujajgau $(DICTNAME) noralujv.dict ;\
++        ./smujajgau_host $(DICTNAME) noralujv.dict ;\
+     fi
+-	./smujajgau $(DICTNAME) extradict places.dat patterns
++	./smujajgau_host $(DICTNAME) extradict places.dat patterns
+ 
+ dictupdate : $(DICTNAME)
+ 
+ $(DICTNAME) : extradict places.dat patterns
+-	./smujajgau $(DICTNAME) extradict places.dat patterns
++	./smujajgau_host $(DICTNAME) extradict places.dat patterns
+ 
+ cmafihe : $(CM_OBJS)
+ 	$(CC) $(CFLAGS)  $(CMAFIHE_LDOPTS) -o cmafihe $(CM_OBJS)
