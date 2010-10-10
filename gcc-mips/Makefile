@@ -24,6 +24,8 @@ include $(INCLUDE_DIR)/package.mk
 SEP:=,
 TARGET_LANGUAGES:="c$(if $(CONFIG_INSTALL_LIBSTDCPP),$(SEP)c++)$(if $(CONFIG_INSTALL_LIBGCJ),$(SEP)java)"
 EXTRA_TARGET=$(if $(CONFIG_EXTRA_TARGET_ARCH),--enable-biarch --enable-targets=$(call qstrip,$(CONFIG_EXTRA_TARGET_ARCH_NAME))-linux-uclibc)
+RSTRIP:=:
+STRIP:=:
 
 define Package/gcc-mips
   SECTION:=devel
@@ -76,10 +78,11 @@ define Build/Compile
 endef
 
 define Package/gcc-mips/install
-	$(INSTALL_DIR) $(1)/usr/lib/ $(1)/usr/bin/ $(1)/usr/include/
+	$(INSTALL_DIR) $(1)/usr/lib/ $(1)/usr/bin/ $(1)/usr/include/ $(1)/lib/
 	cp -r $(PKG_INSTALL_DIR)/* $(1)
-	cp -r $(TOOLCHAIN_DIR)/usr/include/* $(1)/usr/include/
-	cp -r $(TOOLCHAIN_DIR)/usr/lib/* $(1)/usr/lib/
+	cp -rf $(TOOLCHAIN_DIR)/usr/include/* $(1)/usr/include/
+	cp -rf $(TOOLCHAIN_DIR)/usr/lib/* $(1)/usr/lib/
+	cp -rf $(TOOLCHAIN_DIR)/lib/* $(1)/lib
 endef
 
 $(eval $(call BuildPackage,gcc-mips))
