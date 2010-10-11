@@ -24,8 +24,13 @@ include $(INCLUDE_DIR)/package.mk
 SEP:=,
 TARGET_LANGUAGES:="c$(if $(CONFIG_INSTALL_LIBSTDCPP),$(SEP)c++)$(if $(CONFIG_INSTALL_LIBGCJ),$(SEP)java)"
 EXTRA_TARGET=$(if $(CONFIG_EXTRA_TARGET_ARCH),--enable-biarch --enable-targets=$(call qstrip,$(CONFIG_EXTRA_TARGET_ARCH_NAME))-linux-uclibc)
-RSTRIP:=:
-STRIP:=:
+
+STRIP:=$(STAGING_DIR_HOST)/bin/sstrip
+RSTRIP:= \
+	NM="$(TARGET_CROSS)nm" \
+	STRIP="$(STRIP)" \
+	STRIP_KMOD="$(TARGET_CROSS)strip --strip-debug" \
+	$(SCRIPT_DIR)/rstrip.sh
 
 define Package/gcc-mips
   SECTION:=devel
@@ -78,11 +83,11 @@ define Build/Compile
 endef
 
 define Package/gcc-mips/install
-	$(INSTALL_DIR) $(1)/usr/lib/ $(1)/usr/bin/ $(1)/usr/include/ $(1)/lib/
-	cp -r $(PKG_INSTALL_DIR)/* $(1)
-	cp -rf $(TOOLCHAIN_DIR)/usr/include/* $(1)/usr/include/
-	cp -rf $(TOOLCHAIN_DIR)/usr/lib/* $(1)/usr/lib/
-	cp -rf $(TOOLCHAIN_DIR)/lib/* $(1)/lib
+	$(INSTALL_DIR) $(1)/usr
+	cp -r $(PKG_INSTALL_DIR)/usr/{bin,include,lib,libexec} $(1)/usr
+	cp -rf $(TOOLCHAIN_DIR)/usr/include/* $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)/include
+	cp -rf $(TOOLCHAIN_DIR)/usr/lib/*.{a,la,o} $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
+	cp -rf $(TOOLCHAIN_DIR)/lib/* $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
 endef
 
 $(eval $(call BuildPackage,gcc-mips))
