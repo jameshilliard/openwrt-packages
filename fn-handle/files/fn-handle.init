@@ -5,7 +5,7 @@ START=40
 DEVICE_PW="/dev/input/event0"
 
 start() {
-	fnkeys $DEVICE_PW &
+	start-stop-daemon -S -x /usr/bin/fnkeys -b $DEVICE_PW
 }
 
 stop() {
