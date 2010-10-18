@@ -1,5 +1,15 @@
---- fbida-2.07.orig/fbi.c	2010-10-17 19:08:40.726246881 +0400
-+++ fbida-2.07/fbi.c	2010-10-17 19:08:35.322244313 +0400
+diff -ur fbida-2.07_orig/fbi.c fbida-2.07/fbi.c
+--- fbida-2.07_orig/fbi.c	2008-06-09 18:53:33.000000000 +0400
++++ fbida-2.07/fbi.c	2010-10-18 22:22:33.166338378 +0400
+@@ -548,7 +548,7 @@
+ 	L"  L           - rotate counter-clockwise",
+     };
+ 
+-    shadow_draw_text_box(face, 24, 16, transparency,
++    shadow_draw_text_box(face, 0, 0, transparency,
+ 			 help, ARRAY_SIZE(help));
+     shadow_render();
+ }
 @@ -1465,7 +1465,7 @@
  
      font_init();
