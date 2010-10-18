@@ -1,5 +1,5 @@
 --- fbida-2.07.orig/fbgs	2010-10-18 20:26:32.264246468 +0400
-+++ fbida-2.07/fbgs	2010-10-18 20:26:57.179244034 +0400
++++ fbida-2.07/fbgs	2010-10-18 20:56:04.670332976 +0400
 @@ -1,7 +1,7 @@
 -#!/bin/bash
 +#!/bin/sh
@@ -10,3 +10,27 @@
  test -d "$DIR" || exit 1
  trap "rm -rf $DIR" EXIT
  
+@@ -33,7 +33,22 @@
+ 		-p)	password="$2"
+ 			shift; shift
+ 			;;
+-		-h)	echo fixme: help text
++		-h)	echo "
++fbgs - poor man's PostScript/pdf viewer for the linux framebuffer con-
++sole
++
++fbgs [ options ] file
++
++fbgs is a simple wrapper script which takes a PostScript or pdf file as
++input,  renders  the pages using ghostscript into a temporary directory
++and finally calls fbi to display them.
++
++fbps understands all fbi options (they are passed through). Addition-
++ally  you  can  specify  -l, -xl or -xxl to get the pages rendered with
++100, 120 or 150 dpi (default is 75). You can use option  -p  <password>
++if your PDF file requires password.  With -c you can ask fbgs to render
++the pages in color.
++"
+ 			exit 1
+ 			;;
+ 		-c)	device="png16m"
