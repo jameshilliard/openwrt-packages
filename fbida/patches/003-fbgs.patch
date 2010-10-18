@@ -1,0 +1,12 @@
+--- fbida-2.07.orig/fbgs	2010-10-18 20:26:32.264246468 +0400
++++ fbida-2.07/fbgs	2010-10-18 20:26:57.179244034 +0400
+@@ -1,7 +1,7 @@
+-#!/bin/bash
++#!/bin/sh
+ 
+ # tmp dir
+-DIR="$(mktemp -dtp ${TMPDIR-/var/tmp} fbgs-XXXXXX)"
++DIR="$(mktemp -dtp ${TMPDIR-/tmp} fbgs-XXXXXX)"
+ test -d "$DIR" || exit 1
+ trap "rm -rf $DIR" EXIT
+ 

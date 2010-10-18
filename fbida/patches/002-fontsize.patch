@@ -1,0 +1,11 @@
+--- fbida-2.07.orig/fbi.c	2010-10-17 19:08:40.726246881 +0400
++++ fbida-2.07/fbi.c	2010-10-17 19:08:35.322244313 +0400
+@@ -1465,7 +1465,7 @@
+ 
+     font_init();
+     if (NULL == fontname)
+-	fontname = "monospace:size=16";
++	fontname = "monospace:size=10";
+     face = font_open(fontname);
+     if (NULL == face) {
+ 	fprintf(stderr,"can't open font: %s\n",fontname);
