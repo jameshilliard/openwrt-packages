@@ -12,7 +12,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=qijoe
+PKG_NAME:=joe-full
 PKG_VERSION:=3.7
 PKG_RELEASE:=3
 
@@ -24,7 +24,7 @@ PKG_BUILD_DIR=$(BUILD_DIR)/joe-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/qijoe
+define Package/joe-full
   SECTION:=utils
   CATEGORY:=Utilities
   DEPENDS:=+libncurses
@@ -33,12 +33,12 @@ define Package/qijoe
   SUBMENU:=Editors
 endef
 
-define Package/qijoe/description
+define Package/joe-full/description
 Joe is world-famous Wordstar like text editor, that also features 
 Emacs and Pico emulation
 endef
 
-define Package/qijoe/install
+define Package/joe-full/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/joe $(1)/usr/bin/
 	for i in jmacs jstar rjoe jpico; do \
@@ -46,4 +46,4 @@ define Package/qijoe/install
 	done
 endef
 
-$(eval $(call BuildPackage,qijoe))
+$(eval $(call BuildPackage,joe-full))
