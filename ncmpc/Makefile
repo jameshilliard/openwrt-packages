@@ -9,14 +9,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ncmpc
-PKG_VERSION:=0.11.1
+PKG_VERSION:=0.18
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://hem.bredband.net/kaw/ncmpc/files/
-
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE_URL:=http://downloads.sourceforge.net/musicpd/
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
-
-PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -34,7 +31,7 @@ define Package/ncmpc
     SECTION:=sound
     CATEGORY:=Sound
     DEPENDS:=+libncurses +libintl +libiconv
-    URL:=http://hem.bredband.net/kaw/ncmpc/index.html
+    URL:=http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki
 endef
 
 define Package/ncmpc/description
