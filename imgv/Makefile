@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=imgv
 PKG_VERSION:=0.3.0
-PKG_REV:=16ccc7f946243b7f8edc0733b43258636dfdd372
+PKG_REV:=933f92b86b355e482ea41d89f72982e8b0bf4475
 PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
@@ -24,7 +24,7 @@ define Package/imgv
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=SDL-based image viewer
-	DEPENDS:=+libsdl +libsdl-gfx +libsdl-image +directfb
+	DEPENDS:=+libsdl +libsdl-gfx +libsdl-image +libsdl-ttf +directfb +libfreetype
 	URL:=http://projects.qi-hardware.com/index.php/p/imgv/
 endef
 
