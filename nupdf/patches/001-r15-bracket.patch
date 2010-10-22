@@ -1,0 +1,11 @@
+--- nupdf-15.orig/main.c	2010-10-22 16:44:51.033676255 +0400
++++ nupdf-r15/main.c	2010-10-22 17:13:33.777676124 +0400
+@@ -457,7 +457,7 @@
+                     strcpy(arrows[i], "");
+                 }
+ 
+-		
++	    }
+ 		sprintf(settingstext, "\t\t\tSettings\t%s\n\n"
+ 							  "Jump to page %i\t%s\n\n"
+ 							  "Return\t%s"
