@@ -25,12 +25,11 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_FIXUP:=libtool
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-#PKG_SOURCE_URL:=\
-#	http://user.cs.tu-berlin.de/~dvdkhlng/ \
-#	http://mosquito.dyndns.tv/~spock/
-PKG_SOURCE_URL:= file://~/forth/gforth/
-#PKG_MD5SUM:=5ada9cc3f72fea8ea002bbae4b39d118
-#f912b58c2434a9e1df7d4f8db75636da
+PKG_SOURCE_URL:=\
+	http://user.cs.tu-berlin.de/~dvdkhlng/ \
+	http://mosquito.dyndns.tv/~spock/
+#PKG_SOURCE_URL:= file://~/forth/gforth/
+PKG_MD5SUM:=5ada9cc3f72fea8ea002bbae4b39d118
 
 # Alternate download #1 via CVS: this doesn't work, as CVS is missing the
 # kernel.fi images needed for boot-strapping :(
