@@ -18,18 +18,18 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=gforth
 PKG_SNAPSHOT_DATE=20100918
 PKG_VERSION=0.7.0-$(PKG_SNAPSHOT_DATE)
-PKG_RELEASE:=1
+PKG_RELEASE:=3
 
 PKG_BUILD_DEPENDS:= gforth/host libltdl/host libtool/host libffi
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_FIXUP:=libtool
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=\
-	http://user.cs.tu-berlin.de/~dvdkhlng/ \
-	http://mosquito.dyndns.tv/~spock/
-#PKG_SOURCE_URL:= file://~/forth/gforth/
-PKG_MD5SUM:=5ada9cc3f72fea8ea002bbae4b39d118
+#PKG_SOURCE_URL:=\
+#	http://user.cs.tu-berlin.de/~dvdkhlng/ \
+#	http://mosquito.dyndns.tv/~spock/
+PKG_SOURCE_URL:= file://~/forth/gforth/
+#PKG_MD5SUM:=5ada9cc3f72fea8ea002bbae4b39d118
 #f912b58c2434a9e1df7d4f8db75636da
 
 # Alternate download #1 via CVS: this doesn't work, as CVS is missing the
@@ -299,9 +299,12 @@ define Package/gforth/install
 
         # install pre-generated C-interface wrappers (libcc)
 	-for i in $(LIBCC_BUILD_SRC); do \
-	  libtool --mode=install $(INSTALL_BIN) \
+          which libtool; \
+	  ls -l $(PKG_BUILD_LIBCC_DIR)/.libs; \
+	  libtool --mode=install $(INSTALL_DATA) \
 		$(PKG_BUILD_LIBCC_DIR)/`basename $$$$i .fs`.la \
 		$(1)/$(GFORTH_LIBCC_DIR)/; \
+		ls -l $(1)/$(GFORTH_LIBCC_DIR)/; \
 	done
 #	-libtool --finish $(1)/$(GFORTH_LIBCC_DIR)
 	-rm -f $(1)/$(GFORTH_LIBCC_DIR)/*.a
@@ -311,12 +314,17 @@ endef
 ## installed source code.
 define Package/gforth/postinst
 #! /bin/sh
-$(GFORTH_BIN_DIR)/gforth-update-image
+if [ -z "$$IPKG_OFFLINE_ROOT" ]; then
+    # only attempt to update image on target, never on host
+    $(GFORTH_BIN_DIR)/gforth-update-image
+fi
 endef
 
 define Package/gforth/prerm
 #! /bin/sh
-rm -f $(GFORTH_LIB_DIR)/gforth.fi
+if [ -z "$$IPKG_OFFLINE_ROOT" ]; then
+    rm -f $(GFORTH_LIB_DIR)/gforth.fi
+fi
 endef
 
 $(eval $(call HostBuild))
