@@ -1,0 +1,10 @@
+--- nlove/src/common/runtime.h	2010-08-10 13:31:20.000000000 +0200
++++ nlovem/src/common/runtime.h	2010-08-10 13:42:15.000000000 +0200
+@@ -25,6 +25,7 @@
+ #include "types.h"
+ 
+ // Lua
++#define __STDC_VERSION__ 199901L
+ extern "C" {
+ 	#include <lua.h>
+ 	#include <lualib.h>

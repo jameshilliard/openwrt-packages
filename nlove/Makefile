@@ -1,12 +1,15 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=nlove
-PKG_VERSION:=0.0.2
+PKG_REV:=445
+PKG_VERSION:=r$(PKG_REV)
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://dl.dropbox.com/u/440010/nlove/
-PKG_CAT:=zcat
+PKG_SOURCE_URL:=https://bitbucket.org/bartbes/nlove
+PKG_SOURCE_PROTO:=hg
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
+PKG_SOURCE_VERSION:=$(PKG_REV)
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
@@ -25,33 +28,14 @@ define Package/nlove/description
 endef
 
 define Build/Configure
-	(cd $(PKG_BUILD_DIR);\
-	 IN_OPENWRT=1 \
-	 AR="$(TARGET_CROSS)ar" \
-	 AS="$(TARGET_CC) -c $(TARGET_CFLAGS) $(TARGET_COPTS)" \
-	 LD="$(TARGET_CROSS)ld" \
-	 NM="$(TARGET_CROSS)nm" \
-	 CC="$(TARGET_CC)" \
-	 GCC="$(TARGET_CC)" \
-	 CXX="$(TARGET_CROSS)g++" \
-	 RANLIB="$(TARGET_CROSS)ranlib" \
-	 STRIP="$(TARGET_CROSS)strip" \
-	 OBJCOPY="$(TARGET_CROSS)objcopy" \
-	 OBJDUMP="$(TARGET_CROSS)objdump" \
-	 TARGET_CPPFLAGS="$(TARGET_CPPFLAGS)" \
-	 TARGET_CFLAGS="$(TARGET_CFLAGS) $(TARGET_COPTS)" \
-	 TARGET_LDFLAGS="$(TARGET_LDFLAGS)" \
-	 STAGING_DIR="$(STAGING_DIR)" \
-	 CFLAGS="-fhonour-copts -std=gnu99" \
-	 CXXFLAGS="-fhonour-copts" \
-	cmake . -DCMAKE_CXX_FLAGS=-g);$
 endef
 
 define Build/Compile
-	(cd $(PKG_BUILD_DIR); \
-	CFLAGS="-fhonour-copts --std=gnu99" \
-	CXXFLAGS="-fhonour-copts --std=gnu99" \
-	make);$
+	(cd $(PKG_BUILD_DIR);\
+	 STAGING_DIR="$(STAGING_DIR)" \
+	 CFLAGS="-fhonour-copts -std=gnu99" \
+	 PLATFORM="NanoNote" \
+	platform/nlove/build.sh);$
 endef
 
 
