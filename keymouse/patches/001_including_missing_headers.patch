@@ -1,0 +1,80 @@
+diff -crB keymouse-1.0/src/app.cpp keymouse-1.0.mod/src/app.cpp
+*** keymouse-1.0/src/app.cpp	2008-03-30 15:41:44.000000000 +0200
+--- keymouse-1.0.mod/src/app.cpp	2010-06-14 13:34:31.565636052 +0200
+***************
+*** 8,14 ****
+  #include <sys/stat.h>
+  #include <fcntl.h>
+  #include "app.h"
+! 
+  using namespace std;
+  
+  App::App(const char *file) : m_config(file), m_dev(NULL), m_ordModes(), m_exiting(false)
+--- 8,15 ----
+  #include <sys/stat.h>
+  #include <fcntl.h>
+  #include "app.h"
+! #include <cstdlib>
+! #include <cstring>
+  using namespace std;
+  
+  App::App(const char *file) : m_config(file), m_dev(NULL), m_ordModes(), m_exiting(false)
+diff -crB keymouse-1.0/src/configfile.cpp keymouse-1.0.mod/src/configfile.cpp
+*** keymouse-1.0/src/configfile.cpp	2008-03-08 21:09:36.000000000 +0100
+--- keymouse-1.0.mod/src/configfile.cpp	2010-06-14 13:36:22.096885603 +0200
+***************
+*** 7,12 ****
+--- 7,14 ----
+  #include <fstream>
+  #include <iostream>
+  #include "configfile.h"
++ #include <cstdlib>
++ #include <cstring>
+  
+  ConfigFile::ConfigFile(const char *file) : m_values(), m_file(file)
+  {
+Sólo en keymouse-1.0.mod/src: .deps
+diff -crB keymouse-1.0/src/keymouse.cpp keymouse-1.0.mod/src/keymouse.cpp
+*** keymouse-1.0/src/keymouse.cpp	2008-03-10 20:18:37.000000000 +0100
+--- keymouse-1.0.mod/src/keymouse.cpp	2010-06-14 13:36:55.096884176 +0200
+***************
+*** 10,15 ****
+--- 10,17 ----
+  
+  #include <signal.h>
+  #include "app.h"
++ #include <cstdlib>
++ #include <cstring>
+  
+  using namespace std;
+  
+diff -crB keymouse-1.0/src/logger.cpp keymouse-1.0.mod/src/logger.cpp
+*** keymouse-1.0/src/logger.cpp	2008-03-08 21:09:36.000000000 +0100
+--- keymouse-1.0.mod/src/logger.cpp	2010-06-14 13:52:26.245635574 +0200
+***************
+*** 6,11 ****
+--- 6,15 ----
+  
+  #include "logger.h"
+  #include <iostream>
++ #include <cstdlib>
++ #include <cstring>
++ #include <cstdarg>
++ #include <cstdio>
+  
+  using namespace std;
+  
+diff -crB keymouse-1.0/src/shortcut.cpp keymouse-1.0.mod/src/shortcut.cpp
+*** keymouse-1.0/src/shortcut.cpp	2008-03-08 21:09:36.000000000 +0100
+--- keymouse-1.0.mod/src/shortcut.cpp	2010-06-14 13:53:28.896884710 +0200
+***************
+*** 6,11 ****
+--- 6,13 ----
+  
+  #include "shortcut.h"
+  #include <linux/input.h>
++ #include <cstdlib>
++ #include <cstring>
+  
+  bool Shortcut::locked = false;
+  
