@@ -46,7 +46,7 @@ define Package/nupdf/install
 		$(1)/usr/bin $(1)/usr/share/nupdf
 
 	$(INSTALL_BIN) \
-		$(PKG_BUILD_DIR)/nupdf $(1)/usr/bin/nupdf.bin
+		$(PKG_BUILD_DIR)/nupdf $(1)/usr/share/nupdf/nupdf.bin
 
 	$(INSTALL_BIN) \
 		$(FILES_DIR)/nupdf.sh $(1)/usr/bin/nupdf
