@@ -3,14 +3,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gcal
-PKG_VERSION:=3.01
+PKG_VERSION:=3.6
 PKG_RELEASE:=1
-#http://www.gnu.org/software/gcal/
-#ftp://ftp.gnu.org/pub/gnu/gcal/gcal-3.01.tar.gz
 
 PKG_SOURCE:=gcal-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.gnu.org/pub/gnu/gcal/
-PKG_MD5SUM:=65f3394653829fd77f6862045112ad4f
+PKG_MD5SUM:=9c3819ca118d6e3adb6a716858cba7d6
 PKG_CAT:=zcat
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)

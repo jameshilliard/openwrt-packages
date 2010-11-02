@@ -1,0 +1,16 @@
+--- gcal-3.6/lib/spawn.in.h  2010-03-22 13:31:49.000000000 +0100
++++ gcal-3.6a/lib/spawn.in.h 2010-10-30 16:57:51.000000000 +0200
+@@ -24,6 +24,11 @@
+ /* The include_next requires a split double-inclusion guard.  */
+ #if @HAVE_SPAWN_H@
+ # @INCLUDE_NEXT@ @NEXT_SPAWN_H@
++#else
++/* At least the sched.h and the signal.h are required
++   from gcal or glibc  */
++#include <sched.h>
++#include <signal.h>
+ #endif
+ 
+ #ifndef _GL_SPAWN_H
+
+
