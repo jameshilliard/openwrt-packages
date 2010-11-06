@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=nlove
-PKG_REV:=445
+PKG_REV:=459
 PKG_VERSION:=r$(PKG_REV)
 PKG_RELEASE:=1
 
@@ -40,9 +40,7 @@ endef
 
 
 define Package/nlove/install
-	$(INSTALL_DIR) $(1)/usr/lib
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/liblove.so $(1)/usr/lib/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/nlove $(1)/usr/bin/
 endef
 
