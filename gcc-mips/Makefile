@@ -36,7 +36,7 @@ define Package/gcc-mips
   SECTION:=devel
   CATEGORY:=Development
   TITLE:=gcc-mips
-  DEPENDS:=@BROKEN +mpfr +binutils
+  DEPENDS:=+mpfr +binutils
 endef
 
 define Package/gcc-mips/description
