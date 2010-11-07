@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=nlove
-PKG_REV:=459
+PKG_REV:=464
 PKG_VERSION:=r$(PKG_REV)
 PKG_RELEASE:=1
 
@@ -19,7 +19,7 @@ define Package/nlove
 	SECTION:=games
 	CATEGORY:=Games
 	TITLE:=LÖVE
-	DEPENDS:=+libphysfs +libsdl +libsdl-image +libsdl-gfx +libsdl-mixer +lua
+	DEPENDS:=+libphysfs +libsdl +libsdl-image +libsdl-gfx +libsdl-mixer +lua +libvorbisidec
 	URL:=http://bartbes.ath.cx/
 endef
 
