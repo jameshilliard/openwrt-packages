@@ -4,12 +4,11 @@ PKG_NAME:=abook
 PKG_VERSION:=0.5.6
 PKG_RELEASE:=2
 
-PKG_SOURCE:=abook-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=@SF/abook
-	PKG_MD5SUM:=87d25df96864a7c507a4965e6d1da49d
-	PKG_CAT:=zcat
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=@SF/$(PKG_NAME)
+PKG_MD5SUM:=87d25df96864a7c507a4965e6d1da49d
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/abook-$(PKG_VERSION)
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -18,34 +17,19 @@ define Package/abook
 	CATEGORY:=Utilities
 	TITLE:=abook
 	URL:=http://abook.sourceforge.net/
-	DEPENDS:= +libreadline +libncurses @BROKEN
+	DEPENDS:=+libreadline +libncurses +setfont2
 endef
 
 define Package/abook/description
 	Simple address book program.
 endef
 
-define Build/Configure
-	$(call Build/Configure/Default, \
-		--prefix=/usr \
-	)
-endef
-
-#define Build/Configure
-#	(cd $(PKG_BUILD_DIR); \
-#		$(TARGET_CONFIGURE_OPTS) \
-#		CFLAGS="$(TARGET_CFLAGS) $(FPIC)" \
-#		UNAME_S="Linux" \
-#		./configure \
-#		--host=mipsel \
-#			--prefix=/usr \
-#	);
-#endef
-
+CONFIGURE_ARGS+="--with-curses=$(STAGING_DIR)/lib"
 
 define Package/abook/install
-	$(INSTALL_DIR) $(1)/usr/bin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/abook $(1)/usr/bin/
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/abook $(1)/usr/bin/abook.bin
+	$(INSTALL_BIN) $(FILES_DIR)/abook.sh $(1)/usr/bin/abook
 endef
 
 $(eval $(call BuildPackage,abook))
