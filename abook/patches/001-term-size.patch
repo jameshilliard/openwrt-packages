@@ -1,0 +1,257 @@
+diff -ur abook-0.5.6.orig/abook.h abook-0.5.6/abook.h
+--- abook-0.5.6.orig/abook.h	2010-11-09 22:02:43.433150687 +0300
++++ abook-0.5.6/abook.h	2010-11-10 13:49:04.654025390 +0300
+@@ -13,12 +13,12 @@
+ int		strncasecmp (const char *, const char *, size_t);
+ #endif
+ 
+-#define MAIN_HELPLINE        N_("q:quit  ?:help  a:add  r:remove")
++#define MAIN_HELPLINE        N_("q:quit ?:help a:add r:remove")
+ 
+ #define Y_STATUSLINE   	(LINES - 2)
+ 
+-#define MIN_LINES	20
+-#define MIN_COLS	70
++#define MIN_LINES	24
++#define MIN_COLS	53
+ 
+ #define DEFAULT_UMASK	066
+ #define DIR_IN_HOME	".abook"
+diff -ur abook-0.5.6.orig/edit.c abook-0.5.6/edit.c
+--- abook-0.5.6.orig/edit.c	2010-11-09 22:02:43.428150554 +0300
++++ abook-0.5.6/edit.c	2010-11-10 15:05:29.395025554 +0300
+@@ -39,40 +39,39 @@
+ editor_tab(const int tab)
+ {
+ 	int i, j;
+-	int x_pos = 2; /* current x pos */
++	int x_pos = 0; /* current x pos */
+ 	static char *tab_names[] = {
+ 		N_("CONTACT"),
+ 		N_("ADDRESS"),
+-		N_(" PHONE "),
+-		N_(" OTHER "),
+-		N_("CUSTOM ")
++		N_("PHONE"),
++		N_("OTHER"),
++		N_("CUSTOM")
+ 	};
+ 
+ 	mvwhline(editw, TABLINE + 1, 0, UI_HLINE_CHAR, EDITW_COLS);
+ 
+ 	for(i = 0; i < TABS; i++) {
+-		int width = strwidth(gettext(tab_names[i])) + 5;
++		int width = strwidth(gettext(tab_names[i])) + 4;
+ 
+ 		if(x_pos + width + 1 > EDITW_COLS) {
+ 			statusline_msg(_("Tab name too wide for screen"));
+ 			break;
+ 		}
+-
+ 		mvwaddch(editw,  TABLINE + 1, x_pos,  UI_TEE_CHAR);
+-		mvwaddch(editw,  TABLINE + 1, x_pos + width - 2, UI_TEE_CHAR);
++		mvwaddch(editw,  TABLINE + 1, x_pos + width - 1, UI_TEE_CHAR);
+ 
+ 		mvwaddch(editw,  TABLINE, x_pos,  UI_ULCORNER_CHAR);
+ 		mvwaddch(editw,  TABLINE, x_pos + 1,  UI_LBOXLINE_CHAR);
+ 		mvwaddstr(editw, TABLINE, x_pos + 2,  gettext(tab_names[i]));
+-		mvwaddch(editw,  TABLINE, x_pos + width - 3, UI_RBOXLINE_CHAR);
+-		mvwaddch(editw,  TABLINE, x_pos + width - 2, UI_URCORNER_CHAR);
++		mvwaddch(editw,  TABLINE, x_pos + width - 2, UI_RBOXLINE_CHAR);
++		mvwaddch(editw,  TABLINE, x_pos + width - 1, UI_URCORNER_CHAR);
+ 
+ 		if(i == tab) {
+ 			mvwaddch(editw,  TABLINE + 1, x_pos, UI_LRCORNER_CHAR);
+-			for(j = 0; j < width - 3; j++)
++			for(j = 0; j < width - 2; j++)
+ 				mvwaddstr(editw,
+ 					TABLINE + 1, x_pos + j + 1, " ");
+-			mvwaddch(editw,  TABLINE + 1, x_pos + width - 2,
++			mvwaddch(editw,  TABLINE + 1, x_pos + width - 1,
+ 				UI_LLCORNER_CHAR);
+ 		}
+ 		x_pos += width;
+diff -ur abook-0.5.6.orig/edit.h abook-0.5.6/edit.h
+--- abook-0.5.6.orig/edit.h	2010-11-09 22:02:43.432150660 +0300
++++ abook-0.5.6/edit.h	2010-11-10 13:10:42.897150393 +0300
+@@ -5,20 +5,20 @@
+ void		get_first_email(char *str, int item);
+ void		add_item();
+ 
+-#define EDITW_COLS	(COLS - 6)
++#define EDITW_COLS	COLS
+ #define EDITW_LINES	(LINES - 5)
+ #define EDITW_TOP	2
+-#define EDITW_X		3
++#define EDITW_X		0
+ 
+-#define EDITOR_HELPLINE	N_("?:help c:contact a:address p:phone o:other")
++#define EDITOR_HELPLINE	N_("?:help c:cont. a:addr. p:phone o:other")
+ 
+ #define TABLINE		1
+ 
+ #define MAX_TAB_FIELDS	7
+ 
+-#define TAB_COLON_POS	28
++#define TAB_COLON_POS	19
+ #define FIELDS_START_Y	4
+-#define FIELDS_START_X	4
++#define FIELDS_START_X	0
+ 
+ enum {
+ 	TAB_CONTACT,
+diff -ur abook-0.5.6.orig/help.h abook-0.5.6/help.h
+--- abook-0.5.6.orig/help.h	2010-11-09 22:02:43.432150660 +0300
++++ abook-0.5.6/help.h	2010-11-10 13:35:52.772150205 +0300
+@@ -8,43 +8,43 @@
+ /* TODO gettext: handle key and description separately? */
+ static char *mainhelp[] = {
+ 
+-N_("	?		help\n"),
+-N_("	q		quit\n"),
+-N_("	Q		quit without saving\n"),
+-N_("	P		quit and output selected item(s) to stderr\n"),
+-N_("	^L		refresh screen\n"),
+-"\n",
+-N_("	arrows / j,k	scroll list\n"),
+-N_("	enter		view/edit item\n"),
+-N_("	a		add item\n"),
+-N_("	r / del		remove selected items\n"),
+-N_("	D		duplicate item\n"),
+-"\n",
+-N_("	space		select item\n"),
+-N_("	+		select all\n"),
+-N_("	-		unselect all\n"),
+-N_("	*		invert selection\n"),
+-"\n",
+-N_("	w		write database to disk\n"),
+-N_("	l		read database from disk\n"),
+-N_("	C		clear whole database\n"),
+-N_("	i		import database\n"),
+-N_("	e		export database\n"),
+-N_("	p		print database\n"),
+-N_("	o		open database\n"),
+-"\n",
+-N_("	s		sort database\n"),
+-N_("	S		\"surname sort\"\n"),
+-N_("	F		sort by field (defined in configuration file)\n"),
++N_(" ?	help\n"),
++N_(" q	quit\n"),
++N_(" Q	quit without saving\n"),
++N_(" P	quit and output selected item(s) to stderr\n"),
++N_(" ^L	refresh screen\n"),
++"\n",
++N_(" arrows / j,k	scroll list\n"),
++N_(" enter		view/edit item\n"),
++N_(" a		add item\n"),
++N_(" r / del		remove selected items\n"),
++N_(" D		duplicate item\n"),
++"\n",
++N_(" space		select item\n"),
++N_(" +		select all\n"),
++N_(" -		unselect all\n"),
++N_(" *		invert selection\n"),
++"\n",
++N_(" w	write database to disk\n"),
++N_(" l	read database from disk\n"),
++N_(" C	clear whole database\n"),
++N_(" i	import database\n"),
++N_(" e	export database\n"),
++N_(" p	print database\n"),
++N_(" o	open database\n"),
++"\n",
++N_(" s	sort database\n"),
++N_(" S	\"surname sort\"\n"),
++N_(" F	sort by field (defined in configuration file)\n"),
+ "\n",
+-N_("	/		search\n"),
+-N_("	\\		search next occurrence\n"),
++N_(" /	search\n"),
++N_(" \\	search next occurrence\n"),
+ "\n",
+-N_("	A		move current item up\n"),
+-N_("	Z		move current item down\n"),
++N_(" A	move current item up\n"),
++N_(" Z	move current item down\n"),
+ "\n",
+-N_("	m		send mail with mutt\n"),
+-N_("	v		view URL with web browser\n"),
++N_(" m	send mail with mutt\n"),
++N_(" v	view URL with web browser\n"),
+ NULL
+ 
+ };
+@@ -52,19 +52,19 @@
+ static char *editorhelp[] = {
+ 
+ "\n",
+-N_("	a,c,p,o,C/arrows/h,l	change tab\n"),
++N_(" a,c,p,o,C/arrows/h,l	change tab\n"),
+ "\n",
+-N_("	1 - 5			edit fields\n"),
++N_(" 1 - 5			edit fields\n"),
+ "\n",
+-N_("	k or <			previous item\n"),
+-N_("	j or >			next item\n"),
++N_(" k or <			previous item\n"),
++N_(" j or >			next item\n"),
+ "\n",
+-N_("	r			roll e-mail addresses\n"),
++N_(" r			roll e-mail addresses\n"),
+ "\n",
+-N_("	u			undo\n"),
++N_(" u			undo\n"),
+ "\n",
+-N_("	m			send mail with mutt\n"),
+-N_("	v			view url with web browser\n"),
++N_(" m			send mail with mutt\n"),
++N_(" v			view url with web browser\n"),
+ "\n",
+ NULL
+ 
+diff -ur abook-0.5.6.orig/options.c abook-0.5.6/options.c
+--- abook-0.5.6.orig/options.c	2010-11-09 22:02:43.432150660 +0300
++++ abook-0.5.6/options.c	2010-11-10 15:09:15.241025395 +0300
+@@ -49,10 +49,10 @@
+ 	{ "autosave", OT_BOOL, BOOL_AUTOSAVE, TRUE },
+ 
+ 	{ "show_all_emails", OT_BOOL, BOOL_SHOW_ALL_EMAILS, TRUE },
+-	{ "emailpos", OT_INT, INT_EMAILPOS, 25 },
++	{ "emailpos", OT_INT, INT_EMAILPOS, 16 },
+ 	{ "extra_column", OT_STR, STR_EXTRA_COLUMN, UL "phone" },
+ 	{ "extra_alternative", OT_STR, STR_EXTRA_ALTERNATIVE, UL "-1" },
+-	{ "extrapos", OT_INT, INT_EXTRAPOS, 65 },
++	{ "extrapos", OT_INT, INT_EXTRAPOS, 40 },
+ 
+ 	{ "mutt_command", OT_STR, STR_MUTT_COMMAND, UL "mutt" },
+ 	{ "mutt_return_all_emails", OT_BOOL, BOOL_MUTT_RETURN_ALL_EMAILS,
+@@ -64,7 +64,7 @@
+ 
+ 	{ "address_style", OT_STR, STR_ADDRESS_STYLE, UL "eu" },
+ 
+-	{ "use_ascii_only", OT_BOOL, BOOL_USE_ASCII_ONLY, FALSE },
++	{ "use_ascii_only", OT_BOOL, BOOL_USE_ASCII_ONLY, TRUE },
+ 
+ 	{ "add_email_prevent_duplicates", OT_BOOL, BOOL_ADD_EMAIL_PREVENT_DUPLICATES, FALSE },
+ 	{ "sort_field", OT_STR, STR_SORT_FIELD, UL "nick" },
+diff -ur abook-0.5.6.orig/ui.c abook-0.5.6/ui.c
+--- abook-0.5.6.orig/ui.c	2010-11-09 22:02:43.427150520 +0300
++++ abook-0.5.6/ui.c	2010-11-10 13:48:55.824150192 +0300
+@@ -406,7 +406,7 @@
+ 		default:return;
+ 	}
+ 
+-	helpw = newwin(LINES - 5, COLS - 6, 2, 3);
++	helpw = newwin(LINES - 5, COLS, 2, 0);
+ 	erase();
+ 	headerline(_("help"));
+ 
+@@ -588,7 +588,7 @@
+ void
+ ui_print_number_of_items()
+ {
+-	char *str = strdup_printf("     " "|%3d/%3d", selected_items(), items);
++	char *str = strdup_printf("  " "|%3d/%3d", selected_items(), items);
+ 
+ 	mvaddstr(0, COLS-strlen(str), str);
+ 

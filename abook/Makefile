@@ -17,7 +17,7 @@ define Package/abook
 	CATEGORY:=Utilities
 	TITLE:=abook
 	URL:=http://abook.sourceforge.net/
-	DEPENDS:=+libreadline +libncurses +setfont2
+	DEPENDS:=+libreadline +libncurses
 endef
 
 define Package/abook/description
@@ -27,10 +27,8 @@ endef
 CONFIGURE_ARGS+="--with-curses=$(STAGING_DIR)/lib"
 
 define Package/abook/install
-	$(INSTALL_DIR) $(1)/usr/bin $(1)/etc
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/abook $(1)/usr/bin/abook.bin
-	$(INSTALL_BIN) $(FILES_DIR)/abook.sh $(1)/usr/bin/abook
-	$(INSTALL_DATA) $(FILES_DIR)/abookrc $(1)/etc
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/abook $(1)/usr/bin
 endef
 
 $(eval $(call BuildPackage,abook))
