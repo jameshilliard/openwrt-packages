@@ -36,6 +36,11 @@ define Package/stardict-dic-en-en
     TITLE+=(dictionary: English <-> English)
 endef
 
+define Package/stardict-dic-en-cn
+    $(call Package/stardict/Default)
+    TITLE+=(dictionary: oxfordjm English <-> Chinses)
+endef
+
 define Package/stardict/description
     StarDict is a Cross-Platform and international dictionary Software.
 endef
@@ -97,5 +102,16 @@ define Package/stardict-dic-en-en/install
 		./files/stardict-english-2.4.2.tar.bz2
 endef
 
+define Package/stardict-dic-en-cn/install
+	$(INSTALL_DIR) \
+		$(1)/usr/share/stardict/dic
+
+	$(TAR) \
+		-C $(1)/usr/share/stardict/dic/ \
+		-jxf \
+		./files/stardict-oxfordjm-ec-2.4.2.tar.bz2
+endef
+
 $(eval $(call BuildPackage,stardict))
 $(eval $(call BuildPackage,stardict-dic-en-en))
+$(eval $(call BuildPackage,stardict-dic-en-cn))
