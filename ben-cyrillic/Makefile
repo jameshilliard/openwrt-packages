@@ -33,7 +33,9 @@ define Package/ben-cyrillic/install
 	$(INSTALL_DIR) \
 		$(1)/usr/share/ben-cyrillic \
 		$(1)/usr/sbin \
-		$(1)/etc/init.d
+		$(1)/etc/init.d \
+		$(1)/usr/share/gmenu2x/sections/applications \
+		$(1)/usr/bin
 
 	$(INSTALL_BIN) \
 		$(FILES_DIR)/russian.sh \
@@ -43,9 +45,17 @@ define Package/ben-cyrillic/install
 		$(FILES_DIR)/$(PKG_NAME).init \
 		$(1)/etc/init.d/$(PKG_NAME)
 
+	$(INSTALL_BIN) \
+		$(FILES_DIR)/ben-ash-rus \
+		$(1)/usr/bin/
+
 	$(INSTALL_DATA) \
 		$(FILES_DIR)/{ben_ru_uni.map,ben_ru_uni.trans,un-fuzzy-6x10-font_rus.pnm} \
 		$(1)/usr/share/ben-cyrillic/
+
+	$(INSTALL_DATA) \
+		$(FILES_DIR)/ash-rus \
+		$(1)/usr/share/gmenu2x/sections/applications/
 endef
 
 $(eval $(call BuildPackage,ben-cyrillic))
