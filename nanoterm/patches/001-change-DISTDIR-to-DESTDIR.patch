@@ -1,0 +1,18 @@
+diff --git a/Makefile b/Makefile
+index 08ac50e..8fb6d34 100644
+--- a/Makefile
++++ b/Makefile
+@@ -12,11 +12,11 @@ distclean: clean
+ 	rm -f aclocal.m4 autoconf.h autoconf.mk config.log config.status
+ 
+ install: all
+-	install -D -m 0755 -s --strip-program=$(STRIP) src/nanoterm $(DISTDIR)$(bindir)/nanoterm
++	install -D -m 0755 -s --strip-program=$(STRIP) src/nanoterm $(DESTDIR)$(bindir)/nanoterm
+ 
+ ipkg:
+ 	rm -Rf ipkg-tmp
+ 	mkdir -p ipkg-tmp/CONTROL
+ 	cp dist/ipkg.control ipkg-tmp/CONTROL/control
+-	$(MAKE) DISTDIR=ipkg-tmp install
++	$(MAKE) DESTDIR=ipkg-tmp install
+ 	ipkg-build -o root -g root ipkg-tmp
