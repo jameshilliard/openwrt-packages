@@ -100,6 +100,9 @@ define Package/stardict-dic-en-en/install
 		-C $(1)/usr/share/stardict/dic/ \
 		-jxf \
 		./files/stardict-english-2.4.2.tar.bz2
+
+	$(CP)	./files/longman.idx.oft \
+		$(1)/usr/share/stardict/dic/stardict-english-2.4.2/
 endef
 
 define Package/stardict-dic-en-cn/install
@@ -110,6 +113,9 @@ define Package/stardict-dic-en-cn/install
 		-C $(1)/usr/share/stardict/dic/ \
 		-jxf \
 		./files/stardict-oxfordjm-ec-2.4.2.tar.bz2
+
+	$(CP)	./files/oxfordjm-ec.idx.oft \
+		$(1)/usr/share/stardict/dic/stardict-oxfordjm-ec-2.4.2/
 endef
 
 $(eval $(call BuildPackage,stardict))
