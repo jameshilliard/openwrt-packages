@@ -9,16 +9,15 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmenu2x
 PKG_VERSION:=20101113
-PKG_REV:=aac04da2ef0ac858453057950a8f86e5cdf5162c
+PKG_REV:=2c27de385006db2c89b8b5ba46a7d5e59e0cee48
 PKG_RELEASE:=1
+PKG_INSTALL:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=git://projects.qi-hardware.com/gmenu2x.git
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=$(PKG_REV)
-
-PKG_INSTALL:=1
 
 PKG_BUILD_DEPENDS:=sparsehash
 
@@ -35,9 +34,6 @@ TARGET_CPPFLAGS+= \
   -I$(STAGING_DIR)/usr/include/google/sparsehash \
   -I$(PKG_BUILD_DIR)/src/tinyxml \
 
-# 	-I$(STAGING_DIR)/usr/lib/libintl/include \
-# 	-I$(STAGING_DIR)/usr/libiconv/include
-# 
 TARGET_LDFLAGS+= \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
 	-L$(STAGING_DIR)/usr/lib/SDL \
