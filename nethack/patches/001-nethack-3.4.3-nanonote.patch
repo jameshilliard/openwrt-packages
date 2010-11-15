@@ -1,0 +1,197 @@
+diff --git a/include/config.h b/include/config.h
+index 3efbfa2..4c69b32 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -169,11 +169,11 @@
+ 
+ #ifdef UNIX
+ /* path and file name extension for compression program */
+-#define COMPRESS "/usr/bin/compress"	/* Lempel-Ziv compression */
+-#define COMPRESS_EXTENSION ".Z"		/* compress's extension */
++// #define COMPRESS "/usr/bin/compress"	/* Lempel-Ziv compression */
++// #define COMPRESS_EXTENSION ".Z"		/* compress's extension */
+ /* An example of one alternative you might want to use: */
+-/* #define COMPRESS "/usr/local/bin/gzip" */	/* FSF gzip compression */
+-/* #define COMPRESS_EXTENSION ".gz" */		/* normal gzip extension */
++#define COMPRESS "/bin/gzip"
++#define COMPRESS_EXTENSION ".gz"
+ #endif
+ 
+ #ifndef COMPRESS
+diff --git a/include/unixconf.h b/include/unixconf.h
+index fe1b006..6038e6c 100644
+--- a/include/unixconf.h
++++ b/include/unixconf.h
+@@ -37,7 +37,7 @@
+ #define NETWORK		/* if running on a networked system */
+ 			/* e.g. Suns sharing a playground through NFS */
+ /* #define SUNOS4 */	/* SunOS 4.x */
+-/* #define LINUX */	/* Another Unix clone */
++#define LINUX	/* Another Unix clone */
+ /* #define CYGWIN32 */	/* Unix on Win32 -- use with case sensitive defines */
+ /* #define GENIX */	/* Yet Another Unix Clone */
+ /* #define HISX */	/* Bull Unix for XPS Machines */
+@@ -132,7 +132,7 @@
+  * "extra output" method is used, but not all systems provide access to
+  * a fine-grained timer.
+  */
+-/* #define TIMED_DELAY */	/* usleep() */
++#define TIMED_DELAY /* usleep() */
+ #endif
+ 
+ /*
+diff --git a/sys/share/unixtty.c b/sys/share/unixtty.c
+index 05b76b4..37484fa 100644
+--- a/sys/share/unixtty.c
++++ b/sys/share/unixtty.c
+@@ -38,7 +38,7 @@
+ # ifdef LINUX
+ #  include <sys/ioctl.h>
+ #  undef delay_output	/* curses redefines this */
+-#  include <curses.h>
++#  include <ncurses.h>
+ # endif
+ # define kill_sym	c_cc[VKILL]
+ # define erase_sym	c_cc[VERASE]
+diff --git a/sys/unix/Makefile.src b/sys/unix/Makefile.src
+index 29ad99a..3f640a3 100644
+--- a/sys/unix/Makefile.src
++++ b/sys/unix/Makefile.src
+@@ -76,6 +76,8 @@ SYSOBJ = ioctl.o unixmain.o unixtty.o unixunix.o unixres.o
+ #
+ #	For cross-compiling, eg. with gcc on Linux (see also CXX further down):
+ # CC = arm-linux-gcc
++CC = mipsel-openwrt-linux-uclibc-gcc
++LD = mipsel-openwrt-linux-uclibc-ld
+ #
+ #
+ # if you're debugging and want gcc to check as much as possible, use:
+@@ -151,18 +153,18 @@ GNOMEINC=-I/usr/lib/glib/include -I/usr/lib/gnome-libs/include -I../win/gnome
+ # flags for debugging:
+ # CFLAGS = -g -I../include
+ 
+-CFLAGS = -O -I../include
+-LFLAGS = 
++CFLAGS += -O2 -I../include
++LFLAGS += ${LDFLAGS}
+ 
+ # The Qt and Be window systems are written in C++, while the rest of
+ # NetHack is standard C.  If using Qt, uncomment the LINK line here to get
+ # the C++ libraries linked in.
+ CXXFLAGS = $(CFLAGS) -I. -I$(QTDIR)/include
+-CXX=g++
++CXX=mipsel-openwrt-linux-uclibc-g++
+ #LINK=g++
+ #	For cross-compiling, eg. with gcc on Linux (see also CC further up):
+ #CXX=arm-linux-g++
+-#LINK=arm-linux-gcc
++LINK=mipsel-openwrt-linux-uclibc-g++
+ 
+ # Set the WINSRC, WINOBJ, and WINLIB lines to correspond to your desired
+ # combination of windowing systems.  Also set windowing systems in config.h.
+@@ -230,8 +232,8 @@ WINOBJ = $(WINTTYOBJ)
+ # WINTTYLIB = -ltermcap
+ # WINTTYLIB = -lcurses
+ # WINTTYLIB = -lcurses16
+-# WINTTYLIB = -lncurses
+-WINTTYLIB = -ltermlib
++WINTTYLIB = -lncurses
++# WINTTYLIB = -ltermlib
+ #
+ # libraries for X11
+ # If USE_XPM is defined in config.h, you will also need -lXpm here.
+diff --git a/sys/unix/Makefile.top b/sys/unix/Makefile.top
+index 2f11c35..c6b7af0 100644
+--- a/sys/unix/Makefile.top
++++ b/sys/unix/Makefile.top
+@@ -14,7 +14,6 @@
+ # MAKE = make
+ 
+ # make NetHack
+-PREFIX	 = /usr
+ GAME     = nethack
+ # GAME     = nethack.prg
+ GAMEUID  = games
+@@ -35,9 +34,9 @@ DIRPERM  = 0755
+ # therefore there should not be anything in GAMEDIR that you want to keep
+ # (if there is, you'll have to do the installation by hand or modify the
+ # instructions)
+-GAMEDIR  = $(PREFIX)/games/lib/$(GAME)dir
++GAMEDIR  = $(PREFIX)/lib/$(GAME)dir
+ VARDIR  = $(GAMEDIR)
+-SHELLDIR = $(PREFIX)/games
++SHELLDIR = $(PREFIX)
+ 
+ # per discussion in Install.X11 and Install.Qt
+ VARDATND = 
+@@ -238,7 +237,7 @@ install: $(GAME) recover $(VARDAT) dungeon spec_levs
+ 	-mkdir -p $(GAMEDIR) $(VARDIR) $(VARDIR)/save
+ 	-rmdir ./-p
+ 	-$(CHOWN) $(GAMEUID) $(GAMEDIR) $(VARDIR) $(VARDIR)/save
+-	$(CHGRP) $(GAMEGRP) $(GAMEDIR) $(VARDIR) $(VARDIR)/save
++	-$(CHGRP) $(GAMEGRP) $(GAMEDIR) $(VARDIR) $(VARDIR)/save
+ 	chmod $(DIRPERM) $(GAMEDIR) $(VARDIR) $(VARDIR)/save
+ # set up the game files
+ 	( $(MAKE) dofiles )
+diff --git a/sys/unix/Makefile.utl b/sys/unix/Makefile.utl
+index e2936a8..69369cf 100644
+--- a/sys/unix/Makefile.utl
++++ b/sys/unix/Makefile.utl
+@@ -27,6 +27,8 @@
+ #
+ #	For HP/UX 10.20 with GCC:
+ # CC = gcc -D_POSIX_SOURCE
++CC = mipsel-openwrt-linux-uclibc-gcc
++CXX = mipsel-openwrt-linux-uclibc-g++
+ #
+ # if your make doesn't define a default SHELL properly, you may need
+ #    the line below (Atari users will need a bourne work-alike)
+@@ -95,7 +97,7 @@ LFLAGS =
+ LIBS =
+  
+ # If you are cross-compiling, you must use this:
+-#OBJDIR = .
++OBJDIR = .
+ # otherwise, you can save a little bit of disk space with this:
+ OBJDIR = ../src
+ 
+@@ -175,7 +177,7 @@ YACCDIST =
+ #	dependencies for makedefs
+ #
+ makedefs:	$(MAKEOBJS)
+-	$(CC) $(LFLAGS) -o makedefs $(MAKEOBJS)
++	gcc $(LFLAGS) -o makedefs -I../include makedefs.c ../src/monst.c ../src/objects.c
+ 
+ makedefs.o: makedefs.c $(CONFIG_H) ../include/permonst.h \
+ 		../include/objclass.h ../include/monsym.h \
+@@ -210,7 +212,7 @@ panic.o:     panic.c $(CONFIG_H)
+ #	dependencies for lev_comp
+ #
+ lev_comp:  $(SPLEVOBJS)
+-	$(CC) $(LFLAGS) -o lev_comp $(SPLEVOBJS) $(LIBS)
++	gcc -o lev_comp lev_yacc.c lev_lex.c lev_main.c $(CALLOC) $(CNAMING) -I../include
+ 
+ lev_yacc.o:  lev_yacc.c $(HACK_H) ../include/sp_lev.h
+ lev_main.o:  lev_main.c $(HACK_H) ../include/sp_lev.h ../include/tcap.h \
+@@ -243,7 +245,7 @@ lintlev:
+ #	dependencies for dgn_comp
+ #
+ dgn_comp:  $(DGNCOMPOBJS)
+-	$(CC) $(LFLAGS) -o dgn_comp $(DGNCOMPOBJS) $(LIBS)
++	gcc $(LFLAGS) -o dgn_comp dgn_yacc.c dgn_lex.c dgn_main.c $(CALLOC) -I../include $(LIBS)
+ 
+ dgn_yacc.o:  dgn_yacc.c $(CONFIG_H) ../include/dgn_file.h ../include/date.h
+ dgn_main.o:  dgn_main.c $(CONFIG_H) ../include/dlb.h
+diff --git a/sys/unix/nethack.sh b/sys/unix/nethack.sh
+index 600e1da..ca7e7f4 100644
+--- a/sys/unix/nethack.sh
++++ b/sys/unix/nethack.sh
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ #	SCCS Id: @(#)nethack.sh	3.4	1990/02/26
+ 
+-HACKDIR=/usr/games/lib/nethackdir
++HACKDIR=`pwd`/lib/nethackdir
+ export HACKDIR
+ HACK=$HACKDIR/nethack
+ MAXNROFPLAYERS=4
