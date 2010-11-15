@@ -8,8 +8,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmenu2x
-PKG_VERSION:=20101113
-PKG_REV:=2c27de385006db2c89b8b5ba46a7d5e59e0cee48
+PKG_VERSION:=20101115
+PKG_REV:=42ae8268e4a2bac88609ca242c1aeaaaf4010af9
 PKG_RELEASE:=1
 PKG_INSTALL:=1
 
@@ -70,8 +70,8 @@ define Package/gmenu2x/install
 		$(1)/usr/share/gmenu2x/
 
 	$(CP) \
-		./files/input.conf \
-		$(1)/usr/share/gmenu2x/
+		$(PKG_BUILD_DIR)/input.conf.nanonote \
+		$(1)/usr/share/gmenu2x/input.conf
 
 	rm -rf \
 		$(1)/usr/share/gmenu2x/sections/{emulators,games}
