@@ -1,3 +1,4 @@
 title=ash-rus
 icon=skin:icons/utilities-terminal.png
 exec=/usr/bin/ben-ash-rus
+workdir=/root
