@@ -27,6 +27,7 @@ define Package/libncurses
   TITLE:=Terminal handling library
   URL:=http://www.gnu.org/software/ncurses/
   VARIANT:=libncurses
+  DEPENDS:=@BROKEN
 endef
 
 define Package/libncursesw
