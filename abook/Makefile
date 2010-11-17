@@ -17,7 +17,7 @@ define Package/abook
 	CATEGORY:=Utilities
 	TITLE:=abook
 	URL:=http://abook.sourceforge.net/
-	DEPENDS:=+libreadline +libncurses
+	DEPENDS:=+libreadline +libncursesw
 endef
 
 define Package/abook/description
