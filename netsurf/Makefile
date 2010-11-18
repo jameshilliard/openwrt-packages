@@ -19,7 +19,7 @@ define Package/netsurf
 	CATEGORY:=Network
 	TITLE:=netsurf
 	URL:=http://www.netsurf-browser.org/
-	DEPENDS:=+libsdl +libcss +libhubbub +libparserutils
+	DEPENDS:=+libsdl +libcss +libhubbub +libparserutils @BROKEN
 endef
 
 define Package/netsurf/description

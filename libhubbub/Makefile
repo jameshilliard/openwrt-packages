@@ -15,7 +15,7 @@ define Package/libhubbub
 	CATEGORY:=Libraries
 	TITLE:=Hubbub is an HTML5 compliant parsing library
 	URL:=http://www.netsurf-browser.org/projects/hubbub/
-	DEPENDS:=+libparserutils
+	DEPENDS:=+libparserutils @BROKEN
 endef
 
 define Package/libhubbub/description

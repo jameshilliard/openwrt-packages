@@ -16,6 +16,7 @@ define Package/libparserutils
 	CATEGORY:=Libraries
 	TITLE:=LibParserUtils has some built-in charset converters
 	URL:=http://www.netsurf-browser.org/projects/libparserutils/
+	DEPENDS:=@BROKEN
 endef
 
 define Package/libparserutils/description

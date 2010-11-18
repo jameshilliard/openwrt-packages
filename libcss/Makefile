@@ -15,6 +15,7 @@ define Package/libcss
 	CATEGORY:=Libraries
 	TITLE:=LibCSS is a CSS parser and selection engine, written in C
 	URL:=http://www.netsurf-browser.org/projects/libcss/
+	DEPENDS:=@BROKEN
 endef
 
 define Package/libcss/description
