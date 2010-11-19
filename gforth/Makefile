@@ -276,7 +276,7 @@ define Package/gforth/install
 
         # install the correct Gforth kernel image
 	echo "$(INSTALL_DATA) $(PKG_BUILD_DIR)/@kernel_fi@ $(1)/$(GFORTH_SHARE_DIR)/" > $(PKG_BUILD_DIR)/install-kernel.sh.in
-	$(PKG_BUILD_DIR)/config.status --file $(PKG_BUILD_DIR)/install-kernel.sh
+	cd $(PKG_BUILD_DIR) && ./config.status --file install-kernel.sh
 	. $(PKG_BUILD_DIR)/install-kernel.sh
 
         # install updating script and wrap gforth interpreter binaries so that 
