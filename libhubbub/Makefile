@@ -22,16 +22,24 @@ define Package/libhubbub/description
 	Hubbub is an HTML5 compliant parsing library, written in C. It was developed as part of the NetSurf project and is available for use by other software under the MIT licence.
 endef
 
+define Build/Compile
+	rm -rf $(PKG_INSTALL_DIR)
+	$(MAKE) -C $(PKG_BUILD_DIR) \
+		COMPONENT_TYPE=lib-shared \
+		DESTDIR="$(PKG_INSTALL_DIR)" \
+		all install
+endef
+
 define Build/InstallDev
 	mkdir -p $(1)/usr/include
-	#$(CP) $(PKG_INSTALL_DIR)/usr/local/include/physfs.h $(1)/usr/include/
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/include/* $(1)/usr/include/
 	mkdir -p $(1)/usr/lib
-	#$(CP) $(PKG_INSTALL_DIR)/usr/local/lib/libhubbub.so* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/lib/* $(1)/usr/lib/
 endef
 
 define Package/libhubbub/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	#$(CP) $(PKG_BUILD_DIR)/libhubbub.so* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/lib/libhubbub.so* $(1)/usr/lib/
 endef
 
 $(eval $(call BuildPackage,libhubbub))

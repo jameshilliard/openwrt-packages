@@ -1,6 +1,5 @@
 include $(TOPDIR)/rules.mk
 
-
 PKG_NAME:=libparserutils
 PKG_VERSION:=0.0.2
 PKG_RELEASE:=1
@@ -31,17 +30,16 @@ define Build/Compile
 		all install
 endef
 
-
 define Build/InstallDev
 	mkdir -p $(1)/usr/include
-	#$(CP) $(PKG_INSTALL_DIR)/usr/local/include/physfs.h $(1)/usr/include/
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/include/* $(1)/usr/include/
 	mkdir -p $(1)/usr/lib
-	#$(CP) $(PKG_INSTALL_DIR)/usr/local/lib/libparserutils.so* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/lib/* $(1)/usr/lib/
 endef
 
 define Package/libparserutils/install
-	#$(INSTALL_DIR) $(1)/usr/lib
-	#$(CP) $(PKG_BUILD_DIR)/libparserutils.so* $(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/lib/libparserutils.so* $(1)/usr/lib/
 endef
 
 $(eval $(call BuildPackage,libparserutils))
