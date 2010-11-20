@@ -37,7 +37,7 @@ define Package/keymouse/install
 	$(INSTALL_DIR) $(1)/usr/bin $(1)/etc $(1)/etc/init.d
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/keymouse $(1)/usr/bin/
 	$(INSTALL_DATA) $(FILES_DIR)/keymouse.cfg $(1)/etc/
-	$(INSTALL_BIN) $(FILES_DIR)/keymouse.ini $(1)/etc/init.d/keymouse
+	$(INSTALL_BIN) $(FILES_DIR)/keymouse.init $(1)/etc/init.d/keymouse
 endef
 
 $(eval $(call BuildPackage,keymouse))
