@@ -15,7 +15,7 @@ define Package/libparserutils
 	CATEGORY:=Libraries
 	TITLE:=LibParserUtils has some built-in charset converters
 	URL:=http://www.netsurf-browser.org/projects/libparserutils/
-	DEPENDS:=@BROKEN
+	DEPENDS:=
 endef
 
 define Package/libparserutils/description
@@ -24,7 +24,8 @@ endef
 
 define Build/Compile
 	rm -rf $(PKG_INSTALL_DIR)
-	$(MAKE) -C $(PKG_BUILD_DIR) \
+	$(MAKE_VARS) $(MAKE) -C $(PKG_BUILD_DIR) \
+		$(MAKE_FLAGS) \
 		COMPONENT_TYPE=lib-shared \
 		DESTDIR="$(PKG_INSTALL_DIR)" \
 		all install

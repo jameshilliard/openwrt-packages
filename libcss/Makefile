@@ -24,7 +24,9 @@ endef
 
 define Build/Compile
 	rm -rf $(PKG_INSTALL_DIR)
-	$(MAKE) -C $(PKG_BUILD_DIR) \
+	$(MAKE_VARS) $(MAKE) -C $(PKG_BUILD_DIR) \
+		$(MAKE_FLAGS) \
+		WARNFLAGS="" \
 		COMPONENT_TYPE=lib-shared \
 		DESTDIR="$(PKG_INSTALL_DIR)" \
 		all install

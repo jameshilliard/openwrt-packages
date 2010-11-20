@@ -15,7 +15,7 @@ define Package/libhubbub
 	CATEGORY:=Libraries
 	TITLE:=Hubbub is an HTML5 compliant parsing library
 	URL:=http://www.netsurf-browser.org/projects/hubbub/
-	DEPENDS:=+libparserutils @BROKEN
+	DEPENDS:=+libparserutils
 endef
 
 define Package/libhubbub/description
@@ -24,7 +24,8 @@ endef
 
 define Build/Compile
 	rm -rf $(PKG_INSTALL_DIR)
-	$(MAKE) -C $(PKG_BUILD_DIR) \
+	$(MAKE_VARS) $(MAKE) -C $(PKG_BUILD_DIR) \
+		$(MAKE_FLAGS) \
 		COMPONENT_TYPE=lib-shared \
 		DESTDIR="$(PKG_INSTALL_DIR)" \
 		all install

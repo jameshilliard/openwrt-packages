@@ -11,6 +11,8 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.netsurf-browser.org/downloads/development/
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
 
+PKG_INSTALL:=1
+
 include $(INCLUDE_DIR)/package.mk
 
 define Package/netsurf
@@ -19,15 +21,18 @@ define Package/netsurf
 	CATEGORY:=Network
 	TITLE:=netsurf
 	URL:=http://www.netsurf-browser.org/
-	DEPENDS:=+libsdl +libcss +libhubbub +libparserutils @BROKEN
+	DEPENDS:=+libsdl +libcss +libhubbub +libparserutils +libnsfb +libxml2 +libcurl
 endef
 
 define Package/netsurf/description
 	NetSurf is a free, open source web browser. It is written in C and released under the GNU Public Licence version 2. NetSurf has its own layout and rendering engine entirely written from scratch. It is small and capable of handling many of the web standards in use today.
 endef
 
-MAKE_VARS +=
+MAKE_FLAGS += "TARGET=framebuffer" \
+			  "PREFIX=/usr"
+
 TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
+TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
@@ -36,11 +41,15 @@ endef
 
 define Package/netsurf/install
 	$(INSTALL_DIR) \
-		$(1)/usr/bin \
+		$(1)/usr/bin $(1)/usr/share/netsurf
 
 	$(INSTALL_BIN) \
-		./files/netsurf \
+		$(PKG_INSTALL_DIR)/usr/bin/netsurf \
 		$(1)/usr/bin/
+
+	$(INSTALL_DATA) \
+		$(PKG_INSTALL_DIR)/usr/share/netsurf/* \
+		$(1)/usr/share/netsurf/
 endef
 
 $(eval $(call BuildPackage,netsurf))
