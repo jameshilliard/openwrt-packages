@@ -34,6 +34,8 @@ MAKE_FLAGS += \
 	$(TARGET_CONFIGURE_OPTS) \
 	$(1)
 
+MAKE_VARS += TOOLCHAIN_DIR=$(TOOLCHAIN_DIR)
+
 define Package/triggerhappy/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_DIR) $(1)/etc
