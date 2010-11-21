@@ -10,6 +10,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ncmpc
 PKG_VERSION:=0.18
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://downloads.sourceforge.net/musicpd/
@@ -19,7 +20,8 @@ include $(INCLUDE_DIR)/package.mk
 
 TARGET_CFLAGS+= \
 	-I$(STAGING_DIR)/usr/lib/libintl/include \
-	-I$(STAGING_DIR)/usr/libiconv/include
+	-I$(STAGING_DIR)/usr/libiconv/include \
+	-std=gnu99
 
 TARGET_LDFLAGS+= \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
@@ -30,7 +32,7 @@ define Package/ncmpc
     TITLE:=ncmpc
     SECTION:=sound
     CATEGORY:=Sound
-    DEPENDS:=+libncurses +libintl +libiconv @BROKEN
+    DEPENDS:=+libncurses +libintl +libiconv +libmpdclient
     URL:=http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki
 endef
 
@@ -40,7 +42,7 @@ endef
 
 define Package/ncmpc/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/ncmpc $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/ncmpc $(1)/usr/bin/
 endef
 
 $(eval $(call BuildPackage,ncmpc))
