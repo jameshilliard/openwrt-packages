@@ -33,6 +33,7 @@ TARGET_CPPFLAGS+= \
   -I$(STAGING_DIR)/usr/include/SDL \
   -I$(STAGING_DIR)/usr/include/google/sparsehash \
   -I$(PKG_BUILD_DIR)/src/tinyxml \
+  -DLOG_LEVEL=0
 
 TARGET_LDFLAGS+= \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
