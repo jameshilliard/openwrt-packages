@@ -7,13 +7,14 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=triggersad
 PKG_VERSION:=0.1.3
+PKG_REV:=f7c42167127fb8377f99440f943ab863433b14b5
 PKG_RELEASE:=1
 
-PKG_SOURCE:=wertarbyte-triggerhappy-release-0.1.3-0-gf7c4216.tar.gz
-PKG_SOURCE_URL:=http://download.github.com/
-PKG_MD5SUM:=7da137a7d2ba1ce396231e821e68de4e
-
-PKG_BUILD_DIR:=$(BUILD_DIR)/wertarbyte-triggerhappy-f7c4216/
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=git://github.com/wertarbyte/triggerhappy
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
+PKG_SOURCE_VERSION:=$(PKG_REV)
 
 include $(INCLUDE_DIR)/package.mk
 
