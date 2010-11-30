@@ -54,4 +54,9 @@ define Package/nightsky/install
 
 endef
 
+define Package/nightsky/postinst
+#! /bin/sh
+cp /usr/share/nightsky/example-nightsky.yml /root/.nightsky.yml
+endef
+
 $(eval $(call BuildPackage,nightsky))
