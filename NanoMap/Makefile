@@ -21,14 +21,22 @@ PKG_SOURCE_VERSION:=$(PKG_REV)
 include $(INCLUDE_DIR)/package.mk
 $(call include_mk,qmake.mk)
 
-define Package/NanoMap
+define Package/NanoMap/Default
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=Qt4-based map viewer
-	DEPENDS:=+qt4 +qt4-gui +qt4-network +dejavu-fonts-ttf
 	URL:=http://projects.qi-hardware.com/index.php/p/nanomap/
 endef
 
+define Package/NanoMap
+	$(call Package/NanoMap/Default)
+	DEPENDS:=+qt4 +qt4-gui +qt4-network +dejavu-fonts-ttf
+endef
+
+define Package/NanoMap-maps
+	$(call Package/NanoMap/Default)
+	TITLE+=(Sample Maps)
+endef
 
 TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
@@ -41,4 +49,10 @@ define Package/NanoMap/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/NanoMap $(1)/usr/bin/
 endef
 
+define Package/NanoMap-maps/install
+	$(INSTALL_DIR) $(1)/root
+	$(CP) ./files/Maps/ $(1)/root/
+endef
+
 $(eval $(call BuildPackage,NanoMap))
+$(eval $(call BuildPackage,NanoMap-maps))
