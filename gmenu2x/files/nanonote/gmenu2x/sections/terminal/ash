@@ -1,0 +1,3 @@
+title=ash(Default)
+icon=skin:icons/utilities-terminal.png
+exec=/bin/ash

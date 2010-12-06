@@ -63,7 +63,7 @@ define Package/gmenu2x/install
 		$(1)/usr/share/gmenu2x/
 
 	$(INSTALL_BIN) \
-		$(PKG_BUILD_DIR)/gmenu2x.sh \
+		./files/nanonote/bin/gmenu2x \
 		$(1)/usr/bin/gmenu2x
 
 	$(CP) \
@@ -76,6 +76,10 @@ define Package/gmenu2x/install
 
 	rm -rf \
 		$(1)/usr/share/gmenu2x/sections/{emulators,games}
+
+	$(CP) \
+		./files/nanonote/gmenu2x/* \
+		$(1)/usr/share/gmenu2x/
 endef
 
 $(eval $(call BuildPackage,gmenu2x))

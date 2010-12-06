@@ -1,0 +1,4 @@
+title=w3m
+icon=skin:icons/utilities-terminal.png
+exec=/usr/bin/w3m
+params=http://en.qi-hardware.com/wiki/Main_Page

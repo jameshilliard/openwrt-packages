@@ -1,0 +1,3 @@
+title=byobu
+icon=skin:icons/utilities-terminal.png
+exec=/usr/bin/byobu
