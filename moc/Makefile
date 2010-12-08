@@ -29,7 +29,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/moc
   SECTION:=sound
   CATEGORY:=Sound
-  DEPENDS:=+libcurl +BUILD_PATENTED:libmad +libvorbis +libncurses +libiconv +alsa-utils +libid3tag +libflac @BROKEN
+  DEPENDS:=+libcurl +BUILD_PATENTED:libmad +libvorbis +libncurses +libiconv +alsa-utils +libid3tag +libflac
   TITLE:=Music On Console
 endef
 
@@ -45,7 +45,7 @@ TARGET_LDFLAGS+= \
 	-L$(STAGING_DIR)/usr/lib/libiconv/lib
 
 CONFIGURE_ARGS += \
-	$(call autoconf_bool,CONFIG_BUILD_PATENTED,mad) \
+	--without-mp3 \
 	--enable-shared \
 	--disable-static \
 	--disable-debug
