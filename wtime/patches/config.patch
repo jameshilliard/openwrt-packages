@@ -1,0 +1,24 @@
+--- wtime/config.mk	2006-06-17 14:30:50.000000000 +0200
++++ wtimem/config.mk	2010-12-08 20:11:42.933802915 +0100
+@@ -1,17 +1,11 @@
+ # Customize to fit your system
+ 
+-PREFIX = /usr/local
++INCLUDES = -I. 
++LIBS = 
+ 
+-INCDIR = ${PREFIX}/include
+-LIBDIR = ${PREFIX}/lib
++CFLAGS = -std=c99 -O2
++LDFLAGS = 
+ 
+-INCLUDES = -I. -I${INCDIR} -I/usr/include
+-LIBS = -L${LIBDIR} -L/usr/lib -lc
+-
+-CFLAGS = -std=c99 -O2 ${INCLUDES}
+-LDFLAGS = ${LIBS} 
+-
+-CC = gcc
+ CP = cp -f
+ RM = rm -f
+ MKDIR = mkdir

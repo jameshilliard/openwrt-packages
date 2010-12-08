@@ -1,0 +1,12 @@
+--- wtime/wtime.c	2006-06-17 14:29:37.000000000 +0200
++++ wtimem/wtime.c	2010-12-08 20:20:18.692552915 +0100
+@@ -10,7 +10,8 @@
+ 
+ typedef enum { EMPTY, STARTED, STOPPED, UNKNOWN } Tstate;
+ 
+-char usage[] = "wt [-t task] [-h|-a|-s|-c|-r [<start>[<end>]]]\nFor more info see the man page.\n";
++//char usage[] = "wt [-t task] [-h|-a|-s|-c|-r [<start>[<end>]]]\nFor more info see the man page.\n";
++char usage[] = "wt [-t task] [-h|-a|-s|-c|-r [<start>[<end>]]]\nExamples:\n wt -a ... start counting\n wt -s ... stop counting\n wt -c ... show running time in seconds\n wt -r ... show spent time in seconds\n";
+ 
+ static int fgetlastl(FILE * fd, char *lbuf, int size)
+ {
