@@ -31,57 +31,220 @@ diff -ur qstardict-0.13.1.or/qstardict/keyboard.cpp qstardict-0.13.1/qstardict/k
  
  // vim: tabstop=4 softtabstop=4 shiftwidth=4 expandtab cindent textwidth=120 formatoptions=tc
  
+diff -ur qstardict-0.13.1.or/qstardict/mainwindow.cpp qstardict-0.13.1/qstardict/mainwindow.cpp
+--- qstardict-0.13.1.or/qstardict/mainwindow.cpp	2009-02-10 15:33:30.000000000 +0300
++++ qstardict-0.13.1/qstardict/mainwindow.cpp	2010-12-08 22:05:16.400898587 +0300
+@@ -93,7 +93,7 @@
+     setVisible(config.value("MainWindow/visible", true).toBool());
+     wordsListDock->setFloating(config.value("MainWindow/wordsListDock/floating", wordsListDock->isFloating()).toBool());
+     wordsListDock->setGeometry(config.value("MainWindow/wordsListDock/geometry", wordsListDock->geometry()).toRect());
+-    setInstantSearch(config.value("MainWindow/instantSearch", true).toBool());
++    setInstantSearch(config.value("MainWindow/instantSearch", false).toBool());
+     setDefaultStyleSheet(config.value("MainWindow/defaultStyleSheet", defaultStyleSheet()).toString());
+ }
+ 
+Только в qstardict-0.13.1/qstardict: mainwindow.cpp~
 diff -ur qstardict-0.13.1.or/qstardict/mainwindow.ui qstardict-0.13.1/qstardict/mainwindow.ui
 --- qstardict-0.13.1.or/qstardict/mainwindow.ui	2009-02-10 15:33:30.000000000 +0300
-+++ qstardict-0.13.1/qstardict/mainwindow.ui	2010-12-08 16:40:21.843773360 +0300
-@@ -5,8 +5,8 @@
++++ qstardict-0.13.1/qstardict/mainwindow.ui	2010-12-08 21:57:26.863898280 +0300
+@@ -1,190 +1,238 @@
+-<ui version="4.0" >
++<?xml version="1.0" encoding="UTF-8"?>
++<ui version="4.0">
+  <class>QStarDict::MainWindow</class>
+- <widget class="QMainWindow" name="QStarDict::MainWindow" >
+-  <property name="geometry" >
++ <widget class="QMainWindow" name="QStarDict::MainWindow">
++  <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
 -    <width>742</width>
 -    <height>511</height>
-+    <width>320</width>
++    <width>326</width>
 +    <height>240</height>
     </rect>
    </property>
-   <property name="windowTitle" >
-@@ -19,15 +19,15 @@
-   <widget class="QWidget" name="centralwidget" >
-    <layout class="QGridLayout" >
-     <property name="margin" >
+-  <property name="windowTitle" >
++  <property name="windowTitle">
+    <string>QStarDict</string>
+   </property>
+-  <property name="windowIcon" >
+-   <iconset resource="pixmaps/pixmaps.qrc" >
++  <property name="windowIcon">
++   <iconset resource="pixmaps/pixmaps.qrc">
+     <normaloff>:/icons/qstardict.png</normaloff>:/icons/qstardict.png</iconset>
+   </property>
+-  <widget class="QWidget" name="centralwidget" >
+-   <layout class="QGridLayout" >
+-    <property name="margin" >
 -     <number>9</number>
-+     <number>0</number>
-     </property>
-     <property name="spacing" >
+-    </property>
+-    <property name="spacing" >
 -     <number>6</number>
-+     <number>0</number>
-     </property>
-     <item row="0" column="0" >
-      <layout class="QHBoxLayout" >
-       <property name="spacing" >
+-    </property>
+-    <item row="0" column="0" >
+-     <layout class="QHBoxLayout" >
+-      <property name="spacing" >
 -       <number>6</number>
++  <widget class="QWidget" name="centralwidget">
++   <property name="minimumSize">
++    <size>
++     <width>214</width>
++     <height>130</height>
++    </size>
++   </property>
++   <property name="maximumSize">
++    <size>
++     <width>320</width>
++     <height>240</height>
++    </size>
++   </property>
++   <layout class="QVBoxLayout" name="verticalLayout_2">
++    <property name="spacing">
++     <number>0</number>
++    </property>
++    <property name="margin">
++     <number>0</number>
++    </property>
++    <item>
++     <layout class="QHBoxLayout">
++      <property name="spacing">
 +       <number>0</number>
        </property>
-       <property name="margin" >
+-      <property name="margin" >
++      <property name="margin">
         <number>0</number>
-@@ -90,17 +90,16 @@
+       </property>
+       <item>
+-       <widget class="QToolButton" name="searchClearButton" >
+-        <property name="toolTip" >
++       <widget class="QToolButton" name="searchClearButton">
++        <property name="toolTip">
+          <string>Clear the search box</string>
+         </property>
+-        <property name="text" >
++        <property name="text">
+          <string>Clear</string>
+         </property>
+-        <property name="icon" >
+-         <iconset resource="pixmaps/pixmaps.qrc" >
++        <property name="icon">
++         <iconset resource="pixmaps/pixmaps.qrc">
+           <normaloff>:/icons/clear-right.png</normaloff>:/icons/clear-right.png</iconset>
+         </property>
+-        <property name="toolButtonStyle" >
++        <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonIconOnly</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+-       <widget class="QLineEdit" name="searchBox" />
++       <widget class="QLineEdit" name="searchBox"/>
+       </item>
+       <item>
+-       <widget class="QToolButton" name="queryButton" >
+-        <property name="toolTip" >
++       <widget class="QToolButton" name="queryButton">
++        <property name="toolTip">
+          <string>Fuzzy query</string>
+         </property>
+-        <property name="text" >
++        <property name="text">
+          <string>Search</string>
+         </property>
+-        <property name="icon" >
+-         <iconset resource="pixmaps/pixmaps.qrc" >
++        <property name="icon">
++         <iconset resource="pixmaps/pixmaps.qrc">
+           <normaloff>:/icons/search-filter.png</normaloff>:/icons/search-filter.png</iconset>
+         </property>
+-        <property name="toolButtonStyle" >
++        <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextBesideIcon</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+-    <item row="1" column="0" >
+-     <widget class="DictWidget" native="1" name="translationView" />
++    <item>
++     <widget class="DictWidget" name="translationView" native="true"/>
+     </item>
+    </layout>
+   </widget>
+-  <widget class="QDockWidget" name="wordsListDock" >
+-   <property name="features" >
+-    <set>QDockWidget::AllDockWidgetFeatures</set>
++  <widget class="QDockWidget" name="wordsListDock">
++   <property name="minimumSize">
++    <size>
++     <width>100</width>
++     <height>155</height>
++    </size>
++   </property>
++   <property name="maximumSize">
++    <size>
++     <width>100</width>
++     <height>240</height>
++    </size>
++   </property>
++   <property name="features">
++    <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetMovable</set>
+    </property>
+-   <property name="allowedAreas" >
++   <property name="allowedAreas">
+     <set>Qt::NoDockWidgetArea</set>
+    </property>
+-   <property name="windowTitle" >
++   <property name="windowTitle">
+     <string>Words list</string>
+    </property>
+-   <attribute name="dockWidgetArea" >
++   <attribute name="dockWidgetArea">
      <number>1</number>
     </attribute>
-    <widget class="QWidget" name="dockWidgetContents" >
+-   <widget class="QWidget" name="dockWidgetContents" >
 -    <layout class="QGridLayout" >
 -     <property name="margin" >
 -      <number>9</number>
--     </property>
--     <property name="spacing" >
--      <number>6</number>
-+    <widget class="QListWidget" name="wordsList" >
++   <widget class="QWidget" name="dockWidgetContents">
++    <property name="minimumSize">
++     <size>
++      <width>100</width>
++      <height>130</height>
++     </size>
++    </property>
++    <property name="maximumSize">
++     <size>
++      <width>100</width>
++      <height>240</height>
++     </size>
++    </property>
++    <widget class="QListWidget" name="wordsList">
 +     <property name="geometry">
 +      <rect>
-+       <x>9</x>
-+       <y>9</y>
-+       <width>185</width>
-+       <height>184</height>
++       <x>0</x>
++       <y>5</y>
++       <width>100</width>
++       <height>190</height>
 +      </rect>
++     </property>
++     <property name="minimumSize">
++      <size>
++       <width>100</width>
++       <height>130</height>
++      </size>
+      </property>
+-     <property name="spacing" >
+-      <number>6</number>
++     <property name="maximumSize">
++      <size>
++       <width>100</width>
++       <height>240</height>
++      </size>
       </property>
 -     <item row="0" column="0" >
 -      <widget class="QListWidget" name="wordsList" />
@@ -90,18 +253,183 @@ diff -ur qstardict-0.13.1.or/qstardict/mainwindow.ui qstardict-0.13.1/qstardict/
 +    </widget>
     </widget>
    </widget>
-   <widget class="QMenuBar" name="menubar" >
-@@ -108,8 +107,8 @@
+-  <widget class="QMenuBar" name="menubar" >
+-   <property name="geometry" >
++  <widget class="QMenuBar" name="menubar">
++   <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
 -     <width>742</width>
 -     <height>22</height>
-+     <width>320</width>
-+     <height>18</height>
++     <width>326</width>
++     <height>27</height>
      </rect>
     </property>
-    <widget class="QMenu" name="menu_File" >
+-   <widget class="QMenu" name="menu_File" >
+-    <property name="title" >
++   <widget class="QMenu" name="menu_File">
++    <property name="title">
+      <string>&amp;File</string>
+     </property>
+-    <addaction name="actionQuit" />
++    <addaction name="actionQuit"/>
+    </widget>
+-   <widget class="QMenu" name="menuHelp" >
+-    <property name="title" >
++   <widget class="QMenu" name="menuHelp">
++    <property name="title">
+      <string>&amp;Help</string>
+     </property>
+-    <addaction name="actionHelp" />
+-    <addaction name="actionAbout" />
+-    <addaction name="actionAboutQt" />
++    <addaction name="actionHelp"/>
++    <addaction name="actionAbout"/>
++    <addaction name="actionAboutQt"/>
+    </widget>
+-   <widget class="QMenu" name="menu_Options" >
+-    <property name="title" >
++   <widget class="QMenu" name="menu_Options">
++    <property name="title">
+      <string>&amp;Settings</string>
+     </property>
+-    <addaction name="actionScan" />
+-    <addaction name="actionSettings" />
++    <addaction name="actionScan"/>
++    <addaction name="actionSettings"/>
+    </widget>
+-   <addaction name="menu_File" />
+-   <addaction name="menu_Options" />
+-   <addaction name="menuHelp" />
++   <addaction name="menu_File"/>
++   <addaction name="menu_Options"/>
++   <addaction name="menuHelp"/>
+   </widget>
+-  <action name="actionQuit" >
+-   <property name="icon" >
+-    <iconset resource="pixmaps/pixmaps.qrc" >
++  <action name="actionQuit">
++   <property name="icon">
++    <iconset resource="pixmaps/pixmaps.qrc">
+      <normaloff>:/icons/application-exit.png</normaloff>:/icons/application-exit.png</iconset>
+    </property>
+-   <property name="text" >
++   <property name="text">
+     <string>&amp;Quit</string>
+    </property>
+-   <property name="shortcut" >
++   <property name="shortcut">
+     <string>Ctrl+Q</string>
+    </property>
+   </action>
+-  <action name="actionAbout" >
+-   <property name="text" >
++  <action name="actionAbout">
++   <property name="text">
+     <string>&amp;About</string>
+    </property>
+   </action>
+-  <action name="actionAboutQt" >
+-   <property name="text" >
++  <action name="actionAboutQt">
++   <property name="text">
+     <string>About &amp;Qt</string>
+    </property>
+   </action>
+-  <action name="actionSettings" >
+-   <property name="icon" >
+-    <iconset resource="pixmaps/pixmaps.qrc" >
++  <action name="actionSettings">
++   <property name="icon">
++    <iconset resource="pixmaps/pixmaps.qrc">
+      <normaloff>:/icons/configure.png</normaloff>:/icons/configure.png</iconset>
+    </property>
+-   <property name="text" >
++   <property name="text">
+     <string>&amp;Configure QStarDict</string>
+    </property>
+   </action>
+-  <action name="actionScan" >
+-   <property name="checkable" >
++  <action name="actionScan">
++   <property name="checkable">
+     <bool>true</bool>
+    </property>
+-   <property name="text" >
++   <property name="text">
+     <string>&amp;Scan</string>
+    </property>
+   </action>
+-  <action name="actionHelp" >
+-   <property name="icon" >
+-    <iconset resource="pixmaps/pixmaps.qrc" >
++  <action name="actionHelp">
++   <property name="icon">
++    <iconset resource="pixmaps/pixmaps.qrc">
+      <normaloff>:/icons/help-contents.png</normaloff>:/icons/help-contents.png</iconset>
+    </property>
+-   <property name="text" >
++   <property name="text">
+     <string>QStarDict &amp;Help</string>
+    </property>
+-   <property name="shortcut" >
++   <property name="shortcut">
+     <string>F1</string>
+    </property>
+   </action>
+@@ -203,7 +251,7 @@
+   <tabstop>searchClearButton</tabstop>
+  </tabstops>
+  <resources>
+-  <include location="pixmaps/pixmaps.qrc" />
++  <include location="pixmaps/pixmaps.qrc"/>
+  </resources>
+  <connections>
+   <connection>
+@@ -212,11 +260,11 @@
+    <receiver>searchBox</receiver>
+    <slot>clear()</slot>
+    <hints>
+-    <hint type="sourcelabel" >
++    <hint type="sourcelabel">
+      <x>315</x>
+      <y>59</y>
+     </hint>
+-    <hint type="destinationlabel" >
++    <hint type="destinationlabel">
+      <x>647</x>
+      <y>61</y>
+     </hint>
+@@ -228,11 +276,11 @@
+    <receiver>searchBox</receiver>
+    <slot>setFocus()</slot>
+    <hints>
+-    <hint type="sourcelabel" >
++    <hint type="sourcelabel">
+      <x>315</x>
+      <y>59</y>
+     </hint>
+-    <hint type="destinationlabel" >
++    <hint type="destinationlabel">
+      <x>647</x>
+      <y>61</y>
+     </hint>
+@@ -244,11 +292,11 @@
+    <receiver>queryButton</receiver>
+    <slot>click()</slot>
+    <hints>
+-    <hint type="sourcelabel" >
++    <hint type="sourcelabel">
+      <x>438</x>
+      <y>50</y>
+     </hint>
+-    <hint type="destinationlabel" >
++    <hint type="destinationlabel">
+      <x>661</x>
+      <y>51</y>
+     </hint>
+Только в qstardict-0.13.1/qstardict: mainwindow.ui~
 diff -ur qstardict-0.13.1.or/qstardict/settingsdialog.ui qstardict-0.13.1/qstardict/settingsdialog.ui
 --- qstardict-0.13.1.or/qstardict/settingsdialog.ui	2009-02-10 15:33:30.000000000 +0300
 +++ qstardict-0.13.1/qstardict/settingsdialog.ui	2010-12-08 10:27:03.160773247 +0300
