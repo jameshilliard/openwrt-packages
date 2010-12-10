@@ -48,10 +48,6 @@ define Package/setfont2/install
 		$(PKG_BUILD_DIR)/fonts/un-fuzzy-6x10-font.pnm \
 		$(PKG_BUILD_DIR)/fonts/un-fuzzy-4x8-font.pnm \
 		$(1)/usr/share/setfont2/
-
-	$(INSTALL_BIN) \
-		./files/$(PKG_NAME).init \
-		$(1)/etc/init.d/$(PKG_NAME)
 endef
 
 $(eval $(call BuildPackage,setfont2))
