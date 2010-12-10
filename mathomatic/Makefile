@@ -18,7 +18,7 @@ define Package/mathomatic
   CATEGORY:=Utilities
   TITLE:=Small computer algebra system.
   URL:=http://www.mathomatic.org
-  DEPENDS:=+libreadline 
+  DEPENDS:=+libreadline +libncurses
 endef
 
 define Package/mathomatic/description
