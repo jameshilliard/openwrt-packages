@@ -20,7 +20,7 @@ define Package/fbterm
   TITLE:=FbTerm, a fast FrameBuffer based TERMinal emulator for linux
   URL:=http://code.google.com/p/fbterm/
   SUBMENU:=Terminal
-  DEPENDS:=+libiconv +fontconfig +unifont
+  DEPENDS:=+libiconv +fontconfig +unifont +libstdcpp
 endef
 
 define Package/fbterm/description
