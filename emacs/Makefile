@@ -139,7 +139,7 @@ endef
 
 define Package/emacs-el/install
 	$(INSTALL_DIR) $(1)/usr
-	(cd $(PKG_INSTALL_DIR)/usr && find share --name "*.el.gz" | tar -cf - -T -) \
+	(cd $(PKG_INSTALL_DIR)/usr && find share -name "*.el.gz" | tar -cf - -T -) \
 		| (cd $(1)/usr && tar -xvf -)
 endef
 
