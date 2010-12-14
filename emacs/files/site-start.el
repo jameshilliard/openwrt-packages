@@ -7,5 +7,5 @@
 ;; when not dumping so we do it here.
 (Snarf-documentation "DOC")
 
-;; Allow us to output internatinal characters to the terminal
+;; Allow us to output international characters to the terminal
 (set-terminal-coding-system 'utf-8)
