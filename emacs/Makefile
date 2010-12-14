@@ -5,6 +5,8 @@
 #
 # Package for the complete GNU Emacs editor
 
+# Todo: disable libdbus automatic selection for linking in ./configure
+
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=emacs
@@ -62,6 +64,7 @@ endef
 define Package/emacs-ja-dic
 $(call Package/emacs/Default)
   TITLE+= (japanese input dictionary)
+  DEPENDS:=+emacs-bin
 endef
 
 define Package/emacs-ja-dic/description
