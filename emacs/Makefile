@@ -3,6 +3,8 @@
 #
 # License GPLv2 or later.
 #
+# Package for the complete GNU Emacs editor
+
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=emacs
@@ -97,19 +99,13 @@ endef
 ## bootstrapping
 define Host/Compile
 	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib; \
-	$(call Host/Compile/Default, lib-src)
-	$(call Host/Compile/Default, -C src temacs emacs)
+	$(call Host/Compile/Default)
 endef
 
 define Host/Install
-	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib; \
-	$(INSTALL_DIR) $(STAGING_DIR_HOST)/bin
-	$(INSTALL_DIR) $(STAGING_DIR_HOST)/lib
-	$(INSTALL_BIN) $(HOST_BUILD_DIR)/src/temacs $(STAGING_DIR_HOST)/bin/
-	$(INSTALL_BIN) $(HOST_BUILD_DIR)/src/emacs $(STAGING_DIR_HOST)/bin/
+	$(call Host/Install/Default)
 	$(INSTALL_BIN) $(HOST_BUILD_DIR)/lib-src/make-docfile $(STAGING_DIR_HOST)/bin/emacs-make-docfile
 	$(INSTALL_BIN) $(HOST_BUILD_DIR)/src/prefix-args $(STAGING_DIR_HOST)/bin/emacs-prefix-args
-#	$(INSTALL_DATA) $(HOST_BUILD_DIR)/bla $(STAGING_DIR_HOST)/lib/
 endef
 
 define Build/Configure
@@ -118,7 +114,6 @@ endef
 
 define Build/Compile
 	$(call Build/Compile/Default, -C lib-src -o test-distrib)
-#	ln -sf $(STAGING_DIR_HOST)/bin/temacs $(PKG_BUILD_DIR)/src/
 	ln -sf $(STAGING_DIR_HOST)/bin/emacs-make-docfile $(PKG_BUILD_DIR)/lib-src/make-docfile
 	ln -sf $(STAGING_DIR_HOST)/bin/emacs-prefix-args $(PKG_BUILD_DIR)/src/prefix-args
 	sed -ie 's; /usr/lib/crt; $(TOOLCHAIN_DIR)/usr/lib/crt;g' $(PKG_BUILD_DIR)/src/Makefile
@@ -161,8 +156,9 @@ endef
 
 define Package/emacs-el/install
 	$(INSTALL_DIR) $(1)/usr
-	(cd $(PKG_INSTALL_DIR)/usr && find share -name "*.el.gz" | tar -cf - -T -) \
-		| (cd $(1)/usr && tar -xvf -)
+	(cd $(PKG_INSTALL_DIR)/usr && find share -name "*.el.gz" \
+	  | tar -cf - -T - --exclude "ja-dic" ) \
+	 | (cd $(1)/usr && tar -xvf -)
 endef
 
 
@@ -175,5 +171,5 @@ $(eval $(call BuildPackage,emacs-el))
 
 # The following comments configure the Emacs editor.  Just ignore them.
 # Local Variables:
-# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/emacs/compile -j2 V=99"
+# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/emacs-ja-dic-m/compile -j2 V=99"
 # End:
