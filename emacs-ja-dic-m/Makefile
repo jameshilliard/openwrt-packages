@@ -26,6 +26,7 @@ define Package/emacs-ja-dic-m
   CATEGORY:=Utilities
   TITLE:=Medium-size dictionary file for Emacs\' japanese input method
   URL:=http://openlab.ring.gr.jp/skk/dic.html
+  DEPENDS:=+emacs-bin
 #  SUBMENU:=Editors
 endef
 
@@ -45,8 +46,8 @@ define Build/Compile
 endef
 
 define Package/emacs-ja-dic-m/install
-	$(INSTALL_DIR) $(1)/usr/share/emacs/site-lisp/
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/ja-dic.elc $(1)/usr/share/emacs/site-lisp/
+	$(INSTALL_DIR) $(1)/usr/share/emacs/site-lisp/ja-dic
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/ja-dic.elc $(1)/usr/share/emacs/site-lisp/ja-dic/
 endef
 
 $(eval $(call BuildPackage,emacs-ja-dic-m))
