@@ -37,7 +37,7 @@ Lisp programming language with extensions to support text editing.
 endef
 
 define Package/emacs-bin
- $(call Package/emacs/Default)
+$(call Package/emacs/Default)
   DEPENDS:=+libncurses +emacs-data
   TITLE+= (executable)
 endef
@@ -48,7 +48,7 @@ $(call Package/emacs/Default/description)
 endef
 
 define Package/emacs-data
- $(call Package/emacs/Default)
+$(call Package/emacs/Default)
   TITLE+= (compiled lisp)
 endef
 
@@ -57,8 +57,21 @@ $(call Package/emacs/Default/description)
  This package contains the compiled Lisp files needed to run Emacs.
 endef
 
+define Package/emacs-ja-dic
+$(call Package/emacs/Default)
+  TITLE+= (japanese input dictionary)
+endef
+
+define Package/emacs-ja-dic/description
+$(call Package/emacs/Default/description)
+ This package contains the japanese dictionary used to input japanese Kanji 
+ via Hiragana->Kanji conversion (\'set-input-method japanese\').  This
+ dictionary is huge, so huga that emacs won\'t be able to load it on systems
+ with 32MB or fewer RAM.
+endef
+
 define Package/emacs-el
- $(call Package/emacs/Default)
+$(call Package/emacs/Default)
   TITLE+= (lisp source)
 endef
 
@@ -118,6 +131,7 @@ endef
 
 define Build/Install
 	$(call Build/Install/Default,install-arch-indep install-arch-dep install-leim "MFLAGS=-o test-distrib")
+	$(INSTALL_DATA) ./files/site-start.el $(PKG_INSTALL_DIR)/usr/share/emacs/$(PKG_VERSION)/site-lisp
 endef
 
 define Package/emacs-bin/install
@@ -133,8 +147,16 @@ define Package/emacs-data/install
 		--exclude "refcards" \
 		--exclude "schema" \
 		--exclude "NEWS*" \
+		--exclude "ja-dic" \
 		share) \
 	    | (cd $(1)/usr && tar -xvf -)
+endef
+
+define Package/emacs-ja-dic/install
+	$(INSTALL_DIR) $(1)/usr
+	(cd $(PKG_INSTALL_DIR)/usr && tar -cf - \
+	    --exclude "*.el.gz" share/emacs/$(PKG_VERSION)/leim/ja-dic) \
+		| (cd $(1)/usr && tar -xvf -)
 endef
 
 define Package/emacs-el/install
@@ -143,10 +165,13 @@ define Package/emacs-el/install
 		| (cd $(1)/usr && tar -xvf -)
 endef
 
+
 $(eval $(call HostBuild))
 $(eval $(call BuildPackage,emacs-bin))
 $(eval $(call BuildPackage,emacs-data))
+$(eval $(call BuildPackage,emacs-ja-dic))
 $(eval $(call BuildPackage,emacs-el))
+
 
 # The following comments configure the Emacs editor.  Just ignore them.
 # Local Variables:
