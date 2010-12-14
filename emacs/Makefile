@@ -66,7 +66,7 @@ define Package/emacs-ja-dic/description
 $(call Package/emacs/Default/description)
  This package contains the japanese dictionary used to input japanese Kanji 
  via Hiragana->Kanji conversion (\'set-input-method japanese\').  This
- dictionary is huge, so huga that emacs won\'t be able to load it on systems
+ dictionary is huge, so huge that emacs won\'t be able to load it on systems
  with 32MB or fewer RAM.
 endef
 
