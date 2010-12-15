@@ -1,8 +1,8 @@
 Index: emacs23.2-openwrt/lisp/loadup.el
 ===================================================================
---- emacs23.2-openwrt/lisp/loadup.el	(revision 360)
-+++ emacs23.2-openwrt/lisp/loadup.el	(working copy)
-@@ -47,6 +47,13 @@
+--- emacs23.2-openwrt/lisp/loadup.el	(.../emacs-openwrt/lisp)	(revision 357)
++++ emacs23.2-openwrt/lisp/loadup.el	(.../nanonote/emacs23.2-openwrt/lisp)	(working copy)
+@@ -47,6 +47,14 @@
  
  ;;; Code:
  
@@ -10,25 +10,10 @@ Index: emacs23.2-openwrt/lisp/loadup.el
 +;; have been witnessed.
 +(setq inhibit-load-charset-map t)
 +
-+;; Not sure whether required.  Playing safe.
-+(setq purify-flag nil)
++;; Purify does in fact _safe_ memory (more efficient than normal' heap?)  so
++;; do not disable it for now.
++;(setq purify-flag nil)
 +
  ;; Add subdirectories to the load-path for files that might get
  ;; autoloaded when bootstrapping.
  (if (or (equal (nth 3 command-line-args) "bootstrap")
-@@ -326,9 +333,13 @@
- ;; We don't use this fns-*.el file.  Instead we keep the data in PURE space.
- ;; Make sure that the spine of the list is not in pure space because it can
- ;; be destructively mutated in lread.c:build_load_history.
--(setq load-history (mapcar 'purecopy load-history))
--(setq symbol-file-load-history-loaded t)
- 
-+;; The code below makes no sense with a CANNOT_DUMP emacs build.  Commented
-+;; out.
-+
-+;; (setq load-history (mapcar 'purecopy load-history))
-+;; (setq symbol-file-load-history-loaded t)
-+
- (set-buffer-modified-p nil)
- 
- ;; reset the load-path.  See lread.c:init_lread why.
