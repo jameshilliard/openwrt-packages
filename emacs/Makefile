@@ -11,7 +11,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=emacs
 PKG_VERSION:=23.2
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/pub/gnu/emacs/ \
 	@GNU/emacs/
@@ -86,9 +86,25 @@ $(call Package/emacs/Default/description)
  C-h f in case provided documentation of an Emacs function is insufficient.
 endef
 
-HOST_CONFIGURE_ARGS += --without-x
-CONFIGURE_ARGS += --without-x 
-MAKE_FLAGS += "LD=$(TARGET_CROSS)gcc -nostdlib"
+EMACS_STRIPTEASE_ARGS = \
+	--without-x \
+	--without-xpm \
+	--without-jpeg \
+	--without-gif \
+	--without-png \
+	--without-rsvg \
+	--without-xft \
+	--without-libotf \
+	--without-dbus \
+	--without-gconf 
+
+HOST_CONFIGURE_ARGS += $(EMACS_STRIPTEASE_ARGS)
+CONFIGURE_ARGS += $(EMACS_STRIPTEASE_ARGS)
+MAKE_FLAGS += "LD=$(TARGET_CROSS)gcc -nostdlib" 
+
+## Don't try that: lowering PURESIZE makes Emacs' RAM usage explode!  Maybe
+## something about Elisp garbage collection!?
+#TARGET_CPPFLAGS += -DPURESIZE=16
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
@@ -128,7 +144,7 @@ define Build/Compile
 endef
 
 define Build/Install
-	$(call Build/Install/Default,install-arch-indep install-arch-dep install-leim "MFLAGS=-o test-distrib")
+	$(call Build/Install/Default,install-arch-indep install-arch-dep install-leim INSTALL_STRIP=-s "MFLAGS=-o test-distrib")
 	$(INSTALL_DATA) ./files/site-start.el $(PKG_INSTALL_DIR)/usr/share/emacs/$(PKG_VERSION)/site-lisp
 endef
 
@@ -174,5 +190,5 @@ $(eval $(call BuildPackage,emacs-el))
 
 # The following comments configure the Emacs editor.  Just ignore them.
 # Local Variables:
-# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/emacs-ja-dic-m/compile -j2 V=99"
+# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/emacs/compile -j2 V=99"
 # End:

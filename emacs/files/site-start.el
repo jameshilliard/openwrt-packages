@@ -9,3 +9,8 @@
 
 ;; Allow us to output international characters to the terminal
 (set-terminal-coding-system 'utf-8)
+
+;; Do not show the menu bar.  What use is it without a mouse?
+;; (Note that you can still use the menu via <Esc> x menu-bar-open
+;; or tmm-menubar
+(menu-bar-mode 0)
