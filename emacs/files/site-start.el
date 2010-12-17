@@ -7,6 +7,10 @@
 ;; when not dumping so we do it here.
 (Snarf-documentation "DOC")
 
+;; On openwrt 'ls' is provided by busybox.  That version of 'ls' does not
+;; support the --dired option, make Emacs work around that.
+(setq dired-use-ls-dired nil)
+
 ;; Allow us to output international characters to the terminal
 (set-terminal-coding-system 'utf-8)
 
@@ -14,3 +18,4 @@
 ;; (Note that you can still use the menu via <Esc> x menu-bar-open
 ;; or tmm-menubar
 (menu-bar-mode 0)
+
