@@ -1,0 +1,31 @@
+Index: emacs23.2-openwrt-q/lisp/loadup.el
+===================================================================
+--- emacs23.2-openwrt-q.orig/lisp/loadup.el	2010-12-18 20:22:56.000000000 +0100
++++ emacs23.2-openwrt-q/lisp/loadup.el	2010-12-18 20:23:14.000000000 +0100
+@@ -47,6 +47,14 @@
+ 
+ ;;; Code:
+ 
++;; This reduces memory usage by a few MB.  So far no negative consequences
++;; have been witnessed.
++(setq inhibit-load-charset-map t)
++
++;; Purify does in fact _safe_ memory (more efficient than normal' heap?)  so
++;; do not disable it for now.
++;(setq purify-flag nil)
++
+ ;; Add subdirectories to the load-path for files that might get
+ ;; autoloaded when bootstrapping.
+ (if (or (equal (nth 3 command-line-args) "bootstrap")
+@@ -80,9 +88,10 @@
+ (load "emacs-lisp/backquote")
+ (load "subr")
+ 
++;; not doing garbage collection this often decreases start-up time by 5s
+ ;; Do it after subr, since both after-load-functions and add-hook are
+ ;; implemented in subr.el.
+-(add-hook 'after-load-functions '(lambda (f) (garbage-collect)))
++;(add-hook 'after-load-functions '(lambda (f) (garbage-collect)))
+ 
+ ;; We specify .el in case someone compiled version.el by mistake.
+ (load "version.el")
