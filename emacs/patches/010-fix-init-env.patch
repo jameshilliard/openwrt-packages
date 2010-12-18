@@ -1,0 +1,15 @@
+Index: emacs23.2-openwrt-q/src/emacs.c
+===================================================================
+--- emacs23.2-openwrt-q.orig/src/emacs.c	2010-12-18 20:24:35.000000000 +0100
++++ emacs23.2-openwrt-q/src/emacs.c	2010-12-18 20:28:41.000000000 +0100
+@@ -1735,6 +1735,10 @@
+ #endif  /* HAVE_NTGUI */
+     }
+ 
++  /* syms_of_callproc() resets process-environment to nil; generating it again
++   * here, as workaround (probably only hits us since we're not dumping */
++  set_initial_environment();
++
+   init_charset ();
+ 
+   init_editfns (); /* init_process uses Voperating_system_release. */
