@@ -172,7 +172,7 @@ define Package/emacs-data/install
 		--exclude "schema" \
 		--exclude "NEWS*" \
 		--exclude "ja-dic" \
-		usr/share var) \
+		usr/share) \
 	    | (cd $(1)/ && tar -xvf -)
 endef
 
