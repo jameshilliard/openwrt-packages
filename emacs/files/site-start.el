@@ -1,6 +1,7 @@
 ;; Emacs startup file for OpenWRT Emacs package
 ;;
 ;; Copyright (C) 2010 David Kuehling  <dvdkhlng TA gmx TOD de>
+;; License: GPLv2 or later; NO WARRANTY.
 ;;
 
 ;; load documentation for internal functions.  This is skipped by loadup.el
