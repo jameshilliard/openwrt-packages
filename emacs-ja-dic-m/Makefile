@@ -26,7 +26,7 @@ define Package/emacs-ja-dic-m
   CATEGORY:=Utilities
   TITLE:=Medium-size dictionary file for Emacs\' japanese input method
   URL:=http://openlab.ring.gr.jp/skk/dic.html
-  DEPENDS:=+emacs-bin
+  DEPENDS:=+emacs
 #  SUBMENU:=Editors
 endef
 
