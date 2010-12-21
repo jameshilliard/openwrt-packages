@@ -33,8 +33,8 @@ define Build/Configure
 
 endef 
 define Package/gnuchess/install
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/gnuchess $(1)/usr/sbin/
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/gnuchess $(1)/usr/bin/
 endef 
 
 $(eval $(call BuildPackage,gnuchess))
