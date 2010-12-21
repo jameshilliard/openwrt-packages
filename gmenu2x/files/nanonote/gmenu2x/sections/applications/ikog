@@ -1,0 +1,3 @@
+title=ikog.py
+icon=skin:icons/utilities-terminal.png
+exec=/usr/bin/ikog.py

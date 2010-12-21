@@ -1,4 +1,0 @@
-title=primes
-icon=skin:icons/utilities-terminal.png
-exec=/usr/bin/primes
-params=0 1000
