@@ -27,7 +27,7 @@ define Package/octave/Default
   SUBMENU:=Octave
   SECTION:=lang
   CATEGORY:=Languages
-  DEPENDS:= +libltdl +zlib +libpcre +libncurses +libreadline \
+  DEPENDS:= +libltdl +zlib +libpcre +libncurses +libreadline +libgfortran \
 	+octave-data
 #+fftw3
 #+GraphicsMagick 
@@ -69,6 +69,7 @@ endef
 # fftw contains a lots of code.  not much use for soft-float anyways.  try to
 # keep memory low and go without fftw (using smaller fftpack instead).
 # todo: verify how much RAM that actually safes
+# todo : need -enable-rpath?
 CONFIGURE_ARGS += --without-x --without-fftw 
 #MAKE_FLAGS += "LD=$(TARGET_CROSS)gcc -nostdlib" 
 
@@ -77,7 +78,7 @@ define Build/Configure
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default,-j3)
+	$(call Build/Compile/Default,-j2)
 endef
 
 define Build/Install
