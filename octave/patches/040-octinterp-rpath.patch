@@ -1,0 +1,20 @@
+Index: octave-3.2.4/src/Makefile.in
+===================================================================
+--- octave-3.2.4.orig/src/Makefile.in	2011-01-02 18:05:54.000000000 +0100
++++ octave-3.2.4/src/Makefile.in	2011-01-02 19:10:33.000000000 +0100
+@@ -298,11 +298,13 @@
+ endif
+ 
+ OCTINTERP_LINK_DEPS = \
+-  -L../liboctave $(LIBOCTAVE) -L../libcruft $(LIBCRUFT) $(LIBS) $(FLIBS) \
++  -L../liboctave $(LIBOCTAVE) -L../libcruft $(RLD_FLAG) \
++  $(LIBCRUFT) $(LIBS) $(FLIBS) \
+   $(X11_LIBS) $(OPENGL_LIBS) $(CARBON_LIBS)
+ 
+ OCT_LINK_DEPS = \
+-  -L../libcruft $(LIBCRUFT) -L../liboctave $(LIBOCTAVE) \
++  -L../libcruft $(LIBCRUFT) -L../liboctave $(RLD_FLAG) \
++  $(LIBOCTAVE) \
+   -L. $(LIBOCTINTERP) $(CHOLMOD_LIBS) $(UMFPACK_LIBS) $(AMD_LIBS) \
+    $(CAMD_LIBS) $(COLAMD_LIBS) $(CCOLAMD_LIBS) $(CXSPARSE_LIBS) $(BLAS_LIBS) \
+    $(FFTW_LIBS) $(QRUPDATE_LIBS) $(ARPACK_LIBS) $(LIBS) $(FLIBS)
