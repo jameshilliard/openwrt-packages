@@ -1,0 +1,26 @@
+Index: octave-3.2.4/configure
+===================================================================
+--- octave-3.2.4.orig/configure	2011-01-02 15:14:21.000000000 +0100
++++ octave-3.2.4/configure	2011-01-02 15:14:32.000000000 +0100
+@@ -6892,7 +6892,7 @@
+ $as_echo "libraries $x_libraries, headers $x_includes" >&6; }
+ fi
+ 
+-if test "$have_x"; then
++if test "$have_x" = "yes"; then
+ 
+ $as_echo "#define HAVE_X_WINDOWS 1" >>confdefs.h
+ 
+Index: octave-3.2.4/configure.in
+===================================================================
+--- octave-3.2.4.orig/configure.in	2011-01-02 15:14:20.000000000 +0100
++++ octave-3.2.4/configure.in	2011-01-02 15:14:25.000000000 +0100
+@@ -258,7 +258,7 @@
+ ACX_PTHREAD
+ 
+ AC_PATH_X
+-if test "$have_x"; then
++if test "$have_x" = "yes"; then
+   AC_DEFINE(HAVE_X_WINDOWS, 1, [Define if you have X11])
+ 
+   if test "$x_includes" != "NONE"; then
