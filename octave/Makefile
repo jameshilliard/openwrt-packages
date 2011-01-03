@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=octave
 PKG_VERSION:=3.2.4
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.octave.org/pub/octave/
 PKG_MD5SUM:=90c39fa9e241ad2e978bcee4682a2ba9
@@ -21,17 +21,10 @@ PKG_BUILD_DEPENDS:= libtool/host @INSTALL_GFORTRAN
 #include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 
-# todo: graphicsmagick package from multimedia feed is not complete.  We need
-# the Magick++ library and the Magick++-config script installed.
 define Package/octave/Default
   SUBMENU:=Octave
   SECTION:=lang
   CATEGORY:=Languages
-  DEPENDS:= +libltdl +zlib +libpcre +libncurses +libreadline +libgfortran \
-	+octave-data
-#+fftw3
-#+GraphicsMagick 
-
   TITLE:=GNU Octave
   URL:=http://www.gnu.org/software/octave/
   SUBMENU:=Octave
@@ -45,9 +38,14 @@ experiments using a language that is mostly compatible with Matlab. It may
 also be used as a batch-oriented language.
 endef
 
+# todo: graphicsmagick package from multimedia feed is not complete.  We need
+# the Magick++ library and the Magick++-config script installed.
 define Package/octave
 $(call Package/octave/Default)
-  DEPENDS:=+octave-data
+  DEPENDS:= +libltdl +zlib +libpcre +libncurses +libreadline +libgfortran \
+	+octave-data
+#+fftw3
+#+GraphicsMagick 
   TITLE+= (executable)
 endef
 
@@ -84,6 +82,29 @@ endef
 define Build/Install
 	$(call Build/Install/Default)
 #	$(INSTALL_DATA) ./files/... $(PKG_INSTALL_DIR)/usr/share/octave/
+endef
+
+define Build/InstallDev
+	$(INSTALL_DIR) $(1)/usr/include/octave-$(PKG_VERSION)/octave
+	$(CP) $(PKG_INSTALL_DIR)/usr/include/octave-$(PKG_VERSION)/octave/*.h \
+		$(1)/usr/include/octave-$(PKG_VERSION)/octave/
+
+	$(INSTALL_DIR) $(1)/usr/lib/octave
+	$(INSTALL_DIR) $(1)/usr/lib/octave-$(PKG_VERSION)
+	$(CP) -r $(PKG_INSTALL_DIR)/usr/lib/octave/* \
+		$(1)/usr/lib/octave/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/octave-$(PKG_VERSION)/* \
+		$(1)/usr/lib/octave-$(PKG_VERSION)/
+
+	$(INSTALL_DIR) $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/octave-config-$(PKG_VERSION) \
+		$(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/mkoctfile-$(PKG_VERSION) \
+		$(1)/usr/bin/
+	$(SED) 's;\(DEFAULT_[A-Z]*DIR="\)/usr;\1$(STAGING_DIR)/usr;g' \
+		$(1)/usr/bin/mkoctfile-$(PKG_VERSION)
+	$(LN) mkoctfile-$(PKG_VERSION) $(1)/usr/bin/mkoctfile
+	$(LN) octave-config-$(PKG_VERSION) $(1)/usr/bin/octave-config
 endef
 
 define Package/octave/install
