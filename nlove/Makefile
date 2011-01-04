@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=nlove
-PKG_REV:=464
+PKG_REV:=493
 PKG_VERSION:=r$(PKG_REV)
 PKG_RELEASE:=1
 
