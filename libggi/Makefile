@@ -1,0 +1,86 @@
+# 
+# Copyright (C) 2011 David Kuehling <dvdkhlng TA gmx TOD de>
+#
+# License GPLv2 or later.  NO WARRANTY.
+#
+# OpenWRT package for the libGGI
+
+include $(TOPDIR)/rules.mk
+
+PKG_NAME:=libggi
+PKG_VERSION:=2.2.2
+PKG_RELEASE:=1
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).src.tar.gz
+PKG_SOURCE_URL:=@SF/ggi
+PKG_MD5SUM:=4fa672b1403c9f06e8cb35e699a693f1
+PKG_BUILD_DIR:=$(BUILD_DIR)/libggi-$(PKG_VERSION)
+PKG_INSTALL:=1
+PKG_FIXUP:=libtool
+
+PKG_BUILD_DEPENDS:= libtool/host
+
+include $(INCLUDE_DIR)/package.mk
+
+define Package/libggi
+  SECTION:=libs
+  CATEGORY:=Libraries
+  TITLE:=General Graphics Interface
+  URL:=http://www.ggi-project.org/packages/libggi.html
+  DEPENDS:=+libgii 
+#+directfb
+endef
+
+define Package/libggi/description
+LibGGI is the central library in the GGI project, hence the name.
+
+It provides an opaque interface to the display\'s acceleration functions. It
+was originally intended to allow user programs to interface with KGI, the GGI
+Kernel Graphics Interface, but other display types can be easily used by
+loading the appropriate \"display target\" (e.g. X, memory).
+endef
+
+TARGET_LDFLAGS += -Wl,-rpath-link -Wl,$(STAGING_DIR)/usr/lib
+CONFIGURE_VARS += ac_cv_func_mmap_fixed_mapped=yes
+
+TARGET_CPPFLAGS += \
+	-I$(STAGING_DIR)/usr/include/directfb \
+
+# searches for fusion* headers that are not present.  different version?
+CONFIGURE_ARGS += \
+	--disable-x \
+	--with-gii=$(STAGING_DIR)/usr/lib \
+	--disable-directfb
+
+define Build/Configure
+	$(call Build/Configure/Default)
+endef 
+
+define Build/Compile
+	$(call Build/Compile/Default,-j2)
+endef
+
+define Build/InstallDev
+	$(INSTALL_DIR) $(1)/usr/include $(1)/usr/lib
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/include/* \
+		$(1)/usr/include/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/lib/*.{a,la,so*} \
+		$(1)/usr/lib/
+endef
+
+define Package/libgii/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/*.so* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/ggi $(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/etc/ggi
+	$(CP) $(PKG_INSTALL_DIR)/etc/ggi/* $(1)/etc/ggi/
+endef
+
+$(eval $(call BuildPackage,libggi))
+
+
+# The following comments configure the Emacs editor.  Just ignore them.
+# Local Variables:
+# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/libggi/compile -j2 V=99"
+# End:

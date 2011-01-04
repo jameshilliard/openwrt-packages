@@ -1,0 +1,107 @@
+Index: libggi-2.2.2/configure
+===================================================================
+--- libggi-2.2.2.orig/configure	2011-01-04 19:40:37.000000000 +0100
++++ libggi-2.2.2/configure	2011-01-04 19:40:43.000000000 +0100
+@@ -18746,8 +18746,8 @@
+ 
+ 
+   if test "${ac_cv_header_directfb_internal_directfb_version_h+set}" = set; then
+-  echo "$as_me:$LINENO: checking for directfb-internal/directfb_version.h" >&5
+-echo $ECHO_N "checking for directfb-internal/directfb_version.h... $ECHO_C" >&6
++  echo "$as_me:$LINENO: checking for directfb/directfb_version.h" >&5
++echo $ECHO_N "checking for directfb/directfb_version.h... $ECHO_C" >&6
+ if test "${ac_cv_header_directfb_internal_directfb_version_h+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ fi
+@@ -18755,8 +18755,8 @@
+ echo "${ECHO_T}$ac_cv_header_directfb_internal_directfb_version_h" >&6
+ else
+   # Is the header compilable?
+-echo "$as_me:$LINENO: checking directfb-internal/directfb_version.h usability" >&5
+-echo $ECHO_N "checking directfb-internal/directfb_version.h usability... $ECHO_C" >&6
++echo "$as_me:$LINENO: checking directfb/directfb_version.h usability" >&5
++echo $ECHO_N "checking directfb/directfb_version.h usability... $ECHO_C" >&6
+ cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+@@ -18764,7 +18764,7 @@
+ cat >>conftest.$ac_ext <<_ACEOF
+ /* end confdefs.h.  */
+ $ac_includes_default
+-#include <directfb-internal/directfb_version.h>
++#include <directfb/directfb_version.h>
+ _ACEOF
+ rm -f conftest.$ac_objext
+ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+@@ -18800,15 +18800,15 @@
+ echo "${ECHO_T}$ac_header_compiler" >&6
+ 
+ # Is the header present?
+-echo "$as_me:$LINENO: checking directfb-internal/directfb_version.h presence" >&5
+-echo $ECHO_N "checking directfb-internal/directfb_version.h presence... $ECHO_C" >&6
++echo "$as_me:$LINENO: checking directfb/directfb_version.h presence" >&5
++echo $ECHO_N "checking directfb/directfb_version.h presence... $ECHO_C" >&6
+ cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+ cat confdefs.h >>conftest.$ac_ext
+ cat >>conftest.$ac_ext <<_ACEOF
+ /* end confdefs.h.  */
+-#include <directfb-internal/directfb_version.h>
++#include <directfb/directfb_version.h>
+ _ACEOF
+ if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+   (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+@@ -18842,25 +18842,25 @@
+ # So?  What about this header?
+ case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
+   yes:no: )
+-    { echo "$as_me:$LINENO: WARNING: directfb-internal/directfb_version.h: accepted by the compiler, rejected by the preprocessor!" >&5
+-echo "$as_me: WARNING: directfb-internal/directfb_version.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
+-    { echo "$as_me:$LINENO: WARNING: directfb-internal/directfb_version.h: proceeding with the compiler's result" >&5
+-echo "$as_me: WARNING: directfb-internal/directfb_version.h: proceeding with the compiler's result" >&2;}
++    { echo "$as_me:$LINENO: WARNING: directfb/directfb_version.h: accepted by the compiler, rejected by the preprocessor!" >&5
++echo "$as_me: WARNING: directfb/directfb_version.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
++    { echo "$as_me:$LINENO: WARNING: directfb/directfb_version.h: proceeding with the compiler's result" >&5
++echo "$as_me: WARNING: directfb/directfb_version.h: proceeding with the compiler's result" >&2;}
+     ac_header_preproc=yes
+     ;;
+   no:yes:* )
+-    { echo "$as_me:$LINENO: WARNING: directfb-internal/directfb_version.h: present but cannot be compiled" >&5
+-echo "$as_me: WARNING: directfb-internal/directfb_version.h: present but cannot be compiled" >&2;}
+-    { echo "$as_me:$LINENO: WARNING: directfb-internal/directfb_version.h:     check for missing prerequisite headers?" >&5
+-echo "$as_me: WARNING: directfb-internal/directfb_version.h:     check for missing prerequisite headers?" >&2;}
+-    { echo "$as_me:$LINENO: WARNING: directfb-internal/directfb_version.h: see the Autoconf documentation" >&5
+-echo "$as_me: WARNING: directfb-internal/directfb_version.h: see the Autoconf documentation" >&2;}
+-    { echo "$as_me:$LINENO: WARNING: directfb-internal/directfb_version.h:     section \"Present But Cannot Be Compiled\"" >&5
+-echo "$as_me: WARNING: directfb-internal/directfb_version.h:     section \"Present But Cannot Be Compiled\"" >&2;}
+-    { echo "$as_me:$LINENO: WARNING: directfb-internal/directfb_version.h: proceeding with the preprocessor's result" >&5
+-echo "$as_me: WARNING: directfb-internal/directfb_version.h: proceeding with the preprocessor's result" >&2;}
+-    { echo "$as_me:$LINENO: WARNING: directfb-internal/directfb_version.h: in the future, the compiler will take precedence" >&5
+-echo "$as_me: WARNING: directfb-internal/directfb_version.h: in the future, the compiler will take precedence" >&2;}
++    { echo "$as_me:$LINENO: WARNING: directfb/directfb_version.h: present but cannot be compiled" >&5
++echo "$as_me: WARNING: directfb/directfb_version.h: present but cannot be compiled" >&2;}
++    { echo "$as_me:$LINENO: WARNING: directfb/directfb_version.h:     check for missing prerequisite headers?" >&5
++echo "$as_me: WARNING: directfb/directfb_version.h:     check for missing prerequisite headers?" >&2;}
++    { echo "$as_me:$LINENO: WARNING: directfb/directfb_version.h: see the Autoconf documentation" >&5
++echo "$as_me: WARNING: directfb/directfb_version.h: see the Autoconf documentation" >&2;}
++    { echo "$as_me:$LINENO: WARNING: directfb/directfb_version.h:     section \"Present But Cannot Be Compiled\"" >&5
++echo "$as_me: WARNING: directfb/directfb_version.h:     section \"Present But Cannot Be Compiled\"" >&2;}
++    { echo "$as_me:$LINENO: WARNING: directfb/directfb_version.h: proceeding with the preprocessor's result" >&5
++echo "$as_me: WARNING: directfb/directfb_version.h: proceeding with the preprocessor's result" >&2;}
++    { echo "$as_me:$LINENO: WARNING: directfb/directfb_version.h: in the future, the compiler will take precedence" >&5
++echo "$as_me: WARNING: directfb/directfb_version.h: in the future, the compiler will take precedence" >&2;}
+     (
+       cat <<\_ASBOX
+ ## ------------------------------------------------------ ##
+@@ -18871,8 +18871,8 @@
+       sed "s/^/$as_me: WARNING:     /" >&2
+     ;;
+ esac
+-echo "$as_me:$LINENO: checking for directfb-internal/directfb_version.h" >&5
+-echo $ECHO_N "checking for directfb-internal/directfb_version.h... $ECHO_C" >&6
++echo "$as_me:$LINENO: checking for directfb/directfb_version.h" >&5
++echo $ECHO_N "checking for directfb/directfb_version.h... $ECHO_C" >&6
+ if test "${ac_cv_header_directfb_internal_directfb_version_h+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
