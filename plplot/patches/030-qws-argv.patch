@@ -1,0 +1,23 @@
+Index: plplot-5.9.7/drivers/qt.cpp
+===================================================================
+--- plplot-5.9.7.orig/drivers/qt.cpp	2011-01-04 17:25:22.000000000 +0100
++++ plplot-5.9.7/drivers/qt.cpp	2011-01-04 17:26:02.000000000 +0100
+@@ -90,12 +90,14 @@
+     ++appCounter;
+     if ( qApp == NULL && appCounter == 1 )
+     {
+-        argc    = 1;
+-        argv    = new char*[2];
++        argc    = 2;
++        argv    = new char*[3];
+         argv[0] = new char[10];
+-        argv[1] = new char[1];
++        argv[1] = new char[10];
++        argv[2] = new char[1];
+         snprintf( argv[0], 10, "qt_driver" );
+-        argv[1][0] = '\0';
++        snprintf( argv[1], 10, "-qws" );
++        argv[2][0] = '\0';
+         new QApplication( argc, argv, isGUI );
+         res = true;
+     }

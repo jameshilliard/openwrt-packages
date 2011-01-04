@@ -1,0 +1,35 @@
+Index: plplot-5.9.7/bindings/octave/matwrap/matwrap
+===================================================================
+--- plplot-5.9.7.orig/bindings/octave/matwrap/matwrap	2011-01-04 13:31:52.000000000 +0100
++++ plplot-5.9.7/bindings/octave/matwrap/matwrap	2011-01-04 13:52:42.000000000 +0100
+@@ -21,7 +21,9 @@
+ #
+ # Parse the command line arguments:
+ #
+-@cpp_ignore_dirs = ('/usr/include/', '/usr/local/include/');
++# double-slash prefixes occur with newer GCCs and cause this script to fail
++# if not treated here.  See also regexp fixes below.
++@cpp_ignore_dirs = ('/usr/include/', '/usr/local/include/', '//usr/include/', '//usr/local/include/');
+ 				# Directory hierarchies to ignore when the
+ 				# -cpp switch is active.  These should be
+ 				# followed by a trailing slash to avoid
+@@ -214,8 +216,8 @@
+ 				# Then it must have been included at the
+ 				# top level.  Add it to our list.
+ 	my $incstr = $fname;	# Assume we include the file as is.
+-	if ($incstr =~ s@^/usr/include/@@ || # Is it a system include file?
+-	    $incstr =~ s@^/usr/local/include/@@ ||
++	if ($incstr =~ s@^/+usr/include/@@ || # Is it a system include file?
++	    $incstr =~ s@^/+usr/local/include/@@ ||
+ 	    $incstr =~ s@.*/gcc-lib/.*/include/@@) { # Is it a system include
+ 				# file that was fixed by gcc?
+ 	  $include_str .= "#include <$incstr>\n"; # Use a different syntax.
+@@ -228,6 +230,8 @@
+ 	  grep(substr($fname, 0, length($_)) eq $_, @cpp_ignore_dirs) ||
+ 				# Or does it begin with the list of forbidden
+ 				# directories?
++	  $fname =~ m@/gcc/@ ||
++	  $fname =~ m@rej.h@ ||
+ 	  $fname =~ m@/gcc-lib/@) { # Somewhere in gcc fixed includes?
+ 	$remember_defs_in_file = 0; # We're not really interested in this file.
+       } else {

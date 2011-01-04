@@ -16,38 +16,53 @@ PKG_MD5SUM:=c53c484ed93ce8446513c31707551b5b
 PKG_INSTALL:=1
 PKG_FIXUP:=libtool
 
-PKG_BUILD_DEPENDS:= plplot/host libtool/host qt4 qt4-gui
+PKG_BUILD_DEPENDS:= plplot/host libtool/host libltdl/host qt4 qt4-gui
 #@INSTALL_GFORTRAN 
 
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 
+CMAKE_HOST_FLAGS=-DCMAKE_INSTALL_PREFIX=/usr \
+	     	-DDEFAULT_NO_DEVICES=ON \
+		-DPKG_CONFIG_EXECUTABLE=Not-Found -DDEFAULT_NO_BINDINGS=ON 
+
 ## Need host-compiled plplot build dir for cmake to work for the target
 define Host/Configure
-	mkdir $(HOST_BUILD_DIR)/build_dir
+	mkdir -p $(HOST_BUILD_DIR)/build_dir
 	cd $(HOST_BUILD_DIR)/build_dir && \
-	  cmake -DCMAKE_INSTALL_PREFIX=/usr \
-	     	-DDEFAULT_NO_DEVICES=ON \
-		-DPKG_CONFIG_EXECUTABLE=Not-Found -DDEFAULT_NO_BINDINGS=ON \
+	  cmake $(CMAKE_HOST_FLAGS) \
 	        $(HOST_BUILD_DIR)
 endef
 
+define Host/Compile/Octave
+	$(MAKE) -C $(HOST_BUILD_DIR)/bindings/octave massage
+endef
+
 define Host/Compile
-	make -C $(HOST_BUILD_DIR)/build_dir
+	$(if $(CONFIG_PACKAGE_plplot-octave),$(Host/Compile/Octave),)
+	$(MAKE) -C $(HOST_BUILD_DIR)/build_dir -j2
+endef
+
+define Host/Install/Octave
+	$(INSTALL_DIR) $(STAGING_DIR_HOST)/bin
+	$(CP) $(HOST_BUILD_DIR)/bindings/octave/massage \
+		$(STAGING_DIR_HOST)/bin/plplot-massage
 endef
 
 define Host/Install
-	$(INSTALL_DIR) $(STAGING_DIR_HOST)/lib/cmake
-	$(CP) $(HOST_BUILD_DIR)/build_dir $(STAGING_DIR_HOST)/lib/cmake/
+	$(INSTALL_DIR) $(STAGING_DIR_HOST)/lib/$(PKG_NAME)-$(PKG_VERSION)
+	$(CP) $(HOST_BUILD_DIR)/build_dir \
+		$(STAGING_DIR_HOST)/lib/$(PKG_NAME)-$(PKG_VERSION)
+	$(if $(CONFIG_PACKAGE_plplot-octave),$(Host/Install/Octave),)
 endef
 
 define Package/plplot/Default
-  SECTION:=utils
-  CATEGORY:=Utilities
+  SECTION:=libs
+  CATEGORY:=Libraries
 
   TITLE:=PLplot plotting library
   URL:=http://plplot.sourceforge.net/
-#  SUBMENU:=Plplot
+  SUBMENU:=PLplot
 endef
 
 define Package/plplot/Default/description
@@ -58,27 +73,103 @@ endef
 
 define Package/plplot
 $(call Package/plplot/Default)
-  DEPENDS:=+qt4 +qt4-gui
+  DEPENDS:=+libltdl
   TITLE+=
 endef
 
 define Package/plplot/description
 $(call Package/plplot/Default/description)
- This package contains the Plplot executable files
+ This package contains the Plplot library with a few file output devices.
 endef
 
-# define Package/plplot-data
-# $(call Package/plplot/Default)
-#   TITLE=+ (function files)
-# endef
+define Package/plplot-cxx
+$(call Package/plplot/Default)
+  DEPENDS:= +plplot +libstdcpp
+  TITLE+= (C++ bindings)
+endef
 
-# define Package/plplot-data/description
-# $(call Package/plplot/Default/description)
-#  This package contains the platform-independant .m-files.
-# endef
+define Package/plplot-cxx/description
+$(call Package/plplot/Default/description)
+ This package contains the Plplot C++ bindings.
+endef
 
-CONFIGURE_ARGS += 
-#MAKE_FLAGS += "LD=$(TARGET_CROSS)gcc -nostdlib" 
+define Package/plplot-qt
+$(call Package/plplot/Default)
+  DEPENDS:= +plplot +qt4 +qt4-gui
+  TITLE+= (Qt bindings&device)
+endef
+
+define Package/plplot-qt/description
+$(call Package/plplot/Default/description)
+ This package contains the Plplot Qt visualization driver and Qt bindings.
+endef
+
+define Package/plplot-tcl
+$(call Package/plplot/Default)
+  DEPENDS:= +plplot +tcl
+  TITLE+= (Tcl bindings)
+endef
+
+define Package/plplot-tcl/description
+$(call Package/plplot/Default/description)
+ This package contains the Plplot bindings for Tcl
+endef
+
+
+define Package/plplot-octave
+$(call Package/plplot/Default)
+  DEPENDS:= +plplot +octave
+  TITLE+= (Octave bindings)
+endef
+
+define Package/plplot-octave/description
+$(call Package/plplot/Default/description)
+ This package contains the Plplot bindings for GNU Octave
+endef
+
+CMAKE_FLAGS := \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_TOOLCHAIN_FILE=$(PKG_BUILD_DIR)/toolchain.cmake \
+	-DPKG_CONFIG_EXECUTABLE=$(STAGING_DIR_HOST)/bin/pkg-config \
+	-DDEFAULT_NO_DEVICES=ON \
+	-DPLD_ps=ON \
+	-DPLD_svg=ON \
+	-DPLD_mem=ON \
+	-DPLD_null=ON \
+	-DDEFAULT_NO_BINDINGS=ON \
+	-DNaNAwareCCompiler=ON \
+	-DCMAKE_USE_NAMESPACE=ON \
+	-DCMAKE_NATIVE_BINARY_DIR=$(STAGING_DIR_HOST)/lib/$(PKG_NAME)-$(PKG_VERSION)/build_dir
+
+ifdef CONFIG_PACKAGE_plplot-cxx
+	CMAKE_FLAGS += -DENABLE_cxx=ON
+endif
+
+ifdef CONFIG_PACKAGE_plplot-qt
+	CMAKE_FLAGS += \
+		-DPLD_qtwidget=ON \
+		-DPLD_extqt=ON \
+		-DENABLE_qt=ON \
+		-DQT_QMAKE_EXECUTABLE=$(STAGING_DIR_HOST)/bin/qmake \
+		-DQT_MOC_EXECUTABLE=$(STAGING_DIR_HOST)/bin/moc \
+		-DQT_UIC_EXECUTABLE=$(STAGING_DIR_HOST)/bin/uic \
+		-DQT_RCC_EXECUTABLE=$(STAGING_DIR_HOST)/bin/rcc
+endif
+
+ifdef CONFIG_PACKAGE_plplot-tcl
+	CMAKE_FLAGS +=	-DENABLE_tcl=ON 
+endif
+
+ifdef CONFIG_PACKAGE_plplot-octave
+	CMAKE_FLAGS +=	\
+		-DENABLE_octave=ON \
+		-DUSE_RPATH=ON \
+		-DMKOCTFILE=$(STAGING_DIR)/usr/bin/mkoctfile \
+		-DOCTAVE_OCT_DIR=/usr/lib/octave/site/oct/$(OPTIMIZE_FOR_CPU)-openwrt-linux-gnu \
+		-Dmassage_LOCATION=$(STAGING_DIR_HOST)/lib/$(PKG_NAME)-$(PKG_VERSION)/build_dir/bindings/octave/massage
+endif
+
+#	$(if $(CONFIG_PACKAGE_libX11),FEATURE_XLOCK=y,FEATURE_XLOCK=n) \
 
 define Build/Configure
 	echo "SET(CMAKE_SYSTEM_NAME Linux)" > $(PKG_BUILD_DIR)/toolchain.cmake
@@ -103,28 +194,11 @@ define Build/Configure
 	echo "SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)" >> $(PKG_BUILD_DIR)/toolchain.cmake
 	echo "SET(PL_USE_NAMESPACE 1)" >> $(PKG_BUILD_DIR)/toolchain.cmake
 
-	cd $(PKG_BUILD_DIR) && \
-	  cmake -DCMAKE_INSTALL_PREFIX=/usr \
-	     	-DCMAKE_TOOLCHAIN_FILE=$(PKG_BUILD_DIR)/toolchain.cmake \
-		-DPKG_CONFIG_EXECUTABLE=$(STAGING_DIR_HOST)/bin/pkg-config \
-	     	-DDEFAULT_NO_DEVICES=ON -DPLD_ps=ON -DPLD_svg=ON \
-		-DPLD_extqt=ON \
-		-DDEFAULT_NO_BINDINGS=ON \
-		-DENABLE_cxx=ON -DNaNAwareCCompiler=ON \
-		-DQT_QMAKE_EXECUTABLE=$(STAGING_DIR_HOST)/bin/qmake \
-		-DQT_MOC_EXECUTABLE=$(STAGING_DIR_HOST)/bin/moc \
-		-DQT_UIC_EXECUTABLE=$(STAGING_DIR_HOST)/bin/uic \
-		-DQT_RCC_EXECUTABLE=$(STAGING_DIR_HOST)/bin/rcc \
-		-DENABLE_qt=ON \
-		-DCMAKE_USE_NAMESPACE=ON \
-		-DCMAKE_NATIVE_BINARY_DIR=$(STAGING_DIR_HOST)/lib/cmake/build_dir
-#		-DQt4_INCLUDE_DIR=$(STAGING_DIR_ROOT)/usr/include \
-#		-DQt4_LIRARY=$(STAGING_DIR_ROOT)/usr/lib/libQtGui.so \
-
+	cd $(PKG_BUILD_DIR) && cmake $(CMAKE_FLAGS)
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default, VERBOSE=1 -j2)
+	$(call Build/Compile/Default, VERBOSE=1)
 endef
 
 define Build/Install
@@ -148,12 +222,53 @@ define Build/InstallDev
 endef
 
 define Package/plplot/install
-	$(INSTALL_DIR) $(1)/usr
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libplplotd.so* \
+		$(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/usr/lib/plplot$(PKG_VERSION)/driversd
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/plplot$(PKG_VERSION)/driversd/{mem,null,ps,svg}.{so,rc} \
+		 $(1)/usr/lib/plplot$(PKG_VERSION)/driversd/
 	$(INSTALL_DIR) $(1)/usr/share/plplot$(PKG_VERSION)
-	$(CP) $(PKG_INSTALL_DIR)/usr/{bin,lib} \
-		$(1)/usr
-	$(CP) $(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/*.{map,pal,fnt} \
+	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/*.{map,pal,fnt} \
 		$(1)/usr/share/plplot$(PKG_VERSION)/
+endef
+
+define Package/plplot-cxx/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libplplotcxxd.so* \
+		$(1)/usr/lib/
+endef
+
+define Package/plplot-qt/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libplplotqtd.so* \
+		$(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/usr/lib/plplot$(PKG_VERSION)/driversd
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/plplot$(PKG_VERSION)/driversd/qt.{so,rc} \
+		 $(1)/usr/lib/plplot$(PKG_VERSION)/driversd/
+endef
+
+define Package/plplot-tcl/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libplplottcltkd.so* \
+		$(1)/usr/lib/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libtclmatrixd.so* \
+		$(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/usr/share/plplot$(PKG_VERSION)/tcl
+	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/pkgIndex.tcl \
+		$(1)/usr/share/plplot$(PKG_VERSION)/
+	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/tcl/*\
+		$(1)/usr/share/plplot$(PKG_VERSION)/tcl/
+endef
+
+
+define Package/plplot-octave/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/octave \
+		$(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/usr/share
+	$(CP) $(PKG_INSTALL_DIR)/usr/share/{octave,plplot_octave} \
+		$(1)/usr/share/
 endef
 
 # define Package/plplot-data/install
@@ -164,7 +279,10 @@ endef
 
 $(eval $(call HostBuild))
 $(eval $(call BuildPackage,plplot))
-#$(eval $(call BuildPackage,plplot-data))
+$(eval $(call BuildPackage,plplot-cxx))
+$(eval $(call BuildPackage,plplot-qt))
+$(eval $(call BuildPackage,plplot-tcl))
+$(eval $(call BuildPackage,plplot-octave))
 
 
 # The following comments configure the Emacs editor.  Just ignore them.
