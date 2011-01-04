@@ -1,0 +1,13 @@
+Index: libgii-1.0.2/Makefile.in
+===================================================================
+--- libgii-1.0.2.orig/Makefile.in	2011-01-04 18:41:07.000000000 +0100
++++ libgii-1.0.2/Makefile.in	2011-01-04 18:41:27.000000000 +0100
+@@ -337,7 +337,7 @@
+ 
+ # multiple AUTOMAKE_OPTIONS lines only confuses automake 1.6
+ AUTOMAKE_OPTIONS = 1.4 foreign
+-SUBDIRS = include gg input filter gii input-shared filter-shared regress demos doc m4 dist
++SUBDIRS = include gg input filter gii input-shared filter-shared regress doc m4 dist
+ giiconfdatadir = ${sysconfdir}/${ggi_subdir}
+ giiconfdata_DATA = libgii.conf
+ DISTCLEANFILES = libgii.conf config.lt
