@@ -21,22 +21,44 @@ PKG_BUILD_DEPENDS:= libtool/host
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/libggi
+define Package/libggi/Default
   SECTION:=libs
   CATEGORY:=Libraries
-  TITLE:=General Graphics Interface
   URL:=http://www.ggi-project.org/packages/libggi.html
-  DEPENDS:=+libgii 
-#+directfb
 endef
 
-define Package/libggi/description
+define Package/libggi/Default/description
 LibGGI is the central library in the GGI project, hence the name.
 
 It provides an opaque interface to the display\'s acceleration functions. It
 was originally intended to allow user programs to interface with KGI, the GGI
 Kernel Graphics Interface, but other display types can be easily used by
 loading the appropriate \"display target\" (e.g. X, memory).
+endef
+
+define Package/libggi
+$(call Package/libggi/Default)
+  TITLE += (library)
+  DEPENDS:=+libgii 
+#+directfb
+endef
+
+define Package/libggi/description
+$(call Package/libggi/Default/description)
+This package contains the library files.
+endef
+
+
+define Package/libggi-programs
+$(call Package/libggi/Default)
+  TITLE += (programs)
+  DEPENDS:=+libggi
+#+directfb
+endef
+
+define Package/libggi-programs/description
+ $(call Package/libggi/Default/description)
+This package contains the test and example programs for libggi.
 endef
 
 TARGET_LDFLAGS += -Wl,-rpath-link -Wl,$(STAGING_DIR)/usr/lib
@@ -69,7 +91,7 @@ define Build/InstallDev
 		$(1)/usr/lib/
 endef
 
-define Package/libgii/install
+define Package/libggi/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/*.so* $(1)/usr/lib/
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/ggi $(1)/usr/lib/
@@ -77,7 +99,14 @@ define Package/libgii/install
 	$(CP) $(PKG_INSTALL_DIR)/etc/ggi/* $(1)/etc/ggi/
 endef
 
+
+define Package/libggi-programs/install
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/* $(1)/usr/bin/
+endef
+
 $(eval $(call BuildPackage,libggi))
+$(eval $(call BuildPackage,libggi-programs))
 
 
 # The following comments configure the Emacs editor.  Just ignore them.
