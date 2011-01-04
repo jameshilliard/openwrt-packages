@@ -38,7 +38,11 @@ from set in stone yet, and is likely to change.
 endef
 
 TARGET_CFLAGS += 
-CONFIGURE_VARS +=
+
+# fix for dependency between libgii and libgg.  If not rpath configured
+# linking with libgii and not libgg fails.
+#TARGET_LDFLAGS += -Wl,-rpath -Wl,$(STAGING_DIR)/usr/lib
+
 CONFIGURE_ARGS += \
 	--enable-mutexes=builtin \
 	--disable-x
@@ -57,13 +61,14 @@ define Build/InstallDev
 		$(PKG_INSTALL_DIR)/usr/include/* \
 		$(1)/usr/include/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/*.{a,so*} \
+		$(PKG_INSTALL_DIR)/usr/lib/*.{la,a,so*} \
 		$(1)/usr/lib/
 endef
 
 define Package/libgii/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/*.so* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/ggi $(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/etc/ggi
 	$(CP) $(PKG_INSTALL_DIR)/etc/ggi/* $(1)/etc/ggi/
 endef
