@@ -1,0 +1,12 @@
+Index: gnuplot-4.4.0/term/ggi.trm
+===================================================================
+--- gnuplot-4.4.0.orig/term/ggi.trm	2011-01-04 21:47:00.000000000 +0100
++++ gnuplot-4.4.0/term/ggi.trm	2011-01-04 21:47:45.000000000 +0100
+@@ -374,6 +374,7 @@
+ 	/* user specified mode */
+ 	if (!ggiParseMode(GGI_mode_spec, &mode)) {
+ 	    mode.frames = GGI_frames;
++	    ggiCheckMode(GGIvisual, &mode);
+ 	    if (!ggiSetMode(GGIvisual, &mode)) {
+ 		success = 1;
+ 	    }
