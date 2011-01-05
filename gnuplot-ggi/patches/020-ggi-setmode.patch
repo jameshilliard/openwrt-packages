@@ -1,7 +1,7 @@
 Index: gnuplot-4.4.0/term/ggi.trm
 ===================================================================
 --- gnuplot-4.4.0.orig/term/ggi.trm	2011-01-04 21:47:00.000000000 +0100
-+++ gnuplot-4.4.0/term/ggi.trm	2011-01-04 21:47:45.000000000 +0100
++++ gnuplot-4.4.0/term/ggi.trm	2011-01-05 11:52:43.000000000 +0100
 @@ -374,6 +374,7 @@
  	/* user specified mode */
  	if (!ggiParseMode(GGI_mode_spec, &mode)) {
@@ -10,3 +10,17 @@ Index: gnuplot-4.4.0/term/ggi.trm
  	    if (!ggiSetMode(GGIvisual, &mode)) {
  		success = 1;
  	    }
+@@ -381,8 +382,11 @@
+     }
+ 
+     if (!success) {
+-	/* try the default mode */
+-	if(ggiSetSimpleMode(GGIvisual,GGI_AUTO,GGI_AUTO,GGI_frames,GT_AUTO)) {
++       /* try the default mode */
++       ggiParseMode("", &mode);
++       ggiCheckMode(GGIvisual, &mode);
++
++       if (ggiSetMode(GGIvisual, &mode)) {
+ 	    ggiPanic("(GGI_init() unable to set default mode\n");
+ 	    GGIvisual = (ggi_visual_t)0;
+ 	}
