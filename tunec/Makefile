@@ -19,7 +19,7 @@ define Package/tunec
   CATEGORY:=Utilities
   TITLE:=A command line guitar tuner for linux
   URL:=http://code.google.com/p/tunec/
-  DEPENDS:=+fftw3 @BROKEN #since the upstream libfftw3 install not correct
+  DEPENDS:=+fftw3
 endef
 
 TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/include
