@@ -1,11 +1,13 @@
---- a/Makefile.in.orig	2010-03-13 22:20:04.000000000 +0100
-+++ b/Makefile.in	2010-06-03 15:08:35.000000000 +0200
+Index: gnuplot-4.4.0/Makefile.in
+===================================================================
+--- gnuplot-4.4.0.orig/Makefile.in	2010-03-13 22:20:04.000000000 +0100
++++ gnuplot-4.4.0/Makefile.in	2011-01-05 12:48:51.000000000 +0100
 @@ -240,7 +240,7 @@
  top_builddir = @top_builddir@
  top_srcdir = @top_srcdir@
  AUTOMAKE_OPTIONS = foreign 1.2h
 -SUBDIRS = config m4 term src docs $(LISPDIR) man demo tutorial share
-+SUBDIRS = config m4 term src $(LISPDIR) share
++SUBDIRS = config m4 term src docs $(LISPDIR) share
  EXTRA_DIST = BUGS CodeStyle Copyright FAQ.pdf GNUmakefile INSTALL INSTALL.gnu \
  Makefile.maint PATCHLEVEL PGPKEYS PORTING README README.1ST \
  VERSION configure.vms pm3d

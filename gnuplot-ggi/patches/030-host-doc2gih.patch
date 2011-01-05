@@ -1,0 +1,26 @@
+Index: gnuplot-4.4.0/docs/Makefile.in
+===================================================================
+--- gnuplot-4.4.0.orig/docs/Makefile.in	2011-01-05 13:07:42.000000000 +0100
++++ gnuplot-4.4.0/docs/Makefile.in	2011-01-05 13:08:04.000000000 +0100
+@@ -339,9 +339,11 @@
+ ### gnuplot interactive help format
+ gih: gnuplot.gih
+ 
++# Note: here we have to use the host-compiled doc2gih tool, that the build
++# process installs in the staging bin directory
+ gnuplot.gih: doc2gih $(srcdir)/gnuplot.doc
+ 	@rm -f alldoc2gih
+-	./doc2gih $(srcdir)/gnuplot.doc gnuplot.gih
++	doc2gih $(srcdir)/gnuplot.doc gnuplot.gih
+ 
+ doc2gih: doc2gih.o termdoc.o
+ 	$(LINK) doc2gih.o termdoc.o $(LIBS)
+@@ -349,7 +351,7 @@
+ # To include all terminals in the .gih file
+ allgih: alldoc2gih $(srcdir)/gnuplot.doc
+ 	@rm -f doc2gih
+-	./alldoc2gih $(srcdir)/gnuplot.doc gnuplot.gih
++	alldoc2gih $(srcdir)/gnuplot.doc gnuplot.gih
+ 
+ alldoc2gih: alldoc2gih.o termdoc.o
+ 	$(LINK) alldoc2gih.o termdoc.o $(LIBS)
