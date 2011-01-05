@@ -1,0 +1,30 @@
+Index: gnuplot-4.4.0/term/ggi.trm
+===================================================================
+--- gnuplot-4.4.0.orig/term/ggi.trm	2011-01-05 13:35:52.000000000 +0100
++++ gnuplot-4.4.0/term/ggi.trm	2011-01-05 13:39:52.000000000 +0100
+@@ -499,6 +499,12 @@
+     ggiSetGCForeground(GGIvisual,GGIcolors[linetype]);
+ }
+ 
++TERM_PUBLIC int
++GGI_y(int32_t y)
++{
++    return GGIymax - y;
++}
++
+ TERM_PUBLIC void GGI_move(unsigned int x, unsigned int y)
+ {
+     GGIx=x;
+@@ -831,12 +837,6 @@
+ }
+ 
+ TERM_PUBLIC int
+-GGI_y(int32_t y)
+-{
+-    return GGIymax - y;
+-}
+-
+-TERM_PUBLIC int
+ GGI_eventually_update_modifiers(const ggi_event* event, const int add)
+ {
+     int mod = 0;

@@ -12,7 +12,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=gnuplot-ggi
 PKG_ORIG_NAME=gnuplot
 PKG_VERSION:=4.4.0
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_ORIG_NAME)-$(PKG_VERSION)
 HOST_BUILD_DIR = $(BUILD_DIR_HOST)/$(PKG_ORIG_NAME)-$(PKG_VERSION)
 PKG_SOURCE:=$(PKG_ORIG_NAME)-$(PKG_VERSION).tar.gz
@@ -94,7 +94,8 @@ CONFIGURE_ARGS += \
 	--without-row-help \
 	--without-lisp-files \
 	--with-ggi \
-	--with-gihdir=/usr/share/gnuplot
+	--with-gihdir=/usr/share/gnuplot \
+	--disable-mouse
 
 CONFIGURE_VARS += \
 	CPPFLAGS="$$$$CPPFLAGS -I$(STAGING_DIR)/usr/include/uClibc++" \
