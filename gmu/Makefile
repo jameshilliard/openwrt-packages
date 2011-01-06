@@ -23,7 +23,8 @@ define Package/gmu
   TITLE:=Gmu Music Player
   URL:=http://wejp.k.vu/projects/gmu/
   MENU:=1
-  DEPENDS:=+libsdl +libsdl-image +libsdl-gfx +libmpcdec +libmikmod +libvorbisidec @BROKEN #need speedx lib
+  DEPENDS:=+libsdl +libsdl-image +libsdl-gfx +libmpcdec +libmikmod \
+	+libvorbisidec +libspeex +libflac +libogg
 endef
 
 define Package/gmu/description
@@ -46,7 +47,7 @@ define Package/gmu/install
 		$(1)/usr/share/gmu/decoders \
 		$(1)/usr/share/gmu/frontends \
 		$(1)/usr/share/gmu/themes/default-modern 
- 
+
 	$(INSTALL_BIN) \
 		$(PKG_BUILD_DIR)/gmu \
 		$(1)/usr/bin/gmu.bin
