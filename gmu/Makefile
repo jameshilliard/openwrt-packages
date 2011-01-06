@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmu
-PKG_VERSION:=0.7.1
+PKG_VERSION:=0.7.2
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://wejp.k.vu/files/
-PKG_MD5SUM:=62653037d2046d992626eaf6d0a365e3
+PKG_MD5SUM:=dea481ab0f8f9f10b38aa21605dbb18d
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -23,7 +23,7 @@ define Package/gmu
   TITLE:=Gmu Music Player
   URL:=http://wejp.k.vu/projects/gmu/
   MENU:=1
-  DEPENDS:=+libsdl +libsdl-image +libsdl-gfx +libmpcdec +libmikmod +libvorbisidec
+  DEPENDS:=+libsdl +libsdl-image +libsdl-gfx +libmpcdec +libmikmod +libvorbisidec @BROKEN #need speedx lib
 endef
 
 define Package/gmu/description
@@ -34,6 +34,9 @@ endef
 
 MAKE_VARS += TARGET=nanonote
 TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
+TARGET_LDFLAGS+= \
+	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
+	-L$(STAGING_DIR)/usr/lib/SDL \
 
 define Package/gmu/install
 	$(INSTALL_DIR) \
