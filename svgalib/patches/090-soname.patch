@@ -1,0 +1,26 @@
+Index: svgalib-1.4.3/gl/Makefile
+===================================================================
+--- svgalib-1.4.3.orig/gl/Makefile	2011-01-06 13:48:39.000000000 +0100
++++ svgalib-1.4.3/gl/Makefile	2011-01-06 13:49:05.000000000 +0100
+@@ -29,7 +29,7 @@
+ .PHONY: all clean dep
+ 
+ libvgagl.so.$(VERSION): $(MODULES)
+-	$(CC) -s -shared -Wl,-soname,libvgagl.so.$(MAJOR_VER) -o libvgagl.so.$(VERSION) \
++	$(CC) -s -shared -Wl,-soname,libvgagl.so -o libvgagl.so.$(VERSION) \
+ 	  $(MODULES)
+ 
+ libvgagl.a: $(MODULES)
+Index: svgalib-1.4.3/src/Makefile
+===================================================================
+--- svgalib-1.4.3.orig/src/Makefile	2011-01-06 13:48:36.000000000 +0100
++++ svgalib-1.4.3/src/Makefile	2011-01-06 13:48:52.000000000 +0100
+@@ -387,7 +387,7 @@
+ 
+ # These rules are for ELF only.
+ libvga.so.$(VERSION): $(ALLOBJS)
+-	$(CC) -s -shared -Wl,-soname,libvga.so.$(MAJOR_VER) \
++	$(CC) -s -shared -Wl,-soname,libvga.so \
+ 	  -o libvga.so.$(VERSION) $(ALLOBJS) -lm
+ 
+ $(sharedlibdir)/libvga.so.$(VERSION): libvga.so.$(VERSION)

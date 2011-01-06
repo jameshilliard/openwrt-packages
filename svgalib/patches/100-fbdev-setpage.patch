@@ -1,0 +1,24 @@
+Index: svgalib-1.4.3/src/fbdev.c
+===================================================================
+--- svgalib-1.4.3.orig/src/fbdev.c	2011-01-06 14:24:59.000000000 +0100
++++ svgalib-1.4.3/src/fbdev.c	2011-01-06 14:27:39.000000000 +0100
+@@ -141,9 +141,17 @@
+ 	if (page != oldpage)
+ 	{
+ //		munmap(BANKED_MEM_POINTER, __svgalib_banked_mem_size);
+-		mmap(BANKED_MEM_POINTER, __svgalib_banked_mem_size,
++		long size = __svgalib_banked_mem_size;
++		long offs = page * __svgalib_banked_mem_size;
++		if (size + offs > __svgalib_linear_mem_size)
++		   size = __svgalib_linear_mem_size - offs;
++		if (size <= 0) {
++		   fprintf (stderr, "invalid page %i requested", page);
++		}
++
++		mmap(BANKED_MEM_POINTER, size,
+ 		     PROT_READ | PROT_WRITE, MAP_SHARED | MAP_FIXED,
+-		     fbdev_fd, page * __svgalib_banked_mem_size);
++		     fbdev_fd, offs);
+ 		oldpage = page;
+ 	}
+ }

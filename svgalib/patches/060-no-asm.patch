@@ -1,0 +1,41 @@
+Index: svgalib-1.4.3/src/vgapix.c
+===================================================================
+--- svgalib-1.4.3.orig/src/vgapix.c	2011-01-06 12:33:23.000000000 +0100
++++ svgalib-1.4.3/src/vgapix.c	2011-01-06 12:35:04.000000000 +0100
+@@ -26,7 +26,7 @@
+ /* However bswap is not supported by 386 */
+ 
+     if (MODEFLAGS & RGB_MISORDERED)
+-#ifdef __alpha__
++#if 1
+ 	c = ((c >> 0) & 0xff) << 16 |
+ 	    ((c >> 8) & 0xff) << 8 |
+ 	    ((c >> 16) & 0xff) << 0;
+Index: svgalib-1.4.3/gl/driver.c
+===================================================================
+--- svgalib-1.4.3.orig/gl/driver.c	2011-01-06 12:36:13.000000000 +0100
++++ svgalib-1.4.3/gl/driver.c	2011-01-06 12:36:20.000000000 +0100
+@@ -33,7 +33,8 @@
+ /* However bswap is not supported by 386 */
+ 
+     if (MODEFLAGS & MODEFLAG_24BPP_REVERSED)
+-#ifdef __alpha__
++#if 1
++/* #ifdef __alpha__ */
+ 	c = ((c >> 0) & 0xff) << 16 |
+ 	    ((c >> 8) & 0xff) << 8 |
+ 	    ((c >> 16) & 0xff) << 0;
+Index: svgalib-1.4.3/gl/scale.c
+===================================================================
+--- svgalib-1.4.3.orig/gl/scale.c	2011-01-06 12:37:26.000000000 +0100
++++ svgalib-1.4.3/gl/scale.c	2011-01-06 12:38:04.000000000 +0100
+@@ -13,7 +13,8 @@
+ /* #define USE_ASM */
+ 
+ 
+-#ifdef __alpha__
++#if 1
++/* #ifdef __alpha__ */
+ 
+ static inline int muldiv64(int m1, int m2, int d)
+ {

@@ -1,0 +1,206 @@
+Index: svgalib-1.4.3/src/vga.c
+===================================================================
+--- svgalib-1.4.3.orig/src/vga.c	2011-01-06 12:44:21.000000000 +0100
++++ svgalib-1.4.3/src/vga.c	2011-01-06 13:24:11.000000000 +0100
+@@ -519,7 +519,8 @@
+ 
+ /* Chipset specific functions */
+ 
+-DriverSpecs *__svgalib_driverspecs = &__svgalib_vga_driverspecs;
++#define __svgalib_vga_driverspecs __svgalib_fbdev_driverspecs
++DriverSpecs *__svgalib_driverspecs = &__svgalib_fbdev_driverspecs;
+ 
+ #ifndef BACKGROUND
+ static void (*__svgalib_setpage) (int);	/* gives little faster vga_setpage() */
+@@ -537,7 +538,9 @@
+ DriverSpecs *__svgalib_driverspecslist[] =
+ {
+     NULL,			/* chipset undefined */
++#if 0  /* vga disabled */
+     &__svgalib_vga_driverspecs,
++#endif
+ #ifdef INCLUDE_ET4000_DRIVER
+     &__svgalib_et4000_driverspecs,
+ #else
+@@ -1504,12 +1507,12 @@
+ 	else
+ #endif
+ 
+-	if (__svgalib_vga_driverspecs.test())
+-	    CHIPSET = VGA;
++	if (__svgalib_fbdev_driverspecs.test())
++	    CHIPSET = FBDEV;
+ 	else
+ 	    /* else */
+ 	{
+-	    fprintf(stderr, "svgalib: Cannot find EGA or VGA graphics device.\n");
++	    fprintf(stderr, "svgalib: Cannot find fbdev graphics device.\n");
+ 	    exit(1);
+ 	}
+ 	__svgalib_setpage = __svgalib_driverspecs->__svgalib_setpage;
+@@ -4441,7 +4444,8 @@
+ };
+ 
+ 
+-#ifdef __alpha__
++#if 0
++/* #ifdef __alpha__ */
+ 
+ #define vuip	volatile unsigned int *
+ 
+Index: svgalib-1.4.3/src/vgadrv.c
+===================================================================
+--- svgalib-1.4.3.orig/src/vgadrv.c	2011-01-06 12:44:21.000000000 +0100
++++ svgalib-1.4.3/src/vgadrv.c	2011-01-06 13:13:47.000000000 +0100
+@@ -13,6 +13,8 @@
+ #include "libvga.h"
+ #include "driver.h"
+ 
++#if 0 /* vga disabled */
++
+ /* BIOS mode 0Dh - 320x200x16 */
+ static const unsigned char g320x200x16_regs[60] =
+ {
+@@ -311,3 +313,5 @@
+ 
+     return 0;
+ }
++
++#endif  /* vga disabled */
+Index: svgalib-1.4.3/src/libvga.h
+===================================================================
+--- svgalib-1.4.3.orig/src/libvga.h	2011-01-06 13:13:47.000000000 +0100
++++ svgalib-1.4.3/src/libvga.h	2011-01-06 13:13:47.000000000 +0100
+@@ -216,7 +216,18 @@
+ extern void __svgalib_acquirevt_signal(int n);
+ #endif
+ 
+-#ifdef __alpha__
++
++/* do not compile vga direct hw access code.  It is not called anyways when
++ * using fbdev driver.  It won't compile on some non-x86 hw. */
++#define ioperm(a,b,c) (-1)
++#define port_in(a) (0)
++#define port_out(a,b) (void)0
++#define port_outw(a,b) (void)0
++#define inb(a) (0)
++#define outb(a,b) (void)0
++
++#if 0 
++/* #ifdef  __alpha__ */
+ 
+ #include <asm/io.h>
+ 
+@@ -270,50 +281,60 @@
+ 
+ #else
+ 
+-static __inline__ void port_out(int value, int port)
+-{
+-    __asm__ volatile ("outb %0,%1"
+-	      ::"a" ((unsigned char) value), "d"((unsigned short) port));
+-}
+-
+-static __inline__ void port_outw(int value, int port)
+-{
+-    __asm__ volatile ("outw %0,%1"
+-	     ::"a" ((unsigned short) value), "d"((unsigned short) port));
+-}
+-
+-static __inline__ void port_outl(int value, int port)
+-{
+-    __asm__ volatile ("outl %0,%1"
+-             ::"a" ((unsigned long)value), "d" ((unsigned short) port));
+-}
+-
+-static __inline__ int port_in(int port)
+-{
+-    unsigned char value;
+-    __asm__ volatile ("inb %1,%0"
+-		      :"=a" (value)
+-		      :"d"((unsigned short) port));
+-    return value;
+-}
+-
+-static __inline__ int port_inw(int port)
+-{
+-    unsigned short value;
+-    __asm__ volatile ("inw %1,%0"
+-		      :"=a" (value)
+-		      :"d"((unsigned short) port));
+-    return value;
+-}
+-
+-static __inline__ int port_inl(int port)
+-{
+-    unsigned int value;
+-    __asm__ volatile("inl %1,%0" :
+-               	     "=a" (value) :
+-                     "d" ((unsigned short)port));
+-    return value;
+-}
++/* do not compile vga direct hw access code.  It is not called anyways when
++ * using fbdev driver.  It won't compile on some non-x86 hw. */
++#define ioperm(a,b,c) (-1)
++#define port_in(a) (0)
++#define port_inw(a) (0)
++#define port_inl(a) (0)
++#define port_out(a,b) (void)0
++#define port_outl(a,b) (void)0
++#define port_outw(a,b) (void)0
++
++/* static __inline__ void port_out(int value, int port) */
++/* { */
++/*     __asm__ volatile ("outb %0,%1" */
++/* 	      ::"a" ((unsigned char) value), "d"((unsigned short) port)); */
++/* } */
++
++/* static __inline__ void port_outw(int value, int port) */
++/* { */
++/*     __asm__ volatile ("outw %0,%1" */
++/* 	     ::"a" ((unsigned short) value), "d"((unsigned short) port)); */
++/* } */
++
++/* static __inline__ void port_outl(int value, int port) */
++/* { */
++/*     __asm__ volatile ("outl %0,%1" */
++/*              ::"a" ((unsigned long)value), "d" ((unsigned short) port)); */
++/* } */
++
++/* static __inline__ int port_in(int port) */
++/* { */
++/*     unsigned char value; */
++/*     __asm__ volatile ("inb %1,%0" */
++/* 		      :"=a" (value) */
++/* 		      :"d"((unsigned short) port)); */
++/*     return value; */
++/* } */
++
++/* static __inline__ int port_inw(int port) */
++/* { */
++/*     unsigned short value; */
++/*     __asm__ volatile ("inw %1,%0" */
++/* 		      :"=a" (value) */
++/* 		      :"d"((unsigned short) port)); */
++/*     return value; */
++/* } */
++
++/* static __inline__ int port_inl(int port) */
++/* { */
++/*     unsigned int value; */
++/*     __asm__ volatile("inl %1,%0" : */
++/*                	     "=a" (value) : */
++/*                      "d" ((unsigned short)port)); */
++/*     return value; */
++/* } */
+ 
+ #define gr_readb(off)		(((volatile unsigned char *)GM)[(off)])
+ #define gr_readw(off)		(*(volatile unsigned short*)((GM)+(off)))
+@@ -322,7 +343,6 @@
+ #define gr_writew(v,off)	(*(unsigned short*)((GM)+(off)) = (v))
+ #define gr_writel(v,off)	(*(unsigned long*)((GM)+(off)) = (v))
+ 
+-
+ #endif
+ 
+ /* Note that the arguments of outb/w are reversed compared with the */

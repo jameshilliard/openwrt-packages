@@ -1,0 +1,13 @@
+Index: svgalib-1.4.3/src/libvga.h
+===================================================================
+--- svgalib-1.4.3.orig/src/libvga.h	2011-01-06 12:04:51.000000000 +0100
++++ svgalib-1.4.3/src/libvga.h	2011-01-06 12:05:42.000000000 +0100
+@@ -9,7 +9,7 @@
+ 
+ #include <string.h>
+ # if defined __GLIBC__ && __GLIBC__ >= 2
+-#include <sys/io.h>
++/* #include <sys/io.h> */
+ #endif
+ 
+ /* --------------------- Macro definitions shared by library modules */

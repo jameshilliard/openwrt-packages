@@ -1,0 +1,191 @@
+Index: svgalib-1.4.3/Makefile
+===================================================================
+--- svgalib-1.4.3.orig/Makefile	2011-01-06 13:52:48.000000000 +0100
++++ svgalib-1.4.3/Makefile	2011-01-06 14:03:17.000000000 +0100
+@@ -110,10 +110,6 @@
+ 
+ installheaders:
+ 	@echo Installing header files in $(includedir).
+-	@if [ -f /usr/include/vga.h ]; then \
+-		rm -f /usr/include/vga.h /usr/include/vgagl.h; \
+-		echo Old header files in /usr/include removed.; \
+-	fi
+ 	mkdir -p $(includedir)
+ 	@cp $(srcdir)/src/vga.h $(includedir)/vga.h
+ 	@chmod a+r $(includedir)/vga.h
+@@ -134,17 +130,6 @@
+ 		chmod a+r $(libdir)/$$foo; \
+ 	done
+ endif
+-	@if [ -f /usr/lib/libvga.sa ]; then \
+-		rm -f /usr/lib/libvga.sa /usr/lib/libvgagl.sa; \
+-		echo Old stubs in /usr/lib removed.; \
+-	fi
+-	@rm -f $(OBSOLETESHAREDIMAGES)
+-ifndef KEEPSHAREDLIBS
+-	@echo "Removing shared library images (old & current)..."
+-	@for i in $(OBSOLETELDIRS); do \
+-	    rm -f `echo $(OBSOLETESHAREDIMAGES) | sed s?/lib/?$$i?g`; \
+-         done
+-endif
+ 	mkdir -p $(sharedlibdir)
+ 	@echo Installing shared library image as \
+ 		$(addprefix $(sharedlibdir)/,$(notdir $(SHAREDLIBS))).
+@@ -153,7 +138,6 @@
+ 		(cd $(sharedlibdir); \
+ 		 ln -sf $$foo `echo $$foo | sed 's/\.so\..*/.so/'` ); \
+ 	done
+-	@ldconfig
+ 
+ ifdef INSTALLAOUTDIR
+ 
+@@ -169,7 +153,6 @@
+ 		(cd $(TOPDIR)/$(INSTALLAOUTDIR); \
+ 		 ln -sf $$foo `echo $$foo | sed 's/\.so\..*/.so/'` ); \
+ 	done
+-	@ldconfig
+ 
+ else
+ 
+@@ -180,10 +163,8 @@
+ 
+ installstaticlib: static
+ 	@echo Installing static libraries in $(libdir).
+-	@rm -f /usr/lib/libvga.a
+ 	@$(INSTALL_DATA) staticlib/libvga.a $(libdir)/libvga.a
+ 	@chmod a+r $(libdir)/libvga.a
+-	@rm -f /usr/lib/libvgagl.a
+ 	@$(INSTALL_DATA) staticlib/libvgagl.a $(libdir)/libvgagl.a
+ 	@chmod a+r $(libdir)/libvgagl.a
+ 
+@@ -192,14 +173,6 @@
+ 		echo No $(bindir) directory, creating it.; \
+ 		mkdir $(bindir); \
+ 	fi
+-	@if [ -f /usr/bin/restorefont ]; then \
+-		echo Removing old utilities in /usr/bin.; \
+-		for x in $(UTILS); do rm -f /usr/bin/$$x; done; \
+-	fi
+-	@if [ -f /usr/bin/convfont ]; then \
+-		echo Removing inappropriate utilities in /usr/bin.; \
+-		rm -f /usr/bin/convfont /usr/bin/setmclk; \
+-	fi
+ 	@echo Installing textmode utilities in $(bindir):
+ 	@echo "restorefont:      Save/restore textmode font."
+ 	@cp utils/restorefont $(bindir)
+@@ -225,22 +198,6 @@
+ 		mkdir $(datadir); \
+ 		chmod go-w $(datadir); \
+ 	fi
+-	@if [ \( -f /usr/local/lib/libvga.config -a ! -f $(datadir)/libvga.config \) ]; then \
+-		echo "Moving old config file /usr/local/lib/libvga.config to $(datadir)." ; \
+-		mv -f /usr/local/lib/libvga.config $(datadir)/libvga.config; \
+-	fi
+-	@if [ \( -f /usr/local/lib/libvga.et4000 -a ! -f $(datadir)/libvga.et4000 \) ]; then \
+-		echo "Moving old config file /usr/local/lib/libvga.et4000 to $(datadir)." ; \
+-		mv -f /usr/local/lib/libvga.et4000 $(datadir)/libvga.et4000; \
+-	fi
+-	@if [ \( -f /usr/local/lib/libvga.ega -a ! -f $(datadir)/libvga.ega \) ]; then \
+-		echo "Moving old config file /usr/local/lib/libvga.ega to $(datadir)." ; \
+-		mv -f /usr/local/lib/libvga.ega $(datadir)/libvga.ega; \
+-	fi
+-	@if [ \( -f /etc/mach32.eeprom -a ! -f $(datadir)/mach32.eeprom \) ]; then \
+-		echo Consider moving your /etc/mach32.eeprom file to $(datadir) ; \
+-		echo and changing $(datadir)/libvga.config appropriately. ; \
+-	fi
+ 	@if [ ! -f $(datadir)/libvga.config ]; then \
+ 		echo Installing default configuration file in $(datadir).; \
+ 		cp $(confdir)/libvga.config $(datadir)/libvga.config; \
+@@ -269,48 +226,6 @@
+ 	@echo demos/ and threedkit/.
+ 
+ uninstall:
+-	@echo "Removing textmode utilities..."
+-	@for i in $(OBSOLETEBDIRS); do \
+-          for prog in $(UTILS); do \
+-            rm -f $$i$$prog ; \
+-          done ; \
+-         done
+-	@echo "Removing shared library stubs (old & current)..."
+-	@for i in $(OBSOLETELDIRS); do \
+-	    rm -f `echo /lib/libvga.so.$(VERSION) /lib/libvgagl.so.$(VERSION) \
+-			$(OBSOLETELIBLINKS) /lib/libvga.sa /lib/libvgagl.sa \
+-		     | sed s?/lib/?$$i?g`; \
+-         done
+-ifndef KEEPSHAREDLIBS
+-	@echo "Removing shared library images (old & current)..."
+-	@for i in $(OBSOLETELDIRS); do \
+-	    rm -f `echo $(OBSOLETESHAREDIMAGES) | sed s?/lib/?$$i?g`; \
+-         done
+-endif
+-ifneq ($(INSTALLAOUTDIR), )
+-	@echo "Removing shared a.out library stubs (old & current)..."
+-	@for i in $(OBSOLETEAOUTDIRS); do \
+-	    rm -f `echo /lib/libvga.so.$(VERSION) /lib/libvgagl.so.$(VERSION) \
+-			$(OBSOLETELIBLINKS) /lib/libvga.sa /lib/libvgagl.sa \
+-		     | sed s?/lib/?$$i?g`; \
+-         done
+-ifndef KEEPSHAREDLIBS
+-	@echo "Removing shared a.out library images (old & current)..."
+-	@for i in $(OBSOLETEAOUTDIRS); do \
+-	    rm -f `echo $(OBSOLETESHAREDIMAGES) | sed s?/lib/?$$i?g`; \
+-         done
+-endif
+-endif
+-	@echo "Removing static libraries..."
+-	@for i in $(OBSOLETELDIRS); do \
+-	    rm -f `echo /lib/libvga.a /lib/libvgagl.a | sed s?/lib/?$$i?g`; \
+-	done
+-	@echo "Removing header files..."
+-	@for i in $(OBSOLETEHDIRS); do \
+-	    rm -f `echo $(OBSOLETEHEADERS) | sed s?/inc/?$$i?g`; \
+-	done
+-	(cd doc; $(MAKE) -f $(srcdir)/doc/Makefile srcdir="$(srcdir)" uninstall)
+-	 
+ 
+ SHAREDDIRS0 = sharedlib/mouse sharedlib/keyboard sharedlib/ramdac \
+ 		sharedlib/clockchip sharedlib/joystick
+Index: svgalib-1.4.3/threeDKit/Makefile
+===================================================================
+--- svgalib-1.4.3.orig/threeDKit/Makefile	2011-01-06 13:52:48.000000000 +0100
++++ svgalib-1.4.3/threeDKit/Makefile	2011-01-06 14:03:17.000000000 +0100
+@@ -39,13 +39,9 @@
+ 
+ plane: planukit.o planinit.o $(OBJECTS) $(LVGADEP)
+ 	$(CC) $(LDFLAGS) -o plane planukit.o planinit.o $(OBJECTS) $(LIBS)
+-	chown root plane
+-	chmod u+s plane
+ 
+ wrapdemo: wrapdemo.o $(OBJECTS) $(LVGADEP)
+ 	$(CC) $(CFLAGS) $(LDFLAGS) -o wrapdemo wrapdemo.c $(OBJECTS) $(LIBS)
+-	chown root wrapdemo
+-	chmod u+s wrapdemo
+ 
+ .c.o:
+ 	$(CC) $(CFLAGS) -c -o $*.o $<
+Index: svgalib-1.4.3/demos/Makefile
+===================================================================
+--- svgalib-1.4.3.orig/demos/Makefile	2011-01-06 14:03:32.000000000 +0100
++++ svgalib-1.4.3/demos/Makefile	2011-01-06 14:04:20.000000000 +0100
+@@ -44,21 +44,15 @@
+ 
+ .c:
+ 	$(CC) $(CFLAGS) $(LDFLAGS) -o $* $*.c $(LIBS)
+-	chown 0 $*
+-	chmod 4755 $*
+ 
+ rwpage: rwpage.pp
+ 	$(PC) -Rintel rwpage.pp
+ 
+ testaccel: testaccel.c
+ 	$(CC) $(CFLAGS) $(LDFLAGS) -o testaccel testaccel.c $(LIBS) -lm
+-	chown 0 testaccel
+-	chmod 4755 testaccel
+ 
+ accel: accel.c
+ 	$(CC) $(CFLAGS) $(LDFLAGS) -o accel accel.c $(LIBS) -lm
+-	chown 0 accel
+-	chmod 4755 accel
+ 
+ clean:	cleanbin
+ 	rm -f .depend *.o *~ *.bak

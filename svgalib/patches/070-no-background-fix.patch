@@ -1,0 +1,13 @@
+Index: svgalib-1.4.3/src/vgamisc.c
+===================================================================
+--- svgalib-1.4.3.orig/src/vgamisc.c	2011-01-06 12:21:30.000000000 +0100
++++ svgalib-1.4.3/src/vgamisc.c	2011-01-06 12:22:08.000000000 +0100
+@@ -47,7 +47,7 @@
+ }
+ 
+ #ifndef BACKGROUND
+-static void *__svgalib_linearframebuffer;
++void *__svgalib_linearframebuffer;
+ #endif
+ #ifdef BACKGROUND
+ void *__svgalib_linearframebuffer;
