@@ -1,0 +1,71 @@
+Index: gnuplot-4.4.0/term/ggi.trm
+===================================================================
+--- gnuplot-4.4.0.orig/term/ggi.trm	2011-01-05 13:48:52.000000000 +0100
++++ gnuplot-4.4.0/term/ggi.trm	2011-01-05 21:52:25.000000000 +0100
+@@ -230,6 +230,7 @@
+ static TBOOLEAN GGI_mode_changed = 1;
+ static char GGI_mode_spec[0xff] = "";
+ static int GGI_acceleration = 7; /* arbitrary */
++static TBOOLEAN GGI_initialized = 0;
+ 
+ enum GGI_id {
+     GGI_MODE,
+@@ -275,6 +276,7 @@
+ /* Called bevore a graphic is displayed */
+ TERM_PUBLIC void GGI_graphics()
+ {
++   GGI_init();
+ #ifdef USE_MOUSE
+     int i, j;
+     int display_frame = ggiGetDisplayFrame(GGIvisual);
+@@ -355,6 +357,12 @@
+     int success = 0;
+     ggi_mode mode;
+ 
++    if (GGI_initialized) {
++        return;
++    }
++    GGI_initialized = 1;
++    printf ("gii initializing\n");
++
+ #if 0
+     if (0 != giiInit()) {
+ 	ggiPanic("*** giiInit() failed *** \n");
+@@ -554,6 +562,10 @@
+ TERM_PUBLIC void
+ GGI_close()
+ {
++    if (!GGI_initialized) { 
++        return;
++    }
++
+     ggiFlush(GGIvisual);
+     /* DETACH EXTENSIONS */
+ #if HAVE_WMH_H
+@@ -567,6 +579,8 @@
+ 
+     ggiClose(GGIvisual);
+     GGIvisual = (ggi_visual_t)0;
++    ggiExit();
++    GGI_initialized = 0;
+ 
+     /* EXIT EXTENSIONS */
+ #if HAVE_WMH_H
+@@ -578,6 +592,8 @@
+ #ifdef ENABLE_XMI
+     xmiExit();
+ #endif
++
++    printf ("gii closed\n");
+ }
+ 
+ /* Called when terminal is terminated i.e.
+@@ -614,6 +630,8 @@
+ GGI_resume()
+ {
+     /* do nothing */
++    /* why?  this looks broken! */
++    GGI_init();
+ }
+ 
+ TERM_PUBLIC void

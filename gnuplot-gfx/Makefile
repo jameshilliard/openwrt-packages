@@ -7,9 +7,26 @@
 # License GPLv2 or later.  NO WARRANTY.
 #
 
+# Todo: 
+#
+# - After 21acf8eb423af24ca00835192239d50f2e4570a8 I once had proper plot
+#   display from Octave (but didn't came back to the console afterwards).
+#   Even after building again with mouse support, this isn't working any more.
+#   Why?  Must be related to the 050-ggi-close.patch but that patch is doing
+#   close to nothing.
+#
+# - Somebody seems to mess with the console/stdin.  Even when using
+#   GGI_FBDEV_OPTIONS=-noinput and setting GGI_NEWVT.  Can be easily tested
+#   when launching from ssh.
+#
+# - When using GGI_NEWVT in Octave, it seems like somebody is injecting text
+#   or something into Octave's stdin or into the file handles Octave uses.  It
+#   would abort with some strange error message noting that it doesn't know
+#   some corrupted command name (stuff like "setset").  Very frightening.
+
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=gnuplot-ggi
+PKG_NAME:=gnuplot-gfx
 PKG_ORIG_NAME=gnuplot
 PKG_VERSION:=4.4.0
 PKG_RELEASE:=3
@@ -20,39 +37,39 @@ PKG_SOURCE_URL:=@SF/gnuplot
 PKG_MD5SUM:=e708665bd512153ad5c35252fe499059
 
 PKG_INSTALL=1
-PKG_BUILD_DEPENDS:= gnuplot-ggi/host libtool/host 
+PKG_BUILD_DEPENDS:= gnuplot-gfx/host libtool/host 
 
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 
-define Package/gnuplot-ggi/Default
+define Package/gnuplot-gfx/Default
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=A portable command-line driven graphing utility
   URL:=http://sourceforge.net/projects/gnuplot/
 endef
 
-define Package/gnuplot-ggi/Default/description
+define Package/gnuplot-gfx/Default/description
   Gnuplot  is a portable command-line driven graphing utility for linux, OS/2, 
   MS Windows, OSX, VMS, and many other platforms.  This version is compiled
   to use LibGGI as default terminal, allowing gnuplot to draw directly to
   the Linux framebuffer.
 endef
 
-define Package/gnuplot-ggi
-$(call Package/gnuplot-ggi/Default)
-  DEPENDS:=+libncurses +uclibcxx +zlib +libpng +libfreetype +libgd +libintl +libiconv
+define Package/gnuplot-gfx
+$(call Package/gnuplot-gfx/Default)
+  DEPENDS:=+libncurses +uclibcxx +zlib +libpng +libfreetype +libgd +libintl +libiconv +svgalib
   TITLE+=
 endef
 
-define Package/gnuplot-ggi-gih
-$(call Package/gnuplot-ggi/Default)
-  DEPENDS:=+gnuplot-ggi
+define Package/gnuplot-gfx-gih
+$(call Package/gnuplot-gfx/Default)
+  DEPENDS:=+gnuplot-gfx
   TITLE+=(integrated help)
 endef
 
-define Package/gnuplot-ggi-gih/description
-$(call Package/gnuplot-ggi/Default/description)
+define Package/gnuplot-gfx-gih/description
+$(call Package/gnuplot-gfx/Default/description)
 This package contains the documentation files needed for GNUplot\'s internal
 help system.
 endef
@@ -93,16 +110,23 @@ CONFIGURE_ARGS += \
 	--without-tutorial \
 	--without-row-help \
 	--without-lisp-files \
-	--with-ggi \
-	--with-gihdir=/usr/share/gnuplot \
-	--disable-mouse
+	--without-ggi \
+	--with-linux-vga \
+	--with-gihdir=/usr/share/gnuplot
+
+# Without mouse, gnuplot works in console mode where it closes the graphics
+# device after keypress to get into text mode.  This makes it impossible to
+# use Octave which relies on proper suspend/resume behaviour with multiplot.
+
+#--disable-mouse
+
 
 CONFIGURE_VARS += \
 	CPPFLAGS="$$$$CPPFLAGS -I$(STAGING_DIR)/usr/include/uClibc++" \
 	CXXFLAGS="$$$$CXXFLAGS -fno-builtin -fno-rtti -nostdinc++" \
 	LIBS="-nodefaultlibs -luClibc++ -lpthread -lgcc"
 
-TARGET_CPPFLAGS += -DDEFAULTTERM=\\\"ggi\\\"
+TARGET_CPPFLAGS += -DDEFAULTTERM=\\\"linux\\\" 
 
 # todo: insto cppflags
 TARGET_CFLAGS += \
@@ -114,6 +138,9 @@ TARGET_LDFLAGS+= \
 	-L$(STAGING_DIR)/usr/lib/libintl/lib \
 	-L$(STAGING_DIR)/usr/lib/libiconv/lib
 
+# todo: remove that when stable
+MAKE_FLAGS += -j2
+
 # cannot disable mouse for ggi: compilation fails. (todo: fix)
 #	--disable-mouse 
 
@@ -122,23 +149,23 @@ TARGET_LDFLAGS+= \
 
 #TARGET_LDFLAGS += -Wl,-rpath-link -Wl,$(STAGING_DIR)/usr/lib
 
-define Package/gnuplot-ggi/install
+define Package/gnuplot-gfx/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/gnuplot $(1)/usr/bin/
 endef
 
-define Package/gnuplot-ggi-gih/install
+define Package/gnuplot-gfx-gih/install
 	$(INSTALL_DIR) $(1)/usr/share/gnuplot/
 	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/share/gnuplot/gnuplot.gih \
 		$(1)/usr/share/gnuplot/
 endef
 
 $(eval $(call HostBuild))
-$(eval $(call BuildPackage,gnuplot-ggi))
-$(eval $(call BuildPackage,gnuplot-ggi-gih))
+$(eval $(call BuildPackage,gnuplot-gfx))
+$(eval $(call BuildPackage,gnuplot-gfx-gih))
 
 
 # The following comments configure the Emacs editor.  Just ignore them.
 # Local Variables:
-# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/gnuplot-ggi/compile -j2 V=99"
+# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/gnuplot-gfx/compile -j2 V=99"
 # End:
