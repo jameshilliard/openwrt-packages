@@ -3,6 +3,9 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=ikog
 PKG_VERSION:=1.90
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_SOURCE:=$(PKG_NAME).py.gz
+PKG_SOURCE_URL:=http://www.henspace.co.uk/ikog/app/
+UNPACK_CMD=zcat $(DL_DIR)/$(PKG_SOURCE) > $(1)/ikog.py
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -15,15 +18,6 @@ endef
 
 define Package/ikog/description
     the simple todo list
-endef
-
-define Build/Prepare
-	( \
-	mkdir $(PKG_BUILD_DIR); \
-	cd $(PKG_BUILD_DIR); \
-	wget http://www.henspace.co.uk/ikog/app/$(PKG_NAME).py.gz; \
-	gzip -d $(PKG_NAME).py.gz; \
-	)
 endef
 
 define Build/Compile
