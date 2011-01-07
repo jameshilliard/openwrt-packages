@@ -19,7 +19,7 @@ define Package/qstardict
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=Qt clone of stardict
-	DEPENDS:=+qt4 +qt4-gui +dejavu-fonts-ttf +qt4-network +qt4-xml
+	DEPENDS:=+qt4 +qt4-gui +dejavu-fonts-ttf +qt4-network +qt4-xml +glib2
 	URL:=http://qstardict.ylsoftware.com
 endef
 
@@ -33,6 +33,7 @@ echo "QMAKE_RCC=$(STAGING_DIR_HOST)/bin/rcc" >> qstardict.pri; \
 echo "QMAKE_LINK=$(TARGET_CXX)" >> qstardict.pri; \
 echo "QMAKE_LIBS+=-L$(STAGING_DIR)/usr/lib/libintl/lib" >> qstardict.pri; \
 echo "QMAKE_LIBS+=-L$(STAGING_DIR)/usr/lib/libiconv/lib" >> qstardict.pri; \
+echo "QMAKE_LIBS+=-L$(STAGING_DIR)/usr/lib" >> qstardict.pri; \
 echo "QMAKE_LIBS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib" >> qstardict.pri; \
 echo "INCLUDEPATH += $(STAGING_DIR)/usr/include" >> qstardict.pri; \
 echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/Qt" >> qstardict.pri; \
