@@ -1,7 +1,7 @@
 Index: plplot-5.9.7/drivers/linuxvga.c
 ===================================================================
 --- plplot-5.9.7.orig/drivers/linuxvga.c	2011-01-08 12:20:09.000000000 +0100
-+++ plplot-5.9.7/drivers/linuxvga.c	2011-01-08 12:27:34.000000000 +0100
++++ plplot-5.9.7/drivers/linuxvga.c	2011-01-08 15:37:11.000000000 +0100
 @@ -39,8 +39,8 @@
  
  /* INDENT ON */
@@ -22,7 +22,7 @@ Index: plplot-5.9.7/drivers/linuxvga.c
      if ( vga_hasmode( mode ) )
          vga_setmode( mode );
      else
-@@ -202,6 +202,13 @@
+@@ -202,24 +202,40 @@
  void
  plD_state_vga( PLStream *pls, PLINT op )
  {
@@ -32,22 +32,43 @@ Index: plplot-5.9.7/drivers/linuxvga.c
 +      0x808080, 0x0000ff, 0x00ff00, 0x00ffff,
 +      0xff0000, 0xff00ff, 0xffff00, 0xffffff
 +   };
++   int r, g, b;
 +
      switch ( op )
      {
      case PLSTATE_WIDTH:
-@@ -210,11 +217,9 @@
+         break;
+ 
      case PLSTATE_COLOR0:
-         if ( pls->color )
+-        if ( pls->color )
++        if ( !pls->color )
          {
 -            /* Maybe it would be wiser to use a set of 16 relevant colors only
 -             * and just fix it to black if col is exceeded 16.        */
 -
 -            col = ( pls->icol0 ) % totcol;        /* Color modulo # of colors
 -                                                   * avail */
-+	    /* fix to make it work with true-color mode */
-+ 	    if (col < 16)
-+	        col = vga_palette[col];
-             vga_setcolor( col );
+-            vga_setcolor( col );
++	   r = g = b = pls->icol0 ? 0xff : 0;
          }
+-        break;
+-
++	else
++	{
++	   r = pls->curcolor.r, g = pls->curcolor.g, b = pls->curcolor.b;
++	}
++	vga_setrgbcolor (r, g, b);
++	break;
+     case PLSTATE_COLOR1:
++        if ( !pls->color )
++        {
++	   r = g = b = pls->curcolor.r;
++        }
++	else
++	{
++	   r = pls->curcolor.r, g = pls->curcolor.g, b = pls->curcolor.b;
++	}
++	vga_setrgbcolor( r, g, b );
          break;
+     }
+ }
