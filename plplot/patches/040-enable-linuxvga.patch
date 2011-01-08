@@ -1,0 +1,13 @@
+Index: plplot-5.9.7/cmake/modules/drivers-init.cmake
+===================================================================
+--- plplot-5.9.7.orig/cmake/modules/drivers-init.cmake	2011-01-07 13:33:42.000000000 +0100
++++ plplot-5.9.7/cmake/modules/drivers-init.cmake	2011-01-07 13:33:49.000000000 +0100
+@@ -183,7 +183,7 @@
+   # fill), and it must be run as root.  Also, svgalib is not supported
+   # for some mainstream (e.g., intel) graphics chips anymore so it is
+   # difficult to even test this device.
+-  #"linuxvga:linuxvga:OFF:I:OFF"
++  "linuxvga:linuxvga:OFF:I:OFF"
+   # ljii is unmaintained and both the ljii and ljiip segfault on example 14.
+   # Retire this elderly device driver rather than fixing it.
+   #"ljii:ljii:OFF:F:OFF"

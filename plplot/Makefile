@@ -40,7 +40,7 @@ endef
 
 define Host/Compile
 	$(if $(CONFIG_PACKAGE_plplot-octave),$(Host/Compile/Octave),)
-	$(MAKE) -C $(HOST_BUILD_DIR)/build_dir -j2
+	$(MAKE) -C $(HOST_BUILD_DIR)/build_dir -j4
 endef
 
 define Host/Install/Octave
@@ -73,13 +73,24 @@ endef
 
 define Package/plplot
 $(call Package/plplot/Default)
-  DEPENDS:=+libltdl
+  DEPENDS:=+libltdl +zlib +libfreetype
   TITLE+=
 endef
 
 define Package/plplot/description
 $(call Package/plplot/Default/description)
  This package contains the Plplot library with a few file output devices.
+endef
+
+define Package/plplot-demo
+$(call Package/plplot/Default)
+  DEPENDS:= +plplot 
+  TITLE+= (Example Programs)
+endef
+
+define Package/plplot-demo/description
+$(call Package/plplot/Default/description)
+ This package contains the Plplot example programs.
 endef
 
 define Package/plplot-cxx
@@ -102,6 +113,17 @@ endef
 define Package/plplot-qt/description
 $(call Package/plplot/Default/description)
  This package contains the Plplot Qt visualization driver and Qt bindings.
+endef
+
+define Package/plplot-linuxvga
+$(call Package/plplot/Default)
+  DEPENDS:= +svgalib
+  TITLE+= (svgalib driver)
+endef
+
+define Package/plplot-linuxvga/description
+$(call Package/plplot/Default/description)
+ This package contains the SVGAlib based visualization driver for PLplot.
 endef
 
 define Package/plplot-tcl
@@ -127,11 +149,14 @@ $(call Package/plplot/Default/description)
  This package contains the Plplot bindings for GNU Octave
 endef
 
+TARGET_CFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
+
 CMAKE_FLAGS := \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DCMAKE_TOOLCHAIN_FILE=$(PKG_BUILD_DIR)/toolchain.cmake \
 	-DPKG_CONFIG_EXECUTABLE=$(STAGING_DIR_HOST)/bin/pkg-config \
 	-DDEFAULT_NO_DEVICES=ON \
+	-DUSE_RPATH=OFF \
 	-DPLD_ps=ON \
 	-DPLD_svg=ON \
 	-DPLD_mem=ON \
@@ -140,6 +165,10 @@ CMAKE_FLAGS := \
 	-DNaNAwareCCompiler=ON \
 	-DCMAKE_USE_NAMESPACE=ON \
 	-DCMAKE_NATIVE_BINARY_DIR=$(STAGING_DIR_HOST)/lib/$(PKG_NAME)-$(PKG_VERSION)/build_dir
+
+# everything done under unstall target!
+ifdef CONFIG_PACKAGE_plplot-demo
+endif
 
 ifdef CONFIG_PACKAGE_plplot-cxx
 	CMAKE_FLAGS += -DENABLE_cxx=ON
@@ -156,6 +185,11 @@ ifdef CONFIG_PACKAGE_plplot-qt
 		-DQT_RCC_EXECUTABLE=$(STAGING_DIR_HOST)/bin/rcc
 endif
 
+ifdef CONFIG_PACKAGE_plplot-linuxvga
+	CMAKE_FLAGS += \
+		-DPLD_linuxvga=ON
+endif
+
 ifdef CONFIG_PACKAGE_plplot-tcl
 	CMAKE_FLAGS +=	-DENABLE_tcl=ON 
 endif
@@ -163,7 +197,6 @@ endif
 ifdef CONFIG_PACKAGE_plplot-octave
 	CMAKE_FLAGS +=	\
 		-DENABLE_octave=ON \
-		-DUSE_RPATH=ON \
 		-DMKOCTFILE=$(STAGING_DIR)/usr/bin/mkoctfile \
 		-DOCTAVE_OCT_DIR=/usr/lib/octave/site/oct/$(OPTIMIZE_FOR_CPU)-openwrt-linux-gnu \
 		-Dmassage_LOCATION=$(STAGING_DIR_HOST)/lib/$(PKG_NAME)-$(PKG_VERSION)/build_dir/bindings/octave/massage
@@ -184,6 +217,9 @@ define Build/Configure
         # where is the target environment 
 	echo "SET(CMAKE_FIND_ROOT_PATH  $(STAGING_DIR))" >> $(PKG_BUILD_DIR)/toolchain.cmake
 	echo "SET(CMAKE_LIBRARY_PATH  $(STAGING_DIR)/usr/lib $(STAGING_DIR)/lib $(STAGING_DIR_ROOT)/lib)" >> $(PKG_BUILD_DIR)/toolchain.cmake
+	echo "SET(CMAKE_SKIP_BUILD_RPATH ON)" >> $(PKG_BUILD_DIR)/toolchain.cmake
+#	echo "SET(CMAKE_INSTALL_RPATH /usr/lib;/lib)"  >> $(PKG_BUILD_DIR)/toolchain.cmake
+
 	echo "SET(CMAKE_INCLUDE_PATH  $(STAGING_DIR)/usr/include)" >> $(PKG_BUILD_DIR)/toolchain.cmake
 
         # search for programs in the build host directories
@@ -197,9 +233,13 @@ define Build/Configure
 	cd $(PKG_BUILD_DIR) && cmake $(CMAKE_FLAGS)
 endef
 
+# todo: remove, once stabilized
+MAKE_FLAGS += -j4
+
 define Build/Compile
-	$(call Build/Compile/Default, VERBOSE=1)
+	$(call Build/Compile/Default, VERBOSE=1)	
 endef
+
 
 define Build/Install
 	$(call Build/Install/Default)
@@ -215,10 +255,10 @@ define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib*.so* \
 		$(1)/usr/lib/
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/plplotd.pc \
-		$(1)/usr/lib/pkgconfig/plplotd.pc
-	$(SED) 's,-I$$$${includedir},,g' $(1)/usr/lib/pkgconfig/plplotd.pc
-	$(SED) 's,-L$$$${libdir},,g' $(1)/usr/lib/pkgconfig/plplotd.pc
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/* \
+		$(1)/usr/lib/pkgconfig/
+#	$(SED) 's,-I$$$${includedir},,g' $(1)/usr/lib/pkgconfig/plplotd.pc
+#	$(SED) 's,-L$$$${libdir},,g' $(1)/usr/lib/pkgconfig/plplotd.pc
 endef
 
 define Package/plplot/install
@@ -233,6 +273,21 @@ define Package/plplot/install
 		$(1)/usr/share/plplot$(PKG_VERSION)/
 endef
 
+# ugly, but necessary: compiling demo-programs on install, using the just
+# installed libs.
+define Package/plplot-demo/install
+	$(SED) 's;/usr/lib/pkgconfig;$(STAGING_DIR)/usr/lib/pkgconfig;g' \
+		$(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/examples/c/Makefile
+	$(MAKE) -C $(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/examples/c/ \
+		 C_INCLUDE_PATH=$(STAGING_DIR)/usr/include/plplot \
+		 CC="$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_CPPFLAGS) $(EXTRA_CFLAGS) $(TARGET_LDFLAGS)"\
+		RPATHCMD=
+
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/examples/c/x??c \
+		$(1)/usr/bin/
+endef
+
 define Package/plplot-cxx/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libplplotcxxd.so* \
@@ -245,6 +300,13 @@ define Package/plplot-qt/install
 		$(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/lib/plplot$(PKG_VERSION)/driversd
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/plplot$(PKG_VERSION)/driversd/qt.{so,rc} \
+		 $(1)/usr/lib/plplot$(PKG_VERSION)/driversd/
+endef
+
+define Package/plplot-linuxvga/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_DIR) $(1)/usr/lib/plplot$(PKG_VERSION)/driversd
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/plplot$(PKG_VERSION)/driversd/linuxvga.{so,rc} \
 		 $(1)/usr/lib/plplot$(PKG_VERSION)/driversd/
 endef
 
@@ -279,8 +341,10 @@ endef
 
 $(eval $(call HostBuild))
 $(eval $(call BuildPackage,plplot))
+$(eval $(call BuildPackage,plplot-demo))
 $(eval $(call BuildPackage,plplot-cxx))
 $(eval $(call BuildPackage,plplot-qt))
+$(eval $(call BuildPackage,plplot-linuxvga))
 $(eval $(call BuildPackage,plplot-tcl))
 $(eval $(call BuildPackage,plplot-octave))
 
