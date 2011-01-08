@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=plplot
 PKG_VERSION:=5.9.7
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/$(PKG_NAME)/$(PKG_VERSION)%20Source
 PKG_MD5SUM:=c53c484ed93ce8446513c31707551b5b
@@ -117,7 +117,7 @@ endef
 
 define Package/plplot-linuxvga
 $(call Package/plplot/Default)
-  DEPENDS:= +svgalib
+  DEPENDS:= +plplot +svgalib
   TITLE+= (svgalib driver)
 endef
 
