@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=octave
 PKG_VERSION:=3.2.4
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.octave.org/pub/octave/
 PKG_MD5SUM:=90c39fa9e241ad2e978bcee4682a2ba9
@@ -68,7 +68,10 @@ endef
 # keep memory low and go without fftw (using smaller fftpack instead).
 # todo: verify how much RAM that actually safes
 # todo : need -enable-rpath?
+
+OCTAVE_LIB_DIR := /usr/lib
 CONFIGURE_ARGS += --without-x --without-fftw 
+CONFIGURE_VARS += octlibdir=$(OCTAVE_LIB_DIR)
 #MAKE_FLAGS += "LD=$(TARGET_CROSS)gcc -nostdlib" 
 
 define Build/Configure
@@ -76,12 +79,19 @@ define Build/Configure
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default,-j2)
+	$(call Build/Compile/Default,-j4)
 endef
+
+# octave emits warnings "timestamp in the future" that cannot be suppressed
+# early in the startup-process.  Give early as possible timestamps so we don't
+# see that warning.
+OCTAVE_SANITIZE_TIMESTAMPS := touch --date="Jan 01 01:00:00 AM CET 1970"
 
 define Build/Install
 	$(call Build/Install/Default)
-#	$(INSTALL_DATA) ./files/... $(PKG_INSTALL_DIR)/usr/share/octave/
+	$(INSTALL_DIR) $(PKG_INSTALL_DIR)/usr/share/octave/site/m/startup
+	$(INSTALL_DATA) ./files/octaverc \
+		$(PKG_INSTALL_DIR)/usr/share/octave/site/m/startup/
 endef
 
 define Build/InstallDev
@@ -90,11 +100,11 @@ define Build/InstallDev
 		$(1)/usr/include/octave-$(PKG_VERSION)/octave/
 
 	$(INSTALL_DIR) $(1)/usr/lib/octave
-	$(INSTALL_DIR) $(1)/usr/lib/octave-$(PKG_VERSION)
+	$(INSTALL_DIR) $(1)$(OCTAVE_LIB_DIR)
 	$(CP) -r $(PKG_INSTALL_DIR)/usr/lib/octave/* \
 		$(1)/usr/lib/octave/
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/octave-$(PKG_VERSION)/* \
-		$(1)/usr/lib/octave-$(PKG_VERSION)/
+	$(CP) $(PKG_INSTALL_DIR)$(OCTAVE_LIB_DIR)/* \
+		$(1)$(OCTAVE_LIB_DIR)/
 
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(CP) $(PKG_INSTALL_DIR)/usr/bin/octave-config-$(PKG_VERSION) \
@@ -110,12 +120,16 @@ endef
 define Package/octave/install
 	$(INSTALL_DIR) $(1)/usr
 	cp -r $(PKG_INSTALL_DIR)/usr/{bin,lib} $(1)/usr
+	find $(1)/usr/lib -name "*.oct" -type f | \
+		xargs $(OCTAVE_SANITIZE_TIMESTAMPS)
 endef
 
 define Package/octave-data/install
 	$(INSTALL_DIR) $(1)/
 	(cd $(PKG_INSTALL_DIR)/ && tar -cf - usr/share) \
 	    | (cd $(1)/ && tar -xvf -)
+	find $(1)/usr/share -name "*.m" -type f | \
+		xargs $(OCTAVE_SANITIZE_TIMESTAMPS)
 endef
 
 #$(eval $(call HostBuild))

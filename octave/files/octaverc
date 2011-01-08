@@ -1,0 +1,11 @@
+## System-wide startup file for Octave.
+##
+## This file should contain any commands that should be executed each
+## time Octave starts for every user at this site.
+
+# System clock of the embedded device running Octave is not neccessarily set
+# correctly.  Note that this doesn't shut off warnings output early in the
+# Octave startup sequence.  
+warning ("off", "Octave:future-time-stamp");
+
+
