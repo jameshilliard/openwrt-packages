@@ -21,7 +21,7 @@ define Package/MPlayer
   CATEGORY:=Multimedia
   TITLE:=MPlayer, the movie player
   URL:=http://www.mplayerhq.hu
-  DEPENDS:=+libjpeg +libpng +directfb +zlib +libsdl +libfreetype +fontconfig +libiconv +libmad @BUILD_PATENTED
+  DEPENDS:=+libjpeg +libpng +directfb +zlib +libsdl +libfreetype +fontconfig +libiconv +BUILD_PATENTED:libmad
 endef
 
 define Package/MPlayer/description
@@ -42,7 +42,9 @@ CONFIGURE_ARGS := --target=mips \
 		  --host-cc=gcc \
 		  --enable-fbdev \
 		  --confdir=/usr/share/mplayer \
-		  --enable-menu
+		  --enable-menu \
+		  --$(if $(CONFIG_BUILD_PATENTED),enable-mad,disable-mad) \
+		  --$(if $(CONFIG_BUILD_PATENTED),enable-mp3lib,disable-mp3lib)
 
 define Package/MPlayer/install
 	$(INSTALL_DIR) \
