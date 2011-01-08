@@ -79,7 +79,7 @@ define Build/Configure
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default,-j4)
+	$(call Build/Compile/Default)
 endef
 
 # octave emits warnings "timestamp in the future" that cannot be suppressed

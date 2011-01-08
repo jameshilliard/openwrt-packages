@@ -1,4 +1,4 @@
-## System-wide startup file for Octave.
+## System-wide startup file for -*-octave-*-.
 ##
 ## This file should contain any commands that should be executed each
 ## time Octave starts for every user at this site.
@@ -8,4 +8,8 @@
 # Octave startup sequence.  
 warning ("off", "Octave:future-time-stamp");
 
-
+# automatically enable plplot, if it is installed.  GNUplot is not going to
+# work on a terminal together with GNUplot anytime soon
+if exist("toggle_plplot_use")
+  toggle_plplot_use
+endif
