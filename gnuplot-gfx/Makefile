@@ -7,7 +7,7 @@
 # License GPLv2 or later.  NO WARRANTY.
 #
 
-# Todo: 
+# Todo for GGI support (svgalib works, so GGI is disabled for now)
 #
 # - After 21acf8eb423af24ca00835192239d50f2e4570a8 I once had proper plot
 #   display from Octave (but didn't came back to the console afterwards).
@@ -28,13 +28,13 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gnuplot-gfx
 PKG_ORIG_NAME=gnuplot
-PKG_VERSION:=4.4.0
-PKG_RELEASE:=5
+PKG_VERSION:=4.4.2
+PKG_RELEASE:=1
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_ORIG_NAME)-$(PKG_VERSION)
 HOST_BUILD_DIR = $(BUILD_DIR_HOST)/$(PKG_ORIG_NAME)-$(PKG_VERSION)
 PKG_SOURCE:=$(PKG_ORIG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/gnuplot
-PKG_MD5SUM:=e708665bd512153ad5c35252fe499059
+PKG_MD5SUM:=a4f0dd89f9b9334890464f687ddd9f50
 
 PKG_INSTALL=1
 PKG_BUILD_DEPENDS:= gnuplot-gfx/host libtool/host 
