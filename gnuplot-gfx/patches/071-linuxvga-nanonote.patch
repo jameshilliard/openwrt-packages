@@ -1,0 +1,13 @@
+Index: gnuplot-4.4.0/term/linux.trm
+===================================================================
+--- gnuplot-4.4.0.orig/term/linux.trm	2011-01-09 10:29:36.000000000 +0100
++++ gnuplot-4.4.0/term/linux.trm	2011-01-09 10:29:52.000000000 +0100
+@@ -94,7 +94,7 @@
+ #define _STRING_H_
+ #include <vga.h>
+ 
+-static int linux_vmode = G1024x768x256;		/* default mode */
++static int linux_vmode = G320x240x16M32;		/* default mode */
+ static int vgacolor[] = { 7, 8, 2, 3, 4, 5, 9, 14, 12, 15, 13, 10, 11, 1, 6 };
+ static int graphics_on = FALSE;
+ static vga_modeinfo *modeinfo;

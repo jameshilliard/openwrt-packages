@@ -1,19 +1,13 @@
 Index: gnuplot-4.4.0/term/linux.trm
 ===================================================================
---- gnuplot-4.4.0.orig/term/linux.trm	2011-01-06 16:42:27.000000000 +0100
-+++ gnuplot-4.4.0/term/linux.trm	2011-01-08 12:28:08.000000000 +0100
-@@ -94,8 +94,12 @@
- #define _STRING_H_
- #include <vga.h>
+--- gnuplot-4.4.0.orig/term/linux.trm	2011-01-09 10:20:04.000000000 +0100
++++ gnuplot-4.4.0/term/linux.trm	2011-01-09 10:45:51.000000000 +0100
+@@ -241,7 +241,7 @@
+ 	linetype = LT_BLACK;
+     if (linetype >= 13)
+ 	linetype %= 13;
+-    vga_setcolor(vgacolor[linetype + 2]);
++    vga_setegacolor(vgacolor[linetype + 2]);
+ }
  
--static int linux_vmode = G1024x768x256;		/* default mode */
--static int vgacolor[] = { 7, 8, 2, 3, 4, 5, 9, 14, 12, 15, 13, 10, 11, 1, 6 };
-+static int linux_vmode = G320x240x16M32;		/* default mode */
-+/* static int vgacolor[] = { 7, 8, 2, 3, 4, 5, 9, 14, 12, 15, 13, 10, 11, 1, 6 }; */
-+static int vgacolor[] = { 
-+   0xc0c0c0, 0x808080, 0x008000, 0x008080, 0x800000, 0x800080, 
-+   0x0000ff, 0xffff00, 0xff0000, 0xffffff, 0xff00ff, 0x00ff00, 
-+   0x00ffff, 0x000080, 0x808000 };
- static int graphics_on = FALSE;
- static vga_modeinfo *modeinfo;
- static int linux_startx, linux_starty, linux_lasty;
+ TERM_PUBLIC void
