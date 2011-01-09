@@ -1,0 +1,18 @@
+Index: plplot-5.9.7/src/plpage.c
+===================================================================
+--- plplot-5.9.7.orig/src/plpage.c	2011-01-09 14:23:21.000000000 +0100
++++ plplot-5.9.7/src/plpage.c	2011-01-09 14:37:42.000000000 +0100
+@@ -152,9 +152,12 @@
+ //	Reduce sizes with plot area (non-proportional, so that character
+ //	size doesn't get too small).
+ //
++    /* on small screens this won't work right.  decrease virtual page length
++     * to match the nanonote's small screen */
+     scale = 0.5 *
+             ( ( plsc->phyxma - plsc->phyxmi ) / plsc->xpmm +
+-              ( plsc->phyyma - plsc->phyymi ) / plsc->ypmm ) / 200.0;
++              ( plsc->phyyma - plsc->phyymi ) / plsc->ypmm ) / 160.0; 
++    /* was: /200.0 */
+ 
+     // Take account of scaling caused by change of orientation
+     if ( plsc->difilt && PLDI_ORI )
