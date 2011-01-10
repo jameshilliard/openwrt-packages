@@ -89,6 +89,7 @@ define Package/gcc-mips/install
 	cp -rf $(TOOLCHAIN_DIR)/usr/include/* $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)/include
 	cp -rf $(TOOLCHAIN_DIR)/usr/lib/*.{a,la,o} $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
 	cp -rf $(TOOLCHAIN_DIR)/lib/* $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
+	cp $(STAGING_DIR)/usr/lib/libopcodes*.so $(1)/usr/lib
 endef
 
 $(eval $(call BuildPackage,gcc-mips))
