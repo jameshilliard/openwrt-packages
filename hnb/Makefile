@@ -35,7 +35,9 @@ endef
 
 define Package/hnb/install
 	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_DIR) $(1)/root
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/hnb $(1)/usr/bin/
+	$(INSTALL_DATA) ./files/hnbrc.example $(1)/root/.hnbrc
 endef
 
 $(eval $(call BuildPackage,hnb))
