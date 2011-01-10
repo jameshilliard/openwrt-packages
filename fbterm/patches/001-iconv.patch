@@ -1,0 +1,36 @@
+diff -ur fbterm-1.6.orig/src/lib/io.cpp fbterm-1.6/src/lib/io.cpp
+--- fbterm-1.6.orig/src/lib/io.cpp	2011-01-10 13:13:05.158606303 +0300
++++ fbterm-1.6/src/lib/io.cpp	2011-01-10 14:06:58.512695530 +0300
+@@ -119,10 +119,10 @@
+ 	if (!strcasecmp(up, down)) return;
+ 
+ 	mCodecRead = iconv_open(up, down);
+-	if (mCodecRead == (void*)-1) mCodecRead = 0;
++	if (mCodecRead == (iconv_t)(-1)) mCodecRead = 0;
+ 
+ 	mCodecWrite = iconv_open(down, up);
+-	if (mCodecWrite == (void*)-1) mCodecWrite = 0;
++	if (mCodecWrite == (iconv_t)(-1)) mCodecWrite = 0;
+ }
+ 
+ #define BUF_SIZE 10240
+diff -ur fbterm-1.6.orig/src/lib/io.h fbterm-1.6/src/lib/io.h
+--- fbterm-1.6.orig/src/lib/io.h	2011-01-10 13:13:05.158606303 +0300
++++ fbterm-1.6/src/lib/io.h	2011-01-10 14:08:33.247605712 +0300
+@@ -23,6 +23,7 @@
+ 
+ #include "type.h"
+ #include "instance.h"
++#include <iconv.h>
+ 
+ class IoPipe {
+ public:
+@@ -47,7 +48,7 @@
+ 	void writeIo(s8 *buf, u32 len);
+ 
+ 	s32 mFd;
+-	void *mCodecRead, *mCodecWrite;
++	iconv_t mCodecRead, mCodecWrite;
+ 	s8 mBufRead[16], mBufWrite[16];
+ 	u32 mBufLenRead, mBufLenWrite;
+ };
