@@ -1,0 +1,15 @@
+# Syntax:
+# # A comment
+# - Section name
+# feedid http://wherever.com/feed/atom
+
+#- Còmic
+#dilbert http://feeds.feedburner.com/DilbertDailyStrip
+#ru_nichtlustig http://www.livejournal.com/users/ru_nichtlustig/data/rss
+
+- Informàtica
+lwn http://lwn.net/headlines/newrss
+#LOR http://feeds.feedburner.com/org/LOR?format=xml
+
+- Qi Hardware
+Qi_Hardware http://en.qi-hardware.com/feed/rss20.xml
