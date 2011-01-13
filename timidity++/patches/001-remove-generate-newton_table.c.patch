@@ -1,0 +1,15 @@
+diff --git a/timidity/Makefile.am b/timidity/Makefile.am
+index a411d87..5d031ca 100644
+--- a/timidity/Makefile.am
++++ b/timidity/Makefile.am
+@@ -319,10 +319,6 @@ if WATCOM_C
+ newton_table.c: calcnewt$(EXEEXT)
+ 	./calcnewt > $@
+ 
+-else
+-newton_table.c: calcnewt$(EXEEXT)
+-	./calcnewt > $@
+-
+ endif
+ endif
+ 
