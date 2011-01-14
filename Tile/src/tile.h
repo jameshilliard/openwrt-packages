@@ -8,6 +8,8 @@
 #include <QMessageBox>
 #include <QKeyEvent>
 
+extern bool isRunning;
+
 namespace Ui {
     class Tile;
 }
@@ -32,6 +34,7 @@ public slots:
     bool eventFilter(QObject *obj, QEvent *event);
     void keyUp(QPushButton *button);
     void keyDown(QPushButton *button);
+    bool isSolved();
 
 protected:
     void changeEvent(QEvent *e);

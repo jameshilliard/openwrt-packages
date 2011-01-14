@@ -159,6 +159,20 @@ void Tile::swapButtons(QPushButton *button, QPushButton *button_neighbour) {
     button->setText("16");
     button_neighbour->show();
     button_neighbour->setFocus();
+    //qDebug() << isSolved();
+    if (isRunning && isSolved()) {
+        switch (QMessageBox::information(this,
+                                 "Solved!",
+                                 "Hooray, you solved it!\nShuffle again?",
+                                 "&Yes","&No"))
+        {
+        case 0:
+            Shuffle();
+        default:
+            isRunning = 0;
+            break;
+        }
+    }
 }
 
 void Tile::Reset()
@@ -203,6 +217,8 @@ void Tile::Shuffle()
     }
     if (!isSolvable()) {
         Shuffle();
+    } else {
+        isRunning = 1;
     }
 }
 
@@ -323,32 +339,46 @@ bool Tile::eventFilter(QObject *obj, QEvent *event)
     return result;
 }//eventFilter
 
-void Tile::keyUp(QPushButton *button) {
-       int id = button->property("id").toInt();
-       QPushButton *button_up;
-       if (id < 5) {
-           button_up = idtoButton(id+12);
-       } else {
-           button_up = idtoButton(id-4);
-       }
-       if (button_up->isHidden()) {
-           keyUp(button_up);
-       } else {
-           button_up->setFocus();
-       }
+void Tile::keyUp(QPushButton *button)
+{
+    int id = button->property("id").toInt();
+    QPushButton *button_up;
+    if (id < 5) {
+        button_up = idtoButton(id+12);
+    } else {
+        button_up = idtoButton(id-4);
+    }
+    if (button_up->isHidden()) {
+        keyUp(button_up);
+    } else {
+        button_up->setFocus();
+    }
 }
 
-void Tile::keyDown(QPushButton *button) {
-       int id = button->property("id").toInt();
-       QPushButton *button_down;
-       if (id > 12) {
-           button_down = idtoButton(id-12);
-       } else {
-           button_down = idtoButton(id+4);
-       }
-       if (button_down->isHidden()) {
-           keyDown(button_down);
-       } else {
-           button_down->setFocus();
-       }
+void Tile::keyDown(QPushButton *button)
+{
+    int id = button->property("id").toInt();
+    QPushButton *button_down;
+    if (id > 12) {
+        button_down = idtoButton(id-12);
+    } else {
+        button_down = idtoButton(id+4);
+    }
+    if (button_down->isHidden()) {
+        keyDown(button_down);
+    } else {
+        button_down->setFocus();
+    }
+}
+
+bool Tile::isSolved()
+{
+    QPushButton *button;
+    for (int i = 1; i < 17; i++) {
+        button = idtoButton(i);
+        if (button->text() != button->property("id")) {
+            return 0;
+        }
+    }
+    return 1;
 }
