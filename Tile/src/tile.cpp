@@ -159,8 +159,8 @@ void Tile::swapButtons(QPushButton *button, QPushButton *button_neighbour) {
     button->setText("16");
     button_neighbour->show();
     button_neighbour->setFocus();
-    //qDebug() << isSolved();
     if (isRunning && isSolved()) {
+        isRunning = 0;
         switch (QMessageBox::information(this,
                                  "Solved!",
                                  "Hooray, you solved it!\nShuffle again?",
@@ -169,7 +169,6 @@ void Tile::swapButtons(QPushButton *button, QPushButton *button_neighbour) {
         case 0:
             Shuffle();
         default:
-            isRunning = 0;
             break;
         }
     }
