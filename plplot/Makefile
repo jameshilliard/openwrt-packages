@@ -9,14 +9,15 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=plplot
 PKG_VERSION:=5.9.7
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/$(PKG_NAME)/$(PKG_VERSION)%20Source
 PKG_MD5SUM:=c53c484ed93ce8446513c31707551b5b
 PKG_INSTALL:=1
 PKG_FIXUP:=libtool
+PKG_BUILD_PARALLEL:=1
 
-PKG_BUILD_DEPENDS:= plplot/host libtool/host libltdl/host qt4 qt4-gui
+PKG_BUILD_DEPENDS:= plplot/host libtool/host libltdl/host swig/host
 #@INSTALL_GFORTRAN 
 
 include $(INCLUDE_DIR)/host-build.mk
@@ -137,6 +138,16 @@ $(call Package/plplot/Default/description)
  This package contains the Plplot bindings for Tcl
 endef
 
+define Package/plplot-lua
+$(call Package/plplot/Default)
+  DEPENDS:= +plplot +liblua
+  TITLE+= (Lua bindings)
+endef
+
+define Package/plplot-lua/description
+$(call Package/plplot/Default/description)
+ This package contains the Plplot bindings for Lua
+endef
 
 define Package/plplot-octave
 $(call Package/plplot/Default)
@@ -152,6 +163,7 @@ endef
 TARGET_CFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 CMAKE_FLAGS := \
+	-Wdev \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DCMAKE_TOOLCHAIN_FILE=$(PKG_BUILD_DIR)/toolchain.cmake \
 	-DPKG_CONFIG_EXECUTABLE=$(STAGING_DIR_HOST)/bin/pkg-config \
@@ -190,6 +202,12 @@ ifdef CONFIG_PACKAGE_plplot-linuxvga
 		-DPLD_linuxvga=ON
 endif
 
+ifdef CONFIG_PACKAGE_plplot-lua
+	CMAKE_FLAGS +=	\
+		-DSWIG_EXECUTABLE=$(STAGING_DIR_HOST)/bin/swig \
+		-DENABLE_lua=ON
+endif
+
 ifdef CONFIG_PACKAGE_plplot-tcl
 	CMAKE_FLAGS +=	-DENABLE_tcl=ON 
 endif
@@ -224,6 +242,7 @@ define Build/Configure
 
         # search for programs in the build host directories
 	echo "SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)" >> $(PKG_BUILD_DIR)/toolchain.cmake
+	echo "SET(CMAKE_PROGRAM_PATH $(STAGING_DIR_HOST)/bin)" >> $(PKG_BUILD_DIR)/toolchain.cmake
 
         # for libraries and headers in the target directories
 	echo "SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)" >> $(PKG_BUILD_DIR)/toolchain.cmake
@@ -233,11 +252,8 @@ define Build/Configure
 	cd $(PKG_BUILD_DIR) && cmake $(CMAKE_FLAGS)
 endef
 
-# todo: remove, once stabilized
-MAKE_FLAGS += -j4
-
 define Build/Compile
-	$(call Build/Compile/Default, VERBOSE=1)	
+	$(call Build/Compile/Default, VERBOSE=1 -j4)	
 endef
 
 
@@ -310,6 +326,11 @@ define Package/plplot-linuxvga/install
 		 $(1)/usr/lib/plplot$(PKG_VERSION)/driversd/
 endef
 
+define Package/plplot-lua/install
+	$(INSTALL_DIR) $(1)/usr/lib/lua
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lua/*/plplot/plplotluac.so $(1)/usr/lib/lua/
+endef
+
 define Package/plplot-tcl/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libplplottcltkd.so* \
@@ -323,6 +344,11 @@ define Package/plplot-tcl/install
 		$(1)/usr/share/plplot$(PKG_VERSION)/tcl/
 endef
 
+define Package/plplot-tcl/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libplplottcltkd.so* \
+		$(1)/usr/lib/
+endef
 
 define Package/plplot-octave/install
 	$(INSTALL_DIR) $(1)/usr/lib
@@ -346,6 +372,7 @@ $(eval $(call BuildPackage,plplot-cxx))
 $(eval $(call BuildPackage,plplot-qt))
 $(eval $(call BuildPackage,plplot-linuxvga))
 $(eval $(call BuildPackage,plplot-tcl))
+$(eval $(call BuildPackage,plplot-lua))
 $(eval $(call BuildPackage,plplot-octave))
 
 

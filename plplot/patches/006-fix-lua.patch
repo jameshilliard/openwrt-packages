@@ -1,0 +1,49 @@
+Index: plplot-5.9.7/cmake/modules/lua.cmake
+===================================================================
+--- plplot-5.9.7.orig/cmake/modules/lua.cmake	2011-01-15 16:08:33.000000000 +0100
++++ plplot-5.9.7/cmake/modules/lua.cmake	2011-01-15 16:12:37.000000000 +0100
+@@ -75,8 +75,8 @@
+   find_program(LUA_EXECUTABLE lua)
+   if(NOT LUA_EXECUTABLE)
+     message(STATUS "WARNING: "
+-      "Lua executable not found. Disabling Lua bindings")
+-    set(ENABLE_lua OFF CACHE BOOL "Enable Lua bindings" FORCE)
++      "Lua executable not found.  But no problem.")
++    #set(ENABLE_lua OFF CACHE BOOL "Enable Lua bindings" FORCE)
+   endif(NOT LUA_EXECUTABLE)
+ endif(ENABLE_lua)
+ 
+@@ -90,22 +90,22 @@
+     ERROR_STRIP_TRAILING_WHITESPACE
+     )
+   #message("(preliminary) LUA_VERSION = ${LUA_VERSION}")
+-  string(REGEX MATCH "[0-9]\\.[0-9]\\.[0-9]" LUA_VERSION "${LUA_VERSION}")
++#  string(REGEX MATCH "[0-9]\\.[0-9]\\.[0-9]" LUA_VERSION "${LUA_VERSION}")
+   #message("(dotted triplet) LUA_VERSION = ${LUA_VERSION}")
+   # Reduce to just major.minor for purposes of comparison.
+-  string(SUBSTRING "${LUA_VERSION}" 0 3 LUA_VERSION)
+-  message(STATUS "LUA_VERSION = ${LUA_VERSION}")
+-  set(LUA_VERSION_VALID)
+-  if(${LUA_VERSION} STREQUAL "5.0" AND LUA50_FOUND)
+-    set(LUA_VERSION_VALID ON)
+-  elseif(${LUA_VERSION} STREQUAL "5.1" AND LUA51_FOUND)
+-    set(LUA_VERSION_VALID ON)
+-  endif(${LUA_VERSION} STREQUAL "5.0" AND LUA50_FOUND)
++#  string(SUBSTRING "${LUA_VERSION}" 0 3 LUA_VERSION)
++#  message(STATUS "LUA_VERSION = ${LUA_VERSION}")
++  set(LUA_VERSION_VALID ON)
++#  if(${LUA_VERSION} STREQUAL "5.0" AND LUA50_FOUND)
++#    set(LUA_VERSION_VALID ON)
++#  elseif(${LUA_VERSION} STREQUAL "5.1" AND LUA51_FOUND)
++#    set(LUA_VERSION_VALID ON)
++#  endif(${LUA_VERSION} STREQUAL "5.0" AND LUA50_FOUND)
+ 
+   if(NOT LUA_VERSION_VALID)
+     message(STATUS "WARNING: "
+-      "Lua executable found but version not consistent with library. Disabling Lua bindings")
+-    set(ENABLE_lua OFF CACHE BOOL "Enable Lua bindings" FORCE)
++      "Lua executable found but version not consistent with library.  Continuing anyways.")
++   # set(ENABLE_lua OFF CACHE BOOL "Enable Lua bindings" FORCE)
+   endif(NOT LUA_VERSION_VALID)
+ endif(ENABLE_lua)
+ 
