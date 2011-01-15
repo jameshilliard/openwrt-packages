@@ -7,6 +7,7 @@
 #endif
 
 bool isRunning = 0;
+int Moves = 0;
 
 int main(int argc, char *argv[])
 {

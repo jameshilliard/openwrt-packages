@@ -159,6 +159,10 @@ void Tile::swapButtons(QPushButton *button, QPushButton *button_neighbour) {
     button->setText("16");
     button_neighbour->show();
     button_neighbour->setFocus();
+    if (isRunning) {
+        Moves++;
+        updateMoves();
+    }
     if (isRunning && isSolved()) {
         isRunning = 0;
         switch (QMessageBox::information(this,
@@ -176,6 +180,9 @@ void Tile::swapButtons(QPushButton *button, QPushButton *button_neighbour) {
 
 void Tile::Reset()
 {
+    isRunning = 0;
+    Moves=0;
+    updateMoves();
     for (int i = 1; i < 16; i++) {
         QPushButton *button = idtoButton(i);
         QString str;
@@ -380,4 +387,10 @@ bool Tile::isSolved()
         }
     }
     return 1;
+}
+
+void Tile::updateMoves()
+{
+    QString mooves;
+    ui->moves->setText("Moves:\n"+mooves.setNum(Moves));
 }

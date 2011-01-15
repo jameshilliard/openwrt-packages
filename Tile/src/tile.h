@@ -9,6 +9,7 @@
 #include <QKeyEvent>
 
 extern bool isRunning;
+extern int Moves;
 
 namespace Ui {
     class Tile;
@@ -35,6 +36,7 @@ public slots:
     void keyUp(QPushButton *button);
     void keyDown(QPushButton *button);
     bool isSolved();
+    void updateMoves();
 
 protected:
     void changeEvent(QEvent *e);
