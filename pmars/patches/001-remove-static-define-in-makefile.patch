@@ -1,5 +1,5 @@
 diff --git a/src/Makefile b/src/Makefile
-index 99c00bb..17a51ed 100644
+index 99c00bb..0630be1 100644
 --- a/src/Makefile
 +++ b/src/Makefile
 @@ -1,5 +1,5 @@
@@ -9,7 +9,7 @@ index 99c00bb..17a51ed 100644
  #CC = cc				# if you don't have gcc
  # Configuration options:
  #
-@@ -16,11 +16,11 @@ CC = gcc			# req. for linux
+@@ -16,11 +16,12 @@ CC = gcc			# req. for linux
  # (6)   -DXWINGRAPHX    1                   X-Windows graphics (UNIX)
  # (7)   -DPERMUTATE                         enables -P switch
  
@@ -17,19 +17,22 @@ index 99c00bb..17a51ed 100644
 +CFLAGS := $(CFLAGS) -O -DEXT94 -DPERMUTATE -DCURSESGRAPHX
  LFLAGS = -x
 -# LIB = -lcurses -ltermlib		# enable this one for curses display
-+LIB = -lncurses -ltermlib		# enable this one for curses display
++# LIB = -lncurses -ltermlib		# enable this one for curses display
++LIB = -lncurses
  # LIB = -lvgagl -lvga			# enable this one for Linux/SVGA
 -LIB = -L/usr/X11R6/lib -lX11		# enable this one for X11
 +# LIB = -L/usr/X11R6/lib -lX11		# enable this one for X11
  
  .SUFFIXES: .o .c .c~ .man .doc .6
  MAINFILE = pmars
-@@ -38,7 +38,7 @@ flags:
+@@ -37,8 +38,8 @@ flags:
+ 
  $(MAINFILE): $(OBJ1) $(OBJ2) $(OBJ3)
  	@echo Linking $(MAINFILE)
- 	@$(CC) -o $(MAINFILE) $(OBJ1) $(OBJ2) $(OBJ3) $(LIB)
+-	@$(CC) -o $(MAINFILE) $(OBJ1) $(OBJ2) $(OBJ3) $(LIB)
 -	@strip $(MAINFILE)
-+	@$(STRIP) $(MAINFILE)
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $(MAINFILE) $(OBJ1) $(OBJ2) $(OBJ3) $(LIB)
++	$(STRIP) $(MAINFILE)
  	@echo done
  
  token.o asm.o disasm.o: asm.h

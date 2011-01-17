@@ -16,8 +16,8 @@ define Package/pmars
 	TITLE:=Pmars
 	SECTION:=games
 	CATEGORY:=Games
-	DEPENDS:=@BROKEN
-	URL:=
+	DEPENDS:=+libncurses
+	URL:=http://corewar.co.uk/pmars/
 endef
 PKG_BUILD_DIR:=$(BUILD_DIR)/pmars-$(PKG_VERSION)
 define Package/pmars/description
@@ -28,10 +28,6 @@ TARGET_LDFLAGS+= \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 MAKE_FLAGS += -C src
-
-define Package/pmars/Build/Compile
-	$(call Build/Compile/Default)
-endef
 
 define Package/pmars/install
 	$(INSTALL_DIR) $(1)/usr/bin
