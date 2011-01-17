@@ -38,7 +38,7 @@ CONFIGURE_ARGS += \
 	--with-sdl-exec-prefix=$(STAGING_DIR)
 
 CONFIGURE_VARS += \
-	LIBS="-lSDL -ldirect -ldirectfb -lfusion"
+	LIBS="-lSDL -ldirect -ldirectfb -lfusion -liconv"
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include/SDL $(1)/usr/lib/pkgconfig
