@@ -21,6 +21,7 @@ PKG_SOURCE_VERSION:=$(PKG_REV)
 include $(INCLUDE_DIR)/package.mk
 
 define Package/imgv
+	MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=SDL-based image viewer

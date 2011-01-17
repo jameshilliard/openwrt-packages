@@ -15,6 +15,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 include $(INCLUDE_DIR)/package.mk
 
 define Package/libnsfb
+	MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
 	SECTION:=libs
 	CATEGORY:=Libraries
 	TITLE:=LibNSFB is a framebuffer abstraction library, written in C

@@ -29,6 +29,7 @@ TARGET_LDFLAGS+= \
 	-L$(STAGING_DIR)/usr/lib/libiconv/lib
 
 define Package/ncmpc
+    MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
     TITLE:=ncmpc
     SECTION:=sound
     CATEGORY:=Sound

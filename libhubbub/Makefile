@@ -11,6 +11,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/hubbub-$(PKG_VERSION)
 include $(INCLUDE_DIR)/package.mk
 
 define Package/libhubbub
+	MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
 	SECTION:=libs
 	CATEGORY:=Libraries
 	TITLE:=Hubbub is an HTML5 compliant parsing library

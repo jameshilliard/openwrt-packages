@@ -19,6 +19,7 @@ PKG_SOURCE_VERSION:=$(PKG_REV)
 include $(INCLUDE_DIR)/package.mk
 
 define Package/triggersad
+  MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=handle input events and run configured programs

@@ -15,6 +15,7 @@ PKG_BUILD_DIR=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/
 include $(INCLUDE_DIR)/package.mk
 
 define Package/tunec
+  MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=A command line guitar tuner for linux

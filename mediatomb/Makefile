@@ -11,6 +11,7 @@ PKG_RELEASE:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/mediatomb
+    MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
     TITLE:=mediatomb
     SECTION:=utils
     CATEGORY:=Utilities

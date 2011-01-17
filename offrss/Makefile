@@ -12,6 +12,7 @@ UNPACK_CMD=unzip $(DL_DIR)/$(PKG_SOURCE) -d $(1)/../
 include $(INCLUDE_DIR)/package.mk
 
 define Package/offrss
+	MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
 	SECTION:=network
 	CATEGORY:=Network
 	TITLE:=Offrss

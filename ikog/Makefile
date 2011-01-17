@@ -10,6 +10,7 @@ UNPACK_CMD=zcat $(DL_DIR)/$(PKG_SOURCE) > $(1)/ikog.py
 include $(INCLUDE_DIR)/package.mk
 
 define Package/ikog
+    MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
     TITLE:=ikog
     SECTION:=utils
     CATEGORY:=Utilities

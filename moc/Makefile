@@ -27,6 +27,7 @@ PKG_INSTALL:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/moc
+  MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
   SECTION:=sound
   CATEGORY:=Sound
   DEPENDS:=+libcurl +BUILD_PATENTED:libmad +libvorbis +libncurses +libiconv +alsa-utils +libid3tag +libflac

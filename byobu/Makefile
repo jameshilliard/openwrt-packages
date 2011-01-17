@@ -19,6 +19,7 @@ PKG_INSTALL:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/byobu
+    MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
     SECTION:=utils
     CATEGORY:=Utilities
     TITLE:=a Japanese term for decorative, multi-panel screens that serve as folding room dividers

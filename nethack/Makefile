@@ -18,6 +18,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-3.4.3
 include $(INCLUDE_DIR)/package.mk
 
 define Package/nethack
+    MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
     SECTION:=games
     CATEGORY:=Games
     DEPENDS:=nethack

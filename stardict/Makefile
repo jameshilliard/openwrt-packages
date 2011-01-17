@@ -20,6 +20,7 @@ PKG_INSTALL:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/stardict/Default
+    MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
     SECTION:=utils
     CATEGORY:=Utilities
     DEPENDS:=stardict

@@ -16,6 +16,7 @@ PKG_RELEASE:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/offlineimap
+  MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=offlineimap

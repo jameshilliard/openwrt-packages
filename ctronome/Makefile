@@ -16,6 +16,7 @@ PKG_INSTALL:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/ctronome
+    MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
     TITLE:=console metronome software
     SECTION:=utils
     CATEGORY:=Utilities

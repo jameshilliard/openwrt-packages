@@ -6,6 +6,7 @@ PKG_VERSION:=1.0
 include $(INCLUDE_DIR)/package.mk
 
 define Package/nanonote-example-files
+    MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
     TITLE:=nanonote-example-files
     SECTION:=utils
     CATEGORY:=Utilities

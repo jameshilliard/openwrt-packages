@@ -16,6 +16,7 @@ PKG_INSTALL:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/netsurf
+	MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
 	SUBMENU:=Web
 	SECTION:=network
 	CATEGORY:=Network

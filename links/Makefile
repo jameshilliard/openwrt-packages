@@ -21,6 +21,7 @@ PKG_INSTALL:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/links
+    MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
     TITLE:=Text and graphics WWW browser
     SUBMENU:=Web
     SECTION:=net

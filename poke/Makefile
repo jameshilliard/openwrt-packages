@@ -17,6 +17,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/poke
   SECTION:=utils
   CATEGORY:=Utilities
+  MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
   TITLE:=Read or write any CPU register
   URL:=http://svn.openmoko.org/developers/werner/poke
 endef

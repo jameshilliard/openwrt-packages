@@ -11,6 +11,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 include $(INCLUDE_DIR)/package.mk
 
 define Package/libcss
+	MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
 	SECTION:=libs
 	CATEGORY:=Libraries
 	TITLE:=LibCSS is a CSS parser and selection engine, written in C
