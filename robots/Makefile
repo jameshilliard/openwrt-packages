@@ -22,18 +22,19 @@ define Package/robots
   CATEGORY:=Utilities
   TITLE:=An robots application
   URL:=http://pyneo.org/t/robots
-  DEPENDS:=@BROKEN +libncurses
+  DEPENDS:=+libncurses
 endef
 
 define Package/robots/description
-A robots application
+  A robots application
 endef
 
 define Package/robots/install
-	$(INSTALL_DIR) $(1)/usr/games
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_DIR) $(1)/usr/games/lib
 	$(INSTALL_BIN) \
 		$(PKG_INSTALL_DIR)/usr/games/robots \
-		$(1)/usr/games/
+		$(1)/usr/bin/
 endef
 
 $(eval $(call BuildPackage,robots))
