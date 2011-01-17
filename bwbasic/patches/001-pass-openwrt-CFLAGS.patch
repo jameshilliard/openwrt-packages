@@ -1,0 +1,28 @@
+diff --git a/Makefile.ncu b/Makefile.ncu
+index e852faf..d5b5b2d 100644
+--- a/Makefile.ncu
++++ b/Makefile.ncu
+@@ -19,13 +19,13 @@ DEFS =  -DHAVE_STRING=1 -DHAVE_STDLIB=1 -DHAVE_RAISE=1 -DHAVE_UNISTD=1
+ 
+ # Revised by JBV
+ #CFLAGS = -O
+-CFLAGS = -g -ansi
++CFLAGS += -g -ansi
+ 
+ # Revised by JBV
+ #LDFLAGS = -s
+ 
+ prefix = /usr/local
+-exec_prefix = $(prefix)
++exec_prefix = $(DESTDIR)$(prefix)
+ bindir = $(exec_prefix)/bin
+ 
+ SHELL = /bin/sh
+@@ -87,6 +87,7 @@ $(OFILES):      $(HFILES)
+ 	$(CC) -c $(CPPFLAGS) -I$(srcdir) $(DEFS) $(CFLAGS) $<
+ 
+ install: all
++	mkdir -p $(bindir)
+ 	$(INSTALL_PROGRAM) bwbasic $(bindir)/bwbasic
+ 
+ uninstall:
