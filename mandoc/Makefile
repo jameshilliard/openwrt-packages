@@ -20,7 +20,6 @@ define Package/mandoc
   CATEGORY:=Utilities
   TITLE:=Manual pages formatter.
   URL:=http://mdocml.bsd.lv/
-  DEPENDS:=@BROKEN
 endef
 
 define Package/mandoc/description
