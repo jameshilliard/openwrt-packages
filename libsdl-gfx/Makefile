@@ -33,7 +33,7 @@ endef
 TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
 
 CONFIGURE_VARS += \
-	LIBS="-lSDL -ldirect -ldirectfb -lfusion"
+	LIBS="-lSDL -ldirect -ldirectfb -lfusion -liconv"
 
 define Build/Configure
     $(call Build/Configure/Default, \
