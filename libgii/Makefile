@@ -47,6 +47,8 @@ CONFIGURE_ARGS += \
 	--enable-mutexes=builtin \
 	--disable-x
 
+MAKE_FLAGS += X_CFLAGS=$(STAGING_DIR)/usr/include
+
 define Build/Configure
 	$(call Build/Configure/Default)
 endef 
