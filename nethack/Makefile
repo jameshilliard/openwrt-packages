@@ -56,19 +56,15 @@ endef
 define Package/nethack/install
 	$(INSTALL_DIR) \
 		$(1)/usr/bin \
-		$(1)/usr/lib/nethackdir
+		$(1)/usr/games/lib/nethackdir
 
 	$(INSTALL_BIN) \
 		$(PKG_BUILD_DIR)/src/nethack \
-		$(1)/usr/lib/nethackdir/
-
-	$(CP) \
-		$(PKG_BUILD_DIR)/jemarch-bin/nethack-3.4.3-nanonote-bin/lib/nethackdir/*
-		$(1)/usr/lib/nethackdir/
-
-	$(CP) \
-		$(PKG_BUILD_DIR)/src/nethack \
 		$(1)/usr/bin/
+
+	$(CP) \
+		$(PKG_BUILD_DIR)/jemarch-bin/nethack-3.4.3-nanonote-bin/lib/nethackdir/* \
+		$(1)/usr/games/lib/nethackdir
 endef
 
 $(eval $(call BuildPackage,nethack))

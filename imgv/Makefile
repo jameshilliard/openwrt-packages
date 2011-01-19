@@ -29,7 +29,7 @@ define Package/imgv
 	URL:=http://projects.qi-hardware.com/index.php/p/imgv/
 endef
 
-
+TARGET_CFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 MAKE_VARS += TARGETPATH=$(STAGING_DIR)
 
 define Package/imgv/install
