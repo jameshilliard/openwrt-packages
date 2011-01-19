@@ -1,3 +1,4 @@
 title=bc
 icon=skin:icons/calc.png
+params=-l
 exec=/usr/bin/bc
