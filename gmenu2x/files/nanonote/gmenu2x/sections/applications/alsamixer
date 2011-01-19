@@ -1,4 +1,4 @@
 title=alsamixer
-icon=skin:icons/utilities-terminal.png
+icon=skin:icons/alsamixer.png
 exec=/usr/bin/alsamixer
 params=-Vall
