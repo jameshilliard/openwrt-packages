@@ -19,7 +19,7 @@ define Package/nlove
 	SECTION:=games
 	CATEGORY:=Games
 	TITLE:=LÖVE
-	DEPENDS:=+libphysfs +libsdl +libsdl-image +libsdl-gfx +libsdl-mixer +lua +libvorbisidec
+	DEPENDS:=+libphysfs +libsdl +libsdl-image +libsdl-gfx +libsdl-mixer +lua +libvorbisidec +libvorbis
 	URL:=http://bartbes.ath.cx/
 endef
 
@@ -37,7 +37,6 @@ define Build/Compile
 	 PLATFORM="NanoNote" \
 	platform/nlove/build.sh);$
 endef
-
 
 define Package/nlove/install
 	$(INSTALL_DIR) $(1)/usr/bin
