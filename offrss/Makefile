@@ -21,10 +21,10 @@ define Package/offrss
 endef
 
 TARGET_CFLAHGS += -I$(STAGING_DIR)/usr/iniclude
-TARGET_LDFLAGS += -Wl,-rpath-link -Wl,$(STAGING_DIR)/usr/lib
+TARGET_LDFLAGS += -Wl,-rpath-link -Wl,$(STAGING_DIR)/usr/lib -liconv
 
 define Package/offrss/description
-	mRss is a C library for parsing, writing and creating RSS/ATOM files or streams.
+	offrss - Offline RSS reader
 endef
 
 define Build/Compile
