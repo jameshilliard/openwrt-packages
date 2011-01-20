@@ -14,7 +14,7 @@ define Package/ikog
     TITLE:=ikog
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPNEDS:=python
+    DEPENDS:=python
 endef
 
 define Package/ikog/description

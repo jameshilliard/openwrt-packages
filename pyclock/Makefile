@@ -14,7 +14,7 @@ define Package/pyclock
     TITLE:=pyclock
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPNEDS:=+python +pygame
+    DEPENDS:=+python +pygame
 endef
 
 define Package/pyclock/description

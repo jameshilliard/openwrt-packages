@@ -15,7 +15,7 @@ define Package/mediatomb
     TITLE:=mediatomb
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPNEDS:=
+    DEPENDS:=
 endef
 
 define Package/mediatomb/description

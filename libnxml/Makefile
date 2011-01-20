@@ -16,7 +16,7 @@ define Package/libnxml
 	CATEGORY:=Libraries
 	TITLE:=Libnxml
 	URL:=http://www.autistici.org/bakunin/libnxml/doc/
-	DEPNEDS:=+libcurl
+	DEPENDS:=+libcurl
 endef
 
 CONFIGURE_ARGS += --prefix=/usr

@@ -16,7 +16,7 @@ define Package/libmrss
 	CATEGORY:=Libraries
 	TITLE:=Libmrss
 	URL:=http://www.autistici.org/bakunin/libmrss/doc/
-	DEPNEDS:=+libcurl +libnxml
+	DEPENDS:=+libcurl +libnxml
 endef
 
 CONFIGURE_ARGS += --prefix=/usr
