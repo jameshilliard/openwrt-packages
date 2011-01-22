@@ -152,12 +152,15 @@ endef
 define Package/plplot-python
 $(call Package/plplot/Default)
   DEPENDS:= +plplot +python
-  TITLE+= (Python bindings)
+  TITLE+= (!BROKEN! Python bindings)
 endef
 
 define Package/plplot-python/description
 $(call Package/plplot/Default/description)
- This package contains the Plplot bindings for Python
+ This package contains the Plplot bindings for Python.  
+ Note that this needs either the Pythnon-Numpy or Python-Numeric library 
+ to work.  Both haven\'t been ported yet, so plplot-python is 
+ disfunctional!
 endef
 
 define Package/plplot-octave
