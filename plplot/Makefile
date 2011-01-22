@@ -149,6 +149,17 @@ $(call Package/plplot/Default/description)
  This package contains the Plplot bindings for Lua
 endef
 
+define Package/plplot-python
+$(call Package/plplot/Default)
+  DEPENDS:= +plplot +python
+  TITLE+= (Python bindings)
+endef
+
+define Package/plplot-python/description
+$(call Package/plplot/Default/description)
+ This package contains the Plplot bindings for Python
+endef
+
 define Package/plplot-octave
 $(call Package/plplot/Default)
   DEPENDS:= +plplot +octave
@@ -167,6 +178,7 @@ CMAKE_FLAGS := \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DCMAKE_TOOLCHAIN_FILE=$(PKG_BUILD_DIR)/toolchain.cmake \
 	-DPKG_CONFIG_EXECUTABLE=$(STAGING_DIR_HOST)/bin/pkg-config \
+	-DSWIG_EXECUTABLE=$(STAGING_DIR_HOST)/bin/swig \
 	-DDEFAULT_NO_DEVICES=ON \
 	-DUSE_RPATH=OFF \
 	-DPLD_ps=ON \
@@ -203,9 +215,11 @@ ifdef CONFIG_PACKAGE_plplot-linuxvga
 endif
 
 ifdef CONFIG_PACKAGE_plplot-lua
-	CMAKE_FLAGS +=	\
-		-DSWIG_EXECUTABLE=$(STAGING_DIR_HOST)/bin/swig \
-		-DENABLE_lua=ON
+	CMAKE_FLAGS += -DENABLE_lua=ON
+endif
+
+ifdef CONFIG_PACKAGE_plplot-python
+	CMAKE_FLAGS += -DENABLE_python=ON
 endif
 
 ifdef CONFIG_PACKAGE_plplot-tcl
@@ -279,7 +293,7 @@ endef
 
 define Package/plplot/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libplplotd.so* \
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libplplotd.so* \
 		$(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/lib/plplot$(PKG_VERSION)/driversd
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/plplot$(PKG_VERSION)/driversd/{mem,null,ps,svg}.{so,rc} \
@@ -306,13 +320,13 @@ endef
 
 define Package/plplot-cxx/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libplplotcxxd.so* \
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libplplotcxxd.so* \
 		$(1)/usr/lib/
 endef
 
 define Package/plplot-qt/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libplplotqtd.so* \
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libplplotqtd.so* \
 		$(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/lib/plplot$(PKG_VERSION)/driversd
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/plplot$(PKG_VERSION)/driversd/qt.{so,rc} \
@@ -326,28 +340,27 @@ define Package/plplot-linuxvga/install
 		 $(1)/usr/lib/plplot$(PKG_VERSION)/driversd/
 endef
 
+define Package/plplot-tcl/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libplplottcltkd.so* \
+		$(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libtclmatrixd.so* \
+		$(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/usr/share/plplot$(PKG_VERSION)/tcl
+	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/pkgIndex.tcl \
+		$(1)/usr/share/plplot$(PKG_VERSION)/
+	$(CP) $(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/tcl/*\
+		$(1)/usr/share/plplot$(PKG_VERSION)/tcl/
+endef
+
 define Package/plplot-lua/install
 	$(INSTALL_DIR) $(1)/usr/lib/lua
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lua/*/plplot/plplotluac.so $(1)/usr/lib/lua/
 endef
 
-define Package/plplot-tcl/install
-	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libplplottcltkd.so* \
-		$(1)/usr/lib/
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libtclmatrixd.so* \
-		$(1)/usr/lib/
-	$(INSTALL_DIR) $(1)/usr/share/plplot$(PKG_VERSION)/tcl
-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/pkgIndex.tcl \
-		$(1)/usr/share/plplot$(PKG_VERSION)/
-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/tcl/*\
-		$(1)/usr/share/plplot$(PKG_VERSION)/tcl/
-endef
-
-define Package/plplot-tcl/install
-	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libplplottcltkd.so* \
-		$(1)/usr/lib/
+define Package/plplot-python/install
+	$(INSTALL_DIR) $(1)/usr/lib/python
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/python/*/plplot/*.so* $(1)/usr/lib/python/
 endef
 
 define Package/plplot-octave/install
@@ -373,6 +386,7 @@ $(eval $(call BuildPackage,plplot-qt))
 $(eval $(call BuildPackage,plplot-linuxvga))
 $(eval $(call BuildPackage,plplot-tcl))
 $(eval $(call BuildPackage,plplot-lua))
+$(eval $(call BuildPackage,plplot-python))
 $(eval $(call BuildPackage,plplot-octave))
 
 
