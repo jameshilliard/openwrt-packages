@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=plplot
 PKG_VERSION:=5.9.7
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/$(PKG_NAME)/$(PKG_VERSION)%20Source
 PKG_MD5SUM:=c53c484ed93ce8446513c31707551b5b
@@ -293,7 +293,7 @@ endef
 
 define Package/plplot/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libplplotd.so* \
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib{plplotd,csirocsa,qsastime}.so* \
 		$(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/lib/plplot$(PKG_VERSION)/driversd
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/plplot$(PKG_VERSION)/driversd/{mem,null,ps,svg}.{so,rc} \
