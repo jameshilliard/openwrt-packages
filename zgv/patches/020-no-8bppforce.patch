@@ -1,0 +1,20 @@
+Index: zgv-5.9/src/rcfile.c
+===================================================================
+--- zgv-5.9.orig/src/rcfile.c	2011-01-23 18:45:40.000000000 +0100
++++ zgv-5.9/src/rcfile.c	2011-01-23 18:46:43.000000000 +0100
+@@ -482,9 +482,12 @@
+ int f;
+ int bpp_force=0;
+ 
+-/* fairly kludgey... */
+-if(mp==&cfg.fs_startmode)
+-  bpp_force=8;			/* make sure file-sel modes are 8-bit */
++/* file-sel 8-bit modes don't work on the NanoNote.  Also, there is no
++ * error-check in place, forcing 8bpp, causes a division by zero later on,
++ * as vga_getydim() returns zero */
++/* /\* fairly kludgey... *\/ */
++/* if(mp==&cfg.fs_startmode) */
++/*   bpp_force=8;			/\* make sure file-sel modes are 8-bit *\/ */
+ 
+ if(get_modenumber(arg,&f,bpp_force)==-1)
+   {
