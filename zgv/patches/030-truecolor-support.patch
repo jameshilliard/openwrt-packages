@@ -1,0 +1,89 @@
+Index: zgv-5.9/src/zgv.c
+===================================================================
+--- zgv-5.9.orig/src/zgv.c	2011-01-23 19:09:28.000000000 +0100
++++ zgv-5.9/src/zgv.c	2011-01-23 19:43:52.000000000 +0100
+@@ -254,6 +254,7 @@
+ 
+ int fs_vgamode=G640x480x256;	/* current video mode for selector */
+ int fs_scrnwide,fs_scrnhigh;	/* width/height of selector mode */
++int fs_bypp;
+ 
+ /* stuff for checking old directories (to avoid symlink loops in
+  * recursive update).
+@@ -2225,6 +2226,32 @@
+ return(buf);
+ }
+ 
++static void drawscansegment_332(unsigned char *colors, int x, int y, int length)
++{
++   unsigned char *conv = colors;
++   int bypp = fs_bypp;
++
++   if (bypp != 1)
++   {
++      int i, j, k;
++      conv = malloc(length*bypp);
++      for (i = 0, j=0; i < length; i++)
++      {
++	 int c332=colors[i];
++	 int r = c332>>5, g = (c332>>2)&0x7, b = (c332&0x3);
++	 int crgb = vga_setrgbcolor((r<<5)+16,(g<<5)+16,(b<<6)+32);
++	 for (k = 0; k < bypp; k++) {
++	    conv[j++] = crgb>>(k*8) & 0xff;
++	 }
++      }
++   }
++
++   vga_drawscansegment(conv, x, y, length*bypp);
++   if (conv != colors)
++   { 
++      free(conv);
++   }
++}
+ 
+ void showgifdir(int startfrom,int unshow,int drawdirmsg,int do_one_only)
+ {
+@@ -2322,7 +2349,7 @@
+         {
+         memset(image,idx_medium,96);
+         for(y=-2;y<62;y++)
+-          vga_drawscansegment(image,
++          drawscansegment_332(image,
+           	xpos+(BARWIDTH-80)/2-2,ypos+y+GDFYBIT+9,96);
+         free(image);
+         }
+@@ -2370,7 +2397,7 @@
+         if(image!=NULL)
+           {
+           for(y=0;y<h;y++)
+-            vga_drawscansegment(image+y*(fs_vgamode==G640x480x16?w8:w),xwant,
++            drawscansegment_332(image+y*(fs_vgamode==G640x480x16?w8:w),xwant,
+               ypos+y+GDFYBIT+39-h/2,fs_vgamode==G640x480x16?w8:w);
+           free(image);
+           }
+@@ -2678,6 +2705,7 @@
+ 
+ fs_scrnwide=vga_getxdim();
+ fs_scrnhigh=vga_getydim();
++fs_bypp=vga_getmodeinfo(vga_getcurrentmode())->bytesperpixel;
+ 
+ msgbox_draw_ok=1;
+ gdfsiz=3-cfg.smallfstext;
+@@ -2777,7 +2805,7 @@
+     {
+     memset(tmp,idx_medium,fs_scrnwide);
+     for(n=0;n<fs_scrnhigh;n++)
+-      vga_drawscanline(n,tmp);
++       drawscansegment_332(tmp,0,n,fs_scrnwide);
+     free(tmp);
+     }
+   }
+@@ -2937,7 +2965,7 @@
+ 
+ memset(tmp,idx_medium,96);
+ for(y=-3;y<63;y++)
+-  vga_drawscansegment(tmp,xpos+(BARWIDTH-80)/2-3,ypos+y+GDFYBIT+9,96);
++  drawscansegment_332(tmp,xpos+(BARWIDTH-80)/2-3,ypos+y+GDFYBIT+9,96);
+ }
+ 
+ 

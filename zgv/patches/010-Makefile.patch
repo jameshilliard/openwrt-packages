@@ -1,0 +1,73 @@
+Index: zgv-5.9/config.mk
+===================================================================
+--- zgv-5.9.orig/config.mk	2011-01-22 20:49:48.000000000 +0100
++++ zgv-5.9/config.mk	2011-01-23 12:45:27.000000000 +0100
+@@ -7,8 +7,8 @@
+ # Set the C compiler to use, and options for it.
+ # This is likely to be what you'll want for most systems:
+ #
+-CC=gcc
+-CFLAGS=-O2 -Wall -fomit-frame-pointer -finline-functions
++#CC=gcc
++#CFLAGS=-O2 -Wall -fomit-frame-pointer -finline-functions
+ #
+ # If you're brave enough to try compiling zgv on a non-x86 system :-),
+ # this might be a better bet:
+@@ -37,7 +37,7 @@
+ # MANDIR to directory for man page.
+ # Usually it will be simpler to just set PREFIX.
+ #
+-PREFIX=/usr/local
++PREFIX=/usr/
+ 
+ # In theory it would be nice to put the info file and man page under
+ # /usr/local/share. However, it's not clear if this is widely
+@@ -59,7 +59,7 @@
+ # Set the location/filename of the system-wide configuration file. You
+ # may prefer to have this under /etc, for example.
+ #
+-RCFILE=$(PREFIX)/etc/zgv.conf
++RCFILE=/etc/zgv.conf
+ 
+ 
+ # Normally `make install' will update your `dir' file (in INFODIR),
+Index: zgv-5.9/src/Makefile
+===================================================================
+--- zgv-5.9.orig/src/Makefile	2011-01-23 12:43:07.000000000 +0100
++++ zgv-5.9/src/Makefile	2011-01-23 12:53:52.000000000 +0100
+@@ -13,8 +13,8 @@
+ # having /usr/local/{include,lib} like this is apparently needed for
+ # FreeBSD, but shouldn't cause problems on Linux.
+ #
+-CFLAGS+=-I/usr/local/include
+-ZGV_LIBS=-L/usr/local/lib
++#CFLAGS+=-I/usr/local/include
++#ZGV_LIBS=-L/usr/local/lib
+ 
+ CFLAGS+=-DBACKEND_$(BACKEND)
+ 
+@@ -47,7 +47,7 @@
+ 	modesel.o readpcd.o readtiff.o readprf.o zgv_io.o
+ 
+ zgv: $(ZGV_OBJS)
+-	$(CC) $(CFLAGS) -o zgv $(ZGV_OBJS) $(ZGV_LIBS)
++	$(CC) $(LDFLAGS) $(CFLAGS) -o zgv $(ZGV_OBJS) $(ZGV_LIBS)
+ 
+ bdf2h: bdf2h.o
+ 	$(CC) $(CFLAGS) -o bdf2h bdf2h.o
+@@ -134,10 +134,10 @@
+ 	../fonts/helvR12.bdf \
+ 	../fonts/helvB12.bdf \
+ 	../fonts/helvR18.bdf
+-	./bdf2h 0  <../fonts/timI12.bdf >fontbmps.h
+-	./bdf2h 1  <../fonts/helvR08.bdf >>fontbmps.h
+-	./bdf2h 2  <../fonts/helvR12.bdf >>fontbmps.h
+-	./bdf2h 2b <../fonts/helvB12.bdf >>fontbmps.h
+-	./bdf2h 3  <../fonts/helvR18.bdf >>fontbmps.h
++	zgv-bdf2h 0  <../fonts/timI12.bdf >fontbmps.h
++	zgv-bdf2h 1  <../fonts/helvR08.bdf >>fontbmps.h
++	zgv-bdf2h 2  <../fonts/helvR12.bdf >>fontbmps.h
++	zgv-bdf2h 2b <../fonts/helvB12.bdf >>fontbmps.h
++	zgv-bdf2h 3  <../fonts/helvR18.bdf >>fontbmps.h
+ rcfile_opt.h rcfile_var.h rcfile_short.h: options.src mkopts.awk
+ 	$(AWK) -f mkopts.awk <options.src
