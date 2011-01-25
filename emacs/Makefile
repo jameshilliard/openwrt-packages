@@ -154,14 +154,13 @@ endef
 define Build/Install
 	sed -ie 's;./src/emacs\( --version\);$(STAGING_DIR_HOST)/bin/emacs \1;g' \
 		$(PKG_BUILD_DIR)/Makefile
-	$(call Build/Install/Default,install-arch-indep install-arch-dep install-leim "MFLAGS=-o test-distrib")
+	$(call Build/Install/Default,install-arch-indep install-arch-dep install-leim INSTALL_STRIP="" "MFLAGS=-o test-distrib")
 	$(INSTALL_DATA) ./files/site-start.el $(PKG_INSTALL_DIR)/usr/share/emacs/$(PKG_VERSION)/site-lisp
 endef
 
 define Package/emacs/install
 	$(INSTALL_DIR) $(1)/usr
 	cp -r $(PKG_INSTALL_DIR)/usr/{bin,lib} $(1)/usr
-	(cd $(1)/usr/bin/; file * | grep "not stripped" | cut -d ":" -f1 | xargs $(STRIP))
 endef
 
 define Package/emacs-data/install
