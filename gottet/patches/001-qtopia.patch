@@ -125,7 +125,7 @@ index bc3c73a..4d475ed 100644
  }
 -#endif
 diff --git a/src/window.cpp b/src/window.cpp
-index c691ae5..24cdb1c 100644
+index c691ae5..3af8c53 100644
 --- a/src/window.cpp
 +++ b/src/window.cpp
 @@ -30,16 +30,11 @@
@@ -189,7 +189,7 @@ index c691ae5..24cdb1c 100644
  	QMenu* menu = menuBar()->addMenu(tr("&Game"));
  	menu->addAction(tr("&New"), m_board, SLOT(newGame()), tr("Ctrl+N"));
  	m_pause_action = menu->addAction(tr("&Pause"), m_board, SLOT(pauseGame()), tr("P"));
-@@ -143,28 +122,52 @@ Window::Window(QWidget *parent, Qt::WindowFlags wf)
+@@ -143,31 +122,56 @@ Window::Window(QWidget *parent, Qt::WindowFlags wf)
  	menu = menuBar()->addMenu(tr("&Help"));
  	menu->addAction(tr("&About"), this, SLOT(about()));
  	menu->addAction(tr("About &Qt"), qApp, SLOT(aboutQt()));
@@ -257,4 +257,9 @@ index c691ae5..24cdb1c 100644
 +        layout->addWidget(help_button, 1, 2);
  
  	// Restore window
- 	restoreGeometry(QSettings().value("Geometry").toByteArray());
+-	restoreGeometry(QSettings().value("Geometry").toByteArray());
++        //restoreGeometry(QSettings().value("Geometry").toByteArray());
++        resize(320, 240);
+ }
+ 
+ /*****************************************************************************/
