@@ -44,7 +44,13 @@ CONFIGURE_ARGS := --target=mips \
 		  --confdir=/usr/share/mplayer \
 		  --enable-menu \
 		  --$(if $(CONFIG_BUILD_PATENTED),enable-mad,disable-mad) \
-		  --$(if $(CONFIG_BUILD_PATENTED),enable-mp3lib,disable-mp3lib)
+		  --$(if $(CONFIG_BUILD_PATENTED),enable-mp3lib,disable-mp3lib) \
+		  --disable-x11 \
+		  --disable-xv \
+		  --disable-vm \
+		  --disable-vdpau \
+		  --disable-gl \
+		  --disable-xf86keysym
 
 define Package/MPlayer/install
 	$(INSTALL_DIR) \
