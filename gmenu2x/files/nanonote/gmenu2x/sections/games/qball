@@ -1,4 +1,0 @@
-title=qball
-icon=skin:icons/qball.png
-exec=/usr/bin/qball
-params=-qws

@@ -1,4 +1,0 @@
-title=fbterm
-icon=skin:icons/utilities-terminal.png
-exec=/usr/bin/fbterm
-params=-- /bin/ash --login

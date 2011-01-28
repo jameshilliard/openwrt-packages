@@ -1,4 +1,0 @@
-title=Tile
-icon=skin:icons/tile.png
-exec=/usr/bin/Tile
-params=-qws

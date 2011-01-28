@@ -8,8 +8,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmenu2x
-PKG_VERSION:=20110112
-PKG_REV:=91d3fea2ec91402bb9a9c87c17ad94c962eaad21
+PKG_VERSION:=20110128
+PKG_REV:=1d8fe2cc3d52cf0c8a4b969256586cab7850602c
 PKG_RELEASE:=1
 PKG_INSTALL:=1
 
@@ -27,7 +27,8 @@ TARGET_CFLAGS+= \
 	-I$(STAGING_DIR)/usr/include/SDL \
 	-I$(STAGING_DIR)/usr/include/google/sparsehash \
 	-I$(PKG_BUILD_DIR)/src/tinyxml \
-	-DTIXML_USE_STL -DTARGET_GP2X -O3 -msoft-float -fomit-frame-pointer -ffast-math -funroll-loops -Wall -Wno-unknown-pragmas -Wno-format \
+	-DTIXML_USE_STL -DTARGET_GP2X -O3 -msoft-float -fomit-frame-pointer \
+	-ffast-math -funroll-loops -Wall -Wno-unknown-pragmas -Wno-format \
 
 TARGET_CPPFLAGS+= \
   -I$(STAGING_DIR)/usr/include/SDL \
@@ -37,7 +38,7 @@ TARGET_CPPFLAGS+= \
 
 TARGET_LDFLAGS+= \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-	-L$(STAGING_DIR)/usr/lib/SDL \
+	-L$(STAGING_DIR)/usr/lib/SDL -liconv
 
 define Package/gmenu2x
   SECTION:=xorg-apps
@@ -62,24 +63,13 @@ define Package/gmenu2x/install
 		$(PKG_INSTALL_DIR)/usr/bin/gmenu2x \
 		$(1)/usr/share/gmenu2x/
 
-	$(INSTALL_BIN) \
-		./files/nanonote/bin/gmenu2x \
+	$(CP) \
+		$(PKG_BUILD_DIR)/nanonote/* \
+		$(1)/usr/share/gmenu2x/
+
+	mv \
+		$(1)/usr/share/gmenu2x/gmenu2x.sh \
 		$(1)/usr/bin/gmenu2x
-
-	$(CP) \
-		$(PKG_BUILD_DIR)/pandora/* \
-		$(1)/usr/share/gmenu2x/
-
-	$(CP) \
-		$(PKG_BUILD_DIR)/input.conf.nanonote \
-		$(1)/usr/share/gmenu2x/input.conf
-
-	rm -rf \
-		$(1)/usr/share/gmenu2x/sections/{emulators,games}
-
-	$(CP) \
-		./files/nanonote/gmenu2x/* \
-		$(1)/usr/share/gmenu2x/
 endef
 
 $(eval $(call BuildPackage,gmenu2x))

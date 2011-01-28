@@ -1,4 +1,0 @@
-title=sdcv
-icon=skin:icons/stardict.png
-exec=/usr/bin/sdcv
-params=--utf8-output

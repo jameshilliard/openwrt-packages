@@ -1,4 +1,0 @@
-title=bash
-icon=skin:icons/utilities-terminal.png
-exec=/bin/bash
-params=--login

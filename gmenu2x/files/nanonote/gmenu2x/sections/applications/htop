@@ -1,3 +1,0 @@
-title=htop
-icon=skin:icons/htop.png
-exec=/usr/bin/htop

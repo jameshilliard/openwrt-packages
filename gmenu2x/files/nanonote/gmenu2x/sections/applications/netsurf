@@ -1,3 +1,0 @@
-title=netsurf
-icon=skin:icons/utilities-terminal.png
-exec=/usr/bin/netsurf@BROKEN #don't know how to exit

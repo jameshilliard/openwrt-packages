@@ -1,4 +1,0 @@
-title=w3m
-icon=skin:icons/w3m.png
-exec=/usr/bin/w3m
-params=http://en.qi-hardware.com/wiki/Main_Page
