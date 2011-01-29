@@ -251,15 +251,16 @@ define Build/Configure
 
         # where is the target environment 
 	echo "SET(CMAKE_FIND_ROOT_PATH  $(STAGING_DIR))" >> $(PKG_BUILD_DIR)/toolchain.cmake
+#	echo "SET(CMAKE_PREFIX_PATH /usr)" >> $(PKG_BUILD_DIR)/toolchain.cmake
 	echo "SET(CMAKE_LIBRARY_PATH  $(STAGING_DIR)/usr/lib $(STAGING_DIR)/lib $(STAGING_DIR_ROOT)/lib)" >> $(PKG_BUILD_DIR)/toolchain.cmake
 	echo "SET(CMAKE_SKIP_BUILD_RPATH ON)" >> $(PKG_BUILD_DIR)/toolchain.cmake
 #	echo "SET(CMAKE_INSTALL_RPATH /usr/lib;/lib)"  >> $(PKG_BUILD_DIR)/toolchain.cmake
 
-	echo "SET(CMAKE_INCLUDE_PATH  $(STAGING_DIR)/usr/include)" >> $(PKG_BUILD_DIR)/toolchain.cmake
-
+	echo "SET(CMAKE_INCLUDE_PATH /usr/include)" >> $(PKG_BUILD_DIR)/toolchain.cmake
+	echo "SET(CMAKE_SYSTEM_INCLUDE_PATH /include)" >> $(PKG_BUILD_DIR)/toolchain.cmake
         # search for programs in the build host directories
 	echo "SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)" >> $(PKG_BUILD_DIR)/toolchain.cmake
-	echo "SET(CMAKE_PROGRAM_PATH $(STAGING_DIR_HOST)/bin)" >> $(PKG_BUILD_DIR)/toolchain.cmake
+	echo "SET(CMAKE_PROGRAM_PATH $(STAGING_DIR_HOST)/bin $(STAGING_DIR)/usr/bin)" >> $(PKG_BUILD_DIR)/toolchain.cmake
 
         # for libraries and headers in the target directories
 	echo "SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)" >> $(PKG_BUILD_DIR)/toolchain.cmake

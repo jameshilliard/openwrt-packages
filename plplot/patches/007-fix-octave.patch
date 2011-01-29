@@ -1,0 +1,85 @@
+Index: plplot-5.9.7/cmake/modules/octave.cmake
+===================================================================
+--- plplot-5.9.7.orig/cmake/modules/octave.cmake	2011-01-28 20:38:37.000000000 +0100
++++ plplot-5.9.7/cmake/modules/octave.cmake	2011-01-29 12:38:57.000000000 +0100
+@@ -45,12 +45,12 @@
+ endif(ENABLE_octave AND NOT PERL_FOUND)
+ 
+ if(ENABLE_octave)
+-  find_program(OCTAVE octave)
++  find_program(OCTAVE octave-config)
+   if(OCTAVE)
+     message(STATUS "OCTAVE = ${OCTAVE}")
+   else(OCTAVE)
+     message(STATUS "WARNING: "
+-    "octave not found. Disabling octave bindings")
++    "octave-config not found.")
+     set(ENABLE_octave OFF CACHE BOOL "Enable Octave bindings" FORCE)
+   endif(OCTAVE)
+ endif(ENABLE_octave)
+@@ -71,10 +71,11 @@
+   execute_process(
+   COMMAND ${OCTAVE} --version
+   OUTPUT_VARIABLE _OCTAVE_VERSION
++  OUTPUT_STRIP_TRAILING_WHITESPACE
+   )
+   string(REGEX REPLACE
+-  "^.*version ([0-9]\\.[0-9]\\.[0-9]*).*$" 
+-  "\\1"
++  "^.*(version )?([0-9]\\.[0-9]\\.[0-9]*).*$" 
++  "\\2"
+   OCTAVE_VERSION
+   ${_OCTAVE_VERSION}
+   )
+@@ -168,35 +169,38 @@
+   # this method because as far as I know there is no method
+   # of invoking octave scripts from the octave command line other than
+   # with a file.
+-  file(WRITE ${CMAKE_BINARY_DIR}/octave_command
+-  "printf(octave_config_info(\"prefix\"));"
+-  )
++#  file(WRITE ${CMAKE_BINARY_DIR}/octave_command
++#  "printf(octave_config_info(\"prefix\"));"
++#  )
+   execute_process(
+-  COMMAND ${OCTAVE} -q -f octave_command
++  COMMAND ${OCTAVE} -p PREFIX
+   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+   OUTPUT_VARIABLE OCTAVE_PREFIX
++  OUTPUT_STRIP_TRAILING_WHITESPACE
+   )
+-  #message(STATUS "OCTAVE_PREFIX = ${OCTAVE_PREFIX}")
++  message(STATUS "OCTAVE_PREFIX = ${OCTAVE_PREFIX}")
+   
+   # octave-2.1 (or higher) logic.
+   #_OCTAVE_M_DIR
+-  file(WRITE ${CMAKE_BINARY_DIR}/octave_command
+-  "printf(octave_config_info(\"localfcnfiledir\"));"
+-  )
++#  file(WRITE ${CMAKE_BINARY_DIR}/octave_command
++#  "printf(octave_config_info(\"localfcnfiledir\"));"
++#  )
+   execute_process(
+-  COMMAND ${OCTAVE} -q -f octave_command
++  COMMAND ${OCTAVE} -p LOCALFCNFILEDIR
+   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+   OUTPUT_VARIABLE _OCTAVE_M_DIR
++  OUTPUT_STRIP_TRAILING_WHITESPACE
+   )
+   #OCTAVE_OCT_DIR
+   if(NOT DEFINED OCTAVE_OCT_DIR)
+-  file(WRITE ${CMAKE_BINARY_DIR}/octave_command
+-  "printf(octave_config_info(\"localoctfiledir\"));"
+-  )
++#  file(WRITE ${CMAKE_BINARY_DIR}/octave_command
++#  "printf(octave_config_info(\"localoctfiledir\"));"
++#  )
+   execute_process(
+-  COMMAND ${OCTAVE} -q -f octave_command
++  COMMAND ${OCTAVE} -p LOCALVEROCTFILEDIR
+   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+   OUTPUT_VARIABLE OCTAVE_OCT_DIR
++  OUTPUT_STRIP_TRAILING_WHITESPACE
+   )
+   endif(NOT DEFINED OCTAVE_OCT_DIR)
+ 
