@@ -136,5 +136,5 @@ $(eval $(call BuildPackage,svgalib-demo))
 
 # The following comments configure the Emacs editor.  Just ignore them.
 # Local Variables:
-# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/svgalib/compile -j2 V=99"
+# compile-command: "cd ~/src/nanonote/svgalib-1.4.3 && ~/bin/quilt-export target && make -C ~/h/src/qi/openwrt-xburst package/svgalib/compile -j2 V=99"
 # End:

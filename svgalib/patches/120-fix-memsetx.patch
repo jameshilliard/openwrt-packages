@@ -1,0 +1,29 @@
+Index: svgalib-1.4.3/gl/inlstring.h
+===================================================================
+--- svgalib-1.4.3.orig/gl/inlstring.h	2011-01-29 14:33:47.000000000 +0100
++++ svgalib-1.4.3/gl/inlstring.h	2011-01-29 14:42:07.000000000 +0100
+@@ -8,9 +8,22 @@
+ #define __memcpy_conventional(dst,src,n)	memcpy((dst),(src),(n))
+ #define __memcpyb(dst,src,n)			memcpy((dst),(src),(n))
+ #define __memsetb(dst,c,n)			memset((dst),(c),(n))
+-#define __memsetlong(dst,c,n)			memset((dst),(c),(n))
+ #define __memset(dst,c,n)			memset((dst),(c),(n))
+-#define __memset2(dst,c,n)			memset((dst),(c),2*(n))
++static void __memsetlong(void *ptr, int c, int n)
++{
++   unsigned *dst = (unsigned*)ptr;
++   int i;
++   for (i = 0; i < n; i++)
++      dst[i] = c;
++}
++static void __memset2(void *ptr, int c, int n)
++{
++   unsigned short *dst = (unsigned short*)ptr;
++   int i;
++   for (i = 0; i < n; i++)
++      dst[i] = c;
++}
++/* todo: */
+ #define __memset3(dst,c,n)			memset((dst),(c),3*(n))
+ 
+ #else
