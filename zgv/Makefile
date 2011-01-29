@@ -77,7 +77,7 @@ endef
 
 
 define Build/Compile
-	$(call Build/Compile/Default)
+	$(call Build/Compile/Default, -j4)
 endef
 
 define Package/zgv/install
@@ -93,5 +93,5 @@ $(eval $(call BuildPackage,zgv))
 
 # The following comments configure the Emacs editor.  Just ignore them.
 # Local Variables:
-# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/zgv/compile -j2 V=99"
+# compile-command: "cd ~/src/nanonote/zgv-5.9 && ~/bin/quilt-export target && make -C ~/h/src/qi/openwrt-xburst package/zgv/compile -j2 V=99"
 # End:

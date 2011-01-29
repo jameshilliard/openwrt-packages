@@ -1,8 +1,18 @@
 Index: zgv-5.9/src/zgv.c
 ===================================================================
 --- zgv-5.9.orig/src/zgv.c	2011-01-23 19:09:28.000000000 +0100
-+++ zgv-5.9/src/zgv.c	2011-01-23 19:43:52.000000000 +0100
-@@ -254,6 +254,7 @@
++++ zgv-5.9/src/zgv.c	2011-01-29 14:37:36.000000000 +0100
+@@ -148,7 +148,8 @@
+ 
+ 
+ /* from 18-bit RGB (as used by VGA palette) to 3:3:2 palette index */
+-#define MAKE332COL(r,g,b) (((r)>>3)*32+((g)>>3)*4+((b)>>4))
++#define MAKE332COL(r,g,b) vga_setrgbcolor(((r)<<2)+2, ((g)<<2)+2, ((b)<<2)+2);
++//(((r)>>3)*32+((g)>>3)*4+((b)>>4))
+ 
+ /* colour indicies used for filenames-only selector */
+ #define LIGHT		2
+@@ -254,6 +255,7 @@
  
  int fs_vgamode=G640x480x256;	/* current video mode for selector */
  int fs_scrnwide,fs_scrnhigh;	/* width/height of selector mode */
@@ -10,7 +20,7 @@ Index: zgv-5.9/src/zgv.c
  
  /* stuff for checking old directories (to avoid symlink loops in
   * recursive update).
-@@ -2225,6 +2226,32 @@
+@@ -2225,6 +2227,32 @@
  return(buf);
  }
  
@@ -19,7 +29,7 @@ Index: zgv-5.9/src/zgv.c
 +   unsigned char *conv = colors;
 +   int bypp = fs_bypp;
 +
-+   if (bypp != 1)
++   if (bypp > 1)
 +   {
 +      int i, j, k;
 +      conv = malloc(length*bypp);
@@ -34,7 +44,7 @@ Index: zgv-5.9/src/zgv.c
 +      }
 +   }
 +
-+   vga_drawscansegment(conv, x, y, length*bypp);
++   vga_drawscansegment(conv, x, y, length*(bypp < 1 ? 1 : bypp));
 +   if (conv != colors)
 +   { 
 +      free(conv);
@@ -43,16 +53,26 @@ Index: zgv-5.9/src/zgv.c
  
  void showgifdir(int startfrom,int unshow,int drawdirmsg,int do_one_only)
  {
-@@ -2322,7 +2349,7 @@
+@@ -2317,14 +2345,12 @@
+     /* load and draw thumbnail file (or undraw it) */
+     if(unshow)
+       {
+-      image=malloc(96);
+       if(image!=NULL)
          {
-         memset(image,idx_medium,96);
-         for(y=-2;y<62;y++)
+-        memset(image,idx_medium,96);
+-        for(y=-2;y<62;y++)
 -          vga_drawscansegment(image,
-+          drawscansegment_332(image,
-           	xpos+(BARWIDTH-80)/2-2,ypos+y+GDFYBIT+9,96);
-         free(image);
+-          	xpos+(BARWIDTH-80)/2-2,ypos+y+GDFYBIT+9,96);
+-        free(image);
++	   gl_fillbox(xpos+(BARWIDTH-80)/2-2,ypos-2+GDFYBIT+9,96,62+2, 
++		      idx_medium);
++	   gl_fillbox(xpos+(BARWIDTH-80)/2-2,ypos-2+GDFYBIT+9,96,62+2, 
++		      idx_medium);
          }
-@@ -2370,7 +2397,7 @@
+       }
+     else
+@@ -2370,7 +2396,7 @@
          if(image!=NULL)
            {
            for(y=0;y<h;y++)
@@ -61,7 +81,18 @@ Index: zgv-5.9/src/zgv.c
                ypos+y+GDFYBIT+39-h/2,fs_vgamode==G640x480x16?w8:w);
            free(image);
            }
-@@ -2678,6 +2705,7 @@
+@@ -2666,7 +2692,10 @@
+ /* fs_vgamode is known to be valid at this point. */
+ 
+ if(fs_vgamode!=vga_getcurrentmode())
++{
+   vga_setmode(fs_vgamode);
++  gl_setcontextvga(vga_getcurrentmode());
++}
+ else
+   {
+   /* the palette-setting makes sure we don't have a possibly-crazy palette
+@@ -2678,6 +2707,7 @@
  
  fs_scrnwide=vga_getxdim();
  fs_scrnhigh=vga_getydim();
@@ -69,21 +100,47 @@ Index: zgv-5.9/src/zgv.c
  
  msgbox_draw_ok=1;
  gdfsiz=3-cfg.smallfstext;
-@@ -2777,7 +2805,7 @@
-     {
-     memset(tmp,idx_medium,fs_scrnwide);
-     for(n=0;n<fs_scrnhigh;n++)
--      vga_drawscanline(n,tmp);
-+       drawscansegment_332(tmp,0,n,fs_scrnwide);
-     free(tmp);
-     }
-   }
-@@ -2937,7 +2965,7 @@
+@@ -2772,14 +2802,7 @@
  
- memset(tmp,idx_medium,96);
- for(y=-3;y<63;y++)
+ if(idx_medium)
+   {
+-  /* clear screen with `medium' (i.e. background) colour. */
+-  if((tmp=malloc(fs_scrnwide))!=NULL)
+-    {
+-    memset(tmp,idx_medium,fs_scrnwide);
+-    for(n=0;n<fs_scrnhigh;n++)
+-      vga_drawscanline(n,tmp);
+-    free(tmp);
+-    }
++     gl_clearscreen(idx_medium);
+   }
+ #ifndef BACKEND_SVGALIB
+ else
+@@ -2932,12 +2955,8 @@
+ 
+ void clear_xvpic(int xpos,int ypos)
+ {
+-unsigned char tmp[96];
+-int y;
+-
+-memset(tmp,idx_medium,96);
+-for(y=-3;y<63;y++)
 -  vga_drawscansegment(tmp,xpos+(BARWIDTH-80)/2-3,ypos+y+GDFYBIT+9,96);
-+  drawscansegment_332(tmp,xpos+(BARWIDTH-80)/2-3,ypos+y+GDFYBIT+9,96);
++gl_fillbox(xpos+(BARWIDTH-80)/2-3,ypos-3+GDFYBIT+9,
++	   96, 63+3, idx_medium);
  }
  
  
+Index: zgv-5.9/src/rbmenu.c
+===================================================================
+--- zgv-5.9.orig/src/rbmenu.c	2011-01-29 13:15:39.000000000 +0100
++++ zgv-5.9/src/rbmenu.c	2011-01-29 13:16:14.000000000 +0100
+@@ -235,6 +235,8 @@
+ unsigned char distnum;
+ int xr,xg,xb,dist,distquan,f;
+ 
++return vga_setrgbcolor((r<<2)+2, (g<<2)+2, (b<<2)+2);
++
+ rgb=((b<<12)|(g<<6)|r);
+ distnum=0;
+ distquan=20000; /* standard arbitrary bignum */
