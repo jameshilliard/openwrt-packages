@@ -1,0 +1,13 @@
+Index: svgalib-1.4.3/gl/grlib.c
+===================================================================
+--- svgalib-1.4.3.orig/gl/grlib.c	2011-01-29 14:17:53.000000000 +0100
++++ svgalib-1.4.3/gl/grlib.c	2011-01-29 14:17:57.000000000 +0100
+@@ -235,7 +235,7 @@
+ 	    MODEFLAGS |= MODEFLAG_TRIPLEBUFFERING_CAPABLE;
+     } else if ((m == G320x200x256 && modeinfo->maxpixels <= 65536) ||
+ 	       (modeinfo->flags & IS_LINEAR)
+-#if 0				/* svgalib doesn't VT-switch correctly with linear addressing. */
++#if 1				/* svgalib doesn't VT-switch correctly with linear addressing. */
+ 	       || ((modeinfo->flags & CAPABLE_LINEAR)
+ 	/* Creepy. Try linear addressing only if the mode is set. */
+ 	&& vga_getcurrentmode() == m && (vga_setlinearaddressing() != -1))

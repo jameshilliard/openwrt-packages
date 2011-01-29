@@ -12,7 +12,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=svgalib
 PKG_VERSION:=1.4.3
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.svgalib.org/
 PKG_MD5SUM:=7d2778e3beebc07dd7c74668f6887c6f
