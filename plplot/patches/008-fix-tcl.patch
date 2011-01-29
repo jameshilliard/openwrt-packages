@@ -1,0 +1,48 @@
+Index: plplot-5.9.7/cmake/modules/tcl-related.cmake
+===================================================================
+--- plplot-5.9.7.orig/cmake/modules/tcl-related.cmake	2011-01-29 12:54:47.000000000 +0100
++++ plplot-5.9.7/cmake/modules/tcl-related.cmake	2011-01-29 13:04:10.000000000 +0100
+@@ -68,21 +68,21 @@
+       message(STATUS "Looking for tclsh - found")
+       message(STATUS "TCL_TCLSH = ${TCL_TCLSH}")
+     else(TCL_TCLSH)
+-      message(STATUS "Looking for tclsh - not found")
++      message(STATUS "Not looking for tclsh")
+     endif(TCL_TCLSH)
+   else(TCL_FOUND)
+     message(STATUS
+       "Looking for include paths and libraries for Tcl/Tk - not found"
+       )
+   endif(TCL_FOUND)
+-  if(TCL_FOUND AND TCL_TCLSH)
++  if(TCL_FOUND) # AND TCL_TCLSH)
+     message(STATUS "TCL_INCLUDE_PATH = ${TCL_INCLUDE_PATH}")
+     message(STATUS "TCL_LIBRARY = ${TCL_LIBRARY}")
+     if(ENABLE_itcl)
+-      execute_process(
+-	COMMAND ${TCL_TCLSH} CheckITCL_Available.tcl
+-	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/cmake/modules
+-	OUTPUT_VARIABLE AVAILABLE_ITCL)
++#      execute_process(
++#	COMMAND ${TCL_TCLSH} CheckITCL_Available.tcl
++#	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/cmake/modules
++#	OUTPUT_VARIABLE AVAILABLE_ITCL)
+       if(AVAILABLE_ITCL)
+         execute_process(
+ 	COMMAND ${TCL_TCLSH} GetITCL_Version.tcl
+@@ -176,13 +176,13 @@
+       message(STATUS "ITK_INCLUDE_PATH = ${ITK_INCLUDE_PATH}")
+       message(STATUS "ITK_LIBRARY = ${ITK_LIBRARY}")
+     endif(ENABLE_itk)
+-  else(TCL_FOUND AND TCL_TCLSH)
++  else(TCL_FOUND) # AND TCL_TCLSH)
+     message(STATUS "WARNING: Disabling everything that is Tcl/Tk related")
+     set(ENABLE_tcl OFF CACHE BOOL "Enable Tcl bindings" FORCE)
+     set(ENABLE_itcl OFF CACHE BOOL "Enable incr Tcl interface code" FORCE)
+     set(ENABLE_tk OFF CACHE BOOL "Enable Tk interface code" FORCE)
+     set(ENABLE_itk OFF CACHE BOOL "Enable incr Tk interface code" FORCE)
+-  endif(TCL_FOUND AND TCL_TCLSH)
++  endif(TCL_FOUND) # AND TCL_TCLSH)
+ else(ENABLE_tcl)
+   message(STATUS
+     "ENABLE_tcl is OFF so disabling everything else that "
