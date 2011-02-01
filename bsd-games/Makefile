@@ -114,6 +114,10 @@ define Package/backgammon/install
 	$(INSTALL_BIN) \
 		$(PKG_BUILD_DIR)/backgammon/teachgammon/teachgammon \
 		$(1)/usr/bin/teachgammon
+
+	$(INSTALL_BIN) \
+		$(FILES_DIR)/backgammon.sh \
+		$(1)/usr/bin/backgammon.sh
 endef
 
 $(eval $(call BuildPackage,tetris))
