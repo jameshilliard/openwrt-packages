@@ -40,7 +40,7 @@ endef
 
 define Package/stardict-dic-en-cn
     $(call Package/stardict/Default)
-    TITLE+=(dictionary: oxfordjm English <-> Chinses)
+    TITLE+=(dictionary: oxfordjm English <-> Chinese)
 endef
 
 define Package/stardict/description
