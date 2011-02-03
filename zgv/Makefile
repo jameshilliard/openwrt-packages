@@ -12,7 +12,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=zgv
 PKG_VERSION:=5.9
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.svgalib.org/rus/zgv/
 PKG_MD5SUM:=d65a434ddeb612f0c488177f873afad2

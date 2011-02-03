@@ -1,7 +1,7 @@
 Index: zgv-5.9/src/zgv.c
 ===================================================================
 --- zgv-5.9.orig/src/zgv.c	2011-01-23 19:09:28.000000000 +0100
-+++ zgv-5.9/src/zgv.c	2011-01-29 14:37:36.000000000 +0100
++++ zgv-5.9/src/zgv.c	2011-02-03 22:20:30.000000000 +0100
 @@ -148,7 +148,8 @@
  
  
@@ -100,7 +100,23 @@ Index: zgv-5.9/src/zgv.c
  
  msgbox_draw_ok=1;
  gdfsiz=3-cfg.smallfstext;
-@@ -2772,14 +2802,7 @@
+@@ -2734,10 +2764,11 @@
+   {
+   /* no-thumbnails selector */
+   barheight=GDFYBIT+6;
+-  idx_medium=MIDGREY; idx_dark=DARK; idx_light=LIGHT; idx_black=BLACK;
+-  idx_marked=MARKEDCOL;
+-  idx_blacknz=BLACK;
+-  if(fs_vgamode==G640x480x16) idx_medium=0;
++  idx_medium=MAKE332COL(cfg.medium.r,cfg.medium.g,cfg.medium.b);
++  idx_dark  =MAKE332COL(cfg.dark.r  ,cfg.dark.g  ,cfg.dark.b  );
++  idx_light =MAKE332COL(cfg.light.r ,cfg.light.g ,cfg.light.b );
++  idx_black =MAKE332COL(cfg.black.r ,cfg.black.g ,cfg.black.b );
++  idx_marked=MAKE332COL(cfg.marked.r,cfg.marked.g,cfg.marked.b);
+   }
+ 
+ if(!(cfg.xvpic_index && cfg.perfectindex))
+@@ -2772,14 +2803,7 @@
  
  if(idx_medium)
    {
@@ -116,7 +132,7 @@ Index: zgv-5.9/src/zgv.c
    }
  #ifndef BACKEND_SVGALIB
  else
-@@ -2932,12 +2955,8 @@
+@@ -2932,12 +2956,8 @@
  
  void clear_xvpic(int xpos,int ypos)
  {
