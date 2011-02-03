@@ -1,0 +1,85 @@
+#!/bin/bash
+
+if [ "$1" == "flash" ] && [ "$#" == "3" ]; then
+    case "$2" in
+    "bootloader")
+	echo "not implenment"
+	#flash_eraseall /dev/mtd0
+	exit 0
+	;;
+    "kernel")
+	echo "flashing kernel ..."
+	flash_eraseall /dev/mtd1
+	nandwrite -p /dev/mtd1	"$3"
+	exit 0
+	;;
+    "rootfs")
+	echo "flashing rootfs ..."
+	ubiformat /dev/mtd2 -f "$3"
+	exit 0
+	;;
+    "data")
+	echo "flashing data partition  ..."
+	ubiformat /dev/mtd3 -f "$3"
+	exit 0
+	;;
+    esac
+fi
+
+if [ "$1" == "mount" ] && [ "$#" == "3" ]; then
+    MOUNT_POINT="$3"
+
+    if [ "$2" == "rootfs" ]; then
+	PARTITION="2"
+    elif [ "$2" == "data" ]; then
+	PARTITION="3"
+    fi
+
+    ubiattach /dev/ubi_ctrl -m ${PARTITION}
+    DEV_UBI=`dmesg | grep "UBI: attached mtd${PARTITION} to" | cut -d ":" -f 2 | cut -d " " -f 5`
+    mkdir -p $MOUNT_POINT
+    if [ -d "$3" ]; then 
+	echo "$3 not a folder"
+	exit 1
+    fi
+
+    mount -t ubifs ${DEV_UBI}_0 $MOUNT_POINT
+fi
+
+
+if [ "$1" == "format_data" ]; then
+    ubiformat /dev/mtd3 -y
+    ubiattach /dev/ubi_ctrl -m 3
+    ubimkvol /dev/ubi1 -s 1730MiB -N data
+    exit 0
+fi
+
+if [ "$1" == "fw_setenv_default" ]; then
+    fw_setenv bootargs mem=32M console=tty0 console=ttyS0,57600n8 ubi.mtd=2 rootfstype=ubifs root=ubi0:rootfs rw rootwait
+    fw_setenv bootcmd nand read 0x80600000 0x400000 0x200000\;bootm
+    fw_setenv bootargsfromsd mem=32M console=tty0 console=ttyS0,57600n8 rootfstype=ext2 root=/dev/mmcblk0p1 rw rootwait
+    fw_setenv bootcmdfromsd mmc init\; ext2load mmc 0 0x80600000 /boot/uImage\; bootm
+    fw_setenv bootdelay 0
+    fw_setenv baudrate 57600
+    fw_setenv loads_echo 1
+    fw_setenv stdin serial
+    fw_setenv stderr serial
+    fw_setenv stdout serial
+    exit 0
+fi
+
+echo "\
+Usage: $0 [-d <version>] [-l <path to local images>] [-h]
+     -d <>  I will download and flash a specific version of OpenWrt images
+
+     -l <>  I will flash images present in <arg>
+            (missing files will be skipped)
+
+     -h     you already found out
+
+OpenWrt reflash script for qi-hardware Ben NanoNote
+written by: Xiangfu Liu (xiangfu@sharism.cc)
+
+                                                     version: ${__VERSION__}
+Please report bugs to developer@lists.qi-hardware.com"
+exit 1
