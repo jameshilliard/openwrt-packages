@@ -15,13 +15,14 @@ PKG_MD5SUM:=3e05910fb7c1d9b2bd3e272d96db069c
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/fbida
     SUBMENU:=fbida
     SECTION:=utils
     CATEGORY:=Utilities
     URL:=http://linux.bytesex.org/fbida/
-    DEPENDS:=+libpng +libtiff +libexif +libiconv +dejavu-fonts-ttf
+    DEPENDS:=+libpng +libtiff +libexif $(ICONV_DEPENDS) +dejavu-fonts-ttf
 endef
 
 define Package/fbida/description
@@ -39,9 +40,7 @@ define Package/fbgs
     DEPENDS:=+fbi +ghostscript
 endef
 
-TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/lib/libiconv/include
-TARGET_LDFLAGS+=-L$(STAGING_DIR)/usr/lib/libiconv/lib -liconv -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
-
+TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib -liconv
 
 define Package/fbi/install
 	$(INSTALL_DIR) $(1)/usr/bin
