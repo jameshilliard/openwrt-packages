@@ -17,6 +17,7 @@ PKG_MD5SUM:=8a787e538a8e4d80d4927535be5af083
 PKG_BUILD_DIR:=$(BUILD_DIR)/SDL_gfx-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/libsdl-gfx
   SECTION:=libs
@@ -33,7 +34,7 @@ endef
 TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
 
 CONFIGURE_VARS += \
-	LIBS="-lSDL -ldirect -ldirectfb -lfusion -liconv"
+	LIBS="-lSDL -ldirect -ldirectfb -lfusion"
 
 define Build/Configure
     $(call Build/Configure/Default, \

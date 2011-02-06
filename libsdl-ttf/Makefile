@@ -19,13 +19,14 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/SDL_ttf-$(PKG_VERSION)
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/libsdl-ttf
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=Simple DirectMedia Layer True Font
   URL:=http://www.libsdl.org/projects/SDL_ttf/
-  DEPENDS:=+libsdl
+  DEPENDS:=+libsdl $(ICONV_DEPENDS) $(INTL_DEPENDS)
 endef
 
 define Package/libsdl-ttf/description
@@ -39,12 +40,10 @@ TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
 CONFIGURE_ARGS += \
        --with-sdl-exec-prefix=$(STAGING_DIR) \
        --without-x \
-       LIBS="-lSDL"
+       LIBS="-lSDL -liconv"
 
 TARGET_LDFLAGS+= \
-       -Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-       -L$(STAGING_DIR)/usr/lib/libintl/lib \
-       -L$(STAGING_DIR)/usr/lib/libiconv/lib
+       -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Build/InstallDev
 	$(INSTALL_DIR) \

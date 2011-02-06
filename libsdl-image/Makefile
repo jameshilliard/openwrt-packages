@@ -19,6 +19,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/SDL_image-$(PKG_VERSION)
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/libsdl-image
   SECTION:=libs
@@ -38,7 +39,7 @@ CONFIGURE_ARGS += \
 	--with-sdl-exec-prefix=$(STAGING_DIR)
 
 CONFIGURE_VARS += \
-	LIBS="-lSDL -ldirect -ldirectfb -lfusion -liconv"
+	LIBS="-lSDL -ldirect -ldirectfb -lfusion"
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include/SDL $(1)/usr/lib/pkgconfig
