@@ -17,23 +17,20 @@ PKG_SOURCE_URL:=http://downloads.sourceforge.net/musicpd/
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 TARGET_CFLAGS+= \
-	-I$(STAGING_DIR)/usr/lib/libintl/include \
-	-I$(STAGING_DIR)/usr/libiconv/include \
 	-std=gnu99
 
 TARGET_LDFLAGS+= \
-	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-	-L$(STAGING_DIR)/usr/lib/libintl/lib \
-	-L$(STAGING_DIR)/usr/lib/libiconv/lib
+	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Package/ncmpc
     MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
     TITLE:=ncmpc
     SECTION:=sound
     CATEGORY:=Sound
-    DEPENDS:=+libncurses +libintl +libiconv +libmpdclient
+    DEPENDS:=+libncursesw $(ICONV_DEPENDS) $(INTL_DEPENDS) +libmpdclient
     URL:=http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki
 endef
 
