@@ -12,13 +12,14 @@ PKG_SOURCE:=odt2txt-$(PKG_VERSION).tar.gz
 PKG_BUILD_DIR:=$(BUILD_DIR)/odt2txt-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/odt2txt
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=odt2txt
 	URL:=http://stosberg.net/odt2txt/
-	DEPENDS:=+libiconv +zlib
+	DEPENDS:=$(ICONV_DEPENDS) +zlib
 endef
 
 define Package/odt2txt/description
