@@ -25,12 +25,13 @@ PKG_FIXUP:=libtool
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/moc
   MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
   SECTION:=sound
   CATEGORY:=Sound
-  DEPENDS:=+libcurl +BUILD_PATENTED:libmad +libvorbis +libncurses +libiconv +alsa-utils +libid3tag +libflac
+  DEPENDS:=+libcurl +BUILD_PATENTED:libmad +libvorbis +libncurses $(ICONV_DEPENDS) +alsa-utils +libid3tag +libflac
   TITLE:=Music On Console
 endef
 
@@ -38,12 +39,8 @@ define Package/moc/description
 	MOC (music on console) is a console audio player for LINUX/UNIX designed to be powerful and easy to use.
 endef
 
-TARGET_CFLAGS+= \
-	-I$(STAGING_DIR)/usr/lib/libiconv/include \
-
 TARGET_LDFLAGS+= \
-	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-	-L$(STAGING_DIR)/usr/lib/libiconv/lib
+	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 CONFIGURE_ARGS += \
 	--without-mp3 \
