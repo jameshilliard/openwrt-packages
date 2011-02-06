@@ -19,16 +19,13 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/dgclock-$(PKG_VERSION)
 UNPACK_CMD=unzip -d $(1) $(DL_DIR)/$(PKG_SOURCE)
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 TARGET_CFLAGS += \
-	-I$(STAGING_DIR)/usr/lib/libintl/include/ \
-	-I$(STAGING_DIR)/usr/lib/libiconv/include/ \
 	-I$(STAGING_DIR)/usr/include/SDL
 
 TARGET_LDFLAGS += \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-	-L$(STAGING_DIR)/usr/lib/libintl/lib/ \
-	-L$(STAGING_DIR)/usr/lib/libiconv/lib/ \
 	-lSDL -lSDL_ttf
 
 define Package/dgclock
