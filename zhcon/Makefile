@@ -19,6 +19,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/zhcon
     TITLE:=zhcon
@@ -32,8 +33,8 @@ define Package/zhcon/description
 	zhcon is a Fast double-byte virtual console for Chinese/Japanese/Korean (CJK) running under GNU/Linux and FreeBSD
 endef
 
-TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/lib/libintl/include -I$(STAGING_DIR)/usr/lib/libiconv/include
-TARGET_LDFLAGS+=-lintl -L$(STAGING_DIR)/usr/lib/libintl/lib -lcharset -liconv -L$(STAGING_DIR)/usr/lib/libiconv/lib
+
+TARGET_LDFLAGS+=-lcharset -liconv
 
 CONFIGURE_ARGS += 
 
