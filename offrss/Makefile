@@ -10,6 +10,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 UNPACK_CMD=unzip $(DL_DIR)/$(PKG_SOURCE) -d $(1)/../
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/offrss
 	MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
@@ -20,7 +21,7 @@ define Package/offrss
 	DEPENDS:=+libcurl +libnxml +libmrss
 endef
 
-TARGET_CFLAHGS += -I$(STAGING_DIR)/usr/iniclude
+TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
 TARGET_LDFLAGS += -Wl,-rpath-link -Wl,$(STAGING_DIR)/usr/lib -liconv
 
 define Package/offrss/description
