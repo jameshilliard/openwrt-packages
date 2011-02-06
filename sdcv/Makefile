@@ -19,23 +19,19 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_INSTALL:=2
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/sdcv
     TITLE:=sdcv
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=+libintl +libreadline +libiconv +glib2
+    DEPENDS:=$(ICONV_DEPENDS) $(INTL_DEPENDS) +libreadline +glib2
     URL:=http://sdcv.sourceforge.net/
 endef
 
 define Package/sdcv/description
     StarDict Command line version
 endef
-
-TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/lib/libintl/include
-TARGET_LDFLAGS+= -L$(STAGING_DIR)/usr/lib/libintl/lib -L$(STAGING_DIR)/usr/lib/libiconv/lib
-
-CONFIGURE_ARGS += 
 
 define Package/sdcv/install
 	$(INSTALL_DIR) $(1)/usr/bin
