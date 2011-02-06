@@ -14,12 +14,13 @@ PKG_SOURCE:=climm-$(PKG_VERSION).tgz
 PKG_BUILD_DIR:=$(BUILD_DIR)/climm-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/climm
 	SECTION:=network
 	CATEGORY:=Network
 	TITLE:=Climm
-	DEPENDS:=+zlib +libncurses +libreadline +libintl +libcharset +libopenssl +libgnutls +libgnutls-openssl
+	DEPENDS:=+zlib +libncurses +libreadline $(INTL_DEPENDS) +libcharset +libopenssl +libgnutls +libgnutls-openssl
 	URL:=http://www.climm.org/
 endef
 
@@ -28,13 +29,10 @@ define Package/climm/description
 endef
 
 EXTRA_CFLAGS += \
-        -I$(STAGING_DIR)/usr/lib/libintl/include \
-        -I$(STAGING_DIR)/usr/lib/libiconv/include \
         -I$(STAGING_DIR)/usr/include
 
 EXTRA_LDFLAGS += \
-        -L$(STAGING_DIR)/usr/lib/libintl/lib \
-        -L$(STAGING_DIR)/usr/lib/libiconv/lib -lm -lz
+        -lm -lz
 
 
 define Build/Configure
