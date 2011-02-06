@@ -15,12 +15,13 @@ PKG_CAT:=bzip2 -cd
 PKG_BUILD_DIR:=$(BUILD_DIR)/mcabber-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/mcabber
 	SECTION:=network
 	CATEGORY:=Network
 	TITLE:=Mcabber
-	DEPENDS:=+libncurses +libreadline +libintl +libcharset +libopenssl #+ssl
+	DEPENDS:=+libncursesw +libreadline $(INTL_DEPENDS) $(ICONV_DEPENDS) +libcharset +libopenssl
 	URL:=http://mcabber.com/
 endef
 
@@ -29,14 +30,11 @@ define Package/mcabber/description
 endef
 
 EXTRA_CFLAGS += \
-        -I$(STAGING_DIR)/usr/lib/libintl/include \
-        -I$(STAGING_DIR)/usr/lib/libiconv/include \
         -I$(STAGING_DIR)/usr/include
 
 EXTRA_LDFLAGS += \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-        -L$(STAGING_DIR)/usr/lib/libintl/lib \
-        -L$(STAGING_DIR)/usr/lib/libiconv/lib -lm
+	-lm
 
 
 define Build/Configure
