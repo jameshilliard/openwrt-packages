@@ -13,6 +13,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_MD5SUM:=0828c3fa01c5237db8a67d356a9d1a8c
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 $(call include_mk,qmake.mk)
 
 define Package/qstardict
@@ -31,8 +32,8 @@ echo "QMAKE_UIC=$(STAGING_DIR_HOST)/bin/uic" >> qstardict.pri; \
 echo "QMAKE_MOC=$(STAGING_DIR_HOST)/bin/moc" >> qstardict.pri; \
 echo "QMAKE_RCC=$(STAGING_DIR_HOST)/bin/rcc" >> qstardict.pri; \
 echo "QMAKE_LINK=$(TARGET_CXX)" >> qstardict.pri; \
-echo "QMAKE_LIBS+=-L$(STAGING_DIR)/usr/lib/libintl/lib" >> qstardict.pri; \
-echo "QMAKE_LIBS+=-L$(STAGING_DIR)/usr/lib/libiconv/lib" >> qstardict.pri; \
+echo "QMAKE_LIBS+=$(INTL_LDFLAGS)" >> qstardict.pri; \
+echo "QMAKE_LIBS+=$(ICONV_LDFLAGS)" >> qstardict.pri; \
 echo "QMAKE_LIBS+=-L$(STAGING_DIR)/usr/lib" >> qstardict.pri; \
 echo "QMAKE_LIBS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib" >> qstardict.pri; \
 echo "INCLUDEPATH += $(STAGING_DIR)/usr/include" >> qstardict.pri; \
