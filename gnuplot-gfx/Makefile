@@ -41,6 +41,7 @@ PKG_BUILD_DEPENDS:= gnuplot-gfx/host libtool/host
 
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/gnuplot-gfx/Default
   SECTION:=utils
@@ -58,7 +59,7 @@ endef
 
 define Package/gnuplot-gfx
 $(call Package/gnuplot-gfx/Default)
-  DEPENDS:=+libncurses +uclibcxx +zlib +libpng +libfreetype +libgd +libintl +libiconv +svgalib
+  DEPENDS:=+libncurses +uclibcxx +zlib +libpng +libfreetype +libgd $(INTL_DEPENDS) $(ICONV_DEPENDS) +svgalib
   TITLE+=
 endef
 
@@ -129,14 +130,9 @@ CONFIGURE_VARS += \
 TARGET_CPPFLAGS += -DDEFAULTTERM=\\\"linux\\\" 
 
 # todo: insto cppflags
-TARGET_CFLAGS += \
-	-I$(STAGING_DIR)/usr/lib/libintl/include \
-	-I$(STAGING_DIR)/usr/lib/libiconv/include
 
 TARGET_LDFLAGS+= \
-	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-	-L$(STAGING_DIR)/usr/lib/libintl/lib \
-	-L$(STAGING_DIR)/usr/lib/libiconv/lib
+	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 # todo: remove that when stable
 MAKE_FLAGS += -j2
