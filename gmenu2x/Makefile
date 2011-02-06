@@ -22,6 +22,7 @@ PKG_SOURCE_VERSION:=$(PKG_REV)
 PKG_BUILD_DEPENDS:=sparsehash
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 TARGET_CFLAGS+= \
 	-I$(STAGING_DIR)/usr/include/SDL \
@@ -38,7 +39,7 @@ TARGET_CPPFLAGS+= \
 
 TARGET_LDFLAGS+= \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-	-L$(STAGING_DIR)/usr/lib/SDL -liconv
+	-L$(STAGING_DIR)/usr/lib/SDL
 
 define Package/gmenu2x
   SECTION:=xorg-apps
