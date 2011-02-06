@@ -18,6 +18,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/stardict/Default
     MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
@@ -29,7 +30,7 @@ endef
 
 define Package/stardict
     $(call Package/stardict/Default)
-    DEPENDS:=+libintl +libiconv +libgconf2 +gtk2 +libstdcpp +libsigcxx
+    DEPENDS:=$(ICONV_DEPENDS) $(INTL_DEPENDS) +libgconf2 +gtk2 +libstdcpp +libsigcxx
 endef
 
 define Package/stardict-dic-en-en
@@ -46,8 +47,6 @@ define Package/stardict/description
     StarDict is a Cross-Platform and international dictionary Software.
 endef
 
-TARGET_CFLAGS+= -I$(STAGING_DIR)/usr/lib/libintl/include
-TARGET_LDFLAGS+= -L$(STAGING_DIR)/usr/lib/libintl/lib
 TARGET_LDFLAGS+= -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 CONFIGURE_CMD =./autogen.sh
