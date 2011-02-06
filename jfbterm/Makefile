@@ -14,6 +14,7 @@ PKG_MD5SUM:=cb0b869bd1c21f0dd224b7fc40517680
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/kernel.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/jfbterm
   SECTION:=utils
@@ -21,7 +22,7 @@ define Package/jfbterm
   TITLE:=J framebuffer terminal / Multilingual Enhancement
   URL:=http://jfbterm.sourceforge.jp
   SUBMENU:=Terminal
-  DEPENDS:=+libiconv +unifont
+  DEPENDS:=$(ICONV_DEPENDS) +unifont
 endef
 
 define Package/jfbterm/description
@@ -30,12 +31,10 @@ define Package/jfbterm/description
 endef
 
 TARGET_CFLAGS+= \
-       -I$(STAGING_DIR)/usr/lib/libiconv/include \
        -I$(LINUX_DIR)/include
 
 TARGET_LDFLAGS+= \
-        -Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-        -L$(STAGING_DIR)/usr/lib/libiconv/lib -liconv
+        -Wl,-rpath-link=$(STAGING_DIR)/usr/lib -liconv
 
 MAKE_FLAGS += ACLOCAL=aclocal-1.10 AUTOMAKE="automake-1.10 -a"
 
