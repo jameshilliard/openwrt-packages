@@ -16,23 +16,21 @@ PKG_SOURCE_URL:=http://ftp.gnome.org/pub/gnome/sources/gnome-vfs/2.24/
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/gnome-vfs
     TITLE:=gnome-vfs
     SECTION:=libs
     CATEGORY:=Libraries
-    DEPENDS:=@BROKEN +libintl +libpopt +gnome-mime-data
+    DEPENDS:=@BROKEN $(INTL_DEPENDS) +libpopt +gnome-mime-data
     URL:=
 endef
 
 define Package/gnome-vfs/description
 endef
-
-TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/lib/libintl/include
                                            
 TARGET_LDFLAGS+= \
-        -Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-        -L$(STAGING_DIR)/usr/lib/libintl/lib
+        -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Build/InstallDev
 	$(INSTALL_DIR) \
