@@ -13,13 +13,14 @@ PKG_SOURCE_URL:=http://ghostscript.com/releases/
 PKG_MD5SUM:=a402462478b4cdda3e1816899227b845
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/ghostscript
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=interpreter for the PostScript language and for PDF
   URL:=http://pages.cs.wisc.edu/~ghost/
-  DEPENDS:=+libtiff +libiconv +libpng +fontconfig +libfreetype
+  DEPENDS:=+libtiff $(ICONV_DEPENDS) +libpng +fontconfig +libfreetype @BUILD_NLS
 endef
 
 define Package/ghostscript/description
@@ -36,22 +37,18 @@ define Build/Prepare
 	done
 endef
 
-TARGET_CFLAGS+= \
-	-I$(STAGING_DIR)/usr/lib/libiconv/include \
-
 TARGET_LDFLAGS+= \
-	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-	-L$(STAGING_DIR)/usr/lib/libiconv/lib
+	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 CONFIGURE_ARGS += \
 	--with-system-libtiff \
-	--with-libiconv=gnu \
+	$(if $(ICONV_FULL),--with-libiconv=gnu) \
 	--without-x \
 	--without-jbig2dec \
 	--without-jasper
 
 MAKE_FLAGS += \
-	EXTRALIBS="-L$(STAGING_DIR)/usr/lib/libiconv/lib -L$(STAGING_DIR)/usr/lib -lfontconfig -lfreetype -liconv -ldl -Wl,-rpath-link=$(STAGING_DIR)/usr/lib" \
+	EXTRALIBS="$(ICONV_LDFLAGS) -L$(STAGING_DIR)/usr/lib -lfontconfig -lfreetype -ldl -Wl,-rpath-link=$(STAGING_DIR)/usr/lib" \
 	COMPILE_INITS="0"
 
 define Package/ghostscript/install
