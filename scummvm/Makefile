@@ -12,10 +12,11 @@ PKG_RELEASE:=2
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=@SF/$(PKG_NAME)
 PKG_CAT:=bzcat
-PKG_BUILD_DEPENDS:=+libiconv +libsdl +libsdl_sound +libsdl_mixer
-DEPENDS:=libiconv libsdl libsdl_sound libsdl_mixer
+PKG_BUILD_DEPENDS:=$(ICONV_DEPENDS) +libsdl +libsdl_sound +libsdl_mixer
+DEPENDS:=$(ICONV_DEPENDS) libsdl libsdl_sound libsdl_mixer
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/scummvm
     TITLE:=free implementation of LucasArts SCUMM interpreter
