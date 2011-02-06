@@ -15,13 +15,14 @@ PKG_SOURCE_URL:=http://www.mplayerhq.hu/MPlayer/releases/
 PKG_MD5SUM:=0191ddb9c21620779838e53a4cca5ac1
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/MPlayer
   SECTION:=multimedia
   CATEGORY:=Multimedia
   TITLE:=MPlayer, the movie player
   URL:=http://www.mplayerhq.hu
-  DEPENDS:=+libjpeg +libpng +directfb +zlib +libsdl +libfreetype +fontconfig +libiconv +BUILD_PATENTED:libmad
+  DEPENDS:=+libjpeg +libpng +directfb +zlib +libsdl +libfreetype +fontconfig $(ICONV_DEPENDS) +BUILD_PATENTED:libmad
 endef
 
 define Package/MPlayer/description
@@ -37,8 +38,8 @@ CONFIGURE_ARGS := --target=mips \
 		  --with-freetype-config=$(STAGING_DIR)/host/bin/freetype-config \
 		  --enable-rpath \
 		  --extra-cflags="-I$(STAGING_DIR)/usr/include/directfb \
-		  -I$(STAGING_DIR)/usr/lib/libiconv/include" \
-		  --extra-ldflags="-L$(STAGING_DIR)/usr/lib/libiconv/lib" \
+		  $(ICONV_CPPFLAGS)" \
+		  --extra-ldflags="$(ICONV_LDFLAGS)" \
 		  --host-cc=gcc \
 		  --enable-fbdev \
 		  --confdir=/usr/share/mplayer \
