@@ -16,27 +16,25 @@ PKG_SOURCE_URL:=http://ftp.acc.umu.se/pub/gnome/sources/gnome-mime-data/2.4/
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/gnome-mime-data
     TITLE:=gnome-mime-data
     SECTION:=libs
     CATEGORY:=Libraries
-    DEPENDS:=+libintl
+    DEPENDS:=$(INTL_DEPENDS)
     URL:=
 endef
 
 define Package/gnome-mime-data/description
 endef
-
-TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/lib/libintl/include
-                   
+                 
 define Build/Configure
 	$(call Build/Configure/Default,)
 endef
                         
 TARGET_LDFLAGS+= \
-        -Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-        -L$(STAGING_DIR)/usr/lib/libintl/lib
+        -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Build/InstallDev
 	$(INSTALL_DIR) \
