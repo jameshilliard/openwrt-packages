@@ -11,11 +11,12 @@ PKG_MD5SUM:=80da8943fc5aa96571924aec0087d4c0
 #
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/snownews
 	SECTION:=utils
 	CATEGORY:=Utilities
-	DEPENDS:=+libncurses +libxml2 +libopenssl +zlib
+	DEPENDS:=+libncursesw +libxml2 +libopenssl +zlib $(ICONV_DEPENDS) $(INTL_DEPENDS) +libcharset
 	TITLE:=SnowNews
 	URL:=http://kiza.kcore.de/software/snownews/
 endef
@@ -26,8 +27,8 @@ endef
 
 define Build/Configure
 	$(call Build/Compile/Default,\
-	EXTRA_CFLAGS="-I$(STAGING_DIR)/usr/lib/libintl/include -I$(STAGING_DIR)/usr/lib/libiconv/include -I$(STAGING_DIR)/usr/include -I$(STAGING_DIR)/usr/include/libxml2/ "\
-	EXTRA_LDFLAGS="-L$(STAGING_DIR)/usr/lib/ -L$(STAGING_DIR)/usr/lib/libintl/lib -L$(STAGING_DIR)/usr/lib/libiconv/lib -liconv -lcharset -lintl -lm -lz "\
+	EXTRA_CFLAGS="$(ICONV_CFLAGS) $(INTL_CFLAGS) -I$(STAGING_DIR)/usr/include -I$(STAGING_DIR)/usr/include/libxml2/ "\
+	EXTRA_LDFLAGS="-L$(STAGING_DIR)/usr/lib/ $(ICONV_LDFLAGS) $(INTL_LDFLAGS) -lcharset -lintl -liconv -lm -lz "\
 		)
 endef
 
