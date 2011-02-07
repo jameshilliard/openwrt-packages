@@ -65,6 +65,14 @@ if [ "$1" == "fw_setenv_default" ]; then
     fw_setenv stdin serial
     fw_setenv stderr serial
     fw_setenv stdout serial
+    fw_setenv bootcmdf1 mmc init\; ext2load mmc 0:1 0x80600000 /boot/uImage\; bootm
+    fw_setenv bootargsf1 mem=32M console=tty0 console=ttyS0,57600n8 rootfstype=ext2 root=/dev/mmcblk0p1 rw rootwait
+    fw_setenv bootcmdf2 mmc init\; ext2load mmc 0:2 0x80600000 /boot/uImage\; bootm
+    fw_setenv bootargsf2 mem=32M console=tty0 console=ttyS0,57600n8 rootfstype=ext2 root=/dev/mmcblk0p2 rw rootwait
+    fw_setenv bootcmdf3 mmc init\; ext2load mmc 0:3 0x80600000 /boot/uImage\; bootm
+    fw_setenv bootargsf3 mem=32M console=tty0 console=ttyS0,57600n8 rootfstype=ext2 root=/dev/mmcblk0p3 rw rootwait
+    fw_setenv bootcmdf4 mmc init\; ext2load mmc 0:4 0x80600000 /boot/uImage\; bootm
+    fw_setenv bootargsf4 mem=32M console=tty0 console=ttyS0,57600n8 rootfstype=ext2 root=/dev/mmcblk0p4 rw rootwait
     exit 0
 fi
 
