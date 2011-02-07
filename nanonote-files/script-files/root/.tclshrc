@@ -1,0 +1,546 @@
+global tcl_interactive
+if {[info exists tcl_interactive] && $tcl_interactive > 0} {
+
+# ripped from http://wiki.tcl.tk/16139
+
+foreach {var val} {
+    PROMPT {tclsh$::tcl_patchLevel> }
+    HISTORY ""
+    HISTORY_BUFFER 500
+    COMPLETION_MATCH ""
+} {
+    if {![info exists env($var)]} {
+        set env($var) $val
+    }
+}
+foreach {var val} {
+    CMDLINE ""
+    CMDLINE_CURSOR 0
+    CMDLINE_LINES 0
+    HISTORY_LEVEL -1
+} {
+    set env($var) $val
+}
+unset var val
+
+set forever 0
+
+# Resource & history files:
+set HISTFILE $env(HOME)/.tclsh_history
+
+proc ESC {} {
+    return "\033"
+}
+
+proc readbuf {txt} {
+    upvar 1 $txt STRING
+
+    set ret [string index $STRING 0]
+    set STRING [string range $STRING 1 end]
+    return $ret
+}
+
+proc goto {row {col 1}} {
+    switch -- $row {
+        "home" {set row 1}
+    }
+    print "[ESC]\[${row};${col}H" nowait
+}
+
+proc gotocol {col} {
+    print "\r" nowait
+    if {$col > 0} {
+        print "[ESC]\[${col}C" nowait
+    }
+}
+
+proc clear {} {
+    print "[ESC]\[2J" nowait
+    goto home
+}
+
+proc clearline {} {
+    print "[ESC]\[2K\r" nowait
+}
+
+proc getColumns {} {
+    set cols 0
+    if {![catch {exec stty -a} err]} {
+        regexp {rows \d+; columns (\d+)} $err -> cols
+    }
+    return $cols
+}
+
+proc prompt {{txt ""}} {
+    global env
+
+    set prompt [subst $env(PROMPT)]
+    set txt "$prompt$txt"
+    foreach {end mid} $env(CMDLINE_LINES) break
+
+    # Calculate how many extra lines we need to display.
+    # Also calculate cursor position:
+    set n -1
+    set totalLen 0
+    set cursorLen [expr {$env(CMDLINE_CURSOR)+[string length $prompt]}]
+    set row 0
+    set col 0
+
+    # Render output line-by-line to $out then copy back to $txt:
+    set found 0
+    set out [list]
+    foreach line [split $txt "\n"] {
+        set len [expr {[string length $line]+1}]
+        incr totalLen $len
+        if {$found == 0 && $totalLen >= $cursorLen} {
+            set cursorLen [expr {$cursorLen - ($totalLen - $len)}]
+            set col [expr {$cursorLen % $env(COLUMNS)}]
+            set row [expr {$n + ($cursorLen / $env(COLUMNS)) + 1}]
+
+            if {$cursorLen >= $len} {
+                set col 0
+                incr row
+            }
+            set found 1
+        }
+        incr n [expr {int(ceil(double($len)/$env(COLUMNS)))}]
+        while {$len > 0} {
+            lappend out [string range $line 0 [expr {$env(COLUMNS)-1}]]
+            set line [string range $line $env(COLUMNS) end]
+            set len [expr {$len-$env(COLUMNS)}]
+        }
+    }
+    set txt [join $out "\n"]
+    set row [expr {$n-$row}]
+
+    # Reserve spaces for display:
+    if {$end} {
+        if {$mid} {
+            print "[ESC]\[${mid}B" nowait
+        }
+        for {set x 0} {$x < $end} {incr x} {
+            clearline
+            print "[ESC]\[1A" nowait
+        }
+    }
+    clearline
+    set env(CMDLINE_LINES) $n
+
+    # Output line(s):
+    print "\r$txt"
+
+    if {$row} {
+        print "[ESC]\[${row}A" nowait
+    }
+    gotocol $col
+    lappend env(CMDLINE_LINES) $row
+}
+
+proc print {txt {wait wait}} {
+    # Sends output to stdout chunks at a time.
+    # This is to prevent the terminal from
+    # hanging if we output too much:
+    while {[string length $txt]} {
+        puts -nonewline [string range $txt 0 2047]
+        set txt [string range $txt 2048 end]
+        if {$wait == "wait"} {
+            after 1
+        }
+    }
+}
+
+################################
+# Key bindings
+################################
+proc handleEscapes {} {
+    global env
+    upvar 1 keybuffer keybuffer
+    set seq ""
+    set found 0
+    while {[set ch [readbuf keybuffer]] != ""} {
+        append seq $ch
+
+        switch -exact -- $seq {
+            "\[A" { ;# Cursor Up (cuu1,up)
+                handleHistory 1
+                set found 1; break
+            }
+            "\[B" { ;# Cursor Down
+                handleHistory -1
+                set found 1; break
+            }
+            "\[C" { ;# Cursor Right (cuf1,nd)
+                if {$env(CMDLINE_CURSOR) < [string length $env(CMDLINE)]} {
+                    incr env(CMDLINE_CURSOR)
+                }
+                set found 1; break
+            }
+            "\[D" { ;# Cursor Left
+                if {$env(CMDLINE_CURSOR) > 0} {
+                    incr env(CMDLINE_CURSOR) -1
+                }
+                set found 1; break
+            }
+            "\[H" -
+            "\[7~" -
+            "\[1~" { ;# home
+                set env(CMDLINE_CURSOR) 0
+                set found 1; break
+            }
+            "\[3~" { ;# delete
+                if {$env(CMDLINE_CURSOR) < [string length $env(CMDLINE)]} {
+                    set env(CMDLINE) [string replace $env(CMDLINE) \
+                        $env(CMDLINE_CURSOR) $env(CMDLINE_CURSOR)]
+                }
+                set found 1; break
+            }
+            "\[F" -
+            "\[K" -
+            "\[8~" -
+            "\[4~" { ;# end
+                set env(CMDLINE_CURSOR) [string length $env(CMDLINE)]
+                set found 1; break
+            }
+            "\[5~" { ;# Page Up }
+            "\[6~" { ;# Page Down }
+        }
+    }
+    return $found
+}
+
+proc handleControls {} {
+    global env
+    upvar 1 char char
+    upvar 1 keybuffer keybuffer
+
+    # Control chars start at a == \u0001 and count up.
+    switch -exact -- $char {
+        \u0004 { ;# ^d
+          if { $env(CMDLINE_CURSOR) <= 0 } {
+            print "exit\n" nowait
+            doExit
+          }
+        }
+        \u0003 { ;# ^c
+            print "^C\n" nowait
+            doExit
+        }
+        \u0008 -
+        \u007f { ;# ^h && backspace ?
+            if {$env(CMDLINE_CURSOR) > 0} {
+                incr env(CMDLINE_CURSOR) -1
+                set env(CMDLINE) [string replace $env(CMDLINE) \
+                    $env(CMDLINE_CURSOR) $env(CMDLINE_CURSOR)]
+            }
+        }
+        \u001b { ;# ESC - handle escape sequences
+            handleEscapes
+        }
+    }
+    # Rate limiter:
+    set keybuffer ""
+}
+
+proc shortMatch {maybe} {
+    # Find the shortest matching substring:
+    set maybe [lsort $maybe]
+    set shortest [lindex $maybe 0]
+    foreach x $maybe {
+        while {![string match $shortest* $x]} {
+            set shortest [string range $shortest 0 end-1]
+        }
+    }
+    return $shortest
+}
+
+proc handleCompletion {} {
+    global env
+    set vars ""
+    set cmds ""
+
+    # First find out what kind of word we need to complete:
+    set wordstart [string last " " $env(CMDLINE) \
+        [expr {$env(CMDLINE_CURSOR)-1}]]
+    incr wordstart
+    set wordend [string first " " $env(CMDLINE) $wordstart]
+    if {$wordend == -1} {
+        set wordend end
+    } else {
+        incr wordend -1
+    }
+    set word [string range $env(CMDLINE) $wordstart $wordend]
+
+    if {[string trim $word] == ""} return
+
+    set firstchar [string index $word 0]
+
+    # Check if word is a variable:
+    if {$firstchar == "\$"} {
+        set word [string range $word 1 end]
+        incr wordstart
+
+        # Check if it is an array key:
+        set x [string first "(" $word]
+        if {$x != -1} {
+            set v [string range $word 0 [expr {$x-1}]]
+            incr x
+            set word [string range $word $x end]
+            incr wordstart $x
+            if {[uplevel #0 "array exists $v"]} {
+                set vars [uplevel #0 "array names $v $word*"]
+            }
+        } else {
+            foreach x [uplevel #0 {info vars}] {
+                if {[string match $word* $x]} {
+                    lappend vars $x
+                }
+            }
+        }
+    } else {
+        if {$firstchar == "\[" || $wordstart == 0} {
+            if {$firstchar == "\["} {
+                set word [string range $word 1 end]
+                incr wordstart
+            }
+            # Check commands:
+            foreach x [info commands] {
+                if {[string match $word* $x]} {
+                    lappend cmds $x
+                }
+            }
+        } else {
+            # Check commands anyway:
+            foreach x [info commands] {
+                if {[string match $word* $x]} {
+                    lappend cmds $x
+                }
+            }
+        }
+        if {$wordstart != 0} {
+            # Check variables anyway:
+            set x [string first "(" $word]
+            if {$x != -1} {
+                set v [string range $word 0 [expr {$x-1}]]
+                incr x
+                set word [string range $word $x end]
+                incr wordstart $x
+                if {[uplevel #0 "array exists $v"]} {
+                    set vars [uplevel #0 "array names $v $word*"]
+                }
+            } else {
+                foreach x [uplevel #0 {info vars}] {
+                    if {[string match $word* $x]} {
+                        lappend vars $x
+                    }
+                }
+            }
+        }
+    }
+
+    set maybe [concat $vars $cmds]
+    set shortest [shortMatch $maybe]
+    if {"$word" == "$shortest"} {
+        if {[llength $maybe] > 1 && $env(COMPLETION_MATCH) != $maybe} {
+            set env(COMPLETION_MATCH) $maybe
+            clearline
+            set temp ""
+            foreach {match format} {
+                vars  "35"
+                cmds  "1;32"
+            } {
+                if {[llength $match]} {
+                    append temp "[ESC]\[${format}m"
+                    foreach x [set $match] {
+                        append temp "[file tail $x] "
+                    }
+                    append temp "[ESC]\[0m"
+                }
+            }
+            print "\n$temp\n"
+        }
+    }
+}
+
+proc handleHistory {x} {
+    global env
+
+    set hlen [llength $env(HISTORY)]
+    incr env(HISTORY_LEVEL) $x
+    if {$env(HISTORY_LEVEL) > -1} {
+        set env(CMDLINE) [lindex $env(HISTORY) end-$env(HISTORY_LEVEL)]
+        set env(CMDLINE_CURSOR) [string length $env(CMDLINE)]
+    }
+    if {$env(HISTORY_LEVEL) <= -1} {
+        set env(HISTORY_LEVEL) -1
+        set env(CMDLINE) ""
+        set env(CMDLINE_CURSOR) 0
+    } elseif {$env(HISTORY_LEVEL) > $hlen} {
+        set env(HISTORY_LEVEL) $hlen
+    }
+}
+
+################################
+# History handling functions
+################################
+
+proc getHistory {} {
+    global env
+    return $env(HISTORY)
+}
+
+proc setHistory {hlist} {
+    global env
+    set env(HISTORY) $hlist
+}
+
+proc appendHistory {cmdline} {
+    global env
+    set old [lsearch -exact $env(HISTORY) $cmdline]
+    if {$old != -1} {
+        set env(HISTORY) [lreplace $env(HISTORY) $old $old]
+    }
+    lappend env(HISTORY) $cmdline
+    set env(HISTORY) \
+        [lrange $env(HISTORY) end-$env(HISTORY_BUFFER) end]
+}
+
+################################
+# main()
+################################
+
+proc rawInput {} {
+    fconfigure stdin -buffering none -blocking 0
+    fconfigure stdout -buffering none -translation crlf
+    exec stty raw -echo
+}
+
+proc lineInput {} {
+    fconfigure stdin -buffering line -blocking 1
+    fconfigure stdout -buffering line
+    exec stty -raw echo
+}
+
+proc doExit {{code 0}} {
+    global env HISTFILE
+
+    # Reset terminal:
+#    print "[ESC]c[ESC]\[2J" nowait
+    lineInput
+
+    set hlist [getHistory]
+    if {[llength $hlist] > 0} {
+        set f [open $HISTFILE w]
+        foreach x $hlist {
+            # Escape newlines:
+            puts $f [string map {
+                \n "\\n"
+                "\\" "\\b"
+            } $x]
+        }
+        close $f
+    }
+
+    ___exit $code
+}
+
+# Load history if available:
+if {[llength $env(HISTORY)] == 0} {
+    if {[file exists $HISTFILE]} {
+        set f [open $HISTFILE r]
+        set hlist [list]
+        foreach x [split [read $f] "\n"] {
+            if {$x != ""} {
+                # Undo newline escapes:
+                lappend hlist [string map {
+                    "\\n" \n
+                    "\\\\" "\\"
+                    "\\b" "\\"
+                } $x]
+            }
+        }
+        setHistory $hlist
+        unset hlist
+        close $f
+    }
+}
+
+rawInput
+
+rename exit ___exit
+proc exit args doExit
+
+proc tclline {} {
+    global env
+    set char ""
+    set keybuffer [read stdin]
+    set env(COLUMNS) [getColumns]
+
+    while {$keybuffer != ""} {
+        if {[eof stdin]} return
+        set char [readbuf keybuffer]
+        if {$char == ""} {
+            # Sleep for a bit to reduce CPU time:
+            after 40
+            continue
+        }
+
+        if {[string is print $char]} {
+            set x $env(CMDLINE_CURSOR)
+
+            if {$x < 1 && [string trim $char] == ""} continue
+
+            set trailing [string range $env(CMDLINE) $x end]
+            set env(CMDLINE) [string replace $env(CMDLINE) $x end]
+            append env(CMDLINE) $char
+            append env(CMDLINE) $trailing
+            incr env(CMDLINE_CURSOR)
+        } elseif {$char == "\t"} {
+            handleCompletion
+        } elseif {$char == "\n" || $char == "\r"} {
+            if {[info complete $env(CMDLINE)] &&
+                [string index $env(CMDLINE) end] != "\\"} {
+                lineInput
+                print "\n" nowait
+                uplevel #0 {
+                    global env
+
+                    # Run the command:
+                    if { [catch $env(CMDLINE) res] } {
+                      print "[ESC]\[1;31m\[[ESC]\[0;31mError[ESC]\[1;31m\][ESC]\[0m "
+                    }
+                    if {$res != ""} {
+                        print "$res\n"
+                    }
+
+                    # Append HISTORY:
+                    set env(HISTORY_LEVEL) -1
+                    appendHistory $env(CMDLINE)
+
+                    set env(CMDLINE) ""
+                    set env(CMDLINE_CURSOR) 0
+                    set env(CMDLINE_LINES) {0 0}
+                }
+                rawInput
+            } else {
+                set x $env(CMDLINE_CURSOR)
+
+                if {$x < 1 && [string trim $char] == ""} continue
+
+                set trailing [string range $env(CMDLINE) $x end]
+                set env(CMDLINE) [string replace $env(CMDLINE) $x end]
+                append env(CMDLINE) $char
+                append env(CMDLINE) $trailing
+                incr env(CMDLINE_CURSOR)
+            }
+        } else {
+            handleControls
+        }
+    }
+    prompt $env(CMDLINE)
+}
+tclline
+
+fileevent stdin readable tclline
+vwait forever
+doExit
+}
