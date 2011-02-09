@@ -1,0 +1,29 @@
+Index: svgalib-1.4.3/src/fbdev.c
+===================================================================
+--- svgalib-1.4.3.orig/src/fbdev.c	2011-02-09 21:45:00.000000000 +0100
++++ svgalib-1.4.3/src/fbdev.c	2011-02-09 21:46:42.000000000 +0100
+@@ -273,11 +273,13 @@
+ {
+ 	struct fb_var_screeninfo info;
+ 	unsigned g;
++	int bpp;
+ 
+ 	if (fbdev_screeninfo(&info, mode))
+ 		return 0;
+ 
+ 	g = info.green.length;
++	bpp = info.bits_per_pixel;
+ 
+ 	info.activate = FB_ACTIVATE_TEST;
+ 	if (ioctl(fbdev_fd, FBIOPUT_VSCREENINFO, &info))
+@@ -287,6 +289,10 @@
+ 	    info.green.length != g)
+ 		return 0;
+ 
++	/* sometimes sets 32-bit modes when 24-bit is requested */
++	if (info.bits_per_pixel != bpp)
++	   return 0;
++
+ 	/* We may need to add more checks here. */
+ 
+ 	return SVGADRV;
