@@ -9,7 +9,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=links
-PKG_VERSION:=2.2
+PKG_VERSION:=2.3pre1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://links.twibright.com/download/
@@ -27,7 +27,7 @@ define Package/links
     SECTION:=net
     CATEGORY:=Network
     URL:=http://links.twibright.com/
-    DEPENDS:=+libpng +libtiff
+    DEPENDS:=+libpng +libtiff +libopenssl +directfb +svgalib +libjpeg
 endef
 
 define Package/links/description
@@ -42,11 +42,9 @@ endef
 CONFIGURE_ARGS += --enable-graphics \
   --enable-debuglevel=0 \
   --without-gpm \
-  --without-svgalib \
   --without-pmshell \
   --without-atheos \
-  --without-x \
-  --without-fb
+  --without-x
 
 TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/directfb
 
