@@ -31,6 +31,8 @@ cd $(PKG_BUILD_DIR); \
 echo "QMAKE_UIC=$(STAGING_DIR_HOST)/bin/uic" >> qstardict.pri; \
 echo "QMAKE_MOC=$(STAGING_DIR_HOST)/bin/moc" >> qstardict.pri; \
 echo "QMAKE_RCC=$(STAGING_DIR_HOST)/bin/rcc" >> qstardict.pri; \
+echo "QMAKE_CC=$(TARGET_CC)" >> qstardict.pri; \
+echo "QMAKE_CXX=$(TARGET_CXX)" >> qstardict.pri; \
 echo "QMAKE_LINK=$(TARGET_CXX)" >> qstardict.pri; \
 echo "QMAKE_LIBS+=$(INTL_LDFLAGS)" >> qstardict.pri; \
 echo "QMAKE_LIBS+=$(ICONV_LDFLAGS)" >> qstardict.pri; \
