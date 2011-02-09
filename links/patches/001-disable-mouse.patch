@@ -1,0 +1,14 @@
+diff -ur links-2.3pre1.orig/svgalib.c links-2.3pre1/svgalib.c
+--- links-2.3pre1.orig/svgalib.c	2011-02-09 13:41:06.916184319 +0300
++++ links-2.3pre1/svgalib.c	2011-02-09 13:53:20.668114026 +0300
+@@ -2454,8 +2454,8 @@
+ 			vga_setmousesupport(0);
+ 			mouse_works=0;
+ 		}else{
+-			vga_setmousesupport(1);
+-			mouse_works=1;
++			vga_setmousesupport(0);
++			mouse_works=0;
+ 		}
+ 	vga_lockvc();
+ #ifndef __SPAD__
