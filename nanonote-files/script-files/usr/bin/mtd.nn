@@ -1,9 +1,11 @@
 #!/bin/bash
+ 
+__VERSION__=2011-02-02
 
 if [ "$1" == "flash" ] && [ "$#" == "3" ]; then
     case "$2" in
     "bootloader")
-	echo "not implenment"
+        echo "not implenment"
 	#flash_eraseall /dev/mtd0
 	exit 0
 	;;
@@ -27,30 +29,31 @@ if [ "$1" == "flash" ] && [ "$#" == "3" ]; then
 fi
 
 if [ "$1" == "mount" ] && [ "$#" == "3" ]; then
-    MOUNT_POINT="$3"
+    if [ "$2" == "rootfs" ] || [ "$2" == "data" ]; then
+	MOUNT_POINT="$3"
+	if [ "$2" == "rootfs" ]; then
+	    PARTITION="2"
+	elif [ "$2" == "data" ]; then
+	    PARTITION="3"
+	fi
 
-    if [ "$2" == "rootfs" ]; then
-	PARTITION="2"
-    elif [ "$2" == "data" ]; then
-	PARTITION="3"
+	mkdir -p $MOUNT_POINT
+	if [  "$?" != "0" ]; then 
+	    echo "mkdir -p $MOUNT_POINT Fail"
+	    exit 1
+	fi
+
+	ubiattach /dev/ubi_ctrl -m ${PARTITION}
+	DEV_UBI=`dmesg | grep "UBI: attached mtd${PARTITION} to" | cut -d ":" -f 2 | cut -d " " -f 5`
+	mount -t ubifs ${DEV_UBI}_0 $MOUNT_POINT
+        exit 0
     fi
-
-    ubiattach /dev/ubi_ctrl -m ${PARTITION}
-    DEV_UBI=`dmesg | grep "UBI: attached mtd${PARTITION} to" | cut -d ":" -f 2 | cut -d " " -f 5`
-    mkdir -p $MOUNT_POINT
-    if [ -d "$3" ]; then 
-	echo "$3 not a folder"
-	exit 1
-    fi
-
-    mount -t ubifs ${DEV_UBI}_0 $MOUNT_POINT
 fi
 
-
-if [ "$1" == "format_data" ]; then
+if [ "$1" == "format_data_default" ]; then
     ubiformat /dev/mtd3 -y
     ubiattach /dev/ubi_ctrl -m 3
-    ubimkvol /dev/ubi1 -s 1730MiB -N data
+    ubimkvol /dev/ubi1 -s 1400MiB -N data
     exit 0
 fi
 
@@ -77,17 +80,33 @@ if [ "$1" == "fw_setenv_default" ]; then
 fi
 
 echo "\
-Usage: $0 [-d <version>] [-l <path to local images>] [-h]
-     -d <>  I will download and flash a specific version of OpenWrt images
+Usage: $0 [ command ] [ <para1> <para2> <para3> ]
+     flash bootloader|kernel|rootfs|data image_file
+             flash nand partition using <image_file>
 
-     -l <>  I will flash images present in <arg>
-            (missing files will be skipped)
+     mount rootfs|data    mount_point
+             mount nand partition
 
-     -h     you already found out
+     format_data_default
+             lookinside for more detari
+             NOTICE:
+                     this command will format data
+                     partition, create a default
+                     1400MB volume, named 'data',
+                     ALL data will lost after run.
 
-OpenWrt reflash script for qi-hardware Ben NanoNote
+     fw_setenv_default
+             reset bootloader default variable
+             lookinside for more detail
+             NOTICE:
+                     this command write hardcode
+                     variables to nand, so it must 
+                     run once before you want change
+                     change it.
+
+script file for Qi Hardware Ben NanoNote
 written by: Xiangfu Liu (xiangfu@sharism.cc)
-
-                                                     version: ${__VERSION__}
-Please report bugs to developer@lists.qi-hardware.com"
-exit 1
+written with Emacs in Ben NanoNote
+                             version: ${__VERSION__}
+Report bugs to developer@lists.qi-hardware.com"
+exit 0
