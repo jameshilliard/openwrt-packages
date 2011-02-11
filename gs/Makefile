@@ -48,7 +48,9 @@ CONFIGURE_ARGS += \
 	--without-jasper
 
 MAKE_FLAGS += \
-	EXTRALIBS="$(ICONV_LDFLAGS) -L$(STAGING_DIR)/usr/lib -lfontconfig -lfreetype -ldl -Wl,-rpath-link=$(STAGING_DIR)/usr/lib" \
+	EXTRALIBS="-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
+		$(ICONV_LDFLAGS) -L$(STAGING_DIR)/usr/lib \
+		-lfontconfig -lfreetype -ldl -liconv" \
 	COMPILE_INITS="0"
 
 define Package/ghostscript/install
