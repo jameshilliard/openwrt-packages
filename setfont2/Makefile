@@ -34,6 +34,12 @@ define Build/Configure
       $(call Build/Configure/Default)
 
 endef
+
+define Build/Compile
+     cd $(PKG_BUILD_DIR); \
+	     $(TARGET_CC) -Wl,-rpath-link=$(STAGING_DIR)/usr/lib -Wall -Os -o setfont2 setfont2.c
+endef
+
 define Package/setfont2/install
 	$(INSTALL_DIR) \
 		$(1)/etc/init.d \
