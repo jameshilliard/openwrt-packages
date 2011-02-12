@@ -6,8 +6,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=setfont2
-PKG_VERSION:=20100720
-PKG_REV:=5c45736740e5e63439692615506078427913ea18
+PKG_VERSION:=20110212
+PKG_REV:=c6bbb45a3b1e798c5f6c1db5b3f77526fea271a2
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
@@ -47,6 +47,7 @@ define Package/setfont2/install
 	$(INSTALL_DATA) \
 		$(PKG_BUILD_DIR)/fonts/un-fuzzy-6x10-font.pnm \
 		$(PKG_BUILD_DIR)/fonts/un-fuzzy-4x8-font.pnm \
+		$(PKG_BUILD_DIR)/fonts/ben_uni.trans \
 		$(1)/usr/share/setfont2/
 endef
 
