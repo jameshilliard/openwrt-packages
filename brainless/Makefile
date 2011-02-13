@@ -8,11 +8,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=brainless
-PKG_VERSION:=0.1.1
-PKG_RELEASE:=1
+PKG_VERSION:=0.1.2
+PKG_RELEASE:=2
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/forth-brainless
-PKG_MD5SUM:=38a4ac4d5b984e1b67b0cdd60b484b02
+PKG_MD5SUM:=ed4a4cbbe23628b17edc5aa01f32f7fb
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -42,7 +42,7 @@ endef
 
 # searches for fusion* headers that are not present.  different version?
 CONFIGURE_ARGS += \
-	--with-gforth=/usr/bin/gforth
+	--with-gforth=/usr/bin/gforth-fast
 
 define Build/Configure
 	$(call Build/Configure/Default)
@@ -54,6 +54,7 @@ endef
 define Package/brainless/install
 	$(INSTALL_DIR) $(1)/usr
 	$(CP) $(PKG_INSTALL_DIR)/usr/* $(1)/usr/
+	$(INSTALL_BIN) ./files/brainless-jfbterm $(1)/usr/bin/
 endef
 
 $(eval $(call BuildPackage,brainless))

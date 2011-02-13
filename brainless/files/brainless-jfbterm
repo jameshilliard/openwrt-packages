@@ -1,0 +1,8 @@
+#! /bin/sh
+
+# Run Brainless chess playing game in a jfbterm unicode terminal using utf-8
+# chess-piece glyphs and board size adjusted to match the NanoNote's display.
+
+exec jfbterm -e brainless \
+    -e 'true set-option utf8-terminal?' \
+    -e 'small-board'
