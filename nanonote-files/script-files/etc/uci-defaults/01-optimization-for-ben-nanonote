@@ -3,3 +3,6 @@
 /etc/init.d/atd disable
 /etc/init.d/led disable
 /etc/init.d/telnet disable
+
+# write default u-boot env to nand
+/usr/bin/mtd.nn fw_setenv_default
