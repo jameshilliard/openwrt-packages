@@ -41,7 +41,7 @@ endef
 define Package/nlove/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/nlove $(1)/usr/bin/
-	$(INSTALL_BIN) ./files/nlove-run
+	$(INSTALL_BIN) $(FILES_DIR)/nlove-run $(1)/usr/bin/
 endef
 
 $(eval $(call BuildPackage,nlove))
