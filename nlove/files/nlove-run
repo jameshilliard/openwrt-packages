@@ -5,7 +5,7 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
-if [ ! -f "$HOME/.nlove/$1.love" ]; then
+if [ ! -f "/usr/share/nlove/$1.love" ]; then
 	echo "Game not found, will now attempt to download it."
 	echo "This requires working internet access."
 	mkdir -p /usr/share/nlove > /dev/null
