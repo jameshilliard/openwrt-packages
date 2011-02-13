@@ -3,7 +3,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=nlove
 PKG_REV:=494
 PKG_VERSION:=r$(PKG_REV)
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://bitbucket.org/bartbes/nlove
@@ -41,6 +41,7 @@ endef
 define Package/nlove/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/nlove $(1)/usr/bin/
+	$(INSTALL_BIN) ./files/nlove-run
 endef
 
 $(eval $(call BuildPackage,nlove))

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+	echo "Usage: $0 <name>"
+	exit 1
+fi
+
+if [ ! -f "$HOME/.nlove/$1.love" ]; then
+	echo "Game not found, will now attempt to download it."
+	echo "This requires working internet access."
+	mkdir -p /usr/share/nlove > /dev/null
+	echo "Downloading...  "
+	wget -q "http://dl.dropbox.com/u/440010/nlove/games/$1.love" -O "/usr/share/nlove/$1.love" > /dev/null
+	if [ $? -ne 0 ]; then
+		echo "An error occured during downloading, are you sure $1 exists?"
+		echo "And do you have internet access?"
+		exit 1
+	fi
+	echo "Done."
+	echo -n "Installing launcher...  "
+	mkdir -p /usr/share/gmenu2x/sections/nlove
+	(echo "title=$1" &&
+	echo "exec=/usr/bin/`basename $0`" &&
+	echo "params=$1" &&
+	echo "wrapper=true") > /usr/share/gmenu2x/sections/nlove/$1
+	echo "Done."
+fi
+nlove "/usr/share/nlove/$1.love"
+exit 0
