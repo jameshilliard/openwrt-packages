@@ -64,6 +64,9 @@ define Package/supertux/install
 	$(CP) \
 		$(PKG_BUILD_DIR)/data/{images,levels,music,sounds,supertux.strf,*.txt} \
 		$(1)/usr/share/supertux
+
+	rm -rf \
+		$(1)/usr/share/supertux/images/{background,shared,tilesets,title,worldmap}/org
 endef
 
 $(eval $(call RequireCommand,pngcrush,Please install pngcrush.))
