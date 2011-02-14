@@ -33,12 +33,20 @@ TARGET_LDFLAGS+= \
 
 define Package/fbterm/install
 	$(INSTALL_DIR) \
-		$(1)/usr/bin
+		$(1)/usr/bin $(1)/usr/share/fbterm
 
 	$(INSTALL_BIN) \
 		$(PKG_BUILD_DIR)/src/fbterm \
 		$(1)/usr/bin/fbterm
 
+	$(INSTALL_DATA) \
+		$(FILES_DIR)/fbtermrc \
+		$(1)/usr/share/fbterm
+endef
+
+define Package/fbterm/postinst
+#! /bin/sh
+cp $${IPKG_INSTROOT}/usr/share/fbterm/fbtermrc $${IPKG_INSTROOT}/root/.fbtermrc
 endef
 
 $(eval $(call BuildPackage,fbterm))
