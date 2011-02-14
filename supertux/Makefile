@@ -41,14 +41,15 @@ endef
 define Build/Prepare
 	$(call Build/Prepare/Default)
 	(\
-bzip2 -dc $(FILES_DIR)/supertux-smallsize-data.tar.bz2 | $(TAR) -C $(PKG_BUILD_DIR) --strip-components=1 -xf -; \
 $(CP) $(FILES_DIR)/img-resize.sh $(PKG_BUILD_DIR); \
+$(CP) $(FILES_DIR)/supertux-smallsize-data.tar.bz2 $(PKG_BUILD_DIR); \
 cd $(PKG_BUILD_DIR); \
 for i in background shared tilesets title worldmap; do \
-	echo "Converting images in ${PKG_BUILD_DIR}/data/images/$$$$i..."; \
-	cd ${PKG_BUILD_DIR}/data/images/$$$$i; \
-	sh ${PKG_BUILD_DIR}/img-resize.sh; \
+	echo "Converting images in $(PKG_BUILD_DIR)/data/images/$$$$i..."; \
+	cd $(PKG_BUILD_DIR)/data/images/$$$$i; \
+	sh $(PKG_BUILD_DIR)/img-resize.sh; \
 done; \
+bzip2 -dc $(PKG_BUILD_DIR)/supertux-smallsize-data.tar.bz2 | $(TAR) -C $(PKG_BUILD_DIR) --strip-components=1 -xf -; \
 )
 endef
 
