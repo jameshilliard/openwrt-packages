@@ -1,6 +1,6 @@
 diff -ur bsd-games-2.17/backgammon/backgammon/extra.c bsd-games-2.17-p/backgammon/backgammon/extra.c
 --- bsd-games-2.17/backgammon/backgammon/extra.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/backgammon/extra.c	2010-07-31 22:10:07.910053909 +0400
++++ bsd-games-2.17-p/backgammon/backgammon/extra.c	2011-02-15 11:22:28.988058843 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -19,7 +19,7 @@ diff -ur bsd-games-2.17/backgammon/backgammon/extra.c bsd-games-2.17-p/backgammo
  #include "backlocal.h"
 diff -ur bsd-games-2.17/backgammon/backgammon/main.c bsd-games-2.17-p/backgammon/backgammon/main.c
 --- bsd-games-2.17/backgammon/backgammon/main.c	2005-02-16 09:24:50.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/backgammon/main.c	2010-08-01 11:08:39.969952583 +0400
++++ bsd-games-2.17-p/backgammon/backgammon/main.c	2011-02-15 11:22:28.988058843 +0300
 @@ -30,18 +30,18 @@
   */
  
@@ -62,7 +62,7 @@ diff -ur bsd-games-2.17/backgammon/backgammon/main.c bsd-games-2.17-p/backgammon
  	args[acnt] = '\0';
 diff -ur bsd-games-2.17/backgammon/backgammon/move.c bsd-games-2.17-p/backgammon/backgammon/move.c
 --- bsd-games-2.17/backgammon/backgammon/move.c	2004-01-27 23:52:07.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/backgammon/move.c	2010-07-31 22:10:41.854259314 +0400
++++ bsd-games-2.17-p/backgammon/backgammon/move.c	2011-02-15 11:22:28.988058843 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -81,7 +81,7 @@ diff -ur bsd-games-2.17/backgammon/backgammon/move.c bsd-games-2.17-p/backgammon
  #include "backlocal.h"
 diff -ur bsd-games-2.17/backgammon/backgammon/text.c bsd-games-2.17-p/backgammon/backgammon/text.c
 --- bsd-games-2.17/backgammon/backgammon/text.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/backgammon/text.c	2010-07-31 22:10:52.377805941 +0400
++++ bsd-games-2.17-p/backgammon/backgammon/text.c	2011-02-15 11:22:28.988058843 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -100,7 +100,7 @@ diff -ur bsd-games-2.17/backgammon/backgammon/text.c bsd-games-2.17-p/backgammon
  
 diff -ur bsd-games-2.17/backgammon/backgammon/version.c bsd-games-2.17-p/backgammon/backgammon/version.c
 --- bsd-games-2.17/backgammon/backgammon/version.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/backgammon/version.c	2010-07-31 22:11:05.756426999 +0400
++++ bsd-games-2.17-p/backgammon/backgammon/version.c	2011-02-15 11:22:28.988058843 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -119,7 +119,7 @@ diff -ur bsd-games-2.17/backgammon/backgammon/version.c bsd-games-2.17-p/backgam
  	"Last updated on Friday, October 10, 1997.",
 diff -ur bsd-games-2.17/backgammon/common_source/allow.c bsd-games-2.17-p/backgammon/common_source/allow.c
 --- bsd-games-2.17/backgammon/common_source/allow.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/common_source/allow.c	2010-07-31 22:07:44.982982743 +0400
++++ bsd-games-2.17-p/backgammon/common_source/allow.c	2011-02-15 11:22:28.989059790 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -138,7 +138,7 @@ diff -ur bsd-games-2.17/backgammon/common_source/allow.c bsd-games-2.17-p/backga
  
 diff -ur bsd-games-2.17/backgammon/common_source/board.c bsd-games-2.17-p/backgammon/common_source/board.c
 --- bsd-games-2.17/backgammon/common_source/board.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/common_source/board.c	2010-07-31 22:08:08.852355705 +0400
++++ bsd-games-2.17-p/backgammon/common_source/board.c	2011-02-15 11:22:28.989059790 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -157,7 +157,7 @@ diff -ur bsd-games-2.17/backgammon/common_source/board.c bsd-games-2.17-p/backga
  
 diff -ur bsd-games-2.17/backgammon/common_source/check.c bsd-games-2.17-p/backgammon/common_source/check.c
 --- bsd-games-2.17/backgammon/common_source/check.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/common_source/check.c	2010-07-31 22:08:22.639630328 +0400
++++ bsd-games-2.17-p/backgammon/common_source/check.c	2011-02-15 11:22:28.989059790 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -176,7 +176,7 @@ diff -ur bsd-games-2.17/backgammon/common_source/check.c bsd-games-2.17-p/backga
  
 diff -ur bsd-games-2.17/backgammon/common_source/fancy.c bsd-games-2.17-p/backgammon/common_source/fancy.c
 --- bsd-games-2.17/backgammon/common_source/fancy.c	2004-04-24 20:13:09.000000000 +0400
-+++ bsd-games-2.17-p/backgammon/common_source/fancy.c	2010-07-31 22:08:35.011397017 +0400
++++ bsd-games-2.17-p/backgammon/common_source/fancy.c	2011-02-15 11:22:28.989059790 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -193,9 +193,18 @@ diff -ur bsd-games-2.17/backgammon/common_source/fancy.c bsd-games-2.17-p/backga
  
  #include "back.h"
  
+@@ -726,7 +726,7 @@
+ 		lUP = strlen(UP);
+ 	if (ND)
+ 		lND = strlen(ND);
+-	if (LI < 24 || CO < 72 || !(CL && UP && ND))
++	if (LI < 20 || CO < 52 || !(CL && UP && ND))
+ 		return (0);
+ 	linect = (int *) calloc(LI + 1, sizeof(int));
+ 	if (linect == NULL) {
 diff -ur bsd-games-2.17/backgammon/common_source/init.c bsd-games-2.17-p/backgammon/common_source/init.c
 --- bsd-games-2.17/backgammon/common_source/init.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/common_source/init.c	2010-07-31 22:08:46.900301922 +0400
++++ bsd-games-2.17-p/backgammon/common_source/init.c	2011-02-15 11:22:28.989059790 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -214,7 +223,7 @@ diff -ur bsd-games-2.17/backgammon/common_source/init.c bsd-games-2.17-p/backgam
  
 diff -ur bsd-games-2.17/backgammon/common_source/odds.c bsd-games-2.17-p/backgammon/common_source/odds.c
 --- bsd-games-2.17/backgammon/common_source/odds.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/common_source/odds.c	2010-07-31 22:09:03.219958336 +0400
++++ bsd-games-2.17-p/backgammon/common_source/odds.c	2011-02-15 11:22:28.989059790 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -233,7 +242,7 @@ diff -ur bsd-games-2.17/backgammon/common_source/odds.c bsd-games-2.17-p/backgam
  
 diff -ur bsd-games-2.17/backgammon/common_source/one.c bsd-games-2.17-p/backgammon/common_source/one.c
 --- bsd-games-2.17/backgammon/common_source/one.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/common_source/one.c	2010-07-31 22:09:15.025538516 +0400
++++ bsd-games-2.17-p/backgammon/common_source/one.c	2011-02-15 11:22:28.988058843 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -252,7 +261,7 @@ diff -ur bsd-games-2.17/backgammon/common_source/one.c bsd-games-2.17-p/backgamm
  
 diff -ur bsd-games-2.17/backgammon/common_source/save.c bsd-games-2.17-p/backgammon/common_source/save.c
 --- bsd-games-2.17/backgammon/common_source/save.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/common_source/save.c	2010-08-01 00:38:38.876427096 +0400
++++ bsd-games-2.17-p/backgammon/common_source/save.c	2011-02-15 11:22:28.989059790 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -271,7 +280,7 @@ diff -ur bsd-games-2.17/backgammon/common_source/save.c bsd-games-2.17-p/backgam
  
 diff -ur bsd-games-2.17/backgammon/common_source/subs.c bsd-games-2.17-p/backgammon/common_source/subs.c
 --- bsd-games-2.17/backgammon/common_source/subs.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/common_source/subs.c	2010-08-01 11:10:44.780266356 +0400
++++ bsd-games-2.17-p/backgammon/common_source/subs.c	2011-02-15 11:22:28.989059790 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -290,7 +299,7 @@ diff -ur bsd-games-2.17/backgammon/common_source/subs.c bsd-games-2.17-p/backgam
  
 diff -ur bsd-games-2.17/backgammon/common_source/table.c bsd-games-2.17-p/backgammon/common_source/table.c
 --- bsd-games-2.17/backgammon/common_source/table.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/common_source/table.c	2010-07-31 22:09:54.655414207 +0400
++++ bsd-games-2.17-p/backgammon/common_source/table.c	2011-02-15 11:22:28.988058843 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -309,7 +318,7 @@ diff -ur bsd-games-2.17/backgammon/common_source/table.c bsd-games-2.17-p/backga
  
 diff -ur bsd-games-2.17/backgammon/teachgammon/data.c bsd-games-2.17-p/backgammon/teachgammon/data.c
 --- bsd-games-2.17/backgammon/teachgammon/data.c	2004-01-02 21:04:51.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/teachgammon/data.c	2010-08-01 11:18:14.579882098 +0400
++++ bsd-games-2.17-p/backgammon/teachgammon/data.c	2011-02-15 11:22:28.988058843 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -328,7 +337,7 @@ diff -ur bsd-games-2.17/backgammon/teachgammon/data.c bsd-games-2.17-p/backgammo
  
 diff -ur bsd-games-2.17/backgammon/teachgammon/teach.c bsd-games-2.17-p/backgammon/teachgammon/teach.c
 --- bsd-games-2.17/backgammon/teachgammon/teach.c	2005-02-16 09:24:50.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/teachgammon/teach.c	2010-08-01 11:39:32.956134539 +0400
++++ bsd-games-2.17-p/backgammon/teachgammon/teach.c	2011-02-15 11:22:28.988058843 +0300
 @@ -30,18 +30,18 @@
   */
  
@@ -372,7 +381,7 @@ diff -ur bsd-games-2.17/backgammon/teachgammon/teach.c bsd-games-2.17-p/backgamm
  	if (tflag) {
 diff -ur bsd-games-2.17/backgammon/teachgammon/ttext1.c bsd-games-2.17-p/backgammon/teachgammon/ttext1.c
 --- bsd-games-2.17/backgammon/teachgammon/ttext1.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/teachgammon/ttext1.c	2010-08-01 11:18:57.935091377 +0400
++++ bsd-games-2.17-p/backgammon/teachgammon/ttext1.c	2011-02-15 11:22:28.988058843 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -391,7 +400,7 @@ diff -ur bsd-games-2.17/backgammon/teachgammon/ttext1.c bsd-games-2.17-p/backgam
  #include "tutor.h"
 diff -ur bsd-games-2.17/backgammon/teachgammon/ttext2.c bsd-games-2.17-p/backgammon/teachgammon/ttext2.c
 --- bsd-games-2.17/backgammon/teachgammon/ttext2.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/teachgammon/ttext2.c	2010-08-01 11:19:09.174691288 +0400
++++ bsd-games-2.17-p/backgammon/teachgammon/ttext2.c	2011-02-15 11:22:28.988058843 +0300
 @@ -30,13 +30,13 @@
   */
  
@@ -410,7 +419,7 @@ diff -ur bsd-games-2.17/backgammon/teachgammon/ttext2.c bsd-games-2.17-p/backgam
  #include "tutor.h"
 diff -ur bsd-games-2.17/backgammon/teachgammon/tutor.c bsd-games-2.17-p/backgammon/teachgammon/tutor.c
 --- bsd-games-2.17/backgammon/teachgammon/tutor.c	2003-12-17 05:47:37.000000000 +0300
-+++ bsd-games-2.17-p/backgammon/teachgammon/tutor.c	2010-08-01 11:37:12.464301896 +0400
++++ bsd-games-2.17-p/backgammon/teachgammon/tutor.c	2011-02-15 11:22:28.988058843 +0300
 @@ -30,13 +30,13 @@
   */
  
