@@ -41,7 +41,7 @@ endef
 
 define Host/Compile
 	$(if $(CONFIG_PACKAGE_plplot-octave),$(Host/Compile/Octave),)
-	$(MAKE) -C $(HOST_BUILD_DIR)/build_dir -j4
+	$(MAKE) -C $(HOST_BUILD_DIR)/build_dir VERBOSE=1 -j4 
 endef
 
 define Host/Install/Octave

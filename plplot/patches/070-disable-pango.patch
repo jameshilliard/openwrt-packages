@@ -1,0 +1,14 @@
+Index: plplot-5.9.7/cmake/modules/plplot.cmake
+===================================================================
+--- plplot-5.9.7.orig/cmake/modules/plplot.cmake	2011-02-15 22:31:43.000000000 +0100
++++ plplot-5.9.7/cmake/modules/plplot.cmake	2011-02-15 22:32:09.000000000 +0100
+@@ -493,7 +493,8 @@
+ # =======================================================================
+ # libpango support
+ # =======================================================================
+-include(pango)
++# pango disabled for now.  compilation fails on openwrt (?).
++#include(pango)
+ 
+ # =======================================================================
+ # Device drivers
