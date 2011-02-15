@@ -35,11 +35,11 @@ TARGET_LDFLAGS+= -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
-	(mkdir -p $(PKG_BUILD_DIR)/jemarch-bin; \
-	cd $(PKG_BUILD_DIR)/; \
-	wget http://www.jemarch.net/downloads/nanonote/nethack-3.4.3-nanonote-bin.tar.gz; \
-	tar xf nethack-3.4.3-nanonote-bin.tar.gz -C jemarch-bin/; \
-	)
+	# (mkdir -p $(PKG_BUILD_DIR)/jemarch-bin; \
+	# cd $(PKG_BUILD_DIR)/; \
+	# wget http://www.jemarch.net/downloads/nanonote/nethack-3.4.3-nanonote-bin.tar.gz; \
+	# tar xf nethack-3.4.3-nanonote-bin.tar.gz -C jemarch-bin/; \
+	# )
 endef
 
 define Build/Compile
@@ -62,9 +62,9 @@ define Package/nethack/install
 		$(PKG_BUILD_DIR)/src/nethack \
 		$(1)/usr/bin/
 
-	$(CP) \
-		$(PKG_BUILD_DIR)/jemarch-bin/nethack-3.4.3-nanonote-bin/lib/nethackdir/* \
-		$(1)/usr/games/lib/nethackdir
+	# $(CP) \
+	# 	$(PKG_BUILD_DIR)/jemarch-bin/nethack-3.4.3-nanonote-bin/lib/nethackdir/* \
+	# 	$(1)/usr/games/lib/nethackdir
 endef
 
 $(eval $(call BuildPackage,nethack))

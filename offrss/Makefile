@@ -33,9 +33,8 @@ define Build/Compile
 endef
 
 define Package/offrss/install
-	# $(INSTALL_DIR) $(1)/usr/bin
-	# echo -e "\0043\0041/bin/sh\n(cd /usr/share/offrss; ./offrss $$*)" > $(1)/usr/bin/offrss
-	# chmod +x $(1)/usr/bin/offrss
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) ./files/offrss $(1)/usr/bin
 
 	$(INSTALL_DIR) $(1)/usr/share/offrss
 	$(CP) $(PKG_BUILD_DIR)/$(PKG_NAME) $(1)/usr/share/offrss/
