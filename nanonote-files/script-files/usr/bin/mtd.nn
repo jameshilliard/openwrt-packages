@@ -53,7 +53,9 @@ fi
 if [ "$1" == "format_data_default" ]; then
     ubiformat /dev/mtd3 -y
     ubiattach /dev/ubi_ctrl -m 3
-    ubimkvol /dev/ubi1 -s 1400MiB -N data
+    ubimkvol /dev/ubi1 -s 1480MiB -N data
+# test in xiangfu's nanonote. 1486 is the MAX size we can make
+# so we using 1480 for now
     exit 0
 fi
 
