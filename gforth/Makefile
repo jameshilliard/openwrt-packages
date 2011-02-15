@@ -46,7 +46,7 @@ define Package/gforth
   SECTION:=lang
   CATEGORY:=Languages
   TITLE:=GForth
-  DEPENDS:= +libltdl
+  DEPENDS:= +libltdl +libffi
   URL:=http://www.gnu.org/software/gforth/
 endef
 
