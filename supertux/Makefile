@@ -68,6 +68,14 @@ define Package/supertux/install
 
 	rm -rf \
 		$(1)/usr/share/supertux/images/{background,shared,tilesets,title,worldmap}/org
+
+	ln -s \
+		SALCON.MOD \
+		$(1)/usr/share/supertux/music/salcon.mod
+
+	ln -s \
+		SALCON-fast.MOD \
+		$(1)/usr/share/supertux/music/salcon-fast.mod
 endef
 
 $(eval $(call RequireCommand,pngcrush,Please install pngcrush.))
