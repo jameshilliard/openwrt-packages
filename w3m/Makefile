@@ -36,7 +36,9 @@ define Build/Prepare
 endef
 
 CONFIGURE_ARGS += --with-ssl=$(STAGING_DIR)/usr \
-		  --with-gc=$(STAGING_DIR)/usr/lib
+		  --with-gc=$(STAGING_DIR)/usr/lib \
+		  --disable-xface \
+		  --with-imagelib="gtk2 gdk-pixbuf"
 
 CONFIGURE_VARS += ac_cv_lib_gc_GC_init=yes
 
