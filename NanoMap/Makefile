@@ -68,8 +68,9 @@ define Build/Configure
 endef
 
 define Package/NanoMap/install
-	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_DIR) $(1)/usr/bin $(1)/usr/lib/monav
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/NanoMap $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/monav/*.so $(1)/usr/lib/monav
 endef
 
 define Package/NanoMap-maps/install
