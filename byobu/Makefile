@@ -34,8 +34,7 @@ define Package/byobu/install
 	$(INSTALL_DIR) \
 		$(1)/usr/bin \
 		$(1)/usr/lib/byobu \
-		$(1)/usr/share \
-		$(1)/var/run
+		$(1)/usr/share
 
 	$(INSTALL_BIN) \
 		$(PKG_INSTALL_DIR)/usr/bin/* \
@@ -48,8 +47,6 @@ define Package/byobu/install
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/share/byobu \
 		$(1)/usr/share/
-
-	touch	$(1)/var/run/utmp
 endef
 
 $(eval $(call BuildPackage,byobu))
