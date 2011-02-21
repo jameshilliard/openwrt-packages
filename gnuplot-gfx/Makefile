@@ -29,7 +29,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=gnuplot-gfx
 PKG_ORIG_NAME=gnuplot
 PKG_VERSION:=4.4.2
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_ORIG_NAME)-$(PKG_VERSION)
 HOST_BUILD_DIR = $(BUILD_DIR_HOST)/$(PKG_ORIG_NAME)-$(PKG_VERSION)
 PKG_SOURCE:=$(PKG_ORIG_NAME)-$(PKG_VERSION).tar.gz
@@ -59,7 +59,7 @@ endef
 
 define Package/gnuplot-gfx
 $(call Package/gnuplot-gfx/Default)
-  DEPENDS:=+libncurses +uclibcxx +zlib +libpng +libfreetype +libgd $(INTL_DEPENDS) $(ICONV_DEPENDS) +svgalib
+  DEPENDS:=+libncurses +zlib +libpng +libfreetype +libgd $(INTL_DEPENDS) $(ICONV_DEPENDS) +svgalib
   TITLE+=
 endef
 
@@ -82,11 +82,20 @@ endef
 # We need the doc2gih tool compiled on the *host* to get GNUplot's online
 # documentation when compiling for the target.
 
-HOST_CONFIGURE_VARS += \
+HOST_CONFIGURE_ARGS += \
 	--without-x \
 	--without-tutorial \
 	--without-lisp-files \
-	--without-ggi
+	--without-ggi \
+	--without-cairo \
+	--disable-wxwidgets \
+	--disable-rgip \
+	--disable-mgr \
+	--without-latex \
+	--without-lisp-files \
+	--without-row-help \
+	--without-tutorial 
+HOST_CONFIGURE_VARS += DIST_CONTACT="David Kuehling <dvdkhlng TA gmx TOD de>"
 
 define Host/Configure
 	$(call Host/Configure/Default)
@@ -109,6 +118,15 @@ endef
 CONFIGURE_ARGS += \
 	--without-x \
 	--without-tutorial \
+	--without-lisp-files \
+	--without-ggi \
+	--without-cairo \
+	--disable-wxwidgets \
+	--disable-rgip \
+	--disable-mgr \
+	--without-latex \
+	--without-lisp-files \
+	--without-tutorial \
 	--without-row-help \
 	--without-lisp-files \
 	--without-ggi \
@@ -121,11 +139,8 @@ CONFIGURE_ARGS += \
 
 #--disable-mouse
 
+CONFIGURE_VARS += DIST_CONTACT="David Kuehling <dvdkhlng TA gmx TOD de>"
 
-CONFIGURE_VARS += \
-	CPPFLAGS="$$$$CPPFLAGS -I$(STAGING_DIR)/usr/include/uClibc++" \
-	CXXFLAGS="$$$$CXXFLAGS -fno-builtin -fno-rtti -nostdinc++" \
-	LIBS="-nodefaultlibs -luClibc++ -lpthread -lgcc"
 
 TARGET_CPPFLAGS += -DDEFAULTTERM=\\\"linux\\\" 
 
