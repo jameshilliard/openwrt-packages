@@ -41,28 +41,6 @@ endef
 
 TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
-define Build/Prepare
-	$(call Build/Prepare/Default)
-	(\
-cd $(PKG_BUILD_DIR); \
-echo "QMAKE_UIC=$(STAGING_DIR_HOST)/bin/uic" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "QMAKE_MOC=$(STAGING_DIR_HOST)/bin/moc" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "QMAKE_RCC=$(STAGING_DIR_HOST)/bin/rcc" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "QMAKE_CC=$(TARGET_CC)" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "QMAKE_CXX=$(TARGET_CXX)" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "QMAKE_LINK=$(TARGET_CXX)" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "QMAKE_LIBS+=$(INTL_LDFLAGS)" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "QMAKE_LIBS+=$(ICONV_LDFLAGS)" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "QMAKE_LIBS+=-L$(STAGING_DIR)/usr/lib" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "QMAKE_LIBS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/Qt" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtGui" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtCore" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtNetwork" | tee -a nanomap.pro app.pro monav/monav.pro monav/contractionhierarchies/contractionhierarchiesclient.pro monav/gpsgrid/gpsgridclient.pro monav/unicodetournamenttrie/unicodetournamenttrieclient.pro ; \
-)
-endef
-
 define Build/Configure
 	$(call Build/Configure/Qmake,nanomap)
 endef

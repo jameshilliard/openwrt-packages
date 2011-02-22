@@ -21,19 +21,11 @@ define Package/Tile
 	DEPENDS:=+qt4 +qt4-gui +dejavu-fonts-ttf
 endef
 
-define Build/Prepare
-	$(call Build/Prepare/Default)
-	(\
-cd $(PKG_BUILD_DIR); \
-echo "QMAKE_LIBS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib" >> Tile.pro; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtGui" >> Tile.pro; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtCore" >> Tile.pro; \
-)
-endef
-
 define Build/Configure
 	$(call Build/Configure/Qmake,Tile)
 endef
+
+TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Package/Tile/install
 	$(INSTALL_DIR) $(1)/usr/bin

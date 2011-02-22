@@ -24,32 +24,11 @@ define Package/qstardict
 	URL:=http://qstardict.ylsoftware.com
 endef
 
-define Build/Prepare
-	$(call Build/Prepare/Default)
-	(\
-cd $(PKG_BUILD_DIR); \
-echo "QMAKE_UIC=$(STAGING_DIR_HOST)/bin/uic" >> qstardict.pri; \
-echo "QMAKE_MOC=$(STAGING_DIR_HOST)/bin/moc" >> qstardict.pri; \
-echo "QMAKE_RCC=$(STAGING_DIR_HOST)/bin/rcc" >> qstardict.pri; \
-echo "QMAKE_CC=$(TARGET_CC)" >> qstardict.pri; \
-echo "QMAKE_CXX=$(TARGET_CXX)" >> qstardict.pri; \
-echo "QMAKE_LINK=$(TARGET_CXX)" >> qstardict.pri; \
-echo "QMAKE_LIBS+=$(INTL_LDFLAGS)" >> qstardict.pri; \
-echo "QMAKE_LIBS+=$(ICONV_LDFLAGS)" >> qstardict.pri; \
-echo "QMAKE_LIBS+=-L$(STAGING_DIR)/usr/lib" >> qstardict.pri; \
-echo "QMAKE_LIBS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib" >> qstardict.pri; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include" >> qstardict.pri; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/Qt" >> qstardict.pri; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtGui" >> qstardict.pri; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtCore" >> qstardict.pri; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtNetwork" >> qstardict.pri; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtXml" >> qstardict.pri; \
-)
-endef
-
 define Build/Configure
 	$(call Build/Configure/Qmake,qstardict)
 endef
+
+TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Package/qstardict/install
 	$(INSTALL_DIR) $(1)/usr/bin $(1)/usr/lib/qstardict/plugins

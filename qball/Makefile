@@ -28,27 +28,11 @@ define Package/qball
 	URL:=http://homepage.ntlworld.com/mark.harman/comp_qball.html
 endef
 
-define Build/Prepare
-	$(call Build/Prepare/Default)
-	(\
-cd $(PKG_BUILD_DIR); \
-echo "QMAKE_UIC=$(STAGING_DIR_HOST)/bin/uic" >> QBall.pro; \
-echo "QMAKE_MOC=$(STAGING_DIR_HOST)/bin/moc" >> QBall.pro; \
-echo "QMAKE_RCC=$(STAGING_DIR_HOST)/bin/rcc" >> QBall.pro; \
-echo "QMAKE_LINK=$(TARGET_CXX)" >> QBall.pro; \
-echo "QMAKE_LIBS+=$(INTL_LDFLAGS)" >> QBall.pro; \
-echo "QMAKE_LIBS+=$(ICONV_LDFLAGS)" >> QBall.pro; \
-echo "QMAKE_LIBS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib" >> QBall.pro; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include" >> QBall.pro; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/Qt" >> QBall.pro; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtGui" >> QBall.pro; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtCore" >> QBall.pro; \
-)
-endef
-
 define Build/Configure
 	$(call Build/Configure/Qmake,QBall)
 endef
+
+TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Package/qball/install
 	$(INSTALL_DIR) $(1)/usr/bin

@@ -28,19 +28,11 @@ define Package/gottet
 	DEPENDS:=+qt4 +qt4-gui +dejavu-fonts-ttf
 endef
 
-define Build/Prepare
-	$(call Build/Prepare/Default)
-	(\
-cd $(PKG_BUILD_DIR); \
-echo "QMAKE_LIBS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib" >> gottet.pro; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtGui" >> gottet.pro; \
-echo "INCLUDEPATH += $(STAGING_DIR)/usr/include/QtCore" >> gottet.pro; \
-)
-endef
-
 define Build/Configure
 	$(call Build/Configure/Qmake,gottet)
 endef
+
+TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Package/gottet/install
 	$(INSTALL_DIR) $(1)/usr/bin
