@@ -9,6 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=w3m
 PKG_VERSION:=0.5.2
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/$(PKG_NAME)
