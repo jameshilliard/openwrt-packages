@@ -1,8 +1,14 @@
 #!/bin/sh
 
+# no need in NanoNote
 /etc/init.d/atd disable
 /etc/init.d/led disable
 /etc/init.d/telnet disable
 
 # write default u-boot env to nand
 /usr/bin/mtd.nn fw_setenv_default
+
+# generate pango.modules
+pango-querymodules > '/etc/pango/pango.modules'
+
+exit 0
