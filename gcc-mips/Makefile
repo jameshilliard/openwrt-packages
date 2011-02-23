@@ -8,7 +8,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=gcc
 #PKG_VERSION:=$(strip $(subst ",, $(CONFIG_GCC_VERSION)))#"))
 PKG_VERSION:=4.3.3
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PATCH_DIR=$(TOPDIR)/toolchain/gcc/patches/$(PKG_VERSION)
 PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-$(PKG_VERSION) \
     http://mirrors.rcn.net/pub/sourceware/gcc/releases/gcc-$(PKG_VERSION) \
@@ -90,6 +90,7 @@ define Package/gcc-mips/install
 	cp -rf $(TOOLCHAIN_DIR)/usr/lib/*.{a,la,o} $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
 	cp -rf $(TOOLCHAIN_DIR)/lib/* $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
 	cp $(STAGING_DIR)/usr/lib/libopcodes*.so $(1)/usr/lib
+	rm -rf $(1)/usr/lib/libstdc++.so*
 endef
 
 $(eval $(call BuildPackage,gcc-mips))
