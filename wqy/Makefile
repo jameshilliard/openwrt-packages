@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_BASE_NAME:=font
 PKG_NAME:=wqy-microhei
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_VERSION:=0.2.0-beta
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_BUILD_DIR=$(BUILD_DIR)/Xorg/$(_CATEGORY)/${PKG_NAME}/
@@ -37,8 +37,9 @@ define Build/Configure
 endef
 
 define Package/wqy-microhei/install
-	$(INSTALL_DIR) $(1)/usr/share/fonts/wqy-microhei
+	$(INSTALL_DIR) $(1)/usr/share/fonts/wqy-microhei $(1)/usr/share/fonts/ttf-dejavu
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/*.ttc $(1)/usr/share/fonts/wqy-microhei
+	ln -s /usr/share/fonts/wqy-microhei/wqy-microhei.ttc $(1)/usr/share/fonts/ttf-dejavu/wqy-microhei.ttc
 endef
 
 $(eval $(call BuildPackage,wqy-microhei))

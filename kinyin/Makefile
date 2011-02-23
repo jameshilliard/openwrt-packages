@@ -23,7 +23,7 @@ define Package/kinyin
 	CATEGORY:=Utilities
 	TITLE:=kinyin
 	URL:=http://qt-apps.org/content/show.php/kinyin?content=95926
-	DEPENDS:=+qt4 +qt4-gui +dejavu-fonts-ttf
+	DEPENDS:=+qt4 +qt4-gui +dejavu-fonts-ttf +wqy-microhei
 endef
 
 TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
