@@ -1,0 +1,43 @@
+diff --git a/Makefile b/Makefile
+index 578e8af..e64d40f 100755
+--- a/Makefile
++++ b/Makefile
+@@ -5,30 +5,30 @@ HACKA=defines.h game.h human.h ai1.h ai2.h graphics.h
+ OCKA=main.o ai1.o ai2.o game.o human.o graphics.o
+ 
+ 
+-FLAGS=-std=c99 -pedantic -Wall
++CFLAGS:=$(CFLAGS) -std=c99 -pedantic -Wall
+ LIBS=-lSDL -lSDL_gfx
+ 
+ build:$(program)
+ 
+ $(program): $(OCKA)
+-	gcc $(FLAGS) $(OCKA) $(LIBS) -o $(program)
++	$(CC) $(CFLAGS) $(OCKA) $(LIBS) -o $(program)
+ 
+ $(OCKA):$(HACKA)
+ 
+ main.o: main.c
+-	gcc $(FLAGS) main.c -c
++	$(CC) $(CFLAGS) main.c -c
+ 
+ ai1.o: ai1.c
+-	gcc $(FLAGS) ai1.c -c
++	$(CC) $(CFLAGS) ai1.c -c
+ 
+ ai2.o: ai2.c
+-	gcc $(FLAGS) ai2.c -c
++	$(CC) $(CFLAGS) ai2.c -c
+ 
+ game.o: game.c
+-	gcc $(FLAGS) game.c -c
++	$(CC) $(CFLAGS) game.c -c
+ 
+ human.o: human.c
+-	gcc $(FLAGS) human.c -c
++	$(CC) $(CFLAGS) human.c -c
+ 
+ graphics.o: graphics.c
+-	gcc $(FLAGS) graphics.c -c
++	$(CC) $(CFLAGS) graphics.c -c
