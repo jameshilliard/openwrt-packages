@@ -21,6 +21,7 @@ PKG_RELEASE:=1
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=ftp://ftp.daper.net/pub/soft/moc/stable/
 PKG_MD5SUM:=647c770a5542a4ae5437386807a89796
+PKG_FIXUP:=libtool
 
 PKG_INSTALL:=1
 
@@ -31,7 +32,7 @@ define Package/moc
   MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
   SECTION:=sound
   CATEGORY:=Sound
-  DEPENDS:=+libcurl +BUILD_PATENTED:libmad +libvorbis $(ICONV_DEPENDS) +alsa-utils +libid3tag +libflac +libncursesw
+  DEPENDS:=+libcurl +BUILD_PATENTED:libmad +libvorbis $(ICONV_DEPENDS) +alsa-utils +libid3tag +libflac +libsamplerate +libncursesw
   TITLE:=Music On Console
 endef
 
