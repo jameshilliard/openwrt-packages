@@ -16,12 +16,12 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=moc
 PKG_VERSION:=2.4.4
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=ftp://ftp.daper.net/pub/soft/moc/stable/
 PKG_MD5SUM:=647c770a5542a4ae5437386807a89796
 
-PKG_FIXUP:=libtool
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -31,7 +31,7 @@ define Package/moc
   MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
   SECTION:=sound
   CATEGORY:=Sound
-  DEPENDS:=+libcurl +BUILD_PATENTED:libmad +libvorbis +libncurses $(ICONV_DEPENDS) +alsa-utils +libid3tag +libflac
+  DEPENDS:=+libcurl +BUILD_PATENTED:libmad +libvorbis +libncursesw $(ICONV_DEPENDS) +alsa-utils +libid3tag +libflac
   TITLE:=Music On Console
 endef
 
@@ -43,7 +43,7 @@ TARGET_LDFLAGS+= \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 CONFIGURE_ARGS += \
-	--without-mp3 \
+	$(if $(CONFIG_BUILD_PATENTED),,--without-mp3) \
 	--enable-shared \
 	--disable-static \
 	--disable-debug
