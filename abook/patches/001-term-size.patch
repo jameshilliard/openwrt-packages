@@ -1,6 +1,6 @@
 diff -ur abook-0.5.6.orig/abook.h abook-0.5.6/abook.h
---- abook-0.5.6.orig/abook.h	2010-11-09 22:02:43.433150687 +0300
-+++ abook-0.5.6/abook.h	2010-11-10 13:49:04.654025390 +0300
+--- abook-0.5.6.orig/abook.h	2011-02-25 23:19:11.845185113 +0300
++++ abook-0.5.6/abook.h	2011-02-25 23:19:46.911085068 +0300
 @@ -13,12 +13,12 @@
  int		strncasecmp (const char *, const char *, size_t);
  #endif
@@ -10,16 +10,15 @@ diff -ur abook-0.5.6.orig/abook.h abook-0.5.6/abook.h
  
  #define Y_STATUSLINE   	(LINES - 2)
  
--#define MIN_LINES	20
+ #define MIN_LINES	20
 -#define MIN_COLS	70
-+#define MIN_LINES	24
 +#define MIN_COLS	53
  
  #define DEFAULT_UMASK	066
  #define DIR_IN_HOME	".abook"
 diff -ur abook-0.5.6.orig/edit.c abook-0.5.6/edit.c
---- abook-0.5.6.orig/edit.c	2010-11-09 22:02:43.428150554 +0300
-+++ abook-0.5.6/edit.c	2010-11-10 15:05:29.395025554 +0300
+--- abook-0.5.6.orig/edit.c	2011-02-25 23:19:11.842184004 +0300
++++ abook-0.5.6/edit.c	2011-02-25 23:19:28.277058807 +0300
 @@ -39,40 +39,39 @@
  editor_tab(const int tab)
  {
@@ -72,8 +71,8 @@ diff -ur abook-0.5.6.orig/edit.c abook-0.5.6/edit.c
  		}
  		x_pos += width;
 diff -ur abook-0.5.6.orig/edit.h abook-0.5.6/edit.h
---- abook-0.5.6.orig/edit.h	2010-11-09 22:02:43.432150660 +0300
-+++ abook-0.5.6/edit.h	2010-11-10 13:10:42.897150393 +0300
+--- abook-0.5.6.orig/edit.h	2011-02-25 23:19:11.844183690 +0300
++++ abook-0.5.6/edit.h	2011-02-25 23:19:28.277058807 +0300
 @@ -5,20 +5,20 @@
  void		get_first_email(char *str, int item);
  void		add_item();
@@ -101,8 +100,8 @@ diff -ur abook-0.5.6.orig/edit.h abook-0.5.6/edit.h
  enum {
  	TAB_CONTACT,
 diff -ur abook-0.5.6.orig/help.h abook-0.5.6/help.h
---- abook-0.5.6.orig/help.h	2010-11-09 22:02:43.432150660 +0300
-+++ abook-0.5.6/help.h	2010-11-10 13:35:52.772150205 +0300
+--- abook-0.5.6.orig/help.h	2011-02-25 23:19:11.844183690 +0300
++++ abook-0.5.6/help.h	2011-02-25 23:19:28.277058807 +0300
 @@ -8,43 +8,43 @@
  /* TODO gettext: handle key and description separately? */
  static char *mainhelp[] = {
@@ -210,8 +209,8 @@ diff -ur abook-0.5.6.orig/help.h abook-0.5.6/help.h
  NULL
  
 diff -ur abook-0.5.6.orig/options.c abook-0.5.6/options.c
---- abook-0.5.6.orig/options.c	2010-11-09 22:02:43.432150660 +0300
-+++ abook-0.5.6/options.c	2011-02-13 01:16:17.368184301 +0300
+--- abook-0.5.6.orig/options.c	2011-02-25 23:19:11.845185113 +0300
++++ abook-0.5.6/options.c	2011-02-25 23:19:28.278059364 +0300
 @@ -49,10 +49,10 @@
  	{ "autosave", OT_BOOL, BOOL_AUTOSAVE, TRUE },
  
@@ -226,8 +225,8 @@ diff -ur abook-0.5.6.orig/options.c abook-0.5.6/options.c
  	{ "mutt_command", OT_STR, STR_MUTT_COMMAND, UL "mutt" },
  	{ "mutt_return_all_emails", OT_BOOL, BOOL_MUTT_RETURN_ALL_EMAILS,
 diff -ur abook-0.5.6.orig/ui.c abook-0.5.6/ui.c
---- abook-0.5.6.orig/ui.c	2010-11-09 22:02:43.427150520 +0300
-+++ abook-0.5.6/ui.c	2010-11-10 13:48:55.824150192 +0300
+--- abook-0.5.6.orig/ui.c	2011-02-25 23:19:11.841184150 +0300
++++ abook-0.5.6/ui.c	2011-02-25 23:19:28.278059364 +0300
 @@ -406,7 +406,7 @@
  		default:return;
  	}
