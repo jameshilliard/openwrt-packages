@@ -31,7 +31,7 @@ define Package/moc
   MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
   SECTION:=sound
   CATEGORY:=Sound
-  DEPENDS:=+libcurl +BUILD_PATENTED:libmad +libvorbis +libncursesw $(ICONV_DEPENDS) +alsa-utils +libid3tag +libflac
+  DEPENDS:=+libcurl +BUILD_PATENTED:libmad +libvorbis $(ICONV_DEPENDS) +alsa-utils +libid3tag +libflac +libncursesw
   TITLE:=Music On Console
 endef
 
