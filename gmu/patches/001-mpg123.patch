@@ -1,0 +1,13 @@
+diff -ur gmu-0.7.2.orig/nanonote.mk gmu-0.7.2/nanonote.mk
+--- gmu-0.7.2.orig/nanonote.mk	2011-02-25 09:44:13.789059308 +0300
++++ gmu-0.7.2/nanonote.mk	2011-02-25 16:12:39.573386748 +0300
+@@ -16,6 +16,9 @@
+ 
+ #DECODERS_TO_BUILD=decoders/vorbis.so decoders/musepack.so decoders/flac.so decoders/wavpack.so decoders/mpg123.so decoders/mikmod.so
+ DECODERS_TO_BUILD=decoders/vorbis.so decoders/musepack.so decoders/wavpack.so decoders/mikmod.so decoders/flac.so decoders/speex.so
++ifdef MORE_DECODERS
++	DECODERS_TO_BUILD+=$(MORE_DECODERS)
++endif
+ FRONTENDS_TO_BUILD=frontends/sdl.so frontends/log.so
+ SDL_LIB=-lSDL -lpthread -ldirectfb -ldirect -lfusion -lz -lSDL_image -lSDL_gfx
+ SDL_CFLAGS=-D_GNU_SOURCE=1 -D_REENTRANT

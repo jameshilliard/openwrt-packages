@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmu
 PKG_VERSION:=0.7.2
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://wejp.k.vu/files/
@@ -24,7 +24,7 @@ define Package/gmu
   URL:=http://wejp.k.vu/projects/gmu/
   MENU:=1
   DEPENDS:=+libsdl +libsdl-image +libsdl-gfx +libmpcdec +libmikmod \
-	+libvorbisidec +libspeex +libflac +libogg
+	  +libvorbisidec +libspeex +libflac +libogg +BUILD_PATENTED:libmpg123
 endef
 
 define Package/gmu/description
@@ -33,7 +33,7 @@ define Package/gmu/description
   file browser and a playlist editor/viewer.
 endef
 
-MAKE_VARS += TARGET=nanonote
+MAKE_VARS += TARGET=nanonote $(if $(CONFIG_BUILD_PATENTED),MORE_DECODERS="decoders/mpg123.so")
 TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
 TARGET_LDFLAGS+= \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
