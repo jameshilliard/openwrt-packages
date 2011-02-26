@@ -11,3 +11,16 @@ Index: emacs-23.2/lisp/t-mouse.el
    (dolist (terminal (terminal-list))
      (when (and (eq t (terminal-live-p terminal))
                 (not (eq gpm-mouse-mode
+Index: emacs-23.2/lisp/loaddefs.el
+===================================================================
+--- emacs-23.2.orig/lisp/loaddefs.el	2011-02-26 13:38:25.000000000 +0100
++++ emacs-23.2/lisp/loaddefs.el	2011-02-26 13:38:34.000000000 +0100
+@@ -25829,7 +25829,7 @@
+ 
+ (define-obsolete-function-alias 't-mouse-mode 'gpm-mouse-mode "23.1")
+ 
+-(defvar gpm-mouse-mode t "\
++(defvar gpm-mouse-mode nil "\
+ Non-nil if Gpm-Mouse mode is enabled.
+ See the command `gpm-mouse-mode' for a description of this minor mode.
+ Setting this variable directly does not take effect;
