@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=emacs
 PKG_VERSION:=23.2
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/pub/gnu/emacs/ \
 	@GNU/emacs/
@@ -94,7 +94,9 @@ EMACS_STRIPTEASE_ARGS = \
 	--without-xft \
 	--without-libotf \
 	--without-dbus \
-	--without-gconf 
+	--without-gconf \
+	--without-gpm \
+	--without-sound
 
 HOST_CONFIGURE_ARGS += $(EMACS_STRIPTEASE_ARGS)
 CONFIGURE_ARGS += $(EMACS_STRIPTEASE_ARGS)
