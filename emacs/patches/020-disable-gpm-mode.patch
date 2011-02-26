@@ -1,0 +1,13 @@
+Index: emacs-23.2/lisp/t-mouse.el
+===================================================================
+--- emacs-23.2.orig/lisp/t-mouse.el	2011-02-26 13:06:10.000000000 +0100
++++ emacs-23.2/lisp/t-mouse.el	2011-02-26 13:06:25.000000000 +0100
+@@ -73,7 +73,7 @@
+ This allows the use of the mouse when operating on a GNU/Linux console,
+ in the same way as you can use the mouse under X11.
+ It relies on the `gpm' daemon being activated."
+-  :global t :group 'mouse :init-value t
++  :global t :group 'mouse :init-value nil
+   (dolist (terminal (terminal-list))
+     (when (and (eq t (terminal-live-p terminal))
+                (not (eq gpm-mouse-mode

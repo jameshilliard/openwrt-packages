@@ -20,8 +20,3 @@
 ;; or tmm-menubar
 (menu-bar-mode 0)
 
-;; ugly work-around for load-history entry (require . t-mouse) added by
-;; linux.el Not good, as it costs some memory.
-(setq load-history
-      (apply 'nconc (mapcar (lambda (v) (if (stringp (car v)) (list v) nil)) 
-			    load-history)))

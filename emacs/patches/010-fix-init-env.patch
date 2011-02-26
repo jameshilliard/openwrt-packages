@@ -1,7 +1,7 @@
-Index: emacs23.2-openwrt-q/src/emacs.c
+Index: emacs/src/emacs.c
 ===================================================================
---- emacs23.2-openwrt-q.orig/src/emacs.c	2010-12-18 20:24:35.000000000 +0100
-+++ emacs23.2-openwrt-q/src/emacs.c	2010-12-18 20:28:41.000000000 +0100
+--- emacs.orig/src/emacs.c	2010-12-18 20:37:40.000000000 +0100
++++ emacs/src/emacs.c	2010-12-18 20:37:40.000000000 +0100
 @@ -1735,6 +1735,10 @@
  #endif  /* HAVE_NTGUI */
      }
