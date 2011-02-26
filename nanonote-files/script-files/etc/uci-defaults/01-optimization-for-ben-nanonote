@@ -8,7 +8,7 @@
 # write default u-boot env to nand
 /usr/bin/mtd.nn fw_setenv_default
 
-# generate pango.modules
-pango-querymodules > '/etc/pango/pango.modules'
+# generate fontconfig cache
+/usr/bin/fc-cache
 
 exit 0
