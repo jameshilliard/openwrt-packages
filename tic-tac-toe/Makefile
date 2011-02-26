@@ -23,6 +23,7 @@ define Package/tic-tac-toe
   SECTION:=games
   CATEGORY:=Games
   TITLE:=Easy Tic-Tac-Toe game
+  DEPENDS:=+libsdl +libsdl-gfx
   URL:=http://github.com/garretraziel/gomoku
 endef
 

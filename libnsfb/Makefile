@@ -19,7 +19,8 @@ define Package/libnsfb
 	SECTION:=libs
 	CATEGORY:=Libraries
 	TITLE:=LibNSFB is a framebuffer abstraction library, written in C
-	URL:=http://www.netsurf-browser.org/projects/libcss/
+	DEPENDS:=+libsdl
+	URL:=http://www.netsurf-browser.org/projects/libnsfb/
 endef
 
 define Package/libnsfb/description
