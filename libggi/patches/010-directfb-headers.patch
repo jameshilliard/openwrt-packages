@@ -1,8 +1,6 @@
-Index: libggi-2.2.2/configure
-===================================================================
---- libggi-2.2.2.orig/configure	2011-01-04 19:40:37.000000000 +0100
-+++ libggi-2.2.2/configure	2011-01-04 19:40:43.000000000 +0100
-@@ -18746,8 +18746,8 @@
+--- a/configure
++++ b/configure
+@@ -18746,8 +18746,8 @@ fi
  
  
    if test "${ac_cv_header_directfb_internal_directfb_version_h+set}" = set; then
@@ -13,7 +11,7 @@ Index: libggi-2.2.2/configure
  if test "${ac_cv_header_directfb_internal_directfb_version_h+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  fi
-@@ -18755,8 +18755,8 @@
+@@ -18755,8 +18755,8 @@ echo "$as_me:$LINENO: result: $ac_cv_hea
  echo "${ECHO_T}$ac_cv_header_directfb_internal_directfb_version_h" >&6
  else
    # Is the header compilable?
@@ -24,7 +22,7 @@ Index: libggi-2.2.2/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -18764,7 +18764,7 @@
+@@ -18764,7 +18764,7 @@ cat confdefs.h >>conftest.$ac_ext
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  $ac_includes_default
@@ -33,7 +31,7 @@ Index: libggi-2.2.2/configure
  _ACEOF
  rm -f conftest.$ac_objext
  if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-@@ -18800,15 +18800,15 @@
+@@ -18800,15 +18800,15 @@ echo "$as_me:$LINENO: result: $ac_header
  echo "${ECHO_T}$ac_header_compiler" >&6
  
  # Is the header present?
@@ -52,7 +50,7 @@ Index: libggi-2.2.2/configure
  _ACEOF
  if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
    (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-@@ -18842,25 +18842,25 @@
+@@ -18842,25 +18842,25 @@ echo "${ECHO_T}$ac_header_preproc" >&6
  # So?  What about this header?
  case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
    yes:no: )
@@ -94,7 +92,7 @@ Index: libggi-2.2.2/configure
      (
        cat <<\_ASBOX
  ## ------------------------------------------------------ ##
-@@ -18871,8 +18871,8 @@
+@@ -18871,8 +18871,8 @@ _ASBOX
        sed "s/^/$as_me: WARNING:     /" >&2
      ;;
  esac
@@ -105,3 +103,14 @@ Index: libggi-2.2.2/configure
  if test "${ac_cv_header_directfb_internal_directfb_version_h+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
+--- a/configure.in
++++ b/configure.in
+@@ -766,7 +766,7 @@ if test "x$build_directfb_renderer" != "
+ 		[Define if you have <directfb.h> header file]),
+ 	build_directfb_renderer="no")
+ 
+-  AC_CHECK_HEADER(directfb-internal/directfb_version.h,
++  AC_CHECK_HEADER(directfb/directfb_version.h,
+ 	foo=bar, build_directfb_renderer="no")
+ fi
+ 

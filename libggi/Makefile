@@ -15,9 +15,9 @@ PKG_SOURCE_URL:=@SF/ggi
 PKG_MD5SUM:=4fa672b1403c9f06e8cb35e699a693f1
 PKG_BUILD_DIR:=$(BUILD_DIR)/libggi-$(PKG_VERSION)
 PKG_INSTALL:=1
-PKG_FIXUP:=libtool
 
-PKG_BUILD_DEPENDS:= libtool/host
+PKG_FIXUP:=libtool
+PKG_REMOVE_FILES:=aclocal.m4 acinclude.m4
 
 include $(INCLUDE_DIR)/package.mk
 
