@@ -60,10 +60,6 @@ define Build/InstallDev
 		$(1)/usr/lib/
 endef
 
-define Build/Compile
-        (cd $(PKG_BUILD_DIR); autoreconf --force --install || exit 0);
-endef
-
 define Package/guile/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_DIR) $(1)/usr/lib
@@ -81,4 +77,5 @@ define Package/guile/install
 
 endef
 
+$(eval $(call RequireCommand,guile,$(PKG_NAME) requires guile on the host system.))
 $(eval $(call BuildPackage,guile))
