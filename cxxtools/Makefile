@@ -38,7 +38,7 @@ endef
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include $(1)/usr/lib
 	$(CP) $(PKG_INSTALL_DIR)/usr/include/cxxtools $(1)/usr/include/
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcxxtools.{a,so*,la} $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcxxtools.{so*,la} $(1)/usr/lib/
 endef
 
 define Package/cxxtools/install
