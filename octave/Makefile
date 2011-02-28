@@ -14,9 +14,11 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.octave.org/pub/octave/
 PKG_MD5SUM:=90c39fa9e241ad2e978bcee4682a2ba9
 PKG_INSTALL:=1
-PKG_FIXUP:=libtool
 
-PKG_BUILD_DEPENDS:= libtool/host @INSTALL_GFORTRAN 
+PKG_FIXUP:=libtool
+PKG_REMOVE_FILES:=
+
+PKG_BUILD_DEPENDS:= @INSTALL_GFORTRAN 
 
 #include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
