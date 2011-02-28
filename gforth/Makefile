@@ -20,7 +20,7 @@ PKG_SNAPSHOT_DATE=20100918
 PKG_VERSION=0.7.0-$(PKG_SNAPSHOT_DATE)
 PKG_RELEASE:=4
 
-PKG_BUILD_DEPENDS:= gforth/host libltdl/host libtool/host libffi
+PKG_BUILD_DEPENDS:= gforth/host libltdl libffi
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_FIXUP:=libtool
 
