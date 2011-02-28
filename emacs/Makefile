@@ -16,9 +16,11 @@ PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/pub/gnu/emacs/ \
 
 PKG_MD5SUM:=b6691852dae0bc142b3c12749f6b7ade
 PKG_INSTALL:=1
-PKG_FIXUP:=libtool
 
-PKG_BUILD_DEPENDS:= emacs/host libtool/host
+PKG_FIXUP:=libtool
+PKG_REMOVE_FILES:=
+
+PKG_BUILD_DEPENDS:= emacs/host 
 
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
