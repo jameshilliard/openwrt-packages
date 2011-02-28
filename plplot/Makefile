@@ -14,10 +14,13 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/$(PKG_NAME)/$(PKG_VERSION)%20Source
 PKG_MD5SUM:=c53c484ed93ce8446513c31707551b5b
 PKG_INSTALL:=1
-PKG_FIXUP:=libtool
+
 PKG_BUILD_PARALLEL:=1
 
-PKG_BUILD_DEPENDS:= plplot/host libtool/host libltdl/host swig/host
+PKG_FIXUP:=libtool
+PKG_REMOVE_FILES:=
+
+PKG_BUILD_DEPENDS:= plplot/host libltdl swig/host
 #@INSTALL_GFORTRAN 
 
 include $(INCLUDE_DIR)/host-build.mk
