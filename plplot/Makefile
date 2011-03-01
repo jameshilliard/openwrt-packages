@@ -134,6 +134,7 @@ define Package/plplot-tcl
 $(call Package/plplot/Default)
   DEPENDS:= +plplot +tcl
   TITLE+= (Tcl bindings)
+$(eval $(call RequireCommand,tclsh,Please install tcl.))
 endef
 
 define Package/plplot-tcl/description
@@ -152,10 +153,12 @@ $(call Package/plplot/Default/description)
  This package contains the Plplot bindings for Lua
 endef
 
+# note: plplot-python needs some numeric support library for python ('numpy'?)
+# not currently present on openwrt.
 define Package/plplot-python
 $(call Package/plplot/Default)
-  DEPENDS:= +plplot +python
-  TITLE+= (!BROKEN! Python bindings)
+  DEPENDS:= +plplot +python @BROKEN
+  TITLE+= (Python bindings)
 endef
 
 define Package/plplot-python/description
