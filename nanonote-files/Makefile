@@ -22,6 +22,11 @@ define Package/nanonote-script-files
     TITLE+=(Script Files)
 endef
 
+define Package/nanonote-base-files
+    $(call Package/nanonote-files/Default)
+    TITLE+=(Base Files)
+endef
+
 define Build/Compile
 endef
 
@@ -33,5 +38,10 @@ define Package/nanonote-script-files/install
 	$(CP) ./script-files/* $(1)/
 endef
 
+define Package/nanonote-base-files/install
+	$(CP) ./base-files/* $(1)/
+endef
+
 $(eval $(call BuildPackage,nanonote-example-files))
 $(eval $(call BuildPackage,nanonote-script-files))
+$(eval $(call BuildPackage,nanonote-base-files))
