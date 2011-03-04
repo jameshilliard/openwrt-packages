@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=kbd
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_VERSION:=1.15.1
 PKG_SOURCE_URL:=ftp://ftp.kernel.org/pub/linux/utils/kbd
 PKG_SOURCE:=kbd-$(PKG_VERSION).tar.gz
@@ -58,10 +58,8 @@ define Package/kbd-console-fonts/install
 endef
 
 define Package/kbd-console-maps/install
-	$(INSTALL_DIR) $(1)/usr/share/kbd/keymaps/i386/qwerty
-	$(INSTALL_DIR) $(1)/usr/share/kbd/keymaps/i386/include
-	$(CP) $(PKG_BUILD_DIR)/data/keymaps/i386/qwerty/* $(1)/usr/share/kbd/keymaps/i386/qwerty/
-	$(CP) $(PKG_BUILD_DIR)/data/keymaps/i386/include/* $(1)/usr/share/kbd/keymaps/i386/include/
+	$(INSTALL_DIR) $(1)/usr/share/kbd/keymaps/
+	$(CP) $(PKG_BUILD_DIR)/data/keymaps/i386/ $(1)/usr/share/kbd/keymaps/
 endef
 
 $(eval $(call BuildPackage,kbd))
