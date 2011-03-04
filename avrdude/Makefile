@@ -12,6 +12,11 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_RELEASE:=1
 PKG_INSTALL:=1
 
+ifeq ($(CONFIG_TARGET_xburst_qi_lb60),y)
+#apply patches: qi_lb60-patches
+PATCH_DIR:=./qi_lb60-patches
+endif
+
 include $(INCLUDE_DIR)/package.mk
 
 define Package/avrdude
@@ -35,9 +40,7 @@ CONFIGURE_ARGS+= \
 	--disable-static \
 	--disable-parport
 
-
-ifdef CONFIG_TARGET_xburst_qi_lb60
-#apply patches: qi_lb60-patches
+ifeq ($(CONFIG_TARGET_xburst_qi_lb60),y)
 #the qi_lb60-patches have some new .c file
 define Build/Configure
 	(cd $(PKG_BUILD_DIR); aclocal; automake)
