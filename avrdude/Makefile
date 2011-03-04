@@ -30,15 +30,29 @@ define Package/avrdude/conffiles
 /etc/avrdude.conf
 endef
 
+CONFIGURE_ARGS+= \
+	--enable-shared \
+	--disable-static \
+	--disable-parport
+
+
+ifdef CONFIG_TARGET_xburst_qi_lb60
+#apply patches: qi_lb60-patches
+#the qi_lb60-patches have some new .c file
 define Build/Configure
 	(cd $(PKG_BUILD_DIR); aclocal; automake)
 	$(call Build/Configure/Default)
 endef
 
-CONFIGURE_ARGS+= \
-	--enable-shared \
-	--disable-static \
-	--disable-parport
+#with out </dev/null. make stop at "config.status: creating avrdude.conf.tmp"
+MAKE_FLAGS+=</dev/null
+
+define Build/Compile
+	$(call Build/Compile/Default)
+# the joy of autocrap (we need this to generate avrdude.conf)
+	$(call Build/Configure/Default)
+endef
+endif
 
 define Package/avrdude/install
 	$(INSTALL_DIR) $(1)/etc
