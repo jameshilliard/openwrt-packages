@@ -1,7 +1,7 @@
 Index: MPlayer-1.0rc3/vidix/drivers.c
 ===================================================================
 --- MPlayer-1.0rc3.orig/vidix/drivers.c	2011-03-05 12:13:32.000000000 +0100
-+++ MPlayer-1.0rc3/vidix/drivers.c	2011-03-05 13:01:41.000000000 +0100
++++ MPlayer-1.0rc3/vidix/drivers.c	2011-03-05 14:50:38.000000000 +0100
 @@ -23,6 +23,7 @@
  #include <stdio.h>
  #include <errno.h>
@@ -10,7 +10,7 @@ Index: MPlayer-1.0rc3/vidix/drivers.c
  
  #include "config.h"
  #include "vidix.h"
-@@ -102,6 +103,30 @@
+@@ -102,6 +103,32 @@
  #ifdef CONFIG_VIDIX_DRV_UNICHROME
    vidix_register_driver (&unichrome_drv);
  #endif
@@ -22,26 +22,28 @@ Index: MPlayer-1.0rc3/vidix/drivers.c
 +     void *h = dlopen(lib, RTLD_NOW);
 +     if (h)
 +     {
-+	printf ("vidix: managed to load %s", lib);
++	printf ("vidix: managed to load %s\n", lib);
 +	drv = dlsym(h, sym);
 +	if (!drv)
 +	{
-+	   printf ("vidix: failed to resove symbol '%s'", sym);
++	   printf ("vidix: failed to resove symbol '%s'\n", sym);
 +	}
 +	else
 +	{
-+	   vidix_register_driver((VDXDriver*)sym);
++	   printf("registering %s (0x%lx)\n", sym, (long)drv);
++	   vidix_register_driver((VDXDriver*)drv);
++	   printf("registered %s (0x%lx)\n", sym, (long)drv);
 +	}
 +     }
 +     else
 +     {
-+	printf ("vidix: loading %s failed: %m", lib);
++	printf ("vidix: loading %s failed: %m\n", lib);
 +     }
 +  }
  }
  
  static int vidix_probe_driver (VDXContext *ctx, VDXDriver *drv,
-@@ -190,3 +215,11 @@
+@@ -190,3 +217,11 @@
    ctx->drv = NULL;
    return 0;
  }
