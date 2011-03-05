@@ -8,7 +8,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=MPlayer
 PKG_VERSION:=1.0rc3
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.mplayerhq.hu/MPlayer/releases/
@@ -51,7 +51,13 @@ CONFIGURE_ARGS := --target=mips \
 		  --disable-vm \
 		  --disable-vdpau \
 		  --disable-gl \
-		  --disable-xf86keysym
+		  --disable-xf86keysym \
+		  --enable-vidix \
+		  --disable-vidix-pcidb \
+		  --with-vidix-drivers="no"
+
+# todo: remove once building correctly
+MAKE_FLAGS = -j4
 
 define Package/MPlayer/install
 	$(INSTALL_DIR) \

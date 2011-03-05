@@ -1,0 +1,89 @@
+Index: MPlayer-1.0rc3/vidix/drivers.c
+===================================================================
+--- MPlayer-1.0rc3.orig/vidix/drivers.c	2011-03-05 12:13:32.000000000 +0100
++++ MPlayer-1.0rc3/vidix/drivers.c	2011-03-05 13:01:41.000000000 +0100
+@@ -23,6 +23,7 @@
+ #include <stdio.h>
+ #include <errno.h>
+ #include <string.h>
++#include <dlfcn.h>
+ 
+ #include "config.h"
+ #include "vidix.h"
+@@ -102,6 +103,30 @@
+ #ifdef CONFIG_VIDIX_DRV_UNICHROME
+   vidix_register_driver (&unichrome_drv);
+ #endif
++
++  {
++     const char *lib = "jz47xx_vid.so";
++     const char *sym = "jz47xx_drv";
++     void *drv;
++     void *h = dlopen(lib, RTLD_NOW);
++     if (h)
++     {
++	printf ("vidix: managed to load %s", lib);
++	drv = dlsym(h, sym);
++	if (!drv)
++	{
++	   printf ("vidix: failed to resove symbol '%s'", sym);
++	}
++	else
++	{
++	   vidix_register_driver((VDXDriver*)sym);
++	}
++     }
++     else
++     {
++	printf ("vidix: loading %s failed: %m", lib);
++     }
++  }
+ }
+ 
+ static int vidix_probe_driver (VDXContext *ctx, VDXDriver *drv,
+@@ -190,3 +215,11 @@
+   ctx->drv = NULL;
+   return 0;
+ }
++
++/* 
++The following comments configure the Emacs editor.  Just ignore them.
++
++Local Variables:
++compile-command: "cd ~/src/nanonote/MPlayer-1.0rc3 && ~/bin/quilt-export target && make -C ~/h/src/qi/openwrt-xburst package/mplayer/compile -j2 V=99"
++End:
++ */
+Index: MPlayer-1.0rc3/Makefile
+===================================================================
+--- MPlayer-1.0rc3.orig/Makefile	2011-03-05 13:04:03.000000000 +0100
++++ MPlayer-1.0rc3/Makefile	2011-03-05 13:04:24.000000000 +0100
+@@ -635,11 +635,11 @@
+                                  libvo/vosub_vidix.c \
+                                  vidix/vidix.c \
+                                  vidix/drivers.c \
+-                                 vidix/dha.c \
+-                                 vidix/mtrr.c \
+-                                 vidix/pci.c \
+-                                 vidix/pci_names.c \
+-                                 vidix/pci_dev_ids.c\
++                                 vidix/dha.c 
++#                                 vidix/mtrr.c \
++#                                 vidix/pci.c \
++#                                 vidix/pci_names.c \
++#                                 vidix/pci_dev_ids.c\
+ 
+ SRCS_MPLAYER-$(VIDIX_CYBERBLADE)    += vidix/cyberblade_vid.c
+ SRCS_MPLAYER-$(VIDIX_IVTV)          += vidix/ivtv_vid.c
+Index: MPlayer-1.0rc3/vidix/dha.c
+===================================================================
+--- MPlayer-1.0rc3.orig/vidix/dha.c	2011-03-05 13:21:51.000000000 +0100
++++ MPlayer-1.0rc3/vidix/dha.c	2011-03-05 13:21:59.000000000 +0100
+@@ -185,7 +185,7 @@
+ 
+ #endif /* Generic mmap (not win32, nor os2) */
+ 
+-#if !defined(__alpha__) && !defined(__powerpc__) && !defined(__sh__)
++#if !defined(__alpha__) && !defined(__powerpc__) && !defined(__sh__) && !defined(__mips__)
+ unsigned char INPORT8(unsigned idx)
+ {
+   return inb(idx);
