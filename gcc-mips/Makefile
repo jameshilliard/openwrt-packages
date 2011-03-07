@@ -8,7 +8,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=gcc
 #PKG_VERSION:=$(strip $(subst ",, $(CONFIG_GCC_VERSION)))#"))
 PKG_VERSION:=4.3.3
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 PATCH_DIR=$(TOPDIR)/toolchain/gcc/patches/$(PKG_VERSION)
 PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-$(PKG_VERSION) \
     http://mirrors.rcn.net/pub/sourceware/gcc/releases/gcc-$(PKG_VERSION) \
@@ -46,13 +46,13 @@ endef
 define Build/Prepare
 	$(call Build/Prepare/Default)
 	($(CP) ./patches $(PKG_BUILD_DIR); cd $(PKG_BUILD_DIR); patch -Np1 < ./patches/001-cache-amnesia.patch;);
-	$(SED) 's,\(version_string.. = "[0-9\.]*\).*\(";\),\1 (OpenWrt-2.0)\2,' $(PKG_BUILD_DIR)/gcc/version.c
-	$(SED) 's,\(bug_report_url.. = "\).*\(";\),\1<URL:https://dev.openwrt.org/>\2,' $(PKG_BUILD_DIR)/gcc/version.c
-	(cd $(PKG_BUILD_DIR)/libstdc++-v3; autoconf;);
-	$(SED) 's,gcc_no_link=yes,gcc_no_link=no,' $(PKG_BUILD_DIR)/libstdc++-v3/configure
+	(cd $(PKG_BUILD_DIR)/libstdc++-v3; \
+	$(SED) 's/m4_rename(/m4_rename_force(/' acinclude.m4;);
 endef
 
 define Build/Configure
+	$(SED) 's,gcc_no_link=yes,gcc_no_link=no,' $(PKG_BUILD_DIR)/libstdc++-v3/configure
+	$(SED) 's/\"CFLAGS=/\"CFLAGS=$(FPIC) /' $(PKG_BUILD_DIR)/libstdc++-v3/Makefile.am
 	(cd $(PKG_BUILD_DIR); rm -f config.cache; \
 		SHELL="$(BASH)" \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -89,7 +89,6 @@ define Package/gcc-mips/install
 	cp -rf $(TOOLCHAIN_DIR)/usr/include/* $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)/include
 	cp -rf $(TOOLCHAIN_DIR)/usr/lib/*.{a,la,o} $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
 	cp -rf $(TOOLCHAIN_DIR)/lib/* $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
-	cp $(STAGING_DIR)/usr/lib/libopcodes*.so $(1)/usr/lib
 	rm -rf $(1)/usr/lib/libstdc++.so*
 endef
 
