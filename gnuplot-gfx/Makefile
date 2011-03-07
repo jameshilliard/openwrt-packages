@@ -1,7 +1,7 @@
 # 
 # Gnuplot package for OpenWrt.
 #
-# Adapted to support LibGGI video output by 
+# Adapted to support LibGGI/SVGAlib video output by 
 # David Kuehling <dvdkhlng TA gmx TOD de>
 #
 # License GPLv2 or later.  NO WARRANTY.
@@ -29,15 +29,17 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=gnuplot-gfx
 PKG_ORIG_NAME=gnuplot
 PKG_VERSION:=4.4.2
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_ORIG_NAME)-$(PKG_VERSION)
 HOST_BUILD_DIR = $(BUILD_DIR_HOST)/$(PKG_ORIG_NAME)-$(PKG_VERSION)
+PKG_FIXUP:=libtool
+
+PKG_INSTALL=1
 PKG_SOURCE:=$(PKG_ORIG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/gnuplot
 PKG_MD5SUM:=a4f0dd89f9b9334890464f687ddd9f50
 
-PKG_INSTALL=1
-PKG_BUILD_DEPENDS:= gnuplot-gfx/host libtool/host 
+PKG_BUILD_DEPENDS:= gnuplot-gfx/host 
 
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
@@ -149,8 +151,8 @@ TARGET_CPPFLAGS += -DDEFAULTTERM=\\\"linux\\\"
 TARGET_LDFLAGS+= \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
-# todo: remove that when stable
-MAKE_FLAGS += -j2
+# todo: remove -j when stable
+MAKE_FLAGS += -j2 config m4 term src docs share
 
 # cannot disable mouse for ggi: compilation fails. (todo: fix)
 #	--disable-mouse 
