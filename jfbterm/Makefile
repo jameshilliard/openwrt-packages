@@ -6,11 +6,13 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=jfbterm
 PKG_VERSION:=0.4.7
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://jaist.dl.sourceforge.jp/jfbterm/13501/
+PKG_SOURCE_URL:=@SF/$(PKG_NAME)
 PKG_MD5SUM:=cb0b869bd1c21f0dd224b7fc40517680
+
+PKG_FIXUP:=autoreconf
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/kernel.mk
@@ -35,21 +37,6 @@ TARGET_CFLAGS+= \
 
 TARGET_LDFLAGS+= \
         -Wl,-rpath-link=$(STAGING_DIR)/usr/lib -liconv
-
-MAKE_FLAGS += ACLOCAL=aclocal-1.10 AUTOMAKE="automake-1.10 -a"
-
-#CONFIGURE_VARS += ac_cv_func_ioperm=no
-
-#CONFIGURE_ARGS += \
-	--enable-vga16fb=no
-
-#TARGET_CFLAGS += -Wall -g
-
-#define Build/Configure
-#	$(call Build/Configure/Default, \
-		--enable-vga16fb=no, \
-		ac_cv_func_ioperm=no)
-#endef
 
 define Package/jfbterm/install
 	$(INSTALL_DIR) \
