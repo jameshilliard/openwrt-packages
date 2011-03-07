@@ -17,7 +17,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/libgii-$(PKG_VERSION)
 PKG_INSTALL:=1
 PKG_FIXUP:=libtool
 
-PKG_BUILD_DEPENDS:= libtool/host
+PKG_BUILD_DEPENDS:=
 
 include $(INCLUDE_DIR)/package.mk
 
