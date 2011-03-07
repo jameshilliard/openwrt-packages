@@ -18,7 +18,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=gforth
 PKG_SNAPSHOT_DATE=20100918
 PKG_VERSION=0.7.0-$(PKG_SNAPSHOT_DATE)
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 
 PKG_BUILD_DEPENDS:= gforth/host libltdl libffi
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
@@ -111,10 +111,11 @@ define Build/Configure
 		$(PKG_BUILD_DIR)/
 	cd $(PKG_BUILD_DIR) && ./config.status --file gforth-update-image \
 		&& ./config.status --file gforth-wrapper
-	echo "#!/bin/sh" > $(CROSS_PREFORTH)
-	echo "export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib;" >> $(CROSS_PREFORTH)
-	echo '$(STAGING_DIR_HOST)/bin/gforth -i $(STAGING_DIR_HOST)/lib/gforth.fi "$$$$@"' >> $(CROSS_PREFORTH)
-	chmod a+x $(PKG_BUILD_DIR)/preforth
+	echo "#!/bin/sh" > $(CROSS_PREFORTH).in
+	echo "export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib;" >> $(CROSS_PREFORTH).in
+	echo '$(STAGING_DIR_HOST)/bin/gforth -i $(STAGING_DIR_HOST)/lib/gforth.fi "$$$$@"' >> $(CROSS_PREFORTH).in
+	chmod a+x $(PKG_BUILD_DIR)/preforth.in
+	cp $(CROSS_PREFORTH).in $(CROSS_PREFORTH)
 endef
 
 ## Forth code snippet used for pre-compiling Gforth's libcc based C-interface
