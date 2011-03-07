@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
  
-__VERSION__=2011-02-02
+__VERSION__=2011-03-07
 
 if [ "$1" == "flash" ] && [ "$#" == "3" ]; then
     case "$2" in
@@ -78,6 +78,7 @@ if [ "$1" == "fw_setenv_default" ]; then
     fw_setenv bootargsf3 mem=32M console=tty0 console=ttyS0,57600n8 rootfstype=ext2 root=/dev/mmcblk0p3 rw rootwait
     fw_setenv bootcmdf4 mtdparts default\;ubi part rootfs\;ubifsmount rootfs\;ubifsload 0x80600000 /boot/uImage\; bootm
     fw_setenv bootargsf4 mem=32M console=tty0 console=ttyS0,57600n8 ubi.mtd=2 rootfstype=ubifs root=ubi0:rootfs rw rootwait
+    echo "fw_setenv finished, check u-boot env by fw_printenv"
     exit 0
 fi
 
