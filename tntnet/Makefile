@@ -8,11 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tntnet
-PKG_VERSION:=1.6.991.20091227-1
+PKG_VERSION:=2.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.tntnet.org/download
+PKG_MD5SUM:=8f7185eeed23e7ae6a9be314e2fc0d36
 
 PKG_INSTALL:=1
 
