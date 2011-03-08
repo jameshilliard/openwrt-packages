@@ -71,6 +71,11 @@ define Build/Configure
 	      "$(PKG_BUILD_DIR)/dfasyn/dfasyn_host"
 	ln -s "$(STAGING_DIR_HOST)/bin/smujajgau" \
 	      "$(PKG_BUILD_DIR)/smujajgau_host"
+	( $(MAKE) -C $(PKG_BUILD_DIR) stag.h && \
+	cd $(PKG_BUILD_DIR) && \
+	$(SED) 's/YYTOKENTYPE/STAGYYTOKENTYPE/' stag.h && \
+	$(SED) 's/yytokentype/stagyytokentype/' stag.h \
+	)
 endef
 
 define Build/Compile
