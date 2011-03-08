@@ -16,6 +16,7 @@ PKG_MD5SUM:=205ca1d87042c8e4aafecd6da7c9de39
 PKG_BUILD_DIR:=$(BUILD_DIR)/libgii-$(PKG_VERSION)
 PKG_INSTALL:=1
 PKG_FIXUP:=libtool
+PKG_REMOVE_FILES:=aclocal.m4 acinclude.m4
 
 PKG_BUILD_DEPENDS:=
 
@@ -45,7 +46,7 @@ TARGET_CFLAGS +=
 
 CONFIGURE_ARGS += \
 	--enable-mutexes=builtin \
-	--disable-x
+	--without-x
 
 MAKE_FLAGS += X_CFLAGS=$(STAGING_DIR)/usr/include
 
