@@ -8,16 +8,14 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cxxtools
-PKG_VERSION:=1.99.5.20091227-1
+PKG_VERSION:=2.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.tntnet.org/download
-PKG_MD5SUM:=c0cb4270f33b46b1fb3fb7d7abd974c0
+PKG_MD5SUM:=763ef672a577fa8b93c37239ee0f3d59
 
 PKG_INSTALL:=1
-
-PKG_FIXUP:=libtool
 
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
