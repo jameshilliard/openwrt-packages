@@ -27,6 +27,11 @@ define Package/nanonote-base-files
     TITLE+=(Base Files)
 endef
 
+define Package/nanonote-data-files
+    $(call Package/nanonote-files/Default)
+    TITLE+=(Date Files)
+endef
+
 define Build/Compile
 endef
 
@@ -42,6 +47,18 @@ define Package/nanonote-base-files/install
 	$(CP) ./base-files/* $(1)/
 endef
 
+define Package/nanonote-data-files/install
+	$(INSTALL_DIR) $(1)/usr/share/nanonote/
+	$(CP) ./data/qi_lb60/* $(1)/usr/share/nanonote/
+endef
+
+define Package/nanonote-data-files/postinst
+#! /bin/sh
+mv -f $${IPKG_INSTROOT}/usr/share/nanonote/files/etc/* $${IPKG_INSTROOT}/etc/
+endef
+
+
 $(eval $(call BuildPackage,nanonote-example-files))
 $(eval $(call BuildPackage,nanonote-script-files))
 $(eval $(call BuildPackage,nanonote-base-files))
+$(eval $(call BuildPackage,nanonote-data-files))
