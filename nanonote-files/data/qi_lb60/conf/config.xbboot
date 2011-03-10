@@ -1,0 +1,36 @@
+#
+# This file must be copied to .config in the OpenWrt root folder,
+# then run: yes "" | make oldconfig > /dev/null
+#
+
+#
+# This config file builds an image that can be used with xbboot.
+# It enables CONFIG_TARGET_ROOTFS_INITRAMFS and only selects basic
+# packages.
+#
+# 1. at the root of openwrt folder:
+#    $ cp data/qi_lb60/conf/config.xbboot .config
+#    $ yes "" | make oldconfig > /dev/null
+#    $ make
+#
+# 2. upload the image to Ben NanoNote
+#	boot Ben NanoNote to USBBOOT mode.
+#	$ sudo xbboot -u 0x80600000 bin/xburst/openwrt-xburst-qi_lb60-zImage.bin
+#
+# then the NanoNote will boot. setup a password for ssh or use telnet to login NanoNote.
+#
+
+# TODO:
+# this config file does not work on tracking_trunk branch:
+#   some patch not goto the trunk branch.
+# add some packages, kernel give different error message!
+
+CONFIG_TARGET_xburst=y
+CONFIG_TARGET_xburst_qi_lb60=y
+# CONFIG_TARGET_ROOTFS_TARGZ is not set
+# CONFIG_TARGET_ROOTFS_JFFS2 is not set
+CONFIG_TARGET_ROOTFS_INITRAMFS=y
+CONFIG_TARGET_INITRAMFS_COMPRESSION_LZMA=y
+# CONFIG_BUILD_PATENTED is not set
+CONFIG_PACKAGE_mtd-utils=y
+CONFIG_PACKAGE_sshfs=y

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin
+export HOME=$(grep -e "^${USER:-root}:" /etc/passwd | cut -d ":" -f 6)
+export HOME=${HOME:-/root}
+export PS1='\u@\h:\w\$ '
+
+# NanoNote specific global settings
+## SDL
+### we do not have any mouse
+export SDL_NOMOUSE=1
+### do use fb-device directly
+export SDL_VIDEODRIVER=fbcon
+## QT4
+### set keyboard device
+export QWS_KEYBOARD=LinuxInput:/dev/input/event1:keymap=/usr/share/qmaps/ben.qmap
+### do use fb-device directly
+export QWS_DISPLAY=linuxfb
+
+export HISTFILE=$HOME/.ash_history
+export TERM=linux
+
+[ -e /dev/rtc0 ] && ! [ -e /dev/rtc ] && ln -s /dev/rtc0 /dev/rtc
+
+[ -x /bin/more ] || alias more=less
+[ -x /usr/bin/vim ] && alias vi=vim || alias vim=vi
+
+[ -z "$KSH_VERSION" -o \! -s /etc/mkshrc ] || . /etc/mkshrc
+
+[ -x /sbin/arp ] || arp() { cat /proc/net/arp; }
+[ -x /usr/bin/ldd ] || ldd() { LD_TRACE_LOADED_OBJECTS=1 $*; }

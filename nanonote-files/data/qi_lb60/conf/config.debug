@@ -1,0 +1,21 @@
+#
+# This file must be copied to .config in the OpenWrt root folder,
+# then run: yes "" | make oldconfig > /dev/null
+#
+
+CONFIG_TARGET_xburst=y
+CONFIG_TARGET_xburst_qi_lb60=y
+CONFIG_TARGET_ROOTFS_TARGZ=y
+# CONFIG_TARGET_ROOTFS_JFFS2 is not set
+CONFIG_TARGET_ROOTFS_UBIFS=y
+# CONFIG_BUILD_PATENTED is not set
+CONFIG_PACKAGE_uboot-xburst-qi_lb60=y
+
+#Debug stuff 
+CONFIG_BUSYBOX_CONFIG_DEBUG=y
+CONFIG_COLLECT_KERNEL_DEBUG=y
+CONFIG_DEBUG=y
+CONFIG_UCLIBC_ENABLE_DEBUG=y
+CONFIG_NO_STRIP=y
+CONFIG_PACKAGE_gdb=y
+CONFIG_GDB=y
