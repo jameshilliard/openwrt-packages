@@ -9,13 +9,8 @@ PKG_VERSION:=5.10
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://download.savannah.gnu.org/releases/avrdude/
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_INSTALL:=1
-
-ifeq ($(CONFIG_TARGET_xburst_qi_lb60),y)
-#apply patches: qi_lb60-patches
-PATCH_DIR:=./qi_lb60-patches
-endif
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -41,6 +36,21 @@ CONFIGURE_ARGS+= \
 	--disable-parport
 
 ifeq ($(CONFIG_TARGET_xburst_qi_lb60),y)
+BEN_AVRDUDE_PATCHES_URL:=http://projects.qi-hardware.com/index.php/p/ben-blinkenlights/source/file/master/avrdude/patches/
+BEN_PATCH:=patch -Np2
+define Build/Prepare
+	$(call Build/Prepare/Default)
+
+	mkdir -p $(PKG_BUILD_DIR)/nanonote-patches
+	wget -O $(PKG_BUILD_DIR)/nanonote-patches/series $(BEN_AVRDUDE_PATCHES_URL)/series
+	(cd $(PKG_BUILD_DIR); \
+	 while read L; do \
+	        wget -O $(PKG_BUILD_DIR)/nanonote-patches/$$$$L $(BEN_AVRDUDE_PATCHES_URL)/$$$$L; \
+		$(BEN_PATCH) < nanonote-patches/$$$$L; \
+	 done < $(PKG_BUILD_DIR)/nanonote-patches/series; \
+	)
+endef
+
 #the qi_lb60-patches have some new .c file
 define Build/Configure
 	(cd $(PKG_BUILD_DIR); aclocal; automake)
