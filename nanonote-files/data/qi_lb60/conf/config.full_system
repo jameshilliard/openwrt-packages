@@ -426,3 +426,5 @@ CONFIG_PACKAGE_svgalib=y
 CONFIG_PACKAGE_svgalib-demo=y
 #
 CONFIG_PACKAGE_nanonote-script-files=y
+CONFIG_PACKAGE_nanonote-data-files=y
+CONFIG_PACKAGE_nanonote-base-files=y
