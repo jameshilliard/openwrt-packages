@@ -7,12 +7,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mpfr
-PKG_VERSION:=2.4.1
+PKG_VERSION:=3.0.0
 
 PKG_SOURCE_URL:=http://www.mpfr.org/mpfr-$(PKG_VERSION)
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_MD5SUM:=c5ee0a8ce82ad55fe29ac57edd35d09e
-PKG_FIXUP:=libtool
+PKG_MD5SUM:=f45bac3584922c8004a10060ab1a8f9f
+PKG_FIXUP:=autoreconf
 
 include $(INCLUDE_DIR)/package.mk
 PKG_INSTALL=1
@@ -33,18 +33,18 @@ define Build/InstallDev
 		$(1)/usr/include \
 		$(1)/usr/lib
 	$(CP) \
-	$(PKG_INSTALL_DIR)/usr/lib/* \
+		$(PKG_INSTALL_DIR)/usr/lib/* \
 		$(1)/usr/lib/
 	$(CP) \
-	$(PKG_INSTALL_DIR)/usr/include/* \
-	$(1)/usr/include/
+		$(PKG_INSTALL_DIR)/usr/include/* \
+		$(1)/usr/include/
 endef
 
 define Package/mpfr/install
 	$(INSTALL_DIR) \
 		$(1)/usr/lib
 	$(CP) \
-	$(PKG_INSTALL_DIR)/usr/lib/libmpfr.so* \
+		$(PKG_INSTALL_DIR)/usr/lib/libmpfr.so* \
 		$(1)/usr/lib/
 endef
 
