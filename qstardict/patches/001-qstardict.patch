@@ -1,6 +1,18 @@
+diff -ur qstardict-0.13.1.or/plugins/stardict/dictziplib.cpp qstardict-0.13.1/plugins/stardict/dictziplib.cpp
+--- qstardict-0.13.1.or/plugins/stardict/dictziplib.cpp	2011-03-15 21:50:54.972060075 +0300
++++ qstardict-0.13.1/plugins/stardict/dictziplib.cpp	2011-03-15 21:52:08.056059379 +0300
+@@ -305,7 +305,7 @@
+ 
+ #ifdef Q_OS_UNIX
+     if (stat(fname.c_str(), &sb) || !S_ISREG(sb.st_mode))
+-#elif def Q_OS_WIN32
++#elif defined Q_OS_WIN32
+     if (_stat(fname.c_str(), &sb) || !(sb.stMode & _S_IFREG))
+ #endif
+     {
 diff -ur qstardict-0.13.1.or/qstardict/keyboard.cpp qstardict-0.13.1/qstardict/keyboard.cpp
---- qstardict-0.13.1.or/qstardict/keyboard.cpp	2009-02-10 15:33:30.000000000 +0300
-+++ qstardict-0.13.1/qstardict/keyboard.cpp	2010-12-07 21:52:31.613898108 +0300
+--- qstardict-0.13.1.or/qstardict/keyboard.cpp	2011-03-15 21:50:54.975059457 +0300
++++ qstardict-0.13.1/qstardict/keyboard.cpp	2011-03-15 21:51:35.430058700 +0300
 @@ -82,7 +82,28 @@
  
  } // namespace
@@ -32,8 +44,8 @@ diff -ur qstardict-0.13.1.or/qstardict/keyboard.cpp qstardict-0.13.1/qstardict/k
  // vim: tabstop=4 softtabstop=4 shiftwidth=4 expandtab cindent textwidth=120 formatoptions=tc
  
 diff -ur qstardict-0.13.1.or/qstardict/main.cpp qstardict-0.13.1/qstardict/main.cpp
---- qstardict-0.13.1.or/qstardict/main.cpp	2009-02-10 15:33:30.000000000 +0300
-+++ qstardict-0.13.1/qstardict/main.cpp	2010-12-09 21:29:28.240008646 +0300
+--- qstardict-0.13.1.or/qstardict/main.cpp	2011-03-15 21:50:54.974059661 +0300
++++ qstardict-0.13.1/qstardict/main.cpp	2011-03-15 21:51:35.430058700 +0300
 @@ -35,6 +35,10 @@
  #include <QTranslator>
  #endif // QSTARDICT_WITH_TRANSLATIONS
@@ -56,8 +68,8 @@ diff -ur qstardict-0.13.1.or/qstardict/main.cpp qstardict-0.13.1/qstardict/main.
      return app.exec();
  }
 diff -ur qstardict-0.13.1.or/qstardict/mainwindow.cpp qstardict-0.13.1/qstardict/mainwindow.cpp
---- qstardict-0.13.1.or/qstardict/mainwindow.cpp	2009-02-10 15:33:30.000000000 +0300
-+++ qstardict-0.13.1/qstardict/mainwindow.cpp	2010-12-08 22:05:16.400898587 +0300
+--- qstardict-0.13.1.or/qstardict/mainwindow.cpp	2011-03-15 21:50:54.975059457 +0300
++++ qstardict-0.13.1/qstardict/mainwindow.cpp	2011-03-15 21:51:35.431060517 +0300
 @@ -93,7 +93,7 @@
      setVisible(config.value("MainWindow/visible", true).toBool());
      wordsListDock->setFloating(config.value("MainWindow/wordsListDock/floating", wordsListDock->isFloating()).toBool());
@@ -68,8 +80,8 @@ diff -ur qstardict-0.13.1.or/qstardict/mainwindow.cpp qstardict-0.13.1/qstardict
  }
  
 diff -ur qstardict-0.13.1.or/qstardict/mainwindow.ui qstardict-0.13.1/qstardict/mainwindow.ui
---- qstardict-0.13.1.or/qstardict/mainwindow.ui	2009-02-10 15:33:30.000000000 +0300
-+++ qstardict-0.13.1/qstardict/mainwindow.ui	2010-12-09 21:31:59.423898167 +0300
+--- qstardict-0.13.1.or/qstardict/mainwindow.ui	2011-03-15 21:50:54.975059457 +0300
++++ qstardict-0.13.1/qstardict/mainwindow.ui	2011-03-15 21:51:35.431060517 +0300
 @@ -1,190 +1,241 @@
 -<ui version="4.0" >
 +<?xml version="1.0" encoding="UTF-8"?>
@@ -456,8 +468,8 @@ diff -ur qstardict-0.13.1.or/qstardict/mainwindow.ui qstardict-0.13.1/qstardict/
       <y>51</y>
      </hint>
 diff -ur qstardict-0.13.1.or/qstardict/settingsdialog.ui qstardict-0.13.1/qstardict/settingsdialog.ui
---- qstardict-0.13.1.or/qstardict/settingsdialog.ui	2009-02-10 15:33:30.000000000 +0300
-+++ qstardict-0.13.1/qstardict/settingsdialog.ui	2010-12-09 21:31:59.432865593 +0300
+--- qstardict-0.13.1.or/qstardict/settingsdialog.ui	2011-03-15 21:50:54.975059457 +0300
++++ qstardict-0.13.1/qstardict/settingsdialog.ui	2011-03-15 21:51:35.432063342 +0300
 @@ -1,84 +1,67 @@
 -<ui version="4.0" >
 +<?xml version="1.0" encoding="UTF-8"?>
