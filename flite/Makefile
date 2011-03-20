@@ -21,7 +21,7 @@ define Package/flite
   CATEGORY:=Multimedia
   TITLE:=festival-lite
   URL:=http://www.speech.cs.cmu.edu/flite/index.html
-  DEPENDS:=
+  DEPENDS:=+alsa-lib
 endef
 
 define Package/flite/description
@@ -30,7 +30,8 @@ endef
 
 define Package/flite/install
 	$(INSTALL_DIR) $(1)/usr/bin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/* $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/flite $(1)/usr/bin/
 endef
 
 $(eval $(call BuildPackage,flite))
+
