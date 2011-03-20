@@ -7,7 +7,7 @@
 -include platform_settings
 +PREFIX=  /usr
 +CFLAGS=  -Wall -Wno-format-y2k -O2 -DLOCALEPATH="\"$(LOCALEPATH)\"" -DOS=\"Linux\" -I/usr/include/libxml2 $(EXTRA_CFLAGS) 
-+LDFLAGS= -lncurses -lcrypto -lxml2 $(EXTRA_LDFLAGS) 
++LDFLAGS= -lncursesw -lcrypto -lxml2 $(EXTRA_LDFLAGS) 
  
  ### Object files ###
  OBJFILES= main.o netio.o interface.o xmlparse.o updatecheck.o conversions.o dialog.o ui-support.o categories.o about.o cookies.o setup.o net-support.o digcalc.o filters.o io-internal.o os-support.o zlib_interface.o support.o
