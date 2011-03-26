@@ -15,8 +15,10 @@ PKG_SOURCE_URL:=http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/
 PKG_MD5SUM:=0a6785ebb61c6e2b50c3952c3bbf9ea1
 
 PKG_INSTALL:=1
+PKG_BUILD_DEPENDS:=gc/host
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/host-build.mk
 
 define Package/gc
     TITLE:=gc
@@ -65,4 +67,5 @@ define Package/gc/install
 		$(1)/usr/lib/
 endef
 
+$(eval $(call HostBuild))
 $(eval $(call BuildPackage,gc))

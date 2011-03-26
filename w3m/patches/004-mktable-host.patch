@@ -1,0 +1,25 @@
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -136,11 +136,11 @@ $(ALIB): $(ALIBOBJS)
+ $(OBJS) $(LOBJS): fm.h funcname1.h
+ 
+ tagtable.c: tagtable.tab mktable$(EXT) html.h 
+-	./mktable$(EXT) 100 $(srcdir)/tagtable.tab > $@
++	./host/mktable$(EXT) 100 $(srcdir)/tagtable.tab > $@
+ 
+ entity.h: entity.tab mktable$(EXT)
+ 	echo '/* $$I''d$$ */' > $@
+-	./mktable$(EXT) 100 $(srcdir)/entity.tab >> $@
++	./host/mktable$(EXT) 100 $(srcdir)/entity.tab >> $@
+ 
+ indep.o: indep.c fm.h funcname1.h entity.h
+ func.o: funcname.c functable.c funcname1.h
+@@ -173,7 +173,7 @@ funcname2.h: funcname.tab
+ 
+ functable.c: funcname.tab mktable$(EXT)
+ 	sort funcname.tab | $(AWK) -f $(top_srcdir)/functable.awk > functable.tab
+-	./mktable$(EXT) 100 functable.tab > $@
++	./host/mktable$(EXT) 100 functable.tab > $@
+ 	-rm -f functable.tab
+ 
+ mktable$(EXT): mktable.o dummy.o Str.o hash.o myctype.o
