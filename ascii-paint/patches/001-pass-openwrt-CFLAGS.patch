@@ -1,0 +1,37 @@
+diff --git a/Makefile b/Makefile
+index 1ca688d..fbf1d8e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,21 +1,24 @@
+ SRCDIR=.
+-INCDIR=/home/shafqat/code/ascii-paint/tcod
+-CFLAGS=$(FLAGS) -I$(SRCDIR) -I$(INCDIR) -Wall -g
+-CC=gcc
+-CPP=g++
++INCDIR?=/home/shafqat/code/ascii-paint/tcod
++CFLAGS:=$(CFLAGS) $(FLAGS) -I$(SRCDIR) -I$(INCDIR) -Wall -g
++CC?=gcc
++CPP?=g++
+ .SUFFIXES: .o .h .c .hpp .cpp
+ 
++CPP_FILES := $(wildcard ./*.cpp)
++CPP_OBJS := $(addprefix $(TEMP)/,$(notdir $(CPP_FILES:.cpp=.o)))
++
+ $(TEMP)/%.o : $(SRCDIR)/%.cpp
+-	$(CPP) $(CFLAGS) -o $@ -c $< 
++	mkdir -p $(TEMP)
++	$(CXX) $(CFLAGS) -o $@ -c $< 
+ $(TEMP)/%.o : $(SRCDIR)/%.c
++	mkdir -p $(TEMP)
+ 	$(CC) $(CFLAGS) -o $@ -c $< 
+ 
+-CPP_OBJS=$(TEMP)main.o
+-
+ all : ascii-paint
+ 
+ ascii-paint : $(CPP_OBJS)
+-	$(CPP) $(CPP_OBJS) -o $@ -L. -ltcod -ltcod++
++	$(CXX) $(CFLAGS) $(CPP_OBJS) -o $@ -ltcod -ltcodxx
+ 
+ clean :
+ 	\rm -f $(CPP_OBJS) ascii-paint
