@@ -1,0 +1,84 @@
+diff -Naur libtcod-r522/makefiles/makefile-linux libtcod-r522.mod/makefiles/makefile-linux
+--- libtcod-r522/makefiles/makefile-linux	2010-02-12 03:54:10.000000000 +0800
++++ libtcod-r522.mod/makefiles/makefile-linux	2011-04-20 19:20:36.595075461 +0800
+@@ -6,8 +6,8 @@
+ 
+ #dependencies
+ # SDL
+-SDL_FLAGS=`sdl-config --cflags`
+-SDL_LIBS=`sdl-config --libs`
++SDL_FLAGS?=`sdl-config --cflags`
++SDL_LIBS?=`sdl-config --libs`
+ 
+ # ZLIB
+ ZLIB_FLAGS=
+@@ -16,24 +16,24 @@
+ # PNG
+ PNG_LIBS=-lpng
+ 
+-CFLAGS=$(FLAGS) -I$(INCDIR) -I$(INCDIR)/gui -Wall $(SDL_FLAGS) $(ZLIB_FLAGS) $(PNG_FLAGS) -fno-strict-aliasing
+-TEMP=/tmp
+-CC=gcc
+-CPP=g++
++CFLAGS:=$(CFLAGS) $(FLAGS) -I$(INCDIR) -I$(INCDIR)/gui -Wall $(SDL_FLAGS) $(ZLIB_FLAGS) $(PNG_FLAGS) -fno-strict-aliasing
++TEMP?=/tmp
++CC?=gcc
++CXX?=g++
+ .SUFFIXES: a .o .h .c
+ 
+ $(TEMP)/libtcod/release/%.o : $(SRCDIR)/%.c
+ 	$(CC) $(CFLAGS) -O2 -s -o $@ -c $<
+ $(TEMP)/libtcod/release/%.o : $(SRCDIR)/%.cpp
+-	$(CPP) $(CFLAGS) -O2 -s -o $@ -c $< 
++	$(CXX) $(CFLAGS) -O2 -s -o $@ -c $< 
+ $(TEMP)/libtcod/release/gui/%.o : $(SRCDIR)/gui/%.cpp
+-	$(CPP) $(CFLAGS) -O2 -s -o $@ -c $< 
++	$(CXX) $(CFLAGS) -O2 -s -o $@ -c $< 
+ $(TEMP)/libtcod/debug/%.o : $(SRCDIR)/%.c
+ 	$(CC) $(CFLAGS) -g -o $@ -c $<
+ $(TEMP)/libtcod/debug/%.o : $(SRCDIR)/%.cpp
+-	$(CPP) $(CFLAGS) -g -o $@ -c $< 
++	$(CXX) $(CFLAGS) -g -o $@ -c $< 
+ $(TEMP)/libtcod/debug/gui/%.o : $(SRCDIR)/gui/%.cpp
+-	$(CPP) $(CFLAGS) -g -o $@ -c $< 
++	$(CXX) $(CFLAGS) -g -o $@ -c $< 
+ 
+ LIBOBJS_C_DEBUG= \
+ 	$(TEMP)/libtcod/debug/bresenham_c.o \
+@@ -181,28 +181,28 @@
+ 	mkdir -p $@
+ 
+ libtcod.a : $(LIBOBJS_C_DEBUG)
+-	ar r $@ $(LIBOBJS_C_DEBUG)
++	$(AR) r $@ $(LIBOBJS_C_DEBUG)
+ 
+ libtcodxx.a : $(LIBOBJS_CPP_DEBUG)
+-	ar r $@ $(LIBOBJS_CPP_DEBUG)
++	$(AR) r $@ $(LIBOBJS_CPP_DEBUG)
+ 
+ libtcod.so : $(TEMP)/libtcod/release $(LIBOBJS_C_RELEASE)
+-	gcc -shared -Wl,-soname,$@ -o $@ $(LIBOBJS_C_RELEASE) $(ZLIB_LIBS) $(PNG_LIBS) $(SDL_LIBS) $(CFLAGS) $(OPENGL_LIB)
++	$(CC) -shared -Wl,-soname,$@ -o $@ $(LIBOBJS_C_RELEASE) $(CFLAGS) $(OPENGL_LIB) $(PNG_LIBS) $(SDL_LIBS) $(ZLIB_LIBS)
+ 
+ libtcodxx.so : $(TEMP)/libtcod/release $(LIBOBJS_CPP_RELEASE)
+-	gcc -shared -Wl,-soname,$@ -o $@ $(LIBOBJS_CPP_RELEASE) -L. -ltcod $(CFLAGS)
++	$(CC) -shared -Wl,-soname,$@ -o $@ $(LIBOBJS_CPP_RELEASE) -L. -ltcod $(CFLAGS)
+ 
+ libtcodgui.so : $(TEMP)/libtcod/release/gui $(GUIOBJS_RELEASE)
+-	gcc -shared -Wl,-soname,$@ -o $@ $(GUIOBJS_RELEASE) -L. -ltcod -ltcodxx $(CFLAGS)
++	$(CC) -shared -Wl,-soname,$@ -o $@ $(GUIOBJS_RELEASE) -L. -ltcod -ltcodxx $(CFLAGS)
+ 
+ libtcod_debug.so : $(TEMP)/libtcod/debug $(LIBOBJS_C_DEBUG)
+-	gcc -shared -Wl,-soname,$@ -o $@ $(LIBOBJS_C_DEBUG) $(ZLIB_LIBS) $(PNG_LIBS) $(SDL_LIBS) $(CFLAGS) $(OPENGL_LIB)
++	$(CC) -shared -Wl,-soname,$@ -o $@ $(LIBOBJS_C_DEBUG) $(ZLIB_LIBS) $(PNG_LIBS) $(SDL_LIBS) $(CFLAGS) $(OPENGL_LIB)
+ 
+ libtcodxx_debug.so : $(TEMP)/libtcod/debug $(LIBOBJS_CPP_DEBUG)
+-	gcc -shared -Wl,-soname,$@ -o $@ $(LIBOBJS_CPP_DEBUG) -L. -ltcod_debug $(CFLAGS)
++	$(CC) -shared -Wl,-soname,$@ -o $@ $(LIBOBJS_CPP_DEBUG) -L. -ltcod_debug $(CFLAGS)
+ 
+ libtcodgui_debug.so : $(TEMP)/libtcod/debug/gui $(GUIOBJS_DEBUG)
+-	gcc -shared -Wl,-soname,$@ -o $@ $(GUIOBJS_DEBUG) -L. -ltcod_debug -ltcodxx_debug $(CFLAGS)
++	$(CC) -shared -Wl,-soname,$@ -o $@ $(GUIOBJS_DEBUG) -L. -ltcod_debug -ltcodxx_debug $(CFLAGS)
+ 
+ clean : 
+ 	\rm -f $(LIBOBJS_C_RELEASE) $(LIBOBJS_CPP_RELEASE) $(GUIOBJS_RELEASE) $(LIBOBJS_C_DEBUG) $(LIBOBJS_CPP_DEBUG) $(GUIOBJS_DEBUG) libtcod.a libtcodxx.a libtcod.so libtcodxx.so libtcodgui.so libtcod_debug.so libtcodxx_debug.so libtcodgui_debug.so libtcodpy.pyc
