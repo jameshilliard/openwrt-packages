@@ -1,15 +1,15 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ascii-paint
-PKG_VERSION:=0.3
+PKG_VERSION:=0.3.1
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-src.zip
-PKG_SOURCE_URL:=
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)-src
-UNPACK_CMD=unzip -d $(1)/../ $(DL_DIR)/$(PKG_SOURCE)
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=http://ascii-paint.googlecode.com/files/
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/cmake.mk
 
 define Package/ascii-paint
 	MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
@@ -17,7 +17,7 @@ define Package/ascii-paint
 	CATEGORY:=Libraries
 	TITLE:=Ascii-Paint
 	URL:=http://code.google.com/p/ascii-paint/
-	DEPENDS:=@BROKEN +libtcod
+	DEPENDS:=+libtcod
 endef
 
 define Package/ascii-paint/description
@@ -27,11 +27,18 @@ endef
 TARGET_CFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
 		-L$(STAGING_DIR)/usr/lib
 
-MAKE_VARS+=TEMP=$(PKG_BUILD_DIR)/obj \
-	INCDIR=$(PKG_BUILD_DIR)/tcod
+CMAKE_OPTIONS+= -DCMAKE_C_COMPILER=$(TOOLCHAIN_DIR)/usr/bin/$(TARGET_CC) \
+	-DCMAKE_CXX_COMPILER=$(TOOLCHAIN_DIR)/usr/bin/$(TARGET_CXX) \
+	-DQT_QMAKE_EXECUTABLE=$(STAGING_DIR_HOST)/bin/qmake \
+	-DQT_MOC_EXECUTABLE=$(STAGING_DIR_HOST)/bin/moc \
+	-DQT_UIC_EXECUTABLE=$(STAGING_DIR_HOST)/bin/uic \
+	-DQT_RCC_EXECUTABLE=$(STAGING_DIR_HOST)/bin/rcc
 
 define Package/ascii-paint/install
-	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_DIR) $(1)/usr/lib/ascii-paint
+	$(CP) $(PKG_BUILD_DIR)/ascii-paint $(1)/usr/lib/ascii-paint
+	$(CP) $(PKG_BUILD_DIR)/ascii-paint.cfg $(1)/usr/lib/ascii-paint
+	$(CP) $(PKG_BUILD_DIR)/terminal.png $(1)/usr/lib/ascii-paint
 endef
 
 $(eval $(call BuildPackage,ascii-paint))
