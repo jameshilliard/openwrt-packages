@@ -8,11 +8,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mplayer_jz47xx
-PKG_VERSION:=0.1.0
+PKG_VERSION:=0.1.1
 PKG_RELEASE:=1
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/mplayer-jz47xx
-PKG_MD5SUM:=79fd57d1f9c0218c540c0b47eaf1d143
+PKG_MD5SUM:=09c8a3dccc4324e0889968ed46c11aad
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -28,7 +28,7 @@ endef
 
 define Package/mplayer_jz47xx/Default/description
   Accelerated vidix driver for MPlayer.  Start mplayer with option
-  \'-vo fbdev:vidix\' to use it.
+  \'-vo cvidix -srceenw 320 screenh 240 -fs\' to use it.
 endef
 
 define Package/mplayer_jz47xx
