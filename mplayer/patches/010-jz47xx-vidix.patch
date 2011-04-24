@@ -1,7 +1,7 @@
-Index: MPlayer-1.0rc3/vidix/drivers.c
+Index: MPlayer-r33304/vidix/drivers.c
 ===================================================================
---- MPlayer-1.0rc3.orig/vidix/drivers.c	2011-03-05 12:13:32.000000000 +0100
-+++ MPlayer-1.0rc3/vidix/drivers.c	2011-03-05 14:50:38.000000000 +0100
+--- MPlayer-r33304.orig/vidix/drivers.c	2011-04-23 12:22:03.000000000 +0200
++++ MPlayer-r33304/vidix/drivers.c	2011-04-23 12:24:31.000000000 +0200
 @@ -23,6 +23,7 @@
  #include <stdio.h>
  #include <errno.h>
@@ -10,7 +10,7 @@ Index: MPlayer-1.0rc3/vidix/drivers.c
  
  #include "config.h"
  #include "vidix.h"
-@@ -102,6 +103,32 @@
+@@ -103,6 +104,32 @@
  #ifdef CONFIG_VIDIX_DRV_UNICHROME
    vidix_register_driver (&unichrome_drv);
  #endif
@@ -43,7 +43,7 @@ Index: MPlayer-1.0rc3/vidix/drivers.c
  }
  
  static int vidix_probe_driver (VDXContext *ctx, VDXDriver *drv,
-@@ -190,3 +217,11 @@
+@@ -191,3 +218,11 @@
    ctx->drv = NULL;
    return 0;
  }
@@ -55,11 +55,11 @@ Index: MPlayer-1.0rc3/vidix/drivers.c
 +compile-command: "cd ~/src/nanonote/MPlayer-1.0rc3 && ~/bin/quilt-export target && make -C ~/h/src/qi/openwrt-xburst package/mplayer/compile -j2 V=99"
 +End:
 + */
-Index: MPlayer-1.0rc3/Makefile
+Index: MPlayer-r33304/Makefile
 ===================================================================
---- MPlayer-1.0rc3.orig/Makefile	2011-03-05 13:04:03.000000000 +0100
-+++ MPlayer-1.0rc3/Makefile	2011-03-05 13:04:24.000000000 +0100
-@@ -635,11 +635,11 @@
+--- MPlayer-r33304.orig/Makefile	2011-04-23 12:22:04.000000000 +0200
++++ MPlayer-r33304/Makefile	2011-04-23 12:24:31.000000000 +0200
+@@ -598,11 +598,11 @@
                                   libvo/vosub_vidix.c \
                                   vidix/vidix.c \
                                   vidix/drivers.c \
@@ -76,10 +76,10 @@ Index: MPlayer-1.0rc3/Makefile
  
  SRCS_MPLAYER-$(VIDIX_CYBERBLADE)    += vidix/cyberblade_vid.c
  SRCS_MPLAYER-$(VIDIX_IVTV)          += vidix/ivtv_vid.c
-Index: MPlayer-1.0rc3/vidix/dha.c
+Index: MPlayer-r33304/vidix/dha.c
 ===================================================================
---- MPlayer-1.0rc3.orig/vidix/dha.c	2011-03-05 13:21:51.000000000 +0100
-+++ MPlayer-1.0rc3/vidix/dha.c	2011-03-05 13:21:59.000000000 +0100
+--- MPlayer-r33304.orig/vidix/dha.c	2011-04-23 12:22:03.000000000 +0200
++++ MPlayer-r33304/vidix/dha.c	2011-04-23 12:24:31.000000000 +0200
 @@ -185,7 +185,7 @@
  
  #endif /* Generic mmap (not win32, nor os2) */
