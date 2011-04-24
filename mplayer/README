@@ -1,3 +1,7 @@
+this is outdated; mpeg1 support currently disabled (patents?).
+
+Use ffmpeg2theora  or ffmpeg with vp8, vorbis, mkv
+
 1. prepare your avi files for Ben:
 
 for i in $(echo "*.avi"); do /usr/bin/mencoder -o "$i.mpg" -vf scale=320:-2 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vpass=1:vbitrate=200 -ofps 24000/1001 -oac lavc -lavcopts acodec=mp2:abitrate=64 "$i" && /usr/bin/mencoder -o "$i.mpg" -vf scale=320:-2 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vpass=2:vbitrate=200 -ofps 24000/1001 -oac lavc -lavcopts acodec=mp2:abitrate=64 "$i"; done

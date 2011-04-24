@@ -1,0 +1,77 @@
+Index: MPlayer-r33304/configure
+===================================================================
+--- MPlayer-r33304.orig/configure	2011-04-24 12:39:13.000000000 +0200
++++ MPlayer-r33304/configure	2011-04-24 19:43:38.000000000 +0200
+@@ -635,21 +635,28 @@
+ libopenjpeg=auto
+ libavdecoders_all=$(sed -n 's/^[^#]*DEC.*(.*, *\(.*\)).*/\1_decoder/p' ffmpeg/libavcodec/allcodecs.c | tr '[a-z]' '[A-Z]')
+ libavdecoders=$(echo $libavdecoders_all | sed -e 's/ LIB[A-Z0-9_]*_DECODER//g')
++libavdecoders=
+ libavencoders_all=$(sed -n 's/^[^#]*ENC.*(.*, *\(.*\)).*/\1_encoder/p' ffmpeg/libavcodec/allcodecs.c | tr '[a-z]' '[A-Z]')
+ libavencoders=$(echo $libavencoders_all | sed -e 's/ LIB[A-Z0-9_]*_ENCODER//g')
++libavencoders=
+ libavparsers_all=$(sed -n 's/^[^#]*PARSER.*(.*, *\(.*\)).*/\1_parser/p' ffmpeg/libavcodec/allcodecs.c | tr '[a-z]' '[A-Z]')
+ libavparsers=$libavparsers_all
++libavparsers=
+ libavbsfs_all=$(sed -n 's/^[^#]*BSF.*(.*, *\(.*\)).*/\1_bsf/p' ffmpeg/libavcodec/allcodecs.c | tr '[a-z]' '[A-Z]')
+ libavbsfs=$libavbsfs_all
++libavbsfs=
+ libavhwaccels_all=$(sed -n 's/^[^#]*HWACCEL.*(.*, *\(.*\)).*/\1_hwaccel/p' ffmpeg/libavcodec/allcodecs.c | tr '[a-z]' '[A-Z]')
+ # Disable all hardware accelerators for now.
+ libavhwaccels=
+ libavdemuxers_all=$(sed -n 's/^[^#]*DEMUX.*(.*, *\(.*\)).*/\1_demuxer/p' ffmpeg/libavformat/allformats.c | tr '[a-z]' '[A-Z]')
+ libavdemuxers=$(echo $libavdemuxers_all | sed -e 's/ LIB[A-Z0-9_]*_DEMUXER//g' -e s/REDIR_DEMUXER// -e s/AVISYNTH_DEMUXER//)
++libavdemuxers=
+ libavmuxers_all=$(sed -n 's/^[^#]*_MUX.*(.*, *\(.*\)).*/\1_muxer/p' ffmpeg/libavformat/allformats.c | tr '[a-z]' '[A-Z]')
+ libavmuxers=$(echo $libavmuxers_all | sed -e 's/ LIB[A-Z0-9_]*_MUXER//g' -e s/RTP_MUXER// -e s/RTSP_MUXER//)
++libavmuxers=
+ libavprotocols_all=$(sed -n 's/^[^#]*PROTOCOL.*(.*, *\(.*\)).*/\1_protocol/p' ffmpeg/libavformat/allformats.c | tr '[a-z]' '[A-Z]')
+ libavprotocols=$libavprotocols_all
++libavprotocols=
+ _mencoder=yes
+ _mplayer=yes
+ _x11=auto
+@@ -3366,7 +3373,8 @@
+ if test "$networking" = yes ; then
+   def_network='#define CONFIG_NETWORK 1'
+   def_networking='#define CONFIG_NETWORKING 1'
+-  def_rtpdec='#define CONFIG_RTPDEC 1'
++  # disabled, pulls in various patented crap (?)
++#  def_rtpdec='#define CONFIG_RTPDEC 1'
+   extra_ldflags="$extra_ldflags $_ld_sock"
+   inputmodules="networking $inputmodules"
+ else
+Index: MPlayer-r33304/Makefile
+===================================================================
+--- MPlayer-r33304.orig/Makefile	2011-04-24 19:15:52.000000000 +0200
++++ MPlayer-r33304/Makefile	2011-04-24 19:16:08.000000000 +0200
+@@ -73,8 +73,9 @@
+                                         sub/av_sub.c                \
+ 
+ # These filters use private headers and do not work with shared FFmpeg.
+-SRCS_COMMON-$(FFMPEG_A)              += libaf/af_lavcac3enc.c    \
+-                                        libmpcodecs/vf_fspp.c    \
++# removed: libaf/af_lavcac3enc.c  (patents?)
++
++SRCS_COMMON-$(FFMPEG_A)              += libmpcodecs/vf_fspp.c    \
+                                         libmpcodecs/vf_mcdeint.c \
+                                         libmpcodecs/vf_qp.c      \
+                                         libmpcodecs/vf_spp.c     \
+Index: MPlayer-r33304/libaf/af.c
+===================================================================
+--- MPlayer-r33304.orig/libaf/af.c	2011-04-24 21:18:52.000000000 +0200
++++ MPlayer-r33304/libaf/af.c	2011-04-24 21:19:08.000000000 +0200
+@@ -71,9 +71,10 @@
+ #endif
+    &af_info_volnorm,
+    &af_info_extrastereo,
+-#ifdef CONFIG_FFMPEG_A
+-   &af_info_lavcac3enc,
+-#endif
++   /* AC3 disabled until patent status cleared */
++/* #ifdef CONFIG_FFMPEG_A */
++/*    &af_info_lavcac3enc, */
++/* #endif */
+ #ifdef CONFIG_FFMPEG
+    &af_info_lavcresample,
+ #endif

@@ -69,25 +69,79 @@ CONFIGURE_ARGS := --target=mips \
 		  --prefix=/usr \
 		  --with-sdl-config=$(STAGING_DIR)/usr/bin/sdl-config \
 		  --with-freetype-config=$(STAGING_DIR)/host/bin/freetype-config \
-		  --enable-rpath \
-		  --extra-cflags="-I$(STAGING_DIR)/usr/include/directfb \
-		  $(ICONV_CPPFLAGS)" \
-		  --extra-ldflags="$(ICONV_LDFLAGS)" \
-		  --host-cc=gcc \
-		  --enable-fbdev \
-		  --confdir=/usr/share/mplayer \
-		  --enable-menu \
-		  --$(if $(CONFIG_BUILD_PATENTED),enable-mad,disable-mad) \
-		  --$(if $(CONFIG_BUILD_PATENTED),enable-mp3lib,disable-mp3lib) \
-		  --disable-x11 \
-		  --disable-xv \
-		  --disable-vm \
-		  --disable-vdpau \
-		  --disable-gl \
-		  --disable-xf86keysym \
-		  --enable-vidix \
-		  --disable-vidix-pcidb \
-		  --with-vidix-drivers="no"
+		  --enable-rpath					\
+		  --extra-cflags="-I$(STAGING_DIR)/usr/include/directfb	\
+		  $(ICONV_CPPFLAGS)"					\
+		  --extra-ldflags="$(ICONV_LDFLAGS)"			\
+		  --host-cc=gcc						\
+		  --enable-fbdev					\
+		  --confdir=/usr/share/mplayer				\
+		  --enable-menu						\
+		  --disable-x11						\
+		  --disable-xv						\
+		  --disable-vm						\
+		  --disable-vdpau					\
+		  --disable-gl						\
+		  --disable-xf86keysym					\
+		  --enable-vidix					\
+		  --disable-vidix-pcidb					\
+		  --with-vidix-drivers="no"				\
+	          --enable-tremor-internal				\
+		  --enable-decoder=RAWVIDEO_DECODER			\
+		  --enable-decoder=THEORA_DECODER			\
+		  --enable-decoder=VP3_DECODER				\
+		  --enable-decoder=VP8_DECODER				\
+		  --enable-decoder=MP2_DECODER				\
+		  --enable-decoder=FLAC_DECODER				\
+		  --enable-decoder=PCM_U8_DECODER			\
+		  --enable-decoder=PCM_U16BE_DECODER			\
+		  --enable-decoder=PCM_U16LE_DECODER			\
+		  --enable-decoder=PCM_S8_DECODER			\
+		  --enable-decoder=PCM_S16BE_DECODER			\
+		  --enable-decoder=PCM_S16LE_DECODER			\
+		  --enable-decoder=PCM_MULAW_DECODER			\
+		  --enable-decoder=PCM_ALAW_DECODER			\
+		  --enable-demuxer=RAWVIDEO_DEMUXER			\
+		  --enable-demuxer=AVI_DEMUXER				\
+		  --enable-demuxer=FLAC_DEMUXER				\
+		  --enable-demuxer=MATROSKA_DEMUXER			\
+		  --enable-demuxer=MATROSKA_AUDIO_DEMUXER		\
+		  --enable-demuxer=SRT_DEMUXER				\
+		  --enable-demuxer=WAV_DEMUXER				\
+		  --enable-demuxer=YUV4MPEGPIPE_DEMUXER			\
+		  --enable-parser=VP3_PARSER				\
+		  --enable-parser=VP8_PARSER				\
+		  --enable-parser=PNM_PARSER				\
+		  --enable-parser=DIRAC_PARSER				\
+		  --enable-parser=FLAC_PARSER				\
+		  --enable-protocol=HTTP_PROTOCOL			\
+		  --enable-protocol=CONCAT_PROTOCOL			\
+		  --enable-protocol=FILE_PROTOCOL			\
+		  --enable-protocol=PIPE_PROTOCOL			\
+		  --enable-protocol=TCP_PROTOCOL			\
+		  --enable-protocol=UDP_PROTOCOL
+
+# cannot enable, pulls in mpegts, and realmedia stuff (?):
+#		  --enable-protocol=RTP_PROTOCOL
+
+# not compiling working with libspeex version from openwrt:
+#		  --enable-decoder=LIBSPEEX_DECODER			
+
+# ffmpeg ogg demuxer disabled for now (leaks memory, use mplayer's native ogg
+# support instead) --enable-demuxer=OGG_DEMUXER
+
+# ffmpeg vorbis is float-based and slow, using mplayer's internal tremor
+#instead --enable-decoder=VORBIS_DECODER 
+
+ifdef CONFIG_BUILD_PATENTED
+CONFIGURE_ARGS+= --enable-mad \
+		  --enable-mp3lib 
+else
+CONFIGURE_ARGS+= --disable-mad \
+		  --disable-mp3lib \
+		--disable-libmpeg2 \
+		--disable-libmpeg2-internal 
+endif
 
 # mplayer makefile is soooo broken.  have to specify libs by hand, if
 # compileing with --enable-system-ffmpeg
@@ -116,3 +170,9 @@ define Package/MPlayer/install
 endef
 
 $(eval $(call BuildPackage,MPlayer))
+
+
+# The following comments configure the Emacs editor.  Just ignore them.
+# Local Variables:
+# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/mplayer/compile -j4 V=99"
+# End:
