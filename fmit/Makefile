@@ -12,7 +12,7 @@ PKG_NAME:=fmit
 PKG_VERSION:=0.99.2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-Source.tar.bz2
-PKG_SOURCE_URL:=http://download.gna.org/fmit/${PKG_NAME}-${PKG_VERSION}-Source.tar.bz2
+PKG_SOURCE_URL:=http://download.gna.org/fmit/
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)-Source
 PKG_INSTALL:=1
 
