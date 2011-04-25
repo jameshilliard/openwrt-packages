@@ -14,7 +14,7 @@ PKG_REV:=33304
 FFMPEG_REV:=3d462373f8e8fa58b697a9b2d93a5edf70841937
 #32225  -- last revision with enable-system-ffmpeg
 PKG_VERSION:=r$(PKG_REV)
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 FFMPEG_SOURCE_URL:=git://git.videolan.org/ffmpeg.git
