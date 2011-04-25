@@ -1,5 +1,8 @@
 sub-fuzziness=1
 utf8=1
 volume=10
-vo=sdl
+vo=cvidix
+screenw=320
+screenh=240
+fs=1
 ac=tremor
