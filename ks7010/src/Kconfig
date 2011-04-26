@@ -1,0 +1,7 @@
+config KS7010 
+	tristate "KeyStream KS7010 SDIO support"
+	---help---
+	  This is a driver for KS7010 Wi-Fi SDIO based SD cards.
+	  This driver is tested for Ben NanoNote gadget from qi-hardware.com
+
+	  Thanks to Renesas/KeyStream for their donation!
