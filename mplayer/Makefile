@@ -7,12 +7,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=MPlayer
-# newer mplayer revisions lack the --enable-system-ffmpeg configure option
-# which totally screws us :( (i.e. they want to checkout and rebuild libffmpeg
-# from the mplayer source tree, yuck!)
-PKG_REV:=33304
-FFMPEG_REV:=3d462373f8e8fa58b697a9b2d93a5edf70841937
-#32225  -- last revision with enable-system-ffmpeg
+PKG_REV:=33333
+FFMPEG_REV:=d84f191d37b8123203dff250531a4b4c0d5f587a
 PKG_VERSION:=r$(PKG_REV)
 PKG_RELEASE:=2
 
@@ -87,6 +83,7 @@ CONFIGURE_ARGS := --target=mips \
 		  --disable-vidix-pcidb					\
 		  --with-vidix-drivers="no"				\
 	          --enable-tremor-internal				\
+	          --enable-tremor-low					\
 		  --enable-decoder=RAWVIDEO_DECODER			\
 		  --enable-decoder=THEORA_DECODER			\
 		  --enable-decoder=VP3_DECODER				\
