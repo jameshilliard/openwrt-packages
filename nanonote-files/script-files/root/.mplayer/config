@@ -6,3 +6,6 @@ screenw=320
 screenh=240
 fs=1
 ac=tremor
+# disabling console output reduces CPU load by 10% (floating point math used?)
+# not visible for videos anyways.  Can still use -noquiet on audio files.
+quiet=1
