@@ -9,3 +9,6 @@ ac=tremor
 # disabling console output reduces CPU load by 10% (floating point math used?)
 # not visible for videos anyways.  Can still use -noquiet on audio files.
 quiet=1
+# playing back 48kHz sample rate audio needs downsampling on the nanonote
+# this option makes mplayer use a low-quality but faster sample-rate filter:
+af-adv=force=2
