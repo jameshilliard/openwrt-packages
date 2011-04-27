@@ -10,7 +10,7 @@ PKG_NAME:=MPlayer
 PKG_REV:=33333
 FFMPEG_REV:=d84f191d37b8123203dff250531a4b4c0d5f587a
 PKG_VERSION:=r$(PKG_REV)
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 
 PKG_SOURCE=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 FFMPEG_SOURCE_URL:=git://git.videolan.org/ffmpeg.git
@@ -79,6 +79,8 @@ CONFIGURE_ARGS := --target=mips \
 		  --disable-vdpau					\
 		  --disable-gl						\
 		  --disable-xf86keysym					\
+		  --disable-ossaudio					\
+		  --enable-alsa						\
 		  --enable-vidix					\
 		  --disable-vidix-pcidb					\
 		  --with-vidix-drivers="no"				\

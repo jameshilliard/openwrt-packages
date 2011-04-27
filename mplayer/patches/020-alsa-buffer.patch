@@ -1,0 +1,15 @@
+Index: MPlayer-r33304/libao2/ao_alsa.c
+===================================================================
+--- MPlayer-r33304.orig/libao2/ao_alsa.c	2011-04-27 08:12:35.000000000 +0200
++++ MPlayer-r33304/libao2/ao_alsa.c	2011-04-27 08:12:55.000000000 +0200
+@@ -313,8 +313,8 @@
+ */
+ static int init(int rate_hz, int channels, int format, int flags)
+ {
+-    unsigned int alsa_buffer_time = 500000; /* 0.5 s */
+-    unsigned int alsa_fragcount = 16;
++    unsigned int alsa_buffer_time = 1000000; /* 0.5 s */
++    unsigned int alsa_fragcount = 4;
+     int err;
+     int block;
+     strarg_t device;
