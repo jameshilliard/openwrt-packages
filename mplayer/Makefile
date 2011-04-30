@@ -7,10 +7,10 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=MPlayer
-PKG_REV:=33333
-FFMPEG_REV:=d84f191d37b8123203dff250531a4b4c0d5f587a
+PKG_REV:=33341
+FFMPEG_REV:=97dc86b793efb9c6ac604cdfff4027fe27efa12c
 PKG_VERSION:=r$(PKG_REV)
-PKG_RELEASE:=3
+PKG_RELEASE:=1
 
 PKG_SOURCE=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 FFMPEG_SOURCE_URL:=git://git.videolan.org/ffmpeg.git
@@ -32,7 +32,7 @@ define DownloadMethod/svn_plus_ffmpeg_git
 		( svn help export | grep -q trust-server-cert && \
 		svn export --non-interactive --trust-server-cert -r$(VERSION) $(URL) $(SUBDIR) || \
 		svn export --non-interactive -r$(VERSION) $(URL) $(SUBDIR) ) && \
-		git clone --depth 1 $(FFMPEG_SOURCE_URL) $(SUBDIR)/ffmpeg && \
+		git clone $(FFMPEG_SOURCE_URL) $(SUBDIR)/ffmpeg && \
 		(cd $(SUBDIR)/ffmpeg && git checkout $(FFMPEG_REV)) && \
 		echo "Packing checkout..." && \
 		rm -rf $(SUBDIR)/ffmpeg/.git && \
