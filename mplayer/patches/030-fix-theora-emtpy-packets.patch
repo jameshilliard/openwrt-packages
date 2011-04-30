@@ -1,0 +1,23 @@
+Index: MPlayer-r33333/libmpdemux/video.c
+===================================================================
+--- MPlayer-r33333.orig/libmpdemux/video.c	2011-04-30 13:42:17.000000000 +0200
++++ MPlayer-r33333/libmpdemux/video.c	2011-04-30 13:43:31.000000000 +0200
+@@ -61,6 +61,8 @@
+   VIDEO_OTHER
+ } video_codec_t;
+ 
++#define FOURCC_THEORA mmioFOURCC('t', 'h', 'e', 'o')
++
+ static video_codec_t find_video_codec(sh_video_t *sh_video)
+ {
+   demux_stream_t *d_video=sh_video->ds;
+@@ -581,7 +583,8 @@
+     frame_time*=sh_video->frametime;
+ 
+     // override frame_time for variable/unknown FPS formats:
+-    if(!force_fps) switch(demuxer->file_format){
++    if(!force_fps && sh_video->format != FOURCC_THEORA)
++      switch(demuxer->file_format){
+       case DEMUXER_TYPE_GIF:
+       case DEMUXER_TYPE_MATROSKA:
+       case DEMUXER_TYPE_MNG:
