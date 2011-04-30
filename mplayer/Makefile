@@ -157,7 +157,7 @@ endef
 define Package/MPlayer/install
 	$(INSTALL_DIR) \
 		$(1)/usr/bin \
-		$(1)/usr/share/mplayer
+		$(1)/etc/mplayer
 
 	$(INSTALL_BIN) \
 		$(PKG_BUILD_DIR)/mplayer \
