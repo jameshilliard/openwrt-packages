@@ -71,7 +71,7 @@ CONFIGURE_ARGS := --target=mips \
 		  --extra-ldflags="$(ICONV_LDFLAGS)"			\
 		  --host-cc=gcc						\
 		  --enable-fbdev					\
-		  --confdir=/usr/share/mplayer				\
+		  --confdir=/etc/mplayer				\
 		  --enable-menu						\
 		  --disable-x11						\
 		  --disable-xv						\
@@ -163,15 +163,10 @@ define Package/MPlayer/install
 		$(PKG_BUILD_DIR)/mplayer \
 		$(1)/usr/bin/mplayer
 	$(INSTALL_DATA) \
-		$(FILES_DIR)/input.conf $(FILES_DIR)/config \
-		$(1)/usr/share/mplayer
+		$(FILES_DIR)/input.conf \
+		$(FILES_DIR)/mplayer.conf \
+		$(1)/etc/mplayer/
 
-endef
-
-define Package/MPlayer/postinst
-#!/bin/sh
-mkdir $${IPKG_INSTROOT}/root/.mplayer
-cp $${IPKG_INSTROOT}/usr/share/mplayer/config $${IPKG_INSTROOT}/root/.mplayer/config
 endef
 
 $(eval $(call BuildPackage,MPlayer))
