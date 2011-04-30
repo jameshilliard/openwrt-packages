@@ -27,6 +27,11 @@ approximately half the bitrate with moderate quality.
 
 mplayer output.ogv
 
+In case sample rate doesn't match 48000 the default will be to perform quick
+resampling, introducing noticeable quality degradation.  Add -af
+resample=44100:0:1 to improve audio quality at the cost of a few percent of
+CPU usage.
+
 (Assumptions:
 
 the following options should be set in your ~/.mplayer/config:
