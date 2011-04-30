@@ -163,9 +163,15 @@ define Package/MPlayer/install
 		$(PKG_BUILD_DIR)/mplayer \
 		$(1)/usr/bin/mplayer
 	$(INSTALL_DATA) \
-		$(FILES_DIR)/input.conf \
+		$(FILES_DIR)/input.conf $(FILES_DIR)/config \
 		$(1)/usr/share/mplayer
 
+endef
+
+define Package/MPlayer/postinst
+#!/bin/sh
+mkdir $${IPKG_INSTROOT}/root/.mplayer
+cp $${IPKG_INSTROOT}/usr/share/mplayer/config $${IPKG_INSTROOT}/root/.mplayer/config
 endef
 
 $(eval $(call BuildPackage,MPlayer))
