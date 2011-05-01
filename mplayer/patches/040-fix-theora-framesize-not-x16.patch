@@ -1,7 +1,7 @@
 Index: MPlayer-r33333/libmpcodecs/vd_theora.c
 ===================================================================
 --- MPlayer-r33333.orig/libmpcodecs/vd_theora.c	2011-05-01 10:23:23.000000000 +0200
-+++ MPlayer-r33333/libmpcodecs/vd_theora.c	2011-05-01 10:45:06.000000000 +0200
++++ MPlayer-r33333/libmpcodecs/vd_theora.c	2011-05-01 14:09:52.000000000 +0200
 @@ -133,7 +133,7 @@
      mp_msg(MSGT_DECVIDEO,MSGL_V,"INFO: Theora video init ok!\n");
      mp_msg(MSGT_DECVIDEO,MSGL_INFO,"Frame: %dx%d, Picture %dx%d, Offset [%d,%d]\n", context->inf.width, context->inf.height, context->inf.frame_width, context->inf.frame_height, context->inf.offset_x, context->inf.offset_y);
@@ -11,3 +11,24 @@ Index: MPlayer-r33333/libmpcodecs/vd_theora.c
  
  err_out:
      free(context);
+@@ -196,11 +196,17 @@
+     mpi = mpcodecs_get_image(sh, MP_IMGTYPE_EXPORT, 0, yuv.y_width, yuv.y_height);
+     if(!mpi) return NULL;
+ 
+-    mpi->planes[0]=yuv.y;
++    int y_offs = context->inf.offset_x + context->inf.offset_y*yuv.y_stride;
++    int uv_h_sampling = mpi->width / mpi->chroma_width;
++    int uv_v_sampling = mpi->height / mpi->chroma_height;
++    int uv_offs = context->inf.offset_x/uv_h_sampling 
++       + context->inf.offset_y/uv_v_sampling * yuv.uv_stride;
++
++    mpi->planes[0]=yuv.y + y_offs;
+     mpi->stride[0]=yuv.y_stride;
+-    mpi->planes[1]=yuv.u;
++    mpi->planes[1]=yuv.u + uv_offs;
+     mpi->stride[1]=yuv.uv_stride;
+-    mpi->planes[2]=yuv.v;
++    mpi->planes[2]=yuv.v + uv_offs;
+     mpi->stride[2]=yuv.uv_stride;
+ 
+     return mpi;

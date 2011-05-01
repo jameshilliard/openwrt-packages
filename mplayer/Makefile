@@ -8,9 +8,9 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=MPlayer
 PKG_REV:=33341
-FFMPEG_REV:=97dc86b793efb9c6ac604cdfff4027fe27efa12c
+FFMPEG_REV:=97dc86b793efb9c6ac604cdfff4027fe27efa12c6
 PKG_VERSION:=r$(PKG_REV)
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 
 PKG_SOURCE=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 FFMPEG_SOURCE_URL:=git://git.videolan.org/ffmpeg.git
