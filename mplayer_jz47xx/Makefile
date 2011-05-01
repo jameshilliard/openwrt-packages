@@ -8,11 +8,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mplayer_jz47xx
-PKG_VERSION:=0.1.3
+PKG_VERSION:=0.1.4
 PKG_RELEASE:=1
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/mplayer-jz47xx
-PKG_MD5SUM:=bc95addf166e5508ab5acc7152c447a0
+PKG_MD5SUM:=e7c59a7499dbc94cba3d1a347a72155c
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
