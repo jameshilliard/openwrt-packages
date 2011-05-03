@@ -1,0 +1,35 @@
+Index: libtheora-1.2.0alpha1/Makefile.am
+===================================================================
+--- libtheora-1.2.0alpha1.orig/Makefile.am	2010-09-23 22:26:52.000000000 +0200
++++ libtheora-1.2.0alpha1/Makefile.am	2011-05-03 09:52:11.000000000 +0200
+@@ -8,7 +8,7 @@
+ EXAMPLES_DIR =
+ endif
+ 
+-SUBDIRS = lib include doc tests m4 $(EXAMPLES_DIR)
++SUBDIRS = lib include m4 $(EXAMPLES_DIR)
+ 
+ 
+ # we include the whole debian/ dir in EXTRA_DIST because there's a problem
+Index: libtheora-1.2.0alpha1/Makefile.in
+===================================================================
+--- libtheora-1.2.0alpha1.orig/Makefile.in	2010-09-23 23:59:14.000000000 +0200
++++ libtheora-1.2.0alpha1/Makefile.in	2011-05-03 09:52:11.000000000 +0200
+@@ -106,7 +106,7 @@
+ 	distdir dist dist-all distcheck
+ ETAGS = etags
+ CTAGS = ctags
+-DIST_SUBDIRS = lib include doc tests m4 examples
++DIST_SUBDIRS = lib include m4
+ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+ distdir = $(PACKAGE)-$(VERSION)
+ top_distdir = $(distdir)
+@@ -312,7 +312,7 @@
+ AUTOMAKE_OPTIONS = foreign 1.11 dist-zip dist-xz
+ @THEORA_ENABLE_EXAMPLES_FALSE@EXAMPLES_DIR = 
+ @THEORA_ENABLE_EXAMPLES_TRUE@EXAMPLES_DIR = examples
+-SUBDIRS = lib include doc tests m4 $(EXAMPLES_DIR)
++SUBDIRS = lib include m4 $(EXAMPLES_DIR)
+ 
+ # we include the whole debian/ dir in EXTRA_DIST because there's a problem
+ # with autotools and HFS+ MacOSX file systems that caused debian/Makefile.am
