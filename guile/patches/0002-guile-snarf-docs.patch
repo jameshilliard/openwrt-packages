@@ -1,0 +1,8 @@
+--- guile-1.8.7.or/libguile/guile-snarf-docs.in	2011-03-17 13:55:24.328184439 +0300
++++ guile-1.8.7/libguile/guile-snarf-docs.in	2011-03-17 13:55:56.753058827 +0300
+@@ -23,4 +23,4 @@
+ ## Let the user override the preprocessor autoconf found.
+ test -n "${CPP+set}" || CPP="@CPP@"
+ 
+-${CPP} -DSCM_MAGIC_SNARF_DOCS "$@"
++${CPP} -P -DSCM_MAGIC_SNARF_DOCS "$@"
