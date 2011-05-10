@@ -7,15 +7,15 @@
 include $(TOPDIR)/rules.mk
 PKG_NAME:=gcc
 #PKG_VERSION:=$(strip $(subst ",, $(CONFIG_GCC_VERSION)))#"))
-PKG_VERSION:=4.3.3
-PKG_RELEASE:=3
+PKG_VERSION:=4.5.2
+PKG_RELEASE:=1
 PATCH_DIR=$(TOPDIR)/toolchain/gcc/patches/$(PKG_VERSION)
 PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-$(PKG_VERSION) \
     http://mirrors.rcn.net/pub/sourceware/gcc/releases/gcc-$(PKG_VERSION) \
 	    ftp://ftp.gnu.org/gnu/gcc/releases/gcc-$(PKG_VERSION)
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_MD5SUM:=354853e0b2da90c527e35aabb8d6f1e6
+PKG_MD5SUM:=d6559145853fbaaa0fd7556ed93bce9a
 PKG_INSTALL:=1
 PKG_FIXUP:=libtool
 
@@ -28,7 +28,7 @@ EXTRA_TARGET=$(if $(CONFIG_EXTRA_TARGET_ARCH),--enable-biarch --enable-targets=$
 STRIP:=$(STAGING_DIR_HOST)/bin/sstrip
 RSTRIP:= \
 	NM="$(TARGET_CROSS)nm" \
-	STRIP="$(STRIP)" \
+	STRIP="$(STRIP) --strip-debug" \
 	STRIP_KMOD="$(TARGET_CROSS)strip --strip-debug" \
 	$(SCRIPT_DIR)/rstrip.sh
 
@@ -36,7 +36,7 @@ define Package/gcc-mips
   SECTION:=devel
   CATEGORY:=Development
   TITLE:=gcc-mips
-  DEPENDS:=+mpfr +binutils
+  DEPENDS:=+mpfr +binutils +libmpc
 endef
 
 define Package/gcc-mips/description
@@ -45,7 +45,7 @@ endef
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
-	($(CP) ./patches $(PKG_BUILD_DIR); cd $(PKG_BUILD_DIR); patch -Np1 < ./patches/001-cache-amnesia.patch;);
+#	($(CP) ./patches $(PKG_BUILD_DIR); cd $(PKG_BUILD_DIR); patch -Np1 < ./patches/001-cache-amnesia.patch;);
 	(cd $(PKG_BUILD_DIR)/libstdc++-v3; \
 	$(SED) 's/m4_rename(/m4_rename_force(/' acinclude.m4;);
 endef
@@ -70,6 +70,7 @@ define Build/Configure
 			--disable-libmudflap \
 			--disable-multilib \
 			--with-gmp=$(STAGING_DIR)/usr \
+			--with-mpc=$(STAGING_DIR)/usr \
 			--with-mpfr=$(STAGING_DIR)/usr \
 			--prefix=/usr \
 			$(EXTRA_TARGET) \
@@ -84,12 +85,18 @@ define Build/Compile
 endef
 
 define Package/gcc-mips/install
-	$(INSTALL_DIR) $(1)/usr
-	cp -r $(PKG_INSTALL_DIR)/usr/{bin,include,lib,libexec} $(1)/usr
-	cp -rf $(TOOLCHAIN_DIR)/usr/include/* $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)/include
-	cp -rf $(TOOLCHAIN_DIR)/usr/lib/*.{a,la,o} $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
-	cp -rf $(TOOLCHAIN_DIR)/lib/* $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
-	rm -rf $(1)/usr/lib/libstdc++.so*
+	$(INSTALL_DIR) $(1)/usr/bin $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
+	cp -ar $(PKG_INSTALL_DIR)/usr/{include,libexec} $(1)/usr
+	cp -a $(PKG_INSTALL_DIR)/usr/bin/{$(REAL_GNU_TARGET_NAME)-{g++,gcc},gccbug,cpp,gcov} $(1)/usr/bin
+	ln -s $(REAL_GNU_TARGET_NAME)-g++ $(1)/usr/bin/c++
+	ln -s $(REAL_GNU_TARGET_NAME)-g++ $(1)/usr/bin/g++
+	ln -s $(REAL_GNU_TARGET_NAME)-g++ $(1)/usr/bin/$(REAL_GNU_TARGET_NAME)-c++
+	ln -s $(REAL_GNU_TARGET_NAME)-gcc $(1)/usr/bin/gcc
+	ln -s $(REAL_GNU_TARGET_NAME)-gcc $(1)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc-$(PKG_VERSION)
+	cp -a $(PKG_INSTALL_DIR)/usr/lib/*.a $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
+	cp -ar $(PKG_INSTALL_DIR)/usr/lib/gcc $(1)/usr/lib
+	cp -ar $(TOOLCHAIN_DIR)/include $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
+	cp -a $(TOOLCHAIN_DIR)/lib/*.{a,o,so*} $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
 endef
 
 $(eval $(call BuildPackage,gcc-mips))
