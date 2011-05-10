@@ -161,6 +161,7 @@ MAKE_FLAGS += -j2 config m4 term src docs share
 # how to set this as default?
 
 #TARGET_LDFLAGS += -Wl,-rpath-link -Wl,$(STAGING_DIR)/usr/lib
+TARGET_LDFLAGS += -lncursesw
 
 define Package/gnuplot-gfx/install
 	$(INSTALL_DIR) $(1)/usr/bin
