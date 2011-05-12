@@ -20,3 +20,6 @@
 ;; or tmm-menubar
 (menu-bar-mode 0)
 
+;; For some reason emacs 23.2 does not come with colored comments by default
+;; we fix this here (todo: chose a better color?)
+(set-face-foreground 'font-lock-comment-face "blue")
