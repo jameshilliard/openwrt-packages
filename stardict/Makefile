@@ -64,7 +64,6 @@ CONFIGURE_ARGS += \
 	--disable-espeak \
 	--disable-dictdotcn \
 	--disable-advertisement \
-	--disable-man \
 	--disable-qqwry \
 	--disable-updateinfo \
 	--disable-htmlparse \
@@ -81,7 +80,8 @@ define Package/stardict/install
 	$(INSTALL_DIR) \
 		$(1)/usr/bin \
 		$(1)/usr/share \
-		$(1)/usr/share/pixmaps
+		$(1)/usr/share/pixmaps \
+		$(1)/usr/lib/stardict/plugins
 
 	$(INSTALL_BIN) \
 		$(PKG_INSTALL_DIR)/usr/bin/stardict \
@@ -94,6 +94,10 @@ define Package/stardict/install
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/share/stardict \
 		$(1)/usr/share/
+
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/lib/stardict/plugins/* \
+		$(1)/usr/lib/stardict/plugins/
 endef
 
 define Package/stardict-dic-en-en/install
