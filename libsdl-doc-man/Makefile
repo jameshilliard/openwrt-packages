@@ -29,6 +29,8 @@ PKG_MD5SUM:=80e8752091874743ccd63ff4387fa9bb
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
+UNPACK_CMD=tar xzf $(DL_DIR)/$(PKG_SOURCE) -C $(1)
+
 include $(INCLUDE_DIR)/package.mk
 
 define Package/libsdl-doc-man
@@ -41,6 +43,9 @@ endef
 
 define Package/libsdl-doc-man/description
   Man pages for the libSDL 1.2 API
+endef
+
+define Build/Compile
 endef
 
 define Package/libsdl-doc-man/install
