@@ -1,6 +1,6 @@
 #!/bin/bash
 # version of me
-__VERSION__="2011-03-02"
+__VERSION__="2011-05-22"
 
 # use 'http' to download and flash images, use 'file' to flash images present in the <WORKING_DIR>
 PROTOCOL="http"
