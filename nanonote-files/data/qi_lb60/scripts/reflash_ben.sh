@@ -30,11 +30,12 @@ do
     case $OPTIONS in
     d)     
         VERSION=$OPTARG # override version by first argument if passed
+        WORKING_DIR="${HOME}/.qi/nanonote/ben/${VERSION}"
         ;;
     l)
-        WORKING_DIR=$OPTARG
         PROTOCOL="file"
-        VERSION="Local"
+        VERSION="local"
+        WORKING_DIR=$OPTARG
         ;;
     b)
 	ALL="FALSE"
@@ -142,8 +143,6 @@ progress_finish () {
     tmp=$(<"${LOG_FILE}.err")
     cat "${LOG_FILE}.err" >> "${LOG_FILE}"
 }
-
-[ "$(whoami)" == "root" ] || abort "this script must be run as root"
 
 log "working dir:      ${WORKING_DIR}"
 log "chosen method:    ${PROTOCOL}"
