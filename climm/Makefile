@@ -7,9 +7,8 @@ PKG_VERSION:=0.7.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=climm-$(PKG_VERSION).tgz
-	PKG_SOURCE_URL:=http://www.climm.org/source/
-	#PKG_MD5SUM:=887415d16c32af58eab2ec2d9bb17fa6
-	PKG_CAT:=zcat
+PKG_SOURCE_URL:=http://www.climm.org/source/
+PKG_CAT:=zcat
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/climm-$(PKG_VERSION)
 
@@ -20,27 +19,19 @@ define Package/climm
 	SECTION:=network
 	CATEGORY:=Network
 	TITLE:=Climm
-	DEPENDS:=+zlib +libncurses +libreadline $(INTL_DEPENDS) +libcharset +libopenssl +libgnutls +libgnutls-openssl
 	URL:=http://www.climm.org/
+	DEPENDS:=+zlib +libncurses +libreadline $(INTL_DEPENDS) +libcharset +libopenssl +libgnutls +libgnutls-openssl
 endef
 
 define Package/climm/description
 	Terminal Jabber client.
 endef
 
-EXTRA_CFLAGS += \
-        -I$(STAGING_DIR)/usr/include
+TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
+TARGET_LDFLAGS += -lm -lz
 
-EXTRA_LDFLAGS += \
-        -lm -lz
-
-
-define Build/Configure
-	$(call Build/Configure/Default, \
-		--prefix=/usr --with-ssl  \
-		export READLINE=1 \
-	)
-endef
+# when enalbe xmpp, the IKS_LIBS get wrong value
+CONFIGURE_ARGS += --disable-xmpp
 
 define Package/climm/install
 	$(INSTALL_DIR) $(1)/usr/bin/
