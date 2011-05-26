@@ -20,7 +20,7 @@ define Package/ghostscript
   CATEGORY:=Utilities
   TITLE:=interpreter for the PostScript language and for PDF
   URL:=http://pages.cs.wisc.edu/~ghost/
-  DEPENDS:=+libtiff $(ICONV_DEPENDS) +libpng +fontconfig +libfreetype @BUILD_NLS
+  DEPENDS:=+libtiff $(ICONV_DEPENDS) +libpng +fontconfig +libfreetype @BUILD_NLS +libidn
 endef
 
 define Package/ghostscript/description
@@ -50,7 +50,7 @@ CONFIGURE_ARGS += \
 MAKE_FLAGS += \
 	EXTRALIBS="-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
 		$(ICONV_LDFLAGS) -L$(STAGING_DIR)/usr/lib \
-		-lfontconfig -lfreetype -ldl -liconv" \
+		-lfontconfig -lfreetype -ldl -liconv -lidn" \
 	COMPILE_INITS="0"
 
 define Package/ghostscript/install
