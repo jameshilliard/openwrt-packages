@@ -5,12 +5,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ghostscript
-PKG_VERSION:=9.00
+PKG_VERSION:=9.02
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://ghostscript.com/releases/
-PKG_MD5SUM:=a402462478b4cdda3e1816899227b845
+PKG_SOURCE_URL:=http://downloads.ghostscript.com/public/
+PKG_MD5SUM:=86cc3a0509c0d96a641d58879d54274b
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
