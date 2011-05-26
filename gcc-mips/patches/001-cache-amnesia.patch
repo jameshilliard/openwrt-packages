@@ -1,11 +1,9 @@
-diff --git a/gcc/configure b/gcc/configure
-index f7d4161..7f11021 100755
 --- a/gcc/configure
 +++ b/gcc/configure
-@@ -12972,7 +12972,7 @@ else
- 	esac
+@@ -10527,7 +10527,7 @@
  	saved_CFLAGS="${CFLAGS}"
  	CC="${CC_FOR_BUILD}" CFLAGS="${CFLAGS_FOR_BUILD}" \
+ 	LDFLAGS="${LDFLAGS_FOR_BUILD}" \
 -	${realsrcdir}/configure \
 +	CONFIG_SITE= ${realsrcdir}/configure --cache-file=./other.cache \
  		--enable-languages=${enable_languages-all} \

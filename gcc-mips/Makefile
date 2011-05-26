@@ -45,7 +45,7 @@ endef
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
-#	($(CP) ./patches $(PKG_BUILD_DIR); cd $(PKG_BUILD_DIR); patch -Np1 < ./patches/001-cache-amnesia.patch;);
+	($(CP) ./patches $(PKG_BUILD_DIR); cd $(PKG_BUILD_DIR); patch -Np1 < ./patches/001-cache-amnesia.patch;);
 	(cd $(PKG_BUILD_DIR)/libstdc++-v3; \
 	$(SED) 's/m4_rename(/m4_rename_force(/' acinclude.m4;);
 endef
