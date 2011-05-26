@@ -77,7 +77,7 @@ endef
 
 define Package/plplot
 $(call Package/plplot/Default)
-  DEPENDS:=+libltdl +zlib +libfreetype
+  DEPENDS:=+libltdl +zlib +libfreetype @BROKEN
   TITLE+=
 endef
 
