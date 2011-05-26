@@ -28,7 +28,8 @@ include $(INCLUDE_DIR)/package.mk
 
 CMAKE_HOST_FLAGS=-DCMAKE_INSTALL_PREFIX=/usr \
 	     	-DDEFAULT_NO_DEVICES=ON \
-		-DPKG_CONFIG_EXECUTABLE=Not-Found -DDEFAULT_NO_BINDINGS=ON 
+		-DPKG_CONFIG_EXECUTABLE=Not-Found -DDEFAULT_NO_BINDINGS=ON \
+		-DCMAKE_EXE_LINKER_FLAGS=-lm
 
 ## Need host-compiled plplot build dir for cmake to work for the target
 define Host/Configure
@@ -44,7 +45,7 @@ endef
 
 define Host/Compile
 	$(if $(CONFIG_PACKAGE_plplot-octave),$(Host/Compile/Octave),)
-	$(MAKE) -C $(HOST_BUILD_DIR)/build_dir VERBOSE=1 -j4 
+	$(MAKE) -C $(HOST_BUILD_DIR)/build_dir VERBOSE=1 -j4
 endef
 
 define Host/Install/Octave

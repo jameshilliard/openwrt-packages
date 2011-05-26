@@ -1,0 +1,16 @@
+Index: plplot-5.9.7/cmake/modules/plplot.cmake
+===================================================================
+--- plplot-5.9.7.orig/cmake/modules/plplot.cmake	2011-05-26 20:55:13.000000000 +0200
++++ plplot-5.9.7/cmake/modules/plplot.cmake	2011-05-26 21:03:13.000000000 +0200
+@@ -481,9 +481,9 @@
+ # On windows systems the math library is not separated so do not specify
+ # it unless you are on a non-windows system.
+ if(NOT WIN32)
+-  find_library(MATH_LIB NAMES m PATHS /usr/local/lib /usr/lib)
++  find_library(MATH_LIB NAMES m PATHS /usr/local/lib /usr/lib /lib)
+   if(NOT MATH_LIB)
+-    message(FATAL_ERROR "Cannot find required math library")
++    message("Cannot find required math library, continuing anyway")
+   endif(NOT MATH_LIB)
+ endif(NOT WIN32)
+ # Must come after MATH_LIB is defined (or not).
