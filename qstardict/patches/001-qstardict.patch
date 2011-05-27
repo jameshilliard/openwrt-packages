@@ -1,7 +1,8 @@
-diff -ur qstardict-0.13.1.or/plugins/stardict/dictziplib.cpp qstardict-0.13.1/plugins/stardict/dictziplib.cpp
---- qstardict-0.13.1.or/plugins/stardict/dictziplib.cpp	2011-03-15 21:50:54.972060075 +0300
-+++ qstardict-0.13.1/plugins/stardict/dictziplib.cpp	2011-03-15 21:52:08.056059379 +0300
-@@ -305,7 +305,7 @@
+diff --git a/plugins/stardict/dictziplib.cpp b/plugins/stardict/dictziplib.cpp
+index 867e330..bb62a54 100644
+--- a/plugins/stardict/dictziplib.cpp
++++ b/plugins/stardict/dictziplib.cpp
+@@ -305,7 +305,7 @@ bool dictData::open(const std::string& fname, int computeCRC)
  
  #ifdef Q_OS_UNIX
      if (stat(fname.c_str(), &sb) || !S_ISREG(sb.st_mode))
@@ -10,10 +11,11 @@ diff -ur qstardict-0.13.1.or/plugins/stardict/dictziplib.cpp qstardict-0.13.1/pl
      if (_stat(fname.c_str(), &sb) || !(sb.stMode & _S_IFREG))
  #endif
      {
-diff -ur qstardict-0.13.1.or/qstardict/keyboard.cpp qstardict-0.13.1/qstardict/keyboard.cpp
---- qstardict-0.13.1.or/qstardict/keyboard.cpp	2011-03-15 21:50:54.975059457 +0300
-+++ qstardict-0.13.1/qstardict/keyboard.cpp	2011-03-15 21:51:35.430058700 +0300
-@@ -82,7 +82,28 @@
+diff --git a/qstardict/keyboard.cpp b/qstardict/keyboard.cpp
+index cc6e406..5a6d514 100644
+--- a/qstardict/keyboard.cpp
++++ b/qstardict/keyboard.cpp
+@@ -82,7 +82,28 @@ Qt::KeyboardModifiers Keyboard::activeModifiers()
  
  } // namespace
  
@@ -43,9 +45,10 @@ diff -ur qstardict-0.13.1.or/qstardict/keyboard.cpp qstardict-0.13.1/qstardict/k
  
  // vim: tabstop=4 softtabstop=4 shiftwidth=4 expandtab cindent textwidth=120 formatoptions=tc
  
-diff -ur qstardict-0.13.1.or/qstardict/main.cpp qstardict-0.13.1/qstardict/main.cpp
---- qstardict-0.13.1.or/qstardict/main.cpp	2011-03-15 21:50:54.974059661 +0300
-+++ qstardict-0.13.1/qstardict/main.cpp	2011-03-15 21:51:35.430058700 +0300
+diff --git a/qstardict/main.cpp b/qstardict/main.cpp
+index 8a13dc9..a726364 100644
+--- a/qstardict/main.cpp
++++ b/qstardict/main.cpp
 @@ -35,6 +35,10 @@
  #include <QTranslator>
  #endif // QSTARDICT_WITH_TRANSLATIONS
@@ -57,7 +60,7 @@ diff -ur qstardict-0.13.1.or/qstardict/main.cpp qstardict-0.13.1/qstardict/main.
  int main(int argc, char *argv[])
  {
      QStarDict::Application app(argc, argv);
-@@ -61,6 +65,9 @@
+@@ -61,6 +65,9 @@ int main(int argc, char *argv[])
      }
  #endif // Q_OS_WIN
  
@@ -67,10 +70,11 @@ diff -ur qstardict-0.13.1.or/qstardict/main.cpp qstardict-0.13.1/qstardict/main.
  
      return app.exec();
  }
-diff -ur qstardict-0.13.1.or/qstardict/mainwindow.cpp qstardict-0.13.1/qstardict/mainwindow.cpp
---- qstardict-0.13.1.or/qstardict/mainwindow.cpp	2011-03-15 21:50:54.975059457 +0300
-+++ qstardict-0.13.1/qstardict/mainwindow.cpp	2011-03-15 21:51:35.431060517 +0300
-@@ -93,7 +93,7 @@
+diff --git a/qstardict/mainwindow.cpp b/qstardict/mainwindow.cpp
+index e8b9456..29ac486 100644
+--- a/qstardict/mainwindow.cpp
++++ b/qstardict/mainwindow.cpp
+@@ -93,7 +93,7 @@ void MainWindow::loadSettings()
      setVisible(config.value("MainWindow/visible", true).toBool());
      wordsListDock->setFloating(config.value("MainWindow/wordsListDock/floating", wordsListDock->isFloating()).toBool());
      wordsListDock->setGeometry(config.value("MainWindow/wordsListDock/geometry", wordsListDock->geometry()).toRect());
@@ -79,9 +83,10 @@ diff -ur qstardict-0.13.1.or/qstardict/mainwindow.cpp qstardict-0.13.1/qstardict
      setDefaultStyleSheet(config.value("MainWindow/defaultStyleSheet", defaultStyleSheet()).toString());
  }
  
-diff -ur qstardict-0.13.1.or/qstardict/mainwindow.ui qstardict-0.13.1/qstardict/mainwindow.ui
---- qstardict-0.13.1.or/qstardict/mainwindow.ui	2011-03-15 21:50:54.975059457 +0300
-+++ qstardict-0.13.1/qstardict/mainwindow.ui	2011-03-15 21:51:35.431060517 +0300
+diff --git a/qstardict/mainwindow.ui b/qstardict/mainwindow.ui
+index 68a37bf..fcabb84 100644
+--- a/qstardict/mainwindow.ui
++++ b/qstardict/mainwindow.ui
 @@ -1,190 +1,241 @@
 -<ui version="4.0" >
 +<?xml version="1.0" encoding="UTF-8"?>
@@ -117,14 +122,6 @@ diff -ur qstardict-0.13.1.or/qstardict/mainwindow.ui qstardict-0.13.1/qstardict/
 -   <layout class="QGridLayout" >
 -    <property name="margin" >
 -     <number>9</number>
--    </property>
--    <property name="spacing" >
--     <number>6</number>
--    </property>
--    <item row="0" column="0" >
--     <layout class="QHBoxLayout" >
--      <property name="spacing" >
--       <number>6</number>
 +  <widget class="QWidget" name="centralwidget">
 +   <property name="minimumSize">
 +    <size>
@@ -141,10 +138,16 @@ diff -ur qstardict-0.13.1.or/qstardict/mainwindow.ui qstardict-0.13.1/qstardict/
 +   <layout class="QVBoxLayout" name="verticalLayout_2">
 +    <property name="spacing">
 +     <number>0</number>
-+    </property>
+     </property>
+-    <property name="spacing" >
+-     <number>6</number>
 +    <property name="margin">
 +     <number>0</number>
-+    </property>
+     </property>
+-    <item row="0" column="0" >
+-     <layout class="QHBoxLayout" >
+-      <property name="spacing" >
+-       <number>6</number>
 +    <item>
 +     <layout class="QHBoxLayout">
 +      <property name="spacing">
@@ -467,9 +470,10 @@ diff -ur qstardict-0.13.1.or/qstardict/mainwindow.ui qstardict-0.13.1/qstardict/
       <x>661</x>
       <y>51</y>
      </hint>
-diff -ur qstardict-0.13.1.or/qstardict/settingsdialog.ui qstardict-0.13.1/qstardict/settingsdialog.ui
---- qstardict-0.13.1.or/qstardict/settingsdialog.ui	2011-03-15 21:50:54.975059457 +0300
-+++ qstardict-0.13.1/qstardict/settingsdialog.ui	2011-03-15 21:51:35.432063342 +0300
+diff --git a/qstardict/settingsdialog.ui b/qstardict/settingsdialog.ui
+index 357f15b..d08fbd5 100644
+--- a/qstardict/settingsdialog.ui
++++ b/qstardict/settingsdialog.ui
 @@ -1,84 +1,67 @@
 -<ui version="4.0" >
 +<?xml version="1.0" encoding="UTF-8"?>
@@ -1352,3 +1356,16 @@ diff -ur qstardict-0.13.1.or/qstardict/settingsdialog.ui qstardict-0.13.1/qstard
      </hint>
     </hints>
    </connection>
+diff --git a/qstardict/speaker.cpp b/qstardict/speaker.cpp
+index ef31f03..723d4c8 100644
+--- a/qstardict/speaker.cpp
++++ b/qstardict/speaker.cpp
+@@ -29,7 +29,7 @@ Speaker::Speaker()
+ {
+     m_speechProcess = new QProcess;
+     QSettings settings;
+-    m_speechCmd = settings.value("Speaker/speechCmd", "festival --tts").toString();
++    m_speechCmd = settings.value("Speaker/speechCmd", "flite").toString();
+ }
+ 
+ Speaker::~Speaker()
