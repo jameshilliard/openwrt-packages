@@ -1,41 +1,13 @@
 diff --git a/Makefile b/Makefile
-index c1d4b8a..0d1a876 100755
+index 1d3265d..5211c5c 100755
 --- a/Makefile
 +++ b/Makefile
-@@ -3,12 +3,12 @@ OPTFLAGS=-O3 -fomit-frame-pointer -funroll-loops
- #OPTFLAGS=-O3 -fomit-frame-pointer -funroll-loops -march=i686 -mcpu=i686
- #OPTFLAGS=-xM -O3
- 
--CC=gcc
-+CC?=gcc
- #CC=icc
+@@ -8,7 +8,7 @@ CC?=gcc
  #CXX=g++
  #CXX=icpc
  
--CFLAGS= $(OPTFLAGS) $(shell sdl-config --cflags) -Imast -Iz80
-+CFLAGS:=$(CFLAGS) $(OPTFLAGS) $(shell sdl-config --cflags) -Imast -Iz80
+-CFLAGS= $(CFLAGS) $(OPTFLAGS) $(shell sdl-config --cflags) -Imast -Iz80
++CFLAGS:= $(CFLAGS) $(OPTFLAGS) $(shell sdl-config --cflags) -Imast -Iz80
  
  Z80OBJ = z80/z80.o
  MASTOBJ = mast/area.o mast/dpsg.o mast/draw.o mast/emu2413.o mast/frame.o mast/load.o mast/map.o mast/mast.o mast/mem.o mast/samp.o mast/snd.o mast/vgm.o mast/state.o mast/setup.o
-@@ -17,7 +17,7 @@ SDLOBJ = sdl/main.o
- all: dega
- 
- dega: $(SDLOBJ) $(Z80OBJ) $(MASTOBJ)
--	$(CC) -o dega $(SDLOBJ) $(Z80OBJ) $(MASTOBJ) $(shell sdl-config --libs)
-+	$(CC) -o dega $(SDLOBJ) $(Z80OBJ) $(MASTOBJ) $(shell sdl-config --libs) $(LDFLAGS)
- 
- z80: $(Z80OBJ)
- 	$(CC) -o $(Z80OBJ)
-diff --git a/z80/z80.h b/z80/z80.h
-index 066e32a..63200d5 100755
---- a/z80/z80.h
-+++ b/z80/z80.h
-@@ -1,6 +1,8 @@
- #ifndef __Z80_H__
- #define __Z80_H__
- 
-+#include<stdint.h>
-+
- #define CF		0x01
- #define NF		0x02
- #define PF		0x04

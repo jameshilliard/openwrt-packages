@@ -36,6 +36,11 @@ define Package/dega/description
 a emulator for sega master system and game gear which uses SDL
 endef
 
+define Build/Patch
+	chmod -R 755 $(PKG_BUILD_DIR)
+	$(call Build/Patch/Default)
+endef
+
 define Package/dega/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/dega $(1)/usr/bin/
