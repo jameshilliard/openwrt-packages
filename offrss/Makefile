@@ -1,13 +1,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=offrss
-PKG_VERSION:=trunk
-PKG_RELEASE:=1
-
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).zip
-PKG_SOURCE_URL:=http://downloads.qi-hardware.com/software/mirror-openwrt-sources/
+PKG_VERSION:=1.0
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=http://vicerveza.homeunix.net/~viric/soft/offrss/
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
-UNPACK_CMD=unzip $(DL_DIR)/$(PKG_SOURCE) -d $(1)/../
+PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
@@ -26,10 +24,6 @@ TARGET_LDFLAGS += -Wl,-rpath-link -Wl,$(STAGING_DIR)/usr/lib -liconv
 
 define Package/offrss/description
 	offrss - Offline RSS reader
-endef
-
-define Build/Compile
-	$(call Build/Compile/Default)
 endef
 
 define Package/offrss/install
