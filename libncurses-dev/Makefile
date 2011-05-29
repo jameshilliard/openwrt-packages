@@ -9,7 +9,7 @@ PKG_NAME:=libncurses-dev
 PKG_VERSION:=5.7
 PKG_RELEASE:=1
 
-NCURSES_BUILD_DIR:=$(BUILD_DIR)/ncurses-$(PKG_VERSION)
+NCURSES_BUILD_DIR:=$(BUILD_DIR)/libncurses/ncurses-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
