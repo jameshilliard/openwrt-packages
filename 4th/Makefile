@@ -22,7 +22,6 @@ define Package/4th
 	TITLE:=4th
 	SECTION:=Programming
 	CATEGORY:=prog
-	DEPENDS:=@BROKEN
 	URL:=http://www.xs4all.nl/~thebeez/4tH/
 endef
 #El directorio donde extraeremos los fuentes y realizaremos la compilacion
