@@ -5,6 +5,17 @@
 #
 # OpenWRT package for the Allegro game and multimedia library
 
+# todo: 
+#
+# * GFX_SAFE has a problem switching to 32bpp mode (maybe it falsely
+# attempts switching to 24bpp mode?), so it fails.  doing a
+# set_color_depth(32) and GFX_AUTODETECT works.
+#
+# * both shooter and skater try to load a demo.dat from /usr/bin.  hack them to
+# use usr/share subdirs?
+#
+# * similar problem with setup?
+#
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=liballegro
@@ -82,6 +93,17 @@ endef
 define Package/liballegro-setup/description
 $(call Package/liballegro/Default/description)
  This package contains the Allegro setup program
+endef
+
+define Package/liballegro-examples
+$(call Package/liballegro/Default)
+  TITLE+= (examples)
+  DEPENDS:=+liballegro
+endef
+
+define Package/liballegro-examples/description
+$(call Package/liballegro/Default/description)
+ This package contains the Allegro example programs named "ex*"
 endef
 
 define Package/liballegro-utils
@@ -231,6 +253,13 @@ define Package/liballegro-setup/install
 	$(CP) $(PKG_BUILD_DIR)/setup/setup.dat $(1)/usr/share/allegro/
 endef
 
+define Package/liballegro-examples/install
+	$(INSTALL_DIR) $(1)/usr/bin/allegro
+	$(CP) $(PKG_BUILD_DIR)/examples/* $(1)/usr/bin/allegro/
+	rm $(1)/usr/bin/allegro/{*.c,*.h,*.txt,*.cmake}
+	rm -r $(1)/usr/bin/allegro/CMakeFiles
+endef
+
 define Package/liballegro-utils/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(CP) $(PKG_INSTALL_DIR)/usr/bin $(1)/usr
@@ -242,6 +271,7 @@ $(eval $(call BuildPackage,liballegro))
 #$(eval $(call BuildPackage,liballegro-data))
 $(eval $(call BuildPackage,liballegro-demo))
 $(eval $(call BuildPackage,liballegro-setup))
+$(eval $(call BuildPackage,liballegro-examples))
 $(eval $(call BuildPackage,liballegro-utils))
 
 

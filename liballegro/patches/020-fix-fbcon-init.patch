@@ -1,0 +1,55 @@
+Index: allegro-4.4.2/src/linux/fbcon.c
+===================================================================
+--- allegro-4.4.2.orig/src/linux/fbcon.c	2011-05-31 15:57:15.000000000 +0200
++++ allegro-4.4.2/src/linux/fbcon.c	2011-05-31 17:04:32.000000000 +0200
+@@ -19,6 +19,10 @@
+  *      See readme.txt for copyright information.
+  */
+ 
++/* #define DEBUGMODE */
++
++#include <errno.h>
++#include <string.h>
+ 
+ #include "allegro.h"
+ #include "allegro/internal/aintern.h"
+@@ -263,6 +267,7 @@
+ 	 case -1:
+ 	    /* let's see if we can get the actual screen mode */
+ 	    /* shouldn't we be keeping the previous color depth setting? */
++	    TRACE(PREFIX_I "...orig bpp %i...\n", (int)orig_mode.bits_per_pixel);
+ 	    switch (orig_mode.bits_per_pixel) {
+ 	       case 8:
+ 	       case 16:
+@@ -360,9 +365,21 @@
+ 	 continue;
+ 
+       /* try to set the mode */
++      TRACE(PREFIX_I "...trying w %i h %i vw %i vh %i bpp %i...\n", 
++	    (int)my_mode.xres, (int)my_mode.yres, 
++	    (int)my_mode.xres_virtual, (int)my_mode.yres_virtual,
++	    my_mode.bits_per_pixel);
+       if (ioctl(fbfd, FBIOPUT_VSCREENINFO, &my_mode) == 0) {
++         TRACE(PREFIX_I "...ioctl ok w %i h %i vw %i vh %i bpp %i...\n", 
++	    (int)my_mode.xres, (int)my_mode.yres, 
++	    (int)my_mode.xres_virtual, (int)my_mode.yres_virtual,
++	    my_mode.bits_per_pixel);
+ 	 if (my_mode.bits_per_pixel == (unsigned)color_depth)
+ 	    goto got_a_nice_mode;
++      } 
++      else
++      {
++         TRACE(PREFIX_I "...ioctl said %i %s\n", errno, strerror(errno));
+       }
+    }
+ 
+@@ -377,6 +394,9 @@
+    close(fbfd);
+    ustrzcpy(allegro_error, ALLEGRO_ERROR_SIZE, get_config_text("Framebuffer resolution not available"));
+    TRACE(PREFIX_E "Resolution %dx%d not available...\n", w, h);
++   /* bugfix: if we don't reset fb_mode_read than the next call to
++      set_gfx_mode() is going to fail with "bad file descriptor" */
++   fb_mode_read = FALSE;
+    return NULL;
+ 
+    got_a_nice_mode:
