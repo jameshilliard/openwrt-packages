@@ -7,14 +7,13 @@
 
 # todo: 
 #
-# * GFX_SAFE has a problem switching to 32bpp mode (maybe it falsely
-# attempts switching to 24bpp mode?), so it fails.  doing a
-# set_color_depth(32) and GFX_AUTODETECT works.
-#
 # * both shooter and skater try to load a demo.dat from /usr/bin.  hack them to
 # use usr/share subdirs?
 #
 # * similar problem with setup?
+#
+# * setup and shoot seem to need 8bpp video modes.  can we hack them for
+#   32bpp?  Would it help to use a differnt video driver than just 'fbcon'?
 #
 include $(TOPDIR)/rules.mk
 
@@ -54,7 +53,7 @@ endef
 
 define Package/liballegro
 $(call Package/liballegro/Default)
-  DEPENDS:=
+  DEPENDS:=+alsa-lib
   TITLE+= (library)
 endef
 
@@ -170,7 +169,7 @@ ifneq ($(CONFIG_CCACHE),)
 endif
 
 EXTRA_CFLAGS = -DSETUP_SCREEN_W=320 -DSETUP_SCREEN_H=240
-TARGET_LDFLAGS = -ldl -lrt
+TARGET_LDFLAGS = -L$(STAGING_DIR)/usr/lib -ldl -lrt
 
 CMAKE_OPTIONS = \
 	-DRT_LIBRARY= \
