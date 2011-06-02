@@ -226,8 +226,9 @@ define Build/InstallDev
 endef
 
 define Package/liballegro/install
-	$(INSTALL_DIR) $(1)/usr
+	$(INSTALL_DIR) $(1)/usr  $(1)/etc
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib $(1)/usr
+	$(CP) ./files/allegrorc $(1)/etc/
 endef
 
 define Package/liballegro-data/install

@@ -1,0 +1,36 @@
+[system]
+keyboard = us
+language = en
+
+[mouse]
+mouse = -1
+
+[sound]
+digi_card = ALSA
+midi_card = DIGI
+quality = 2
+digi_volume = -1
+midi_volume = 50
+digi_voices = 32
+midi_voices = 32
+flip_pan = 0
+sound_port = -1
+sound_dma = -1
+sound_irq = -1
+sound_freq = 44100
+sound_bits = 16
+sound_stereo = 1
+oss_driver = /dev/dsp
+oss_numfrags = -1
+oss_fragsize = -1
+oss_midi_driver = /dev/sequencer
+esd_server =  
+alsa_card =  
+alsa_pcmdevice =  
+alsa_numfrags =  
+alsa_rawmidi_card =  
+alsa_rawmidi_device =  
+patches = /usr/share/allegro/digmid.dat
+
+[joystick]
+joytype = 0
