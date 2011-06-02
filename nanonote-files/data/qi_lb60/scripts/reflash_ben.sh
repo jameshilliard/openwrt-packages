@@ -1,6 +1,6 @@
 #!/bin/bash
 # version of me
-__VERSION__="2011-05-22"
+__VERSION__="2011-06-01"
 
 # use 'http' to download and flash images, use 'file' to flash images present in the <WORKING_DIR>
 PROTOCOL="http"
@@ -52,11 +52,15 @@ do
     *)
         echo "\
 
-Usage: $0 [-d <version>] [-l <path to local images>] [-h]
+Usage: $0 [-d <version>] [-l <path to local images>] [-b] [-k] [-r] [-h]
      -d <>  I will download and flash a specific version of OpenWrt images
 
-     -l <>  I will flash images present in <arg>
+     -l <>  I will flash images present in folder: <arg>
             (missing files will be skipped)
+
+     -b     flash bootloader(u-boot)
+     -k     linux kernel
+     -r     root filesystem
 
      -h     you already found out
 
