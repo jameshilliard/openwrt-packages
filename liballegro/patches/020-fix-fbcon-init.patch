@@ -1,7 +1,7 @@
 Index: allegro-4.4.2/src/linux/fbcon.c
 ===================================================================
---- allegro-4.4.2.orig/src/linux/fbcon.c	2011-05-31 15:57:15.000000000 +0200
-+++ allegro-4.4.2/src/linux/fbcon.c	2011-05-31 17:04:32.000000000 +0200
+--- allegro-4.4.2.orig/src/linux/fbcon.c	2011-06-01 18:29:11.000000000 +0200
++++ allegro-4.4.2/src/linux/fbcon.c	2011-06-02 11:04:18.000000000 +0200
 @@ -19,6 +19,10 @@
   *      See readme.txt for copyright information.
   */

@@ -31,7 +31,7 @@ PKG_INSTALL:=1
 PKG_FIXUP:=libtool
 PKG_REMOVE_FILES:=
 
-PKG_BUILD_DEPENDS:=liballegro/host 
+# PKG_BUILD_DEPENDS:=liballegro/host 
 
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
@@ -231,24 +231,26 @@ define Package/liballegro/install
 endef
 
 define Package/liballegro-data/install
-	$(INSTALL_DIR) $(1)/
-	$(CP) $(PKG_INSTALL_DIR)/usr/share $(1)/usr
+	$(INSTALL_DIR) $(1)/usr/share/allegro
+	$(INSTALL_DIR) $(1)/usr/share/allegro/docs/txt
+	$(CP) $(PKG_BUILD_DIR)/{keyboard.dat,language.dat} $(1)/usr/share/allegro
+        # readme file is used by the allegro 'shooter' demo
+	$(CP) $(PKG_BUILD_DIR)/docs/txt/readme.txt $(1)/usr/share/allegro/docs/txt
 endef
 
 define Package/liballegro-demo/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_DIR) $(1)/usr/share/allegro/shooter
-	$(INSTALL_DIR) $(1)/usr/share/allegro/skater
+	$(INSTALL_DIR) $(1)/usr/share/allegro
 	$(CP) $(PKG_BUILD_DIR)/demos/shooter/shooter $(1)/usr/bin/
-	$(CP) $(PKG_BUILD_DIR)/demos/shooter/demo.dat $(1)/usr/share/allegro/shooter/	
+	$(CP) $(PKG_BUILD_DIR)/demos/shooter/demo.dat $(1)/usr/share/allegro/shooter.dat	
 	$(CP) $(PKG_BUILD_DIR)/demos/skater/skater $(1)/usr/bin/
-	$(CP) $(PKG_BUILD_DIR)/demos/skater/demo.dat $(1)/usr/share/allegro/skater/
+	$(CP) $(PKG_BUILD_DIR)/demos/skater/demo.dat $(1)/usr/share/allegro/skater.dat
 endef
 
 define Package/liballegro-setup/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_DIR) $(1)/usr/share/allegro/
-	$(CP) $(PKG_BUILD_DIR)/setup/setup $(1)/usr/bin/
+	$(CP) $(PKG_BUILD_DIR)/setup/setup $(1)/usr/bin/allegro-setup
 	$(CP) $(PKG_BUILD_DIR)/setup/setup.dat $(1)/usr/share/allegro/
 endef
 
@@ -267,7 +269,7 @@ endef
 
 $(eval $(call HostBuild))
 $(eval $(call BuildPackage,liballegro))
-#$(eval $(call BuildPackage,liballegro-data))
+$(eval $(call BuildPackage,liballegro-data))
 $(eval $(call BuildPackage,liballegro-demo))
 $(eval $(call BuildPackage,liballegro-setup))
 $(eval $(call BuildPackage,liballegro-examples))

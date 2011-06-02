@@ -1,0 +1,110 @@
+Index: allegro-4.4.2/demos/shooter/demo.c
+===================================================================
+--- allegro-4.4.2.orig/demos/shooter/demo.c	2011-06-01 20:05:58.000000000 +0200
++++ allegro-4.4.2/demos/shooter/demo.c	2011-06-01 20:06:18.000000000 +0200
+@@ -1,3 +1,5 @@
++#define DEBUGMODE
++
+ #include "demo.h"
+ #include "data.h"
+ #include "expl.h"
+@@ -90,7 +92,6 @@
+       allegro_message("Error initialising joystick\n%s\n", allegro_error);
+       install_joystick(JOY_TYPE_NONE);
+    }
+-
+    if (set_gfx_mode(GFX_AUTODETECT, 320, 200, 0, 0) != 0) {
+       if (set_gfx_mode(GFX_SAFE, 320, 200, 0, 0) != 0) {
+          set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+Index: allegro-4.4.2/demos/shooter/display.c
+===================================================================
+--- allegro-4.4.2.orig/demos/shooter/display.c	2011-06-01 20:05:59.000000000 +0200
++++ allegro-4.4.2/demos/shooter/display.c	2011-06-01 20:06:18.000000000 +0200
+@@ -28,18 +28,19 @@
+          break;
+    }
+ 
+-   set_color_depth(8);
++   set_color_depth(32);
+ #ifdef ALLEGRO_VRAM_SINGLE_SURFACE
+    if (set_gfx_mode(mode, w, h, w, h * num_pages) != 0) {
+ #else
+    if (set_gfx_mode(mode, w, h, 0, 0) != 0) {
+ #endif
+       set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+-      allegro_message("Error setting 8bpp graphics mode\n%s\n",
++      allegro_message("Error setting 32bpp graphics mode\n%s\n",
+                       allegro_error);
+       exit(1);
+    }
+ 
++   set_color_depth(8);
+    page1 = NULL;
+    page2 = NULL;
+    page3 = NULL;
+@@ -49,7 +50,7 @@
+ 
+       case DOUBLE_BUFFER:
+       case DIRTY_RECTANGLE:
+-	 memory_buffer = create_bitmap(SCREEN_W, SCREEN_H);
++	 memory_buffer = create_bitmap_ex(8, SCREEN_W, SCREEN_H);
+ 
+          if (!memory_buffer) {
+             set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+Index: allegro-4.4.2/demos/shooter/game.c
+===================================================================
+--- allegro-4.4.2.orig/demos/shooter/game.c	2011-06-01 20:05:59.000000000 +0200
++++ allegro-4.4.2/demos/shooter/game.c	2011-06-01 20:37:13.000000000 +0200
+@@ -58,12 +58,18 @@
+ static void draw_intro_item(int item, int size)
+ {
+    BITMAP *b = (BITMAP *) data[item].dat;
++   BITMAP *b_n = create_bitmap_ex(32, b->w, b->h);
++   clear_to_color(b_n,0xffff);
++   set_palette(data[GAME_PAL].dat);
++   blit (b, b_n, 0, 0, 0, 0, b->w, b->h);
++
+    int w = MIN(SCREEN_W, (SCREEN_W * 2 / size));
+    int h = SCREEN_H / size;
+ 
+    clear_bitmap(screen);
+-   stretch_blit(b, screen, 0, 0, b->w, b->h, (SCREEN_W - w) / 2,
++   stretch_blit(b_n, screen, 0, 0, b->w, b->h, (SCREEN_W - w) / 2,
+                 (SCREEN_H - h) / 2, w, h);
++   destroy_bitmap(b_n);
+ }
+ 
+ 
+Index: allegro-4.4.2/demos/shooter/title.c
+===================================================================
+--- allegro-4.4.2.orig/demos/shooter/title.c	2011-06-01 20:05:58.000000000 +0200
++++ allegro-4.4.2/demos/shooter/title.c	2011-06-01 20:06:18.000000000 +0200
+@@ -843,10 +843,11 @@
+    scroll_count = 1;
+    install_int(scroll_counter, 5);
+ 
+-   while ((c = scroll_count) < 160)
+-      stretch_blit(data[TITLE_BMP].dat, screen, 0, 0, 320, 128,
+-                   SCREEN_W / 2 - c, SCREEN_H / 2 - c * 64 / 160 - 32,
+-                   c * 2, c * 128 / 160);
++   /* todo: stretch_blit won't work over color depth */
++   /* while ((c = scroll_count) < 160) */
++   /*    stretch_blit(data[TITLE_BMP].dat, screen, 0, 0, 320, 128, */
++   /*                 SCREEN_W / 2 - c, SCREEN_H / 2 - c * 64 / 160 - 32, */
++   /*                 c * 2, c * 128 / 160); */
+ 
+    remove_int(scroll_counter);
+ 
+Index: allegro-4.4.2/demos/shooter/dirty.c
+===================================================================
+--- allegro-4.4.2.orig/demos/shooter/dirty.c	2011-06-01 20:11:58.000000000 +0200
++++ allegro-4.4.2/demos/shooter/dirty.c	2011-06-01 20:12:08.000000000 +0200
+@@ -93,7 +93,7 @@
+    acquire_screen();
+ 
+    for (c = 0; c < old_dirty.count; c++) {
+-      if ((old_dirty.rect[c].w == 1) && (old_dirty.rect[c].h == 1)) {
++      if (0 && (old_dirty.rect[c].w == 1) && (old_dirty.rect[c].h == 1)) {
+          putpixel(screen, old_dirty.rect[c].x, old_dirty.rect[c].y,
+                   getpixel(bmp, old_dirty.rect[c].x, old_dirty.rect[c].y));
+       }

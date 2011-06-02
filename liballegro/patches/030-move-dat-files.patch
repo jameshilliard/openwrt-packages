@@ -1,0 +1,74 @@
+Index: allegro-4.4.2/demos/shooter/demo.c
+===================================================================
+--- allegro-4.4.2.orig/demos/shooter/demo.c	2011-06-02 11:18:39.000000000 +0200
++++ allegro-4.4.2/demos/shooter/demo.c	2011-06-02 11:20:02.000000000 +0200
+@@ -103,7 +103,7 @@
+    get_executable_name(buf, sizeof(buf));
+    replace_filename(buf2, buf, "demo.dat", sizeof(buf2));
+    set_color_conversion(COLORCONV_NONE);
+-   data = load_datafile(buf2);
++   data = load_datafile("/usr/share/allegro/shooter.dat" /*buf2*/);
+    if (!data) {
+       set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+       allegro_message("Error loading %s\n", buf2);
+Index: allegro-4.4.2/demos/skater/source/framewk.c
+===================================================================
+--- allegro-4.4.2.orig/demos/skater/source/framewk.c	2011-06-02 11:19:00.000000000 +0200
++++ allegro-4.4.2/demos/skater/source/framewk.c	2011-06-02 11:26:44.000000000 +0200
+@@ -27,7 +27,7 @@
+ }
+ 
+ /* name of the configuration file for storing demo-specific settings. */
+-#define DEMO_CFG "demo.cfg"
++#define DEMO_CFG "skater.cfg"
+ 
+ /*
+    Timer callback. Installed with the frequency defined in the framework
+@@ -84,11 +84,13 @@
+ 
+    /* Construct aboslute path for the configuration file. */
+    get_executable_name(config_path, DEMO_PATH_LENGTH);
++   strcpy(config_path, "/etc/allegro/dummy");
+    replace_filename(config_path, config_path, DEMO_CFG, DEMO_PATH_LENGTH);
+ 
+    /* Construct aboslute path for the datafile containing game menu data. */
+    get_executable_name(data_path, DEMO_PATH_LENGTH);
+-   replace_filename(data_path, data_path, "demo.dat#menu.dat",
++   strcpy(data_path, "/usr/share/allegro/dummy");
++   replace_filename(data_path, data_path, "skater.dat#menu.dat",
+                     DEMO_PATH_LENGTH);
+ 
+    /* Read configuration file. */
+Index: allegro-4.4.2/demos/skater/source/game_sk.c
+===================================================================
+--- allegro-4.4.2.orig/demos/skater/source/game_sk.c	2011-06-02 11:20:54.000000000 +0200
++++ allegro-4.4.2/demos/skater/source/game_sk.c	2011-06-02 11:26:38.000000000 +0200
+@@ -70,10 +70,10 @@
+ char *load_game_resources(void)
+ {
+    int c;
+-   char AudioPath[DEMO_PATH_LENGTH];
++   char AudioPath[DEMO_PATH_LENGTH] = "/usr/share/allegro/dummy";
+ 
+-   get_executable_name(AudioPath, DEMO_PATH_LENGTH);
+-   replace_filename(AudioPath, AudioPath, "demo.dat#audio.dat",
++   /* get_executable_name(AudioPath, DEMO_PATH_LENGTH); */
++   replace_filename(AudioPath, AudioPath, "skater.dat#audio.dat",
+                     DEMO_PATH_LENGTH);
+    game_audio = load_datafile(AudioPath);
+ 
+Index: allegro-4.4.2/demos/skater/source/level.c
+===================================================================
+--- allegro-4.4.2.orig/demos/skater/source/level.c	2011-06-02 11:22:02.000000000 +0200
++++ allegro-4.4.2/demos/skater/source/level.c	2011-06-02 11:26:49.000000000 +0200
+@@ -74,8 +74,9 @@
+ #endif
+    char LocName[DEMO_PATH_LENGTH], TString[DEMO_PATH_LENGTH];
+ 
+-   uszprintf(TString, sizeof(TString), "demo.dat#%s", name);
++   uszprintf(TString, sizeof(TString), "skater.dat#%s", name);
+    get_executable_name(LocName, DEMO_PATH_LENGTH);
++   strcpy(LocName, "/usr/share/allegro/dummy");
+    replace_filename(LocName, LocName, TString, DEMO_PATH_LENGTH);
+ 
+ #ifdef DEMO_USE_ALLEGRO_GL

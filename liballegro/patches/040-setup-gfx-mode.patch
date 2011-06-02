@@ -1,0 +1,45 @@
+Index: allegro-4.4.2/setup/keyconf.c
+===================================================================
+--- allegro-4.4.2.orig/setup/keyconf.c	2011-06-02 11:49:16.000000000 +0200
++++ allegro-4.4.2/setup/keyconf.c	2011-06-02 11:49:47.000000000 +0200
+@@ -361,6 +361,10 @@
+ 	 bg = 16;
+ 	 mg = 8;
+       }
++      
++      bg = palette_color[bg];
++      fg = palette_color[fg];
++      mg = palette_color[mg];
+ 
+       rectfill(screen, d->x+1, d->y+1, d->x+d->w-1, d->y+d->h-1, bg);
+       rect(screen, d->x, d->y, d->x+d->w, d->y+d->h, fg);
+@@ -401,6 +405,9 @@
+ 	 bg = (d->d1 == codepage) ? 1 : 8;
+       }
+ 
++      bg = palette_color[bg];
++      fg = palette_color[fg];
++
+       rectfill(screen, d->x+1, d->y+1, d->x+d->w-1, d->y+d->h-1, bg);
+       rect(screen, d->x, d->y, d->x+d->w, d->y+d->h, 255);
+ 
+Index: allegro-4.4.2/setup/setup.c
+===================================================================
+--- allegro-4.4.2.orig/setup/setup.c	2011-06-02 11:37:51.000000000 +0200
++++ allegro-4.4.2/setup/setup.c	2011-06-02 11:38:38.000000000 +0200
+@@ -2851,12 +2851,14 @@
+    install_keyboard();
+    install_timer();
+ 
+-   fade_out(4);
++   /* fade_out(4); */
++   set_color_depth(32);
+    if (set_gfx_mode(GFX_AUTODETECT, SETUP_SCREEN_W, SETUP_SCREEN_H, 0, 0) != 0) {
+       set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+       allegro_message(uconvert_ascii("Unable to set graphic mode\n%s\n", tmp1), allegro_error);
+       return 1;
+    }
++   set_color_depth(8);
+  #endif
+ 
+    set_palette(black_palette);
