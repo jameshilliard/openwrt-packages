@@ -232,10 +232,13 @@ endef
 
 define Package/liballegro-data/install
 	$(INSTALL_DIR) $(1)/usr/share/allegro
-	$(INSTALL_DIR) $(1)/usr/share/allegro/docs/txt
 	$(CP) $(PKG_BUILD_DIR)/{keyboard.dat,language.dat} $(1)/usr/share/allegro
         # readme file is used by the allegro 'shooter' demo
-	$(CP) $(PKG_BUILD_DIR)/docs/txt/readme.txt $(1)/usr/share/allegro/docs/txt
+	$(INSTALL_DIR) $(1)/usr/share/allegro/docs/{txt,src}
+	$(CP) $(PKG_BUILD_DIR)/docs/txt/readme.txt \
+		$(1)/usr/share/allegro/docs/txt
+	$(CP) $(PKG_BUILD_DIR)/docs/src/thanks._tx \
+		$(1)/usr/share/allegro/docs/src
 endef
 
 define Package/liballegro-demo/install

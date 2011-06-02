@@ -1,7 +1,7 @@
 Index: allegro-4.4.2/demos/shooter/demo.c
 ===================================================================
---- allegro-4.4.2.orig/demos/shooter/demo.c	2011-06-02 11:18:39.000000000 +0200
-+++ allegro-4.4.2/demos/shooter/demo.c	2011-06-02 11:20:02.000000000 +0200
+--- allegro-4.4.2.orig/demos/shooter/demo.c	2011-06-02 12:30:54.000000000 +0200
++++ allegro-4.4.2/demos/shooter/demo.c	2011-06-02 12:32:06.000000000 +0200
 @@ -103,7 +103,7 @@
     get_executable_name(buf, sizeof(buf));
     replace_filename(buf2, buf, "demo.dat", sizeof(buf2));
@@ -13,8 +13,8 @@ Index: allegro-4.4.2/demos/shooter/demo.c
        allegro_message("Error loading %s\n", buf2);
 Index: allegro-4.4.2/demos/skater/source/framewk.c
 ===================================================================
---- allegro-4.4.2.orig/demos/skater/source/framewk.c	2011-06-02 11:19:00.000000000 +0200
-+++ allegro-4.4.2/demos/skater/source/framewk.c	2011-06-02 11:26:44.000000000 +0200
+--- allegro-4.4.2.orig/demos/skater/source/framewk.c	2011-06-02 12:30:54.000000000 +0200
++++ allegro-4.4.2/demos/skater/source/framewk.c	2011-06-02 12:32:06.000000000 +0200
 @@ -27,7 +27,7 @@
  }
  
@@ -41,8 +41,8 @@ Index: allegro-4.4.2/demos/skater/source/framewk.c
     /* Read configuration file. */
 Index: allegro-4.4.2/demos/skater/source/game_sk.c
 ===================================================================
---- allegro-4.4.2.orig/demos/skater/source/game_sk.c	2011-06-02 11:20:54.000000000 +0200
-+++ allegro-4.4.2/demos/skater/source/game_sk.c	2011-06-02 11:26:38.000000000 +0200
+--- allegro-4.4.2.orig/demos/skater/source/game_sk.c	2011-06-02 12:30:54.000000000 +0200
++++ allegro-4.4.2/demos/skater/source/game_sk.c	2011-06-02 12:32:06.000000000 +0200
 @@ -70,10 +70,10 @@
  char *load_game_resources(void)
  {
@@ -59,8 +59,8 @@ Index: allegro-4.4.2/demos/skater/source/game_sk.c
  
 Index: allegro-4.4.2/demos/skater/source/level.c
 ===================================================================
---- allegro-4.4.2.orig/demos/skater/source/level.c	2011-06-02 11:22:02.000000000 +0200
-+++ allegro-4.4.2/demos/skater/source/level.c	2011-06-02 11:26:49.000000000 +0200
+--- allegro-4.4.2.orig/demos/skater/source/level.c	2011-06-02 12:30:54.000000000 +0200
++++ allegro-4.4.2/demos/skater/source/level.c	2011-06-02 12:32:06.000000000 +0200
 @@ -74,8 +74,9 @@
  #endif
     char LocName[DEMO_PATH_LENGTH], TString[DEMO_PATH_LENGTH];
@@ -72,3 +72,15 @@ Index: allegro-4.4.2/demos/skater/source/level.c
     replace_filename(LocName, LocName, TString, DEMO_PATH_LENGTH);
  
  #ifdef DEMO_USE_ALLEGRO_GL
+Index: allegro-4.4.2/demos/shooter/title.c
+===================================================================
+--- allegro-4.4.2.orig/demos/shooter/title.c	2011-06-02 12:32:12.000000000 +0200
++++ allegro-4.4.2/demos/shooter/title.c	2011-06-02 12:32:13.000000000 +0200
+@@ -82,6 +82,7 @@
+    int i;
+ 
+    get_executable_name(exe, sizeof(exe));
++   strcpy(exe, "/usr/share/allegro/dummy");
+    for (i = 0; locations[i] != NULL; i++) {
+       replace_filename(dir, exe, locations[i], sizeof(dir));
+       append_filename(buf, dir, name, bufsize);
