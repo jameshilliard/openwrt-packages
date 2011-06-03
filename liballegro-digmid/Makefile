@@ -55,5 +55,5 @@ $(eval $(call BuildPackage,liballegro-digmid))
 
 # The following comments configure the Emacs editor.  Just ignore them.
 # Local Variables:
-# compile-command: "make -C ~/h/src/qi/openwrt-xburst Package/liballegro-digmid/compile -j2 V=99"
+# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/liballegro-digmid/compile -j2 V=99"
 # End:

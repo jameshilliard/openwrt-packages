@@ -1,0 +1,19 @@
+Index: freepats/crude.cfg
+===================================================================
+--- freepats.orig/crude.cfg	2006-02-19 10:29:42.000000000 +0100
++++ freepats/crude.cfg	2011-06-03 12:01:45.000000000 +0200
+@@ -334,6 +334,8 @@
+ # Drumset 0: Percussive 1-based patches (only 35-81 are part of general midi)
+ drumset 0
+ 
++129-256 begin_multipatch default blank
++
+ # COMMON EXTENSIONS TO GENERAL MIDI DRUMSET 0 (notes 25-34)
+ # Program  Snare Roll
+ #      25  025_Snare_Roll.pat (unavailable)
+@@ -467,3 +469,5 @@
+ #      86  086_Surdo_1_Mute.pat (unavailable)
+ # Program  Surdo2 (gus surdo2)
+ #      87  087_Surdo_2_Open.pat (unavailable)
++
++end_multipatch
