@@ -1,0 +1,53 @@
+diff --git a/src/glade/lingot-mainframe.glade b/src/glade/lingot-mainframe.glade
+index ce76be9..e0cf586 100644
+--- a/src/glade/lingot-mainframe.glade
++++ b/src/glade/lingot-mainframe.glade
+@@ -136,7 +136,7 @@
+                 <child>
+                   <widget class="GtkDrawingArea" id="gauge_area">
+                     <property name="width_request">160</property>
+-                    <property name="height_request">100</property>
++                    <property name="height_request">85</property>
+                     <property name="visible">True</property>
+                     <property name="tooltip" translatable="yes">Shows the error in cents in a visual way. The range will depend on the maximum distance between each two notes in the scale defined in the Lingot settings (try to provide scales with low maximum distance, i.e. with many notes, to have a higher resolution in this gauge),</property>
+                   </widget>
+@@ -168,7 +168,7 @@
+                     <child>
+                       <widget class="GtkVBox" id="vbox2">
+                         <property name="width_request">110</property>
+-                        <property name="height_request">100</property>
++                        <property name="height_request">85</property>
+                         <property name="visible">True</property>
+                         <property name="orientation">vertical</property>
+                         <child>
+@@ -233,7 +233,7 @@
+             <child>
+               <widget class="GtkScrolledWindow" id="scrolledwindow1">
+                 <property name="width_request">290</property>
+-                <property name="height_request">96</property>
++                <property name="height_request">82</property>
+                 <property name="visible">True</property>
+                 <property name="can_focus">True</property>
+                 <property name="hscrollbar_policy">automatic</property>
+diff --git a/src/lingot b/src/lingot
+index 7c9a89c..87bb47e 100755
+Binary files a/src/lingot and b/src/lingot differ
+diff --git a/src/lingot-gui-mainframe.c b/src/lingot-gui-mainframe.c
+index 30c1b69..05d374a 100644
+--- a/src/lingot-gui-mainframe.c
++++ b/src/lingot-gui-mainframe.c
+@@ -57,9 +57,9 @@ GdkColor freq_color;
+ // sizes
+ 
+ int gauge_size_x = 160;
+-int gauge_size_y = 100;
++int gauge_size_y = 85;
+ 
+-int spectrum_size_y = 64;
++int spectrum_size_y = 50;
+ 
+ // spectrum area margins
+ int spectrum_bottom_margin = 16;
+diff --git a/src/lingot-gui-mainframe.o b/src/lingot-gui-mainframe.o
+index b36ff35..54b8c6c 100644
+Binary files a/src/lingot-gui-mainframe.o and b/src/lingot-gui-mainframe.o differ
