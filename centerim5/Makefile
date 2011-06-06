@@ -7,7 +7,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=centerim5
 PKG_VERSION:=alpha
-PKG_REV:=3f20c56b159854426919d0b06989ca0d813e0659
+PKG_REV:=5a97f76e6fc5dc0c6c72b923b843f6f66b1f12e6
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
@@ -18,23 +18,6 @@ PKG_SOURCE_VERSION:=$(PKG_REV)
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
-
-define DownloadMethod/git
-	$(call wrap_mirror, \
-		echo "Checking out files from the git repository..."; \
-		mkdir -p $(TMP_DIR)/dl && \
-		cd $(TMP_DIR)/dl && \
-		rm -rf $(SUBDIR) && \
-		[ \! -d $(SUBDIR) ] && \
-		git clone --branch mob $(URL) $(SUBDIR) && \
-		(cd $(SUBDIR) && git checkout $(VERSION)) && \
-		echo "Packing checkout..." && \
-		rm -rf $(SUBDIR)/.git && \
-		$(call dl_pack,$(TMP_DIR)/dl/$(FILE),$(SUBDIR)) && \
-		mv $(TMP_DIR)/dl/$(FILE) $(DL_DIR)/ && \
-		rm -rf $(SUBDIR); \
-	)
-endef
 
 define Package/centerim5
 	SECTION:=net
