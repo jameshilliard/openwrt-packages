@@ -1,0 +1,50 @@
+Index: alex4src/src/main.c
+===================================================================
+--- alex4src.orig/src/main.c	2011-06-07 11:43:11.000000000 +0200
++++ alex4src/src/main.c	2011-06-07 11:59:26.000000000 +0200
+@@ -62,6 +62,7 @@
+ DATAFILE *maps = NULL;
+ DATAFILE *sfx_data = NULL;
+ BITMAP *swap_screen;
++BITMAP *colorconv_screen = 0;
+ PALETTE org_pal;
+ Tscroller hscroll;
+ Thisc *hisc_table;
+@@ -484,9 +485,20 @@
+ 
+ // blits anything to screen
+ void blit_to_screen(BITMAP *bmp) {
++   if (!colorconv_screen || 
++       colorconv_screen->w != bmp->w || colorconv_screen->h != bmp->h)
++   {
++      if (colorconv_screen)
++	 destroy_bitmap(colorconv_screen);
++
++      colorconv_screen = create_bitmap_ex(bitmap_color_depth(screen), 
++					  bmp->w, bmp->h);
++   }
++   blit (bmp, colorconv_screen, 0, 0, 0, 0, bmp->w, bmp->h);
++
+ 	acquire_screen();
+ 	if (options.use_vsync) vsync();
+-	stretch_blit(bmp, screen, 0, 0, bmp->w, bmp->h, 0, 0, SCREEN_W, SCREEN_H);
++	stretch_blit(colorconv_screen, screen, 0, 0, bmp->w, bmp->h, 0, 0, SCREEN_W, SCREEN_H);
+ 	release_screen();
+ }
+ 
+@@ -674,6 +686,7 @@
+ 
+ 	log2file(" entering gfx mode set in alex4.ini (%dx%d %s)", w, h, (get_config_int("graphics", "fullscreen", 0) ? "full" : "win"));
+ 
++	set_color_depth(32);
+     if (set_gfx_mode(
+ 		(get_config_int("graphics", "fullscreen", 0) ? GFX_AUTODETECT_FULLSCREEN : GFX_AUTODETECT_WINDOWED),
+ 		w, h, 0, 0)) {
+@@ -689,6 +702,7 @@
+ 			}
+ 		}
+ 	}
++    set_color_depth(8);
+ 
+ 	// show initial loading screen
+ 	clear(swap_screen);
