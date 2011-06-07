@@ -1,0 +1,26 @@
+Index: alex4src/src/control.c
+===================================================================
+--- alex4src.orig/src/control.c	2011-06-07 13:35:27.000000000 +0200
++++ alex4src/src/control.c	2011-06-07 13:41:46.000000000 +0200
+@@ -31,7 +31,7 @@
+ 					KEY_DOWN,
+ 					KEY_LEFT,
+ 					KEY_RIGHT,
+-					KEY_LCONTROL,
++					KEY_LSHIFT,
+ 					KEY_ALT);
+ 
+ 	c->flags = 0;
+Index: alex4src/src/main.c
+===================================================================
+--- alex4src.orig/src/main.c	2011-06-07 13:45:56.000000000 +0200
++++ alex4src/src/main.c	2011-06-07 13:45:59.000000000 +0200
+@@ -115,7 +115,7 @@
+ char scroller_message[] = 
+ 	"Free Lunch Design      presents      Alex the Allegator 4      "
+ 	"Guide Alex to the exit of each level      Jump or shoot enemies picking up stars and cherries on the way      "
+-	"Use arrows to move Alex, ALT to jump and Left CTRL to shoot, or use a gamepad or joystick      "
++	"Use arrows to move Alex, ALT to jump and Left SHIFT to shoot, or use a gamepad or joystick      "
+ 	"Code and GFX by Johan Peitz      Music and SFX by Anders Svensson       ";
+ char init_string[] = "[YhJPJKUSY`0-'\"7 ";
+ 

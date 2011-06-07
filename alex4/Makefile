@@ -87,5 +87,5 @@ $(eval $(call BuildPackage,alex4-data))
 
 # The following comments configure the Emacs editor.  Just ignore them.
 # Local Variables:
-# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/alex4/compile -j2 V=99"
+# compile-command: "cd ~/src/nanonote/alex4src && ~/bin/quilt-export target && make -C ~/h/src/qi/openwrt-xburst package/alex4/compile -j2 V=99"
 # End:
