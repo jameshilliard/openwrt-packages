@@ -1,0 +1,26 @@
+Index: dumb-0.9.3/Makefile
+===================================================================
+--- dumb-0.9.3.orig/Makefile	2011-06-07 10:30:24.000000000 +0200
++++ dumb-0.9.3/Makefile	2011-06-07 10:57:15.000000000 +0200
+@@ -22,7 +22,7 @@
+ #                    (Note that this is unable to delete the dumbask
+ #                    executable if the configuration is absent.)
+ 
+-MAKEFILE = Makefile.rdy
++MAKEFILE = Makefile
+ 
+ .PHONY: all install uninstall clean veryclean distclean config config-if-necessary make-outdirs
+ 
+@@ -80,9 +80,9 @@
+ DEFAULT_PREFIX := /usr/local
+ endif
+ export DEFAULT_PREFIX
+-INCLUDE_INSTALL_PATH := $(PREFIX)/include
+-LIB_INSTALL_PATH := $(PREFIX)/lib
+-BIN_INSTALL_PATH := $(PREFIX)/bin
++INCLUDE_INSTALL_PATH := $(DESTDIR)$(PREFIX)/include
++LIB_INSTALL_PATH := $(DESTDIR)$(PREFIX)/lib
++BIN_INSTALL_PATH := $(DESTDIR)$(PREFIX)/bin
+ 
+ endif
+ 
