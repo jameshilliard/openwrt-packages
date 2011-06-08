@@ -1,6 +1,6 @@
 #!/bin/bash
 # version of me
-__VERSION__="2011-06-01"
+__VERSION__="2011-06-07"
 
 # use 'http' to download and flash images, use 'file' to flash images present in the <WORKING_DIR>
 PROTOCOL="http"
@@ -168,21 +168,21 @@ if [ "$PROTOCOL" == "http" ]; then
 		log "fetching bootloader..."
 		wget \
 		    -a "${LOG_FILE}" \
-		    -P "${WORKING_DIR}" \
+		    -O "${WORKING_DIR}/${LOADER}" \
 		    "${BASE_URL_HTTP}/${VERSION}/${LOADER}"
 	fi
 	if [ "$K" == "TRUE" ]; then
 		log "fetching kernel..."
 		wget \
 		    -a "${LOG_FILE}" \
-		    -P "${WORKING_DIR}" \
+		    -O "${WORKING_DIR}/${KERNEL}" \
 		    "${BASE_URL_HTTP}/${VERSION}/${KERNEL}"
 	fi
 	if [ "$R" == "TRUE" ]; then
 		log "try fetching .ubi.bz2 rootfs..."
 		wget \
 		    -a "${LOG_FILE}" \
-		    -P "${WORKING_DIR}" \
+		    -O "${WORKING_DIR}/${ROOTFS}.bz2" \
 		    "${BASE_URL_HTTP}/${VERSION}/${ROOTFS}.bz2" && \
 		    (cd ${WORKING_DIR}; bzip2 -d ${ROOTFS}.bz2)
 
@@ -190,7 +190,7 @@ if [ "$PROTOCOL" == "http" ]; then
 		    log "fetching .ubi rootfs..."
 		    wget \
 			-a "${LOG_FILE}" \
-			-P "${WORKING_DIR}" \
+			-O "${WORKING_DIR}/${ROOTFS}" \
 			"${BASE_URL_HTTP}/${VERSION}/${ROOTFS}"
 		fi
 	fi
@@ -236,3 +236,7 @@ if [ "$ALL" == "TRUE" ]; then
 fi
 
 log "done"
+
+########## ChangeLog ###############
+### 2011-06-07
+ # using -O in wget
