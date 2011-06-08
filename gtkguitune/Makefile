@@ -10,6 +10,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gtkguitune
 PKG_VERSION:=0.8
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-gtk2-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.oocities.org/harpin_floh/mysoft/

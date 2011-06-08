@@ -1,0 +1,42 @@
+diff --git a/guitune.cc b/guitune.cc
+index ba41cad..5f10b31 100644
+--- a/guitune.cc
++++ b/guitune.cc
+@@ -362,18 +362,18 @@ MainWidget::MainWidget()
+                                      0   // page size
+                                   );
+ 
+-    attach( *oszi, 0, 1, 0, 5 );
++    attach( *oszi, 2, 3, 0, 5 );
+ 
+     attach( *manage( new Gtk::Label("Freq:") ),
+-	    1, 2, 1, 2,
++	    0, 1, 1, 2,
+ 	    Gtk::AttachOptions(), Gtk::AttachOptions() );
+-    attach( *freqview, 2, 3, 1, 2,
++    attach( *freqview, 1, 2, 1, 2,
+ 	    Gtk::FILL, Gtk::AttachOptions() );
+ 
+     attach( *manage( new Gtk::Label("Tune:") ),
+-	    1, 2, 2, 3,
++	    0, 1, 2, 3,
+ 	    Gtk::AttachOptions(), Gtk::AttachOptions() );
+-    attach( *nfreqview, 2, 3, 2, 3,
++    attach( *nfreqview, 1, 2, 2, 3,
+ 	    Gtk::FILL, Gtk::AttachOptions() );
+ 
+     Gtk::Frame *adj_frame = new Gtk::Frame("Adjust:");
+@@ -418,11 +418,11 @@ MainWidget::MainWidget()
+ 		       2, 3, 4, 5 );
+ 
+     attach( *manage( adj_frame ),
+-	    1, 3, 3, 4,
++	    0, 2, 3, 4,
+ 	    Gtk::FILL, Gtk::FILL );
+ 
+     attach( *manage( new Gtk::Label( "" ) ),
+-	    1, 3, 4, 5, Gtk::AttachOptions() );
++	    0, 2, 4, 5, Gtk::AttachOptions() );
+ 
+     attach( *logview,
+ 	    0, 3, 5, 6,
