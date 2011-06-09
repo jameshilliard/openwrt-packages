@@ -4,6 +4,8 @@
 # License GPLv2 or later.  NO WARRANTY.
 #
 # OpenWRT package for the GNU Octave
+#
+# todo: how do we enable octave's internal help system?
 
 include $(TOPDIR)/rules.mk
 
@@ -14,6 +16,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.octave.org/pub/octave/
 PKG_MD5SUM:=90c39fa9e241ad2e978bcee4682a2ba9
 PKG_INSTALL:=1
+PKG_BUILD_PARALLEL:=1
 
 PKG_FIXUP:=libtool
 PKG_REMOVE_FILES:=
@@ -72,8 +75,9 @@ endef
 # todo : need -enable-rpath?
 
 OCTAVE_LIB_DIR := /usr/lib
-CONFIGURE_ARGS += --without-x --without-fftw 
-CONFIGURE_VARS += octlibdir=$(OCTAVE_LIB_DIR)
+CONFIGURE_ARGS += --without-x --without-fftw --disable-docs
+CONFIGURE_VARS += octlibdir=$(OCTAVE_LIB_DIR) \
+	FFLAGS="$(TARGET_CFLAGS)"
 #MAKE_FLAGS += "LD=$(TARGET_CROSS)gcc -nostdlib" 
 
 define Build/Configure

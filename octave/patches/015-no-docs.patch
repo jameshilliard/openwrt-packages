@@ -1,0 +1,26 @@
+Index: octave-3.2.4/octMakefile.in
+===================================================================
+--- octave-3.2.4.orig/octMakefile.in	2011-06-09 15:22:14.000000000 +0200
++++ octave-3.2.4/octMakefile.in	2011-06-09 15:55:36.000000000 +0200
+@@ -51,10 +51,10 @@
+ 	mkoctfile.in mkoctfile.cc.in run-octave.in ChangeLog ChangeLog.[0-9]
+ 
+ # Subdirectories in which to run `make all'.
+-SUBDIRS = libcruft liboctave src scripts doc examples
++SUBDIRS = libcruft liboctave src scripts # doc examples
+ 
+ # Subdirectories in which to run `make all'.
+-INSTALL_SUBDIRS = libcruft liboctave src scripts doc examples
++INSTALL_SUBDIRS = libcruft liboctave src scripts # doc examples
+ 
+ # Subdirectories in which to run `make conf-dist'.
+ CONF_DISTSUBDIRS = src
+@@ -78,7 +78,7 @@
+ 
+ M4_FILES = $(wildcard *.m4)
+ 
+-all: $(SHELL_SCRIPTS) $(filter-out libcruft liboctave, $(SUBDIRS)) dist-info-files
++all: $(SHELL_SCRIPTS) $(filter-out libcruft liboctave, $(SUBDIRS)) # dist-info-files
+ 	@echo ""
+ 	@echo "Octave successfully built.  Now choose from the following:"
+ 	@echo ""
