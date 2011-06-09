@@ -23,7 +23,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/alex4/Default
   SECTION:=games
   CATEGORY:=Games
-  URL:=http://alex.sf.net
+  URL:=http://allegator.sf.net
 endef
 
 define Package/alex4/Default/description

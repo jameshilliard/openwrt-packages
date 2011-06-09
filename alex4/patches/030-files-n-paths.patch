@@ -1,7 +1,7 @@
 Index: alex4src/src/main.c
 ===================================================================
 --- alex4src.orig/src/main.c	2011-06-07 12:24:01.000000000 +0200
-+++ alex4src/src/main.c	2011-06-07 13:15:30.000000000 +0200
++++ alex4src/src/main.c	2011-06-08 22:27:58.000000000 +0200
 @@ -157,7 +157,7 @@
  	va_list ptr; /* get an arg pointer */
   	FILE *fp;
@@ -11,7 +11,20 @@ Index: alex4src/src/main.c
  	if (fp) {
  		/* initialize ptr to point to the first argument after the format string */
  		va_start(ptr, format);
-@@ -637,7 +637,7 @@
+@@ -624,6 +624,12 @@
+ 	gui_bg_color = 254;
+ }
+ 
++static char *fixpath(const char *name)
++{
++   static char buf[128];
++   return canonicalize_filename(buf, name, sizeof(buf));
++}
++
+ // init the game
+ int init_game(const char *map_file) {
+ 	PACKFILE *pf;
+@@ -637,7 +643,7 @@
  	log2file(" initializing allegro");
  	text_mode(-1);
  	garble_string(init_string, 53);
@@ -20,7 +33,7 @@ Index: alex4src/src/main.c
  	set_window_close_button(FALSE);
  	
  	// install timers
-@@ -732,7 +732,7 @@
+@@ -732,7 +738,7 @@
  	// load data
  	log2file(" loading data");
  	packfile_password(init_string);
@@ -29,25 +42,25 @@ Index: alex4src/src/main.c
  	packfile_password(NULL);
  	if (data == NULL) {
      	log2file("  *** failed");
-@@ -742,7 +742,7 @@
+@@ -742,7 +748,7 @@
  
  	// load options
  	log2file(" loading options");
 -	pf = pack_fopen("alex4.sav", "rp");
-+	pf = pack_fopen("/var/lib/alex4.sav", "rp");
++	pf = pack_fopen(fixpath("~/.alex4.sav"), "rp");
  	if (pf) {
  		load_options(&options, pf);
  		pack_fclose(pf);
-@@ -754,7 +754,7 @@
+@@ -754,7 +760,7 @@
  
  	// loading highscores
  	log2file(" loading hiscores");
 -	pf = pack_fopen("alex4.hi", "rp");
-+	pf = pack_fopen("/var/lib/alex4.hi", "rp");
++	pf = pack_fopen(fixpath("~/.alex4.hi"), "rp");
  	if (pf) {
  		load_hisc_table(hisc_table, pf);
  		load_hisc_table(hisc_table_space, pf);
-@@ -790,7 +790,7 @@
+@@ -790,7 +796,7 @@
  		log2file(" loading original maps");
  		packfile_password(init_string);
  		num_levels = -1;  // skip end object when counting
@@ -56,7 +69,7 @@ Index: alex4src/src/main.c
  		packfile_password(NULL);
  		if (maps == NULL) {
  	    	log2file("  *** failed");
-@@ -899,9 +899,9 @@
+@@ -899,9 +905,9 @@
  		if (get_config_int("sound", "use_sound_datafile", 1)) {
  			log2file(" loading sound datafile");
  			packfile_password(init_string);
@@ -68,12 +81,12 @@ Index: alex4src/src/main.c
  				log2file("  sfx_44.dat not found");
  				s = 0;
  			}
-@@ -1018,14 +1018,14 @@
+@@ -1018,14 +1024,14 @@
  	// only save if everything was inited ok!
  	if (init_ok) {
  		log2file(" saving options");
 -		pf = pack_fopen("alex4.sav", "wp");
-+		pf = pack_fopen("/var/lib/alex4.sav", "wp");
++		pf = pack_fopen(fixpath("~/.alex4.sav"), "wp");
  		if (pf) {
  			save_options(&options, pf);
  			pack_fclose(pf);
@@ -81,11 +94,11 @@ Index: alex4src/src/main.c
  		
  		log2file(" saving highscores");
 -		pf = pack_fopen("alex4.hi", "wp");
-+		pf = pack_fopen("/var/lib/alex4.hi", "wp");
++		pf = pack_fopen(fixpath("~/.alex4.hi"), "wp");
  		if (pf) {
  			save_hisc_table(hisc_table, pf);
  			save_hisc_table(hisc_table_space, pf);
-@@ -1372,7 +1372,7 @@
+@@ -1372,7 +1378,7 @@
  	if (space) {
  		// get space bg
  		packfile_password(init_string);
@@ -94,7 +107,7 @@ Index: alex4src/src/main.c
  		packfile_password(NULL);
  		if (df != NULL)	{
  			bg = df->dat;
-@@ -3008,7 +3008,7 @@
+@@ -3008,7 +3014,7 @@
  	// get working directory
  	get_executable_name(full_path, 1024);
  	replace_filename(working_directory, full_path, "", 1024);
