@@ -16,6 +16,7 @@ PKG_MD5SUM:=c53c484ed93ce8446513c31707551b5b
 PKG_INSTALL:=1
 
 PKG_BUILD_PARALLEL:=1
+HOST_BUILD_PARALLEL:=1
 
 PKG_FIXUP:=libtool
 PKG_REMOVE_FILES:=
@@ -25,18 +26,48 @@ PKG_BUILD_DEPENDS:= plplot/host libltdl swig/host
 
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/cmake.mk
 
-CMAKE_HOST_FLAGS=-DCMAKE_INSTALL_PREFIX=/usr \
-	     	-DDEFAULT_NO_DEVICES=ON \
-		-DPKG_CONFIG_EXECUTABLE=Not-Found -DDEFAULT_NO_BINDINGS=ON 
+
+# # workaround for cmake.mk bug
+# ifneq ($(CONFIG_CCACHE),)
+#   CMAKE_C_COMPILER:=ccache
+#   CMAKE_CXX_COMPILER:=ccache
+# endif
+
+# plplot does not support CMAKE_C_COMPILER_ARG1 etc. for some test-cases so
+# we have to disable ccache usage for plplot :'(
+ifneq ($(CONFIG_CCACHE),)
+CMAKE_C_COMPILER:=$(TOOLCHAIN_DIR)/bin/$(filter-out ccache,$(TARGET_CC))
+CMAKE_CXX_COMPILER:=$(TOOLCHAIN_DIR)/bin/$(filter-out ccache,$(TARGET_CC))
+CMAKE_C_COMPILER_ARG1 :=
+CMAKE_CXX_COMPILER_ARG1 :=
+endif
+
+CMAKE_HOST_FLAGS=\
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_EXE_LINKER_FLAGS="$(HOST_LDFLAGS)" \
+	-DCMAKE_MODULE_LINKER_FLAGS="$(HOST_LDFLAGS)" \
+	-DCMAKE_SHARED_LINKER_FLAGS="$(HOST_LDFLAGS)" \
+	-DDEFAULT_NO_DEVICES=ON \
+	-DPKG_CONFIG_EXECUTABLE=Not-Found \
+	-DDEFAULT_NO_BINDINGS=ON \
 
 ## Need host-compiled plplot build dir for cmake to work for the target
+## todo: should this be moved into cmake.mk?  or a 'host-cmake.mk' ?
 define Host/Configure
 	mkdir -p $(HOST_BUILD_DIR)/build_dir
 	cd $(HOST_BUILD_DIR)/build_dir && \
+	  CFLAGS="$(HOST_CFLAGS)" \
+	  CXXFLAGS="$(HOST_CFLAGS)" \
 	  cmake $(CMAKE_HOST_FLAGS) \
 	        $(HOST_BUILD_DIR)
 endef
+
+# plplot tries to find 'libm' via directory search, but that won't work since
+# in newer linuxes (ubuntu 11.04) libm is in /lib/<cpu-arch>/lib
+HOST_LDFLAGS += -lm
+CMAKE_HOST_FLAGS += -DMATH_LIB:FILEPATH=m 
 
 define Host/Compile/Octave
 	$(MAKE) -C $(HOST_BUILD_DIR)/bindings/octave massage
@@ -44,7 +75,7 @@ endef
 
 define Host/Compile
 	$(if $(CONFIG_PACKAGE_plplot-octave),$(Host/Compile/Octave),)
-	$(MAKE) -C $(HOST_BUILD_DIR)/build_dir VERBOSE=1 -j4 
+	$(MAKE) -C $(HOST_BUILD_DIR)/build_dir VERBOSE=1
 endef
 
 define Host/Install/Octave
@@ -77,7 +108,7 @@ endef
 
 define Package/plplot
 $(call Package/plplot/Default)
-  DEPENDS:=+libltdl +zlib +libfreetype @BROKEN
+  DEPENDS:=+libltdl +zlib +libfreetype 
   TITLE+=
 endef
 
@@ -182,10 +213,10 @@ endef
 
 TARGET_CFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
-CMAKE_FLAGS := \
+CMAKE_OPTIONS += \
 	-Wdev \
+	-DPL_USE_NAMESPACE=1 \
 	-DCMAKE_INSTALL_PREFIX=/usr \
-	-DCMAKE_TOOLCHAIN_FILE=$(PKG_BUILD_DIR)/toolchain.cmake \
 	-DPKG_CONFIG_EXECUTABLE=$(STAGING_DIR_HOST)/bin/pkg-config \
 	-DSWIG_EXECUTABLE=$(STAGING_DIR_HOST)/bin/swig \
 	-DDEFAULT_NO_DEVICES=ON \
@@ -197,18 +228,26 @@ CMAKE_FLAGS := \
 	-DDEFAULT_NO_BINDINGS=ON \
 	-DNaNAwareCCompiler=ON \
 	-DCMAKE_USE_NAMESPACE=ON \
-	-DCMAKE_NATIVE_BINARY_DIR=$(STAGING_DIR_HOST)/lib/$(PKG_NAME)-$(PKG_VERSION)/build_dir
+	-DCMAKE_NATIVE_BINARY_DIR=$(STAGING_DIR_HOST)/lib/$(PKG_NAME)-$(PKG_VERSION)/build_dir 
+
+# plplot tries to find 'libm', 'libdl' and probably other libs via directory
+# search, but that won't work since in openwrt trunk, it's in the toolchain
+# directory.  For the ltdl stuff see plplot's FindLTDL.cmake file.
+CMAKE_OPTIONS += \
+	-DMATH_LIB:FILEPATH=$(TOOLCHAIN_DIR)/lib/libm.so \
+	-DLTDL_LTDL_ADDLIB1:FILEPATH=$(TOOLCHAIN_DIR)/lib/libdl.so \
+	-DLUA_MATH_LIBRARY:FILEPATH=$(TOOLCHAIN_DIR)/lib/libm.so
 
 # everything done under unstall target!
 ifdef CONFIG_PACKAGE_plplot-demo
 endif
 
 ifdef CONFIG_PACKAGE_plplot-cxx
-	CMAKE_FLAGS += -DENABLE_cxx=ON
+	CMAKE_OPTIONS += -DENABLE_cxx=ON
 endif
 
 ifdef CONFIG_PACKAGE_plplot-qt
-	CMAKE_FLAGS += \
+	CMAKE_OPTIONS += \
 		-DPLD_qtwidget=ON \
 		-DPLD_extqt=ON \
 		-DENABLE_qt=ON \
@@ -219,24 +258,24 @@ ifdef CONFIG_PACKAGE_plplot-qt
 endif
 
 ifdef CONFIG_PACKAGE_plplot-linuxvga
-	CMAKE_FLAGS += \
+	CMAKE_OPTIONS += \
 		-DPLD_linuxvga=ON
 endif
 
 ifdef CONFIG_PACKAGE_plplot-lua
-	CMAKE_FLAGS += -DENABLE_lua=ON
+	CMAKE_OPTIONS += -DENABLE_lua=ON
 endif
 
 ifdef CONFIG_PACKAGE_plplot-python
-	CMAKE_FLAGS += -DENABLE_python=ON
+	CMAKE_OPTIONS += -DENABLE_python=ON
 endif
 
 ifdef CONFIG_PACKAGE_plplot-tcl
-	CMAKE_FLAGS +=	-DENABLE_tcl=ON 
+	CMAKE_OPTIONS +=	-DENABLE_tcl=ON 
 endif
 
 ifdef CONFIG_PACKAGE_plplot-octave
-	CMAKE_FLAGS +=	\
+	CMAKE_OPTIONS +=	\
 		-DENABLE_octave=ON \
 		-DMKOCTFILE=$(STAGING_DIR)/usr/bin/mkoctfile \
 		-DOCTAVE_OCT_DIR=/usr/lib/octave/site/oct/$(OPTIMIZE_FOR_CPU)-openwrt-linux-gnu \
@@ -245,7 +284,7 @@ endif
 
 #	$(if $(CONFIG_PACKAGE_libX11),FEATURE_XLOCK=y,FEATURE_XLOCK=n) \
 
-define Build/Configure
+define Build/Configure/Deprecated
 	echo "SET(CMAKE_SYSTEM_NAME Linux)" > $(PKG_BUILD_DIR)/toolchain.cmake
 	echo "SET(CMAKE_SYSTEM_VERSION 1)" >> $(PKG_BUILD_DIR)/toolchain.cmake
 	echo "SET(CMAKE_BUILD_TYPE None)" >> $(PKG_BUILD_DIR)/toolchain.cmake
@@ -273,13 +312,23 @@ define Build/Configure
 	echo "SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)" >> $(PKG_BUILD_DIR)/toolchain.cmake
 	echo "SET(PL_USE_NAMESPACE 1)" >> $(PKG_BUILD_DIR)/toolchain.cmake
 
-	cd $(PKG_BUILD_DIR) && cmake $(CMAKE_FLAGS)
+	cd $(PKG_BUILD_DIR) && cmake $(CMAKE_OPTIONS)
+endef
+
+TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/include
+TARGET_LDFLAGS+=-L$(STAGING_DIR)/usr/lib
+
+# Another cmake (or cmake.mk or plplot) bug workaround: CMAKE_CXX_COMPILER is
+# not picked up.  Giving it CXX with the environment works better.  However,
+# this breaks with ccache, so we have to disable ccache.  Uggh.
+define Build/Configure
+	export CXX="$(TOOLCHAIN_DIR)/bin/$(filter-out ccache,$(TARGET_CC))"; \
+	$(call Build/Configure/Default)
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default, VERBOSE=1 -j4)	
+	$(call Build/Compile/Default, VERBOSE=1)	
 endef
-
 
 define Build/Install
 	$(call Build/Install/Default)
