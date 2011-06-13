@@ -1,0 +1,40 @@
+Index: ase-0.8.2/makefile.gcc
+===================================================================
+--- ase-0.8.2.orig/makefile.gcc	2011-06-13 12:05:31.000000000 +0200
++++ ase-0.8.2/makefile.gcc	2011-06-13 12:20:00.000000000 +0200
+@@ -21,15 +21,16 @@
+ LFLAGS += $(THIRD_PARTY_LIBS)
+ 
+ ifdef PROFILE
+-  CFLAGS += -pg -O3 -DNDEBUG
+-  LFLAGS += -pg -O3 -DNDEBUG
++  CFLAGS += -pg -DNDEBUG
++  LFLAGS += -pg -DNDEBUG
+ else
+ ifdef DEBUGMODE
+   CFLAGS += -g3 -DDEBUGMODE
+   LFLAGS += -g3
+ else
+-  CFLAGS += -s -O3 -DNDEBUG
+-  LFLAGS += -s -O3 -DNDEBUG
++  # order of include dirs important, need to add BUILD_CFLAGS after -I above
++  CFLAGS += -DNDEBUG $(BUILD_CFLAGS)
++  LFLAGS += -DNDEBUG
+ endif
+ endif
+ 
+Index: ase-0.8.2/makefile.linux
+===================================================================
+--- ase-0.8.2.orig/makefile.linux	2011-06-13 12:05:31.000000000 +0200
++++ ase-0.8.2/makefile.linux	2011-06-13 12:19:25.000000000 +0200
+@@ -18,8 +18,8 @@
+ CFLAGS = `allegro-config --cflags debug`
+ LFLAGS = `allegro-config --libs debug`
+ else
+-CFLAGS = `allegro-config --cflags`
+-LFLAGS = `allegro-config --libs`
++CFLAGS = 
++LFLAGS = $(LDFLAGS)
+ endif
+ 
+ ######################################################################

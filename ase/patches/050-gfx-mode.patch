@@ -1,0 +1,24 @@
+Index: ase-0.8.2/src/modules/gui.cpp
+===================================================================
+--- ase-0.8.2.orig/src/modules/gui.cpp	2011-06-13 13:08:58.000000000 +0200
++++ ase-0.8.2/src/modules/gui.cpp	2011-06-13 13:19:44.000000000 +0200
+@@ -221,8 +221,8 @@
+     has_desktop = get_desktop_resolution(&dsk_w, &dsk_h) == 0;
+ 
+     /* we must extract some space for the windows borders */
+-    dsk_w -= 16;
+-    dsk_h -= 32;
++    // dsk_w -= 16;
++    // dsk_h -= 32;
+ 
+     /* try to get desktop resolution */
+     if (has_desktop) {
+@@ -397,7 +397,7 @@
+   w = get_config_int("GfxMode", "Width", 0);
+   h = get_config_int("GfxMode", "Height", 0);
+   bpp = get_config_int("GfxMode", "Depth", 0);
+-  fullscreen = get_config_bool("GfxMode", "FullScreen", false);
++  fullscreen = get_config_bool("GfxMode", "FullScreen", true);
+   screen_scaling = get_config_int("GfxMode", "Scale", 1);
+   screen_scaling = MID(1, screen_scaling, 4);
+ 
