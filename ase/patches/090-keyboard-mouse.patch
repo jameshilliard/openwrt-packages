@@ -1,0 +1,186 @@
+Index: ase-0.8.2/src/jinete/jsystem.cpp
+===================================================================
+--- ase-0.8.2.orig/src/jinete/jsystem.cpp	2011-06-14 22:25:51.681509956 +0200
++++ ase-0.8.2/src/jinete/jsystem.cpp	2011-06-14 23:24:30.101508957 +0200
+@@ -29,6 +29,8 @@
+  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
++// #include <stdio.h>
++
+ #include "config.h"
+ 
+ #include <allegro.h>
+@@ -355,6 +357,9 @@
+   return mouse_scares == 0;
+ }
+ 
++/* used by keyboard-mouse code by david */
++static int key_mouse_b = 0;
++
+ /**
+  * Updates the mouse information (position, wheel and buttons).
+  * 
+@@ -369,7 +374,7 @@
+ 
+   poll_mouse();
+ 
+-  m_b[0] = mouse_b;
++  m_b[0] = mouse_b | key_mouse_b;
+   m_z[0] = mouse_z;
+ 
+   update_mouse_position();
+@@ -438,8 +443,130 @@
+     return false;
+ }
+ 
++
++/* keyboard mouse emulation code inserted by david <dvdkhlng TA gmx TOD de> */
++static void keyboard_mouse()
++{
++   static int last_clock = ji_clock;
++   static int speed_x = 0;
++   static int speed_y = 0;
++   static int delta_x = 0;
++   static int delta_y = 0;
++
++   const int scale = 1000;
++   const int max_speed = 1000;  // [scale]*px/ms
++
++   int now = ji_clock;
++   int delta_t = now - last_clock;
++   int ak = 1;
++   int ad = 10;
++
++   if (delta_t == 0)
++   {
++      return;
++   }
++
++   if (key[KEY_LEFT]) {
++      speed_x -= ak*delta_t;
++   }
++   else if (key[KEY_RIGHT]) {
++      speed_x += ak*delta_t;
++   }
++   else {
++      if (speed_x < 0)
++      {
++	 speed_x = speed_x + ad*delta_t;
++	 speed_x = speed_x > 0 ? 0 : speed_x; 
++      }
++      else 
++      {
++	 speed_x = speed_x - ad*delta_t;
++	 speed_x = speed_x < 0 ? 0 : speed_x; 
++      }
++   }
++
++   if (key[KEY_UP]) {
++      speed_y -= ak*delta_t;
++   }
++   else if (key[KEY_DOWN]) {
++      speed_y += ak*delta_t;
++   }
++   else {
++      if (speed_y < 0)
++      {
++	 speed_y = speed_y + ad*delta_t;
++	 speed_y = speed_y > 0 ? 0 : speed_y; 
++      }
++      else 
++      {
++	 speed_y = speed_y - ad*delta_t;
++	 speed_y = speed_y < 0 ? 0 : speed_y; 
++      }
++   }
++
++   if (speed_x > max_speed)
++      speed_x = max_speed;
++   if (speed_x < -max_speed)
++      speed_x = -max_speed;
++   if (speed_y > max_speed)
++      speed_y = max_speed;
++   if (speed_y < -max_speed)
++      speed_y = -max_speed;
++
++   delta_x += delta_t*speed_x;
++   delta_y += delta_t*speed_y;
++
++   // fprintf (stderr, "%i %i %i %i %i\n", delta_t, speed_x, speed_y, delta_x, delta_y);
++   // fprintf (stderr, "now %i %i then %i %i %i\n", mouse_x, mouse_y, 
++   // 	    mouse_x+delta_x/scale, mouse_y+delta_y/scale);
++
++   int int_delta_x = delta_x/scale;
++   int int_delta_y = delta_y/scale;
++   delta_x %= scale;
++   delta_y %= scale;
++
++   if (int_delta_x || int_delta_y) {
++      int pos = mouse_pos;
++      int x = (pos>>16) + int_delta_x;
++      int y = (pos&0xffff) + int_delta_y;
++      
++      if (x >= screen->w)
++      {
++	 speed_x = 0;
++	 x = screen->w;
++      }
++      if (x < 0)
++      {
++	 speed_x = 0;
++	 x = 0;
++      }
++      if (y >= screen->h)
++      {
++	 speed_y = 0;
++	 y = screen->h;
++      }
++      if (y < 0)
++      {
++	 speed_y = 0;
++	 y = 0;
++      }
++
++      position_mouse(x, y);
++   }
++
++   /* mouse buttons */
++   key_mouse_b = 0;
++   if (key[KEY_F1]) key_mouse_b |= 1;  /* left */
++   if (key[KEY_F2]) key_mouse_b |= 4;  /* middle */
++   if (key[KEY_F3]) key_mouse_b |= 2;  /* right */
++
++   last_clock = now;
++}
++
+ static void update_mouse_position()
+ {
++   keyboard_mouse();
++
+   if (ji_screen == screen) {
+     m_x[0] = mouse_x;
+     m_y[0] = mouse_y;
+Index: ase-0.8.2/data/gui.xml
+===================================================================
+--- ase-0.8.2.orig/data/gui.xml	2011-06-14 23:37:49.391508728 +0200
++++ ase-0.8.2/data/gui.xml	2011-06-14 23:44:56.211508608 +0200
+@@ -45,14 +45,14 @@
+       <!-- Layer -->
+       <key command="layer_properties" shortcut="Shift+P" />
+       <key command="new_layer" shortcut="Shift+N" />
+-      <key command="goto_previous_layer" shortcut="Down" />
+-      <key command="goto_next_layer" shortcut="Up" />
++      <key command="goto_previous_layer" shortcut="\" />
++      <key command="goto_next_layer" shortcut="/" />
+       <!-- Frame -->
+       <key command="new_frame" shortcut="N" />
+       <key command="frame_properties" shortcut="P" />
+       <key command="goto_first_frame" shortcut="Home" />
+-      <key command="goto_previous_frame" shortcut="Left" />
+-      <key command="goto_next_frame" shortcut="Right" />
++      <key command="goto_previous_frame" shortcut="," />
++      <key command="goto_next_frame" shortcut="." />
+       <key command="goto_last_frame" shortcut="End" />
+       <key command="play_animation" shortcut="Enter" />
+       <!-- Select -->
