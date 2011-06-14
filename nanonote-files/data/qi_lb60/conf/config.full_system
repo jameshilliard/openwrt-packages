@@ -267,13 +267,13 @@ CONFIG_PACKAGE_tic-tac-toe=y
 #
 # Liballegro
 #
-CONFIG_PACKAGE_liballegro=y
-CONFIG_PACKAGE_liballegro-data=y
-CONFIG_PACKAGE_liballegro-demo=y
-CONFIG_PACKAGE_liballegro-digmid=y
-CONFIG_PACKAGE_liballegro-examples=y
-CONFIG_PACKAGE_liballegro-setup=y
-CONFIG_PACKAGE_liballegro-utils=y
+CONFIG_PACKAGE_liballegro=m
+CONFIG_PACKAGE_liballegro-data=m
+CONFIG_PACKAGE_liballegro-demo=m
+CONFIG_PACKAGE_liballegro-digmid=m
+CONFIG_PACKAGE_liballegro-examples=m
+CONFIG_PACKAGE_liballegro-setup=m
+CONFIG_PACKAGE_liballegro-utils=m
 #
 # Emacs
 #
