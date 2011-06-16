@@ -251,6 +251,7 @@ CONFIG_PACKAGE_uclibcxx=y
 CONFIG_PACKAGE_zlib=y
 CONFIG_PACKAGE_binutils=y
 CONFIG_PACKAGE_objdump=y
+CONFIG_PACKAGE_libdumb=y
 #
 # liballegro
 #
