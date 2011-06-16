@@ -1,0 +1,24 @@
+Index: ase-0.8.2/src/widgets/editor/editor.cpp
+===================================================================
+--- ase-0.8.2.orig/src/widgets/editor/editor.cpp	2011-06-16 21:41:31.000000000 +0200
++++ ase-0.8.2/src/widgets/editor/editor.cpp	2011-06-16 21:42:02.000000000 +0200
+@@ -1331,7 +1331,8 @@
+ 	    editor_setcursor(jmouse_x(0), jmouse_y(0));
+ 	    return true;
+ 
+-	  case KEY_LCONTROL:
++	  /* on nanonote, lcontrol is the 'Fn' key used to type in numbers */
++	  // case KEY_LCONTROL:
+ 	  case KEY_RCONTROL:
+ 	    // If the user press the CTRL key when he is dragging pixels (but not pressing the mouse buttons)...
+ 	    if (!m_ctrl_pressed && !jmouse_b(0) && m_pixelsMovement) {
+@@ -1367,7 +1368,8 @@
+ 	  }
+ 	  break;
+ 
+-	  case KEY_LCONTROL:
++	  /* on nanonote, lcontrol is the 'Fn' key used to type in numbers */
++	  // case KEY_LCONTROL:
+ 	  case KEY_RCONTROL:
+ 	    if (m_ctrl_pressed) {
+ 	      m_ctrl_pressed = false;
