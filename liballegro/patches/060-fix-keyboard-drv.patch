@@ -1,0 +1,19 @@
+Index: allegro-4.4.2/src/linux/lkeybd.c
+===================================================================
+--- allegro-4.4.2.orig/src/linux/lkeybd.c	2011-06-16 13:35:57.000000000 +0200
++++ allegro-4.4.2/src/linux/lkeybd.c	2011-06-16 13:46:23.000000000 +0200
+@@ -204,9 +204,13 @@
+                 map = 0;
+                 if (key[__allegro_KEY_LSHIFT] || key[__allegro_KEY_RSHIFT]) map |= 1;
+                 if (key[__allegro_KEY_ALTGR]) map |= 2;
+-                if (key[__allegro_KEY_LCONTROL] || key[__allegro_KEY_RCONTROL]) map |= 4;
++                /* if (key[__allegro_KEY_LCONTROL] || key[__allegro_KEY_RCONTROL]) map |= 4; */
+                 if (key[__allegro_KEY_ALT]) map |= 8;
+ 
++		/* fixes for nanonote's keyboard */
++                if (key[__allegro_KEY_LCONTROL]) map |= (1<<6);
++                if (key[__allegro_KEY_RCONTROL]) map |= (1<<7);
++
+                 /* Map scancode to type and value */
+                 kbe.kb_table = map;
+                 kbe.kb_index = code;
