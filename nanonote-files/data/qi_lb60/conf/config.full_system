@@ -251,10 +251,23 @@ CONFIG_PACKAGE_uclibcxx=y
 CONFIG_PACKAGE_zlib=y
 CONFIG_PACKAGE_binutils=y
 CONFIG_PACKAGE_objdump=y
+#
+# liballegro
+#
+CONFIG_PACKAGE_liballegro=y
+CONFIG_PACKAGE_liballegro-data=y
+CONFIG_PACKAGE_liballegro-demo=y
+CONFIG_PACKAGE_liballegro-digmid=y
+CONFIG_PACKAGE_liballegro-examples=y
+CONFIG_PACKAGE_liballegro-setup=y
+CONFIG_PACKAGE_liballegro-utils=y
+
 # 
 # games
 #
 CONFIG_PACKAGE_Tile=y
+CONFIG_PACKAGE_alex4=y
+CONFIG_PACKAGE_alex4-data=y
 CONFIG_PACKAGE_backgammon=y
 CONFIG_PACKAGE_brainless=y
 CONFIG_PACKAGE_freedroid=y
@@ -332,6 +345,7 @@ CONFIG_PACKAGE_flite=y
 CONFIG_PACKAGE_ikog=y
 CONFIG_PACKAGE_pyclock=y
 CONFIG_PACKAGE_zgv=y
+CONFIG_PACKAGE_ase=y
 # 
 CONFIG_PACKAGE_badblocks=y
 CONFIG_PACKAGE_blkid=y
