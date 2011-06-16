@@ -1,8 +1,20 @@
 Index: allegro-4.4.2/src/linux/lkeybd.c
 ===================================================================
 --- allegro-4.4.2.orig/src/linux/lkeybd.c	2011-06-16 13:35:57.000000000 +0200
-+++ allegro-4.4.2/src/linux/lkeybd.c	2011-06-16 13:46:23.000000000 +0200
-@@ -204,9 +204,13 @@
++++ allegro-4.4.2/src/linux/lkeybd.c	2011-06-16 20:27:40.000000000 +0200
+@@ -143,7 +143,10 @@
+ /* convert Allegro format scancodes into key_shifts flag bits */
+ static unsigned short modifier_table[__allegro_KEY_MAX - __allegro_KEY_MODIFIERS] =
+ {
+-   __allegro_KB_SHIFT_FLAG,    __allegro_KB_SHIFT_FLAG,    __allegro_KB_CTRL_FLAG,
++   __allegro_KB_SHIFT_FLAG,    __allegro_KB_SHIFT_FLAG,   
++   /* note: we drop LCONTROL here, as the NanoNote uses it as modifier key
++      'Fn', passing it as CTRL causes problems with ASE's key bindings */
++   /*__allegro_KB_CTRL_FLAG*/ 0,
+    __allegro_KB_CTRL_FLAG,     __allegro_KB_ALT_FLAG,      __allegro_KB_ALT_FLAG,
+    __allegro_KB_LWIN_FLAG,     __allegro_KB_RWIN_FLAG,     __allegro_KB_MENU_FLAG,
+    __allegro_KB_SCROLOCK_FLAG, __allegro_KB_NUMLOCK_FLAG,  __allegro_KB_CAPSLOCK_FLAG
+@@ -204,9 +207,13 @@
                  map = 0;
                  if (key[__allegro_KEY_LSHIFT] || key[__allegro_KEY_RSHIFT]) map |= 1;
                  if (key[__allegro_KEY_ALTGR]) map |= 2;
