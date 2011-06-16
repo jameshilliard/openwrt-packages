@@ -1,7 +1,7 @@
 Index: ase-0.8.2/src/jinete/jsystem.cpp
 ===================================================================
 --- ase-0.8.2.orig/src/jinete/jsystem.cpp	2011-06-14 22:25:51.681509956 +0200
-+++ ase-0.8.2/src/jinete/jsystem.cpp	2011-06-14 23:24:30.101508957 +0200
++++ ase-0.8.2/src/jinete/jsystem.cpp	2011-06-16 12:39:33.218215092 +0200
 @@ -29,6 +29,8 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   */
@@ -30,7 +30,7 @@ Index: ase-0.8.2/src/jinete/jsystem.cpp
    m_z[0] = mouse_z;
  
    update_mouse_position();
-@@ -438,8 +443,130 @@
+@@ -438,8 +443,135 @@
      return false;
  }
  
@@ -57,10 +57,15 @@ Index: ase-0.8.2/src/jinete/jsystem.cpp
 +      return;
 +   }
 +
-+   if (key[KEY_LEFT]) {
++   /* The patched jmessage.cpp filters out all arrow key messages, unless the
++      shift key is held, so it's better to disable the keyboard mouse on shift
++      key */
++   int shift = key_shifts&KB_SHIFT_FLAG;
++
++   if (!shift && key[KEY_LEFT]) {
 +      speed_x -= ak*delta_t;
 +   }
-+   else if (key[KEY_RIGHT]) {
++   else if (!shift && key[KEY_RIGHT]) {
 +      speed_x += ak*delta_t;
 +   }
 +   else {
@@ -76,10 +81,10 @@ Index: ase-0.8.2/src/jinete/jsystem.cpp
 +      }
 +   }
 +
-+   if (key[KEY_UP]) {
++   if (!shift && key[KEY_UP]) {
 +      speed_y -= ak*delta_t;
 +   }
-+   else if (key[KEY_DOWN]) {
++   else if (!shift && key[KEY_DOWN]) {
 +      speed_y += ak*delta_t;
 +   }
 +   else {
@@ -184,3 +189,26 @@ Index: ase-0.8.2/data/gui.xml
        <key command="goto_last_frame" shortcut="End" />
        <key command="play_animation" shortcut="Enter" />
        <!-- Select -->
+Index: ase-0.8.2/src/jinete/jmessage.cpp
+===================================================================
+--- ase-0.8.2.orig/src/jinete/jmessage.cpp	2011-06-16 12:43:59.718215107 +0200
++++ ase-0.8.2/src/jinete/jmessage.cpp	2011-06-16 12:44:02.948215109 +0200
+@@ -81,6 +81,18 @@
+   msg->key.propagate_to_children = false;
+   msg->key.propagate_to_parent = true;
+ 
++  /* ignore arrow keys without shift, to not interfere with the
++   * keyboard-mouse */
++  switch (msg->key.scancode)
++  {
++     case KEY_UP: 
++     case KEY_DOWN: 
++     case KEY_LEFT: 
++     case KEY_RIGHT:
++	if (!(msg->any.shifts&KB_SHIFT_FLAG)) 
++	   msg->any.used = true;
++  }
++
+ #if 0
+   printf("%i: %i %i [%c]\n", type, msg->key.scancode,
+ 	 msg->key.ascii, msg->key.ascii);
