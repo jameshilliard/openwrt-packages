@@ -1,7 +1,7 @@
 Index: allegro-4.4.2/src/linux/fbcon.c
 ===================================================================
---- allegro-4.4.2.orig/src/linux/fbcon.c	2011-06-01 18:29:11.000000000 +0200
-+++ allegro-4.4.2/src/linux/fbcon.c	2011-06-02 11:04:18.000000000 +0200
+--- allegro-4.4.2.orig/src/linux/fbcon.c	2011-06-02 11:18:50.000000000 +0200
++++ allegro-4.4.2/src/linux/fbcon.c	2011-06-16 22:13:10.000000000 +0200
 @@ -19,6 +19,10 @@
   *      See readme.txt for copyright information.
   */
@@ -13,7 +13,15 @@ Index: allegro-4.4.2/src/linux/fbcon.c
  
  #include "allegro.h"
  #include "allegro/internal/aintern.h"
-@@ -263,6 +267,7 @@
+@@ -251,6 +255,7 @@
+    if (__al_linux_console_graphics() != 0) {
+       ioctl(fbfd, FBIOPUT_VSCREENINFO, &orig_mode);
+       close(fbfd);
++      fb_mode_read = FALSE;
+       return NULL;
+    }
+ 
+@@ -263,6 +268,7 @@
  	 case -1:
  	    /* let's see if we can get the actual screen mode */
  	    /* shouldn't we be keeping the previous color depth setting? */
@@ -21,7 +29,7 @@ Index: allegro-4.4.2/src/linux/fbcon.c
  	    switch (orig_mode.bits_per_pixel) {
  	       case 8:
  	       case 16:
-@@ -360,9 +365,21 @@
+@@ -360,9 +366,21 @@
  	 continue;
  
        /* try to set the mode */
@@ -43,7 +51,7 @@ Index: allegro-4.4.2/src/linux/fbcon.c
        }
     }
  
-@@ -377,6 +394,9 @@
+@@ -377,6 +395,9 @@
     close(fbfd);
     ustrzcpy(allegro_error, ALLEGRO_ERROR_SIZE, get_config_text("Framebuffer resolution not available"));
     TRACE(PREFIX_E "Resolution %dx%d not available...\n", w, h);
@@ -53,3 +61,27 @@ Index: allegro-4.4.2/src/linux/fbcon.c
     return NULL;
  
     got_a_nice_mode:
+@@ -387,6 +408,7 @@
+       __al_linux_console_text();
+       close(fbfd);
+       ustrzcpy(allegro_error, ALLEGRO_ERROR_SIZE, get_config_text("Framebuffer ioctl() failed"));
++      fb_mode_read = FALSE;
+       return NULL;
+    }
+ 
+@@ -399,6 +421,7 @@
+       ustrzcpy(allegro_error, ALLEGRO_ERROR_SIZE, get_config_text("Can't map framebuffer"));
+       TRACE(PREFIX_E "Couldn't map framebuffer for %dx%d. Restored old "
+ 	    "resolution.\n", w, h);
++      fb_mode_read = FALSE;
+       return NULL;
+    }
+ 
+@@ -428,6 +451,7 @@
+       __al_linux_console_text();
+       close(fbfd);
+       TRACE(PREFIX_E "Couldn't make bitmap `b', sorry.\n");
++      fb_mode_read = FALSE;
+       return NULL;
+    }
+ 
