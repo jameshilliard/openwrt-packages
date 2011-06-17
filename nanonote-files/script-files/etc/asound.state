@@ -1,69 +1,85 @@
 state.LB60 {
 	control.1 {
-		comment.access 'read write'
-		comment.type INTEGER
-		comment.count 1
-		comment.range '0 - 3'
 		iface MIXER
 		name 'Master Playback Volume'
 		value 2
+		comment {
+			access 'read write'
+			type INTEGER
+			count 1
+			range '0 - 3'
+		}
 	}
 	control.2 {
-		comment.access 'read write'
-		comment.type INTEGER
-		comment.count 1
-		comment.range '0 - 31'
 		iface MIXER
-		name 'Capture Volume'
-		value 23
+		name 'Master Capture Volume'
+		value 21
+		comment {
+			access 'read write'
+			type INTEGER
+			count 1
+			range '0 - 31'
+		}
 	}
 	control.3 {
-		comment.access 'read write'
-		comment.type BOOLEAN
-		comment.count 1
 		iface MIXER
 		name 'Master Playback Switch'
 		value true
+		comment {
+			access 'read write'
+			type BOOLEAN
+			count 1
+		}
 	}
 	control.4 {
-		comment.access 'read write'
-		comment.type INTEGER
-		comment.count 1
-		comment.range '0 - 3'
 		iface MIXER
 		name 'Mic Capture Volume'
-		value 0
+		value 2
+		comment {
+			access 'read write'
+			type INTEGER
+			count 1
+			range '0 - 3'
+		}
 	}
 	control.5 {
-		comment.access 'read write'
-		comment.type BOOLEAN
-		comment.count 1
 		iface MIXER
 		name 'Line Capture Switch'
-		value false
+		value true
+		comment {
+			access 'read write'
+			type BOOLEAN
+			count 1
+		}
 	}
 	control.6 {
-		comment.access 'read write'
-		comment.type BOOLEAN
-		comment.count 1
 		iface MIXER
 		name 'Mic Capture Switch'
-		value false
+		value true
+		comment {
+			access 'read write'
+			type BOOLEAN
+			count 1
+		}
 	}
 	control.7 {
-		comment.access 'read write'
-		comment.type BOOLEAN
-		comment.count 1
 		iface MIXER
 		name 'Output Mixer Bypass Switch'
 		value false
+		comment {
+			access 'read write'
+			type BOOLEAN
+			count 1
+		}
 	}
 	control.8 {
-		comment.access 'read write'
-		comment.type BOOLEAN
-		comment.count 1
 		iface MIXER
 		name 'Output Mixer DAC Switch'
 		value true
+		comment {
+			access 'read write'
+			type BOOLEAN
+			count 1
+		}
 	}
 }

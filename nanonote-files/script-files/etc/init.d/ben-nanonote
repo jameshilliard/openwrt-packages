@@ -4,9 +4,9 @@ START=99
 STOP=99
 
 start() {
-	/usr/sbin/alsactl restore
+	/usr/sbin/alsactl restore -f /etc/asound.state
 }
 
 stop() {
-	/usr/sbin/alsactl store
+	/usr/sbin/alsactl store -f /etc/asound.state
 }
