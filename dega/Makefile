@@ -15,6 +15,7 @@ PKG_RELEASE:=2
 PKG_SOURCE:=dega-$(PKG_VERSION)-NanoNote-Edition.tar.gz
 PKG_SOURCE_URL:=@SF/dega
 PKG_BUILD_DIR:=$(BUILD_DIR)/dega-$(PKG_VERSION)
+PKG_MD5SUM:=e070eea91fee9c65d1cece0bf39d488f
 
 include $(INCLUDE_DIR)/package.mk
 
