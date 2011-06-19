@@ -192,19 +192,23 @@ Index: ase-0.8.2/data/gui.xml
 Index: ase-0.8.2/src/jinete/jmessage.cpp
 ===================================================================
 --- ase-0.8.2.orig/src/jinete/jmessage.cpp	2011-06-16 12:43:59.718215107 +0200
-+++ ase-0.8.2/src/jinete/jmessage.cpp	2011-06-16 12:44:02.948215109 +0200
-@@ -81,6 +81,18 @@
++++ ase-0.8.2/src/jinete/jmessage.cpp	2011-06-19 12:35:11.813186277 +0200
+@@ -81,6 +81,22 @@
    msg->key.propagate_to_children = false;
    msg->key.propagate_to_parent = true;
  
-+  /* ignore arrow keys without shift, to not interfere with the
-+   * keyboard-mouse */
++  /* ignore keys used for mouse emuliation unless shift is pressed, to not
++   * interfere with the keyboard-mouse (some menus would close when
++   * receiveing key events) */
 +  switch (msg->key.scancode)
 +  {
 +     case KEY_UP: 
 +     case KEY_DOWN: 
 +     case KEY_LEFT: 
 +     case KEY_RIGHT:
++     case KEY_F1: 
++     case KEY_F2:
++     case KEY_F3:
 +	if (!(msg->any.shifts&KB_SHIFT_FLAG)) 
 +	   msg->any.used = true;
 +  }
