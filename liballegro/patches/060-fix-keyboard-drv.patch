@@ -1,7 +1,7 @@
 Index: allegro-4.4.2/src/linux/lkeybd.c
 ===================================================================
---- allegro-4.4.2.orig/src/linux/lkeybd.c	2011-06-16 13:35:57.000000000 +0200
-+++ allegro-4.4.2/src/linux/lkeybd.c	2011-06-16 20:27:40.000000000 +0200
+--- allegro-4.4.2.orig/src/linux/lkeybd.c	2011-06-19 11:32:20.000000000 +0200
++++ allegro-4.4.2/src/linux/lkeybd.c	2011-06-19 11:32:31.000000000 +0200
 @@ -143,7 +143,10 @@
  /* convert Allegro format scancodes into key_shifts flag bits */
  static unsigned short modifier_table[__allegro_KEY_MAX - __allegro_KEY_MODIFIERS] =
@@ -14,18 +14,15 @@ Index: allegro-4.4.2/src/linux/lkeybd.c
     __allegro_KB_CTRL_FLAG,     __allegro_KB_ALT_FLAG,      __allegro_KB_ALT_FLAG,
     __allegro_KB_LWIN_FLAG,     __allegro_KB_RWIN_FLAG,     __allegro_KB_MENU_FLAG,
     __allegro_KB_SCROLOCK_FLAG, __allegro_KB_NUMLOCK_FLAG,  __allegro_KB_CAPSLOCK_FLAG
-@@ -204,9 +207,13 @@
+@@ -204,7 +207,10 @@
                  map = 0;
                  if (key[__allegro_KEY_LSHIFT] || key[__allegro_KEY_RSHIFT]) map |= 1;
                  if (key[__allegro_KEY_ALTGR]) map |= 2;
 -                if (key[__allegro_KEY_LCONTROL] || key[__allegro_KEY_RCONTROL]) map |= 4;
-+                /* if (key[__allegro_KEY_LCONTROL] || key[__allegro_KEY_RCONTROL]) map |= 4; */
++
++		/* fixes for nanonote's keyboard: LCONTROL is 'Fn' modifier */
++                if (key[__allegro_KEY_LCONTROL]) map |= (1<<6);
++                if (key[__allegro_KEY_RCONTROL]) map |= 4;
                  if (key[__allegro_KEY_ALT]) map |= 8;
  
-+		/* fixes for nanonote's keyboard */
-+                if (key[__allegro_KEY_LCONTROL]) map |= (1<<6);
-+                if (key[__allegro_KEY_RCONTROL]) map |= (1<<7);
-+
                  /* Map scancode to type and value */
-                 kbe.kb_table = map;
-                 kbe.kb_index = code;
