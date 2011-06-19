@@ -1,0 +1,10 @@
+diff --git a/systest.mk b/systest.mk
+index 43df066..4affb36 100644
+--- a/systest.mk
++++ b/systest.mk
+@@ -1,4 +1,4 @@
+ systest: systest.c
+-	$(CC) -o systest $(CFLAGS) $(CPPFLAGS) systest.c
++	$(HOSTCC) -o systest $(HOST_CFLAGS) $(HOST_CPPFLAGS) systest.c
+ clean:
+ 	rm -f systest systest.exe
