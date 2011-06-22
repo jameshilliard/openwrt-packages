@@ -51,13 +51,22 @@ define Build/Compile
 endef
 
 define Build/InstallDev
-	$(INSTALL_DIR) $(1)/usr/include/SDL $(1)/usr/lib
+	$(INSTALL_DIR) \
+		$(1)/usr/include/SDL \
+		$(1)/usr/lib \
+		$(1)/usr/lib/pkgconfig
+
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/include/SDL/* \
 		$(1)/usr/include/SDL/
+
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/lib/*.{a,so*} \
 		$(1)/usr/lib/
+
+	$(INSTALL_DATA) \
+		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig/* \
+		$(1)/usr/lib/pkgconfig
 endef
 
 define Package/libsdl-gfx/install
