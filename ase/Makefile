@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ase
 PKG_VERSION:=0.8.2
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).zip
 PKG_SOURCE_URL:=http://aseprite.googlecode.com/files/
 PKG_MD5SUM:=ef941a91a05646c39005748b4d2178ed
@@ -38,7 +38,7 @@ endef
 define Package/ase
 $(call Package/ase/Default)
   TITLE +=
-  DEPENDS:=+liballegro
+  DEPENDS:=+liballegro +libpng +libjpeg +libgd +libfreetype
 endef
 
 define Package/ase/description
@@ -46,7 +46,8 @@ $(call Package/ase/Default/description)
 endef
 
 #TARGET_LDFLAGS += -Wl,-rpath-link -Wl,$(STAGING_DIR)/usr/lib
-#TARGET_CPPFLAGS +=
+TARGET_CPPFLAGS += -DNDEBUG
+#TARGET_CPPFLAGS += -DDEBUGMODE
 
 TARGET_LDFLAGS += -L$(STAGING_DIR)/usr/lib -lalleg
 
@@ -59,7 +60,13 @@ MAKE_FLAGS += \
 	-f $(PKG_BUILD_DIR)/makefile.linux \
 	CONFIGURED=1 RELEASE=1 DEFAULT_PREFIX=/usr \
 	CPP="$(TARGET_CXX)" \
-	BUILD_CFLAGS="$(TARGET_CFLAGS) $(TARGET_CPPFLAGS) $(EXTRA_CFLAGS)"
+	BUILD_CFLAGS="$(TARGET_CFLAGS) $(TARGET_CPPFLAGS) $(EXTRA_CFLAGS)" \
+	LIBFREETYPE_DIR=$(STAGING_DIR)/usr/include/freetype2 \
+	LIBGD_DIR=$(STAGING_DIR)/usr/include/ \
+	LIBJPEG_DIR=$(STAGING_DIR)/usr/include/ \
+	LIBPNG_DIR=$(STAGING_DIR)/usr/include/ \
+	ZLIB_DIR=$(STAGING_DIR)/usr/include/
+
 
 define Package/ase/install
 	$(INSTALL_DIR) $(1)/usr/{bin,share}

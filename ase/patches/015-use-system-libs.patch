@@ -1,0 +1,235 @@
+Index: ase-0.8.2/makefile.gcc
+===================================================================
+--- ase-0.8.2.orig/makefile.gcc	2011-06-23 15:22:41.448565297 +0200
++++ ase-0.8.2/makefile.gcc	2011-06-23 15:22:55.718565304 +0200
+@@ -7,7 +7,7 @@
+ # Setup CFLAGS and LFLAGS for GCC
+ 
+ CFLAGS += -Wall -I. -Isrc -Ithird_party		\
+-	  -I$(LIBFREETYPE_DIR)/include		\
++	  -I$(LIBFREETYPE_DIR)			\
+ 	  -I$(LIBJPEG_DIR)			\
+ 	  -I$(LIBPNG_DIR)			\
+ 	  -I$(ZLIB_DIR)				\
+Index: ase-0.8.2/makefile.linux
+===================================================================
+--- ase-0.8.2.orig/makefile.linux	2011-06-23 16:16:59.998566678 +0200
++++ ase-0.8.2/makefile.linux	2011-06-23 16:17:05.848566681 +0200
+@@ -46,7 +46,7 @@
+ all: $(ASE)
+ 
+ clean:
+-	-rm -f $(ALL_OBJS) $(THIRD_PARTY_LIBS)
++	-rm -f -- $(ALL_OBJS) $(THIRD_PARTY_LIBS)
+ 
+ distclean: clean
+ 	-rm -f $(ASE)
+Index: ase-0.8.2/makefile.lst
+===================================================================
+--- ase-0.8.2.orig/makefile.lst	2011-06-23 15:22:43.298565300 +0200
++++ ase-0.8.2/makefile.lst	2011-06-23 16:20:37.368566769 +0200
+@@ -299,30 +299,9 @@
+ ######################################################################
+ # Freetype
+ 
+-LIBFREETYPE_LIB = $(OBJ_DIR)/libfreetype$(LIB_EXT)
+-LIBFREETYPE_DIR = third_party/freetype
+-LIBFREETYPE_SOURCES =					\
+-	$(LIBFREETYPE_DIR)/src/base/ftsystem.c		\
+-	$(LIBFREETYPE_DIR)/src/base/ftdebug.c		\
+-	$(LIBFREETYPE_DIR)/src/base/ftinit.c		\
+-	$(LIBFREETYPE_DIR)/src/base/ftbase.c		\
+-	$(LIBFREETYPE_DIR)/src/base/ftglyph.c		\
+-	$(LIBFREETYPE_DIR)/src/base/ftmm.c		\
+-	$(LIBFREETYPE_DIR)/src/base/ftbbox.c		\
+-	$(LIBFREETYPE_DIR)/src/autohint/autohint.c	\
+-	$(LIBFREETYPE_DIR)/src/cache/ftcache.c		\
+-	$(LIBFREETYPE_DIR)/src/cff/cff.c		\
+-	$(LIBFREETYPE_DIR)/src/cid/type1cid.c		\
+-	$(LIBFREETYPE_DIR)/src/pcf/pcf.c		\
+-	$(LIBFREETYPE_DIR)/src/psaux/psaux.c		\
+-	$(LIBFREETYPE_DIR)/src/pshinter/pshinter.c	\
+-	$(LIBFREETYPE_DIR)/src/psnames/psmodule.c	\
+-	$(LIBFREETYPE_DIR)/src/raster/raster.c		\
+-	$(LIBFREETYPE_DIR)/src/sfnt/sfnt.c		\
+-	$(LIBFREETYPE_DIR)/src/smooth/smooth.c		\
+-	$(LIBFREETYPE_DIR)/src/truetype/truetype.c	\
+-	$(LIBFREETYPE_DIR)/src/type1/type1.c		\
+-	$(LIBFREETYPE_DIR)/src/winfonts/winfnt.c
++LIBFREETYPE_LIB = -lfreetype
++LIBFREETYPE_DIR = /usr/include/freetype2
++LIBFREETYPE_SOURCES =
+ 
+ LIBFREETYPE_OBJS = $(addprefix $(OBJ_DIR)/freetype.,					\
+ 			  $(addsuffix $(OBJ),						\
+@@ -331,38 +310,9 @@
+ ######################################################################
+ # GD Library
+ 
+-LIBGD_LIB = $(OBJ_DIR)/libgd$(LIB_EXT)
+-LIBGD_DIR = third_party/gd
+-LIBGD_SOURCES =					\
+-	$(LIBGD_DIR)/gd				\
+-	$(LIBGD_DIR)/gdfx			\
+-	$(LIBGD_DIR)/gd_security		\
+-	$(LIBGD_DIR)/gd_gd			\
+-	$(LIBGD_DIR)/gd_gd2			\
+-	$(LIBGD_DIR)/gd_io			\
+-	$(LIBGD_DIR)/gd_io_dp			\
+-	$(LIBGD_DIR)/gd_gif_in			\
+-	$(LIBGD_DIR)/gd_gif_out			\
+-	$(LIBGD_DIR)/gd_io_file			\
+-	$(LIBGD_DIR)/gd_io_ss			\
+-	$(LIBGD_DIR)/gd_jpeg			\
+-	$(LIBGD_DIR)/gd_png			\
+-	$(LIBGD_DIR)/gd_ss			\
+-	$(LIBGD_DIR)/gd_topal			\
+-	$(LIBGD_DIR)/gd_wbmp			\
+-	$(LIBGD_DIR)/gdcache			\
+-	$(LIBGD_DIR)/gdfontg			\
+-	$(LIBGD_DIR)/gdfontl			\
+-	$(LIBGD_DIR)/gdfontmb			\
+-	$(LIBGD_DIR)/gdfonts			\
+-	$(LIBGD_DIR)/gdfontt			\
+-	$(LIBGD_DIR)/gdft			\
+-	$(LIBGD_DIR)/gdhelpers			\
+-	$(LIBGD_DIR)/gdkanji			\
+-	$(LIBGD_DIR)/gdtables			\
+-	$(LIBGD_DIR)/gdxpm			\
+-	$(LIBGD_DIR)/wbmp
+-
++LIBGD_LIB = -lgd
++LIBGD_DIR = /usr/include
++LIBGD_SOURCES =	
+ LIBGD_OBJS = $(addprefix $(OBJ_DIR)/gd.,			\
+ 	       $(addsuffix $(OBJ),				\
+ 		 $(notdir $(basename $(LIBGD_SOURCES)))))
+@@ -370,56 +320,9 @@
+ ######################################################################
+ # JPEG
+ 
+-LIBJPEG_LIB = $(OBJ_DIR)/libjpeg$(LIB_EXT)
+-LIBJPEG_DIR = third_party/jpeg
+-LIBJPEG_SOURCES =				\
+-	$(LIBJPEG_DIR)/jcapimin.c		\
+-	$(LIBJPEG_DIR)/jcapistd.c		\
+-	$(LIBJPEG_DIR)/jccoefct.c		\
+-	$(LIBJPEG_DIR)/jccolor.c		\
+-	$(LIBJPEG_DIR)/jcdctmgr.c		\
+-	$(LIBJPEG_DIR)/jchuff.c			\
+-	$(LIBJPEG_DIR)/jcinit.c			\
+-	$(LIBJPEG_DIR)/jcmainct.c		\
+-	$(LIBJPEG_DIR)/jcmarker.c		\
+-	$(LIBJPEG_DIR)/jcmaster.c		\
+-	$(LIBJPEG_DIR)/jcomapi.c		\
+-	$(LIBJPEG_DIR)/jcparam.c		\
+-	$(LIBJPEG_DIR)/jcphuff.c		\
+-	$(LIBJPEG_DIR)/jcprepct.c		\
+-	$(LIBJPEG_DIR)/jcsample.c		\
+-	$(LIBJPEG_DIR)/jctrans.c		\
+-	$(LIBJPEG_DIR)/jdapimin.c		\
+-	$(LIBJPEG_DIR)/jdapistd.c		\
+-	$(LIBJPEG_DIR)/jdatadst.c		\
+-	$(LIBJPEG_DIR)/jdatasrc.c		\
+-	$(LIBJPEG_DIR)/jdcoefct.c		\
+-	$(LIBJPEG_DIR)/jdcolor.c		\
+-	$(LIBJPEG_DIR)/jddctmgr.c		\
+-	$(LIBJPEG_DIR)/jdhuff.c			\
+-	$(LIBJPEG_DIR)/jdinput.c		\
+-	$(LIBJPEG_DIR)/jdmainct.c		\
+-	$(LIBJPEG_DIR)/jdmarker.c		\
+-	$(LIBJPEG_DIR)/jdmaster.c		\
+-	$(LIBJPEG_DIR)/jdmerge.c		\
+-	$(LIBJPEG_DIR)/jdphuff.c		\
+-	$(LIBJPEG_DIR)/jdpostct.c		\
+-	$(LIBJPEG_DIR)/jdsample.c		\
+-	$(LIBJPEG_DIR)/jdtrans.c		\
+-	$(LIBJPEG_DIR)/jerror.c			\
+-	$(LIBJPEG_DIR)/jfdctflt.c		\
+-	$(LIBJPEG_DIR)/jfdctfst.c		\
+-	$(LIBJPEG_DIR)/jfdctint.c		\
+-	$(LIBJPEG_DIR)/jidctflt.c		\
+-	$(LIBJPEG_DIR)/jidctfst.c		\
+-	$(LIBJPEG_DIR)/jidctint.c		\
+-	$(LIBJPEG_DIR)/jidctred.c		\
+-	$(LIBJPEG_DIR)/jmemansi.c		\
+-	$(LIBJPEG_DIR)/jmemmgr.c		\
+-	$(LIBJPEG_DIR)/jquant1.c		\
+-	$(LIBJPEG_DIR)/jquant2.c		\
+-	$(LIBJPEG_DIR)/jutils.c
+-
++LIBJPEG_LIB = -ljpeg
++LIBJPEG_DIR = /usr/include/
++LIBJPEG_SOURCES =
+ LIBJPEG_OBJS = $(addprefix $(OBJ_DIR)/jpeg.,			\
+ 		$(addsuffix $(OBJ),				\
+ 		  $(notdir $(basename $(LIBJPEG_SOURCES)))))
+@@ -427,25 +330,9 @@
+ ######################################################################
+ # LibPNG
+ 
+-LIBPNG_LIB = $(OBJ_DIR)/libpng$(LIB_EXT)
+-LIBPNG_DIR = third_party/libpng
+-LIBPNG_SOURCES =				\
+-	$(LIBPNG_DIR)/png.c			\
+-	$(LIBPNG_DIR)/pngerror.c		\
+-	$(LIBPNG_DIR)/pngget.c			\
+-	$(LIBPNG_DIR)/pngmem.c			\
+-	$(LIBPNG_DIR)/pngpread.c		\
+-	$(LIBPNG_DIR)/pngread.c			\
+-	$(LIBPNG_DIR)/pngrio.c			\
+-	$(LIBPNG_DIR)/pngrtran.c		\
+-	$(LIBPNG_DIR)/pngrutil.c		\
+-	$(LIBPNG_DIR)/pngset.c			\
+-	$(LIBPNG_DIR)/pngtrans.c		\
+-	$(LIBPNG_DIR)/pngwio.c			\
+-	$(LIBPNG_DIR)/pngwrite.c		\
+-	$(LIBPNG_DIR)/pngwtran.c		\
+-	$(LIBPNG_DIR)/pngwutil.c
+-
++LIBPNG_LIB = -lpng
++LIBPNG_DIR = /usr/include
++LIBPNG_SOURCES =
+ LIBPNG_OBJS = $(addprefix $(OBJ_DIR)/png.,			\
+ 		$(addsuffix $(OBJ),				\
+ 		  $(notdir $(basename $(LIBPNG_SOURCES)))))
+@@ -453,22 +340,9 @@
+ ######################################################################
+ # ZLib
+ 
+-ZLIB_LIB = $(OBJ_DIR)/libzlib$(LIB_EXT)
+-ZLIB_DIR = third_party/zlib
+-ZLIB_SOURCES =					\
+-	$(ZLIB_DIR)/adler32.c			\
+-	$(ZLIB_DIR)/compress.c			\
+-	$(ZLIB_DIR)/crc32.c			\
+-	$(ZLIB_DIR)/deflate.c			\
+-	$(ZLIB_DIR)/gzio.c			\
+-	$(ZLIB_DIR)/infback.c			\
+-	$(ZLIB_DIR)/inffast.c			\
+-	$(ZLIB_DIR)/inflate.c			\
+-	$(ZLIB_DIR)/inftrees.c			\
+-	$(ZLIB_DIR)/trees.c			\
+-	$(ZLIB_DIR)/uncompr.c			\
+-	$(ZLIB_DIR)/zutil.c
+-
++ZLIB_LIB = -lz
++ZLIB_DIR = /usr/include
++ZLIB_SOURCES =
+ ZLIB_OBJS = $(addprefix $(OBJ_DIR)/zlib.,		\
+ 	      $(addsuffix $(OBJ),			\
+ 		$(notdir $(basename $(ZLIB_SOURCES)))))
+Index: ase-0.8.2/src/file/jpeg_format.cpp
+===================================================================
+--- ase-0.8.2.orig/src/file/jpeg_format.cpp	2011-06-23 16:32:21.808567069 +0200
++++ ase-0.8.2/src/file/jpeg_format.cpp	2011-06-23 16:32:27.458567069 +0200
+@@ -32,7 +32,9 @@
+ #include "modules/gui.h"
+ #include "raster/raster.h"
+ 
++extern "C" {
+ #include "jpeglib.h"
++}
+ 
+ static bool load_JPEG(FileOp *fop);
+ static bool save_JPEG(FileOp *fop);
