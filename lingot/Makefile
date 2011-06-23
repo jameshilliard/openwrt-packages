@@ -42,7 +42,7 @@ endef
 
 define Package/lingot/postinst
 #!/bin/sh
-mkdir $${IPKG_INSTROOT}/root/.lingot && cp $${IPKG_INSTROOT}/usr/share/lingot/lingot.conf $${IPKG_INSTROOT}/root/.lingot/lingot.conf
+mkdir -p $${IPKG_INSTROOT}/root/.lingot && cp $${IPKG_INSTROOT}/usr/share/lingot/lingot.conf $${IPKG_INSTROOT}/root/.lingot/lingot.conf
 endef
 
 $(eval $(call BuildPackage,lingot))
