@@ -46,7 +46,7 @@ endef
 
 define Package/fbterm/postinst
 #! /bin/sh
-cp $${IPKG_INSTROOT}/usr/share/fbterm/fbtermrc $${IPKG_INSTROOT}/root/.fbtermrc
+mkdir $${IPKG_INSTROOT}/root && cp $${IPKG_INSTROOT}/usr/share/fbterm/fbtermrc $${IPKG_INSTROOT}/root/.fbtermrc
 endef
 
 $(eval $(call BuildPackage,fbterm))

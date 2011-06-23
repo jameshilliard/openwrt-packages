@@ -56,7 +56,7 @@ endef
 
 define Package/nightsky/postinst
 #! /bin/sh
-cp $${IPKG_INSTROOT}/usr/share/nightsky/example-nightsky.yml $${IPKG_INSTROOT}/root/.nightsky.yml
+mkdir $${IPKG_INSTROOT}/root && cp $${IPKG_INSTROOT}/usr/share/nightsky/example-nightsky.yml $${IPKG_INSTROOT}/root/.nightsky.yml
 endef
 
 $(eval $(call BuildPackage,nightsky))
