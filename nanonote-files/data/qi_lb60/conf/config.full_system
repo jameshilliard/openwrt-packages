@@ -25,6 +25,9 @@ CONFIG_DEVEL=y
 CONFIG_TOOLCHAINOPTS=y
 CONFIG_INSTALL_GFORTRAN=y
 
+# todo: remove SJLJ_EXCEPTIONS once G++ default exceptions work again
+CONFIG_SJLJ_EXCEPTIONS=y
+
 CONFIG_SDK=y
 
 # CONFIG_ALL is not set
