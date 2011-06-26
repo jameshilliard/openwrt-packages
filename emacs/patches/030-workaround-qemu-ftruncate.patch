@@ -1,0 +1,15 @@
+Index: emacs-23.2/src/unexelf.c
+===================================================================
+--- emacs-23.2.orig/src/unexelf.c	2011-06-26 09:58:31.000000000 +0200
++++ emacs-23.2/src/unexelf.c	2011-06-26 10:00:40.000000000 +0200
+@@ -827,7 +827,9 @@
+ 
+   new_file_size = stat_buf.st_size + old_file_h->e_shentsize + new_data2_incr;
+ 
+-  if (ftruncate (new_file, new_file_size))
++  /* this gives an error code when run via Qemu userspace emulation,
++     just ignoring the result code seems to fix the problem. */
++  if (ftruncate (new_file, new_file_size) && 0)
+     fatal ("Can't ftruncate (%s): errno %d\n", new_name, errno);
+ 
+   new_base = mmap (NULL, new_file_size, PROT_READ | PROT_WRITE,

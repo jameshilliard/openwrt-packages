@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=emacs
 PKG_VERSION:=23.2
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/pub/gnu/emacs/ \
 	@GNU/emacs/
@@ -17,10 +17,13 @@ PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/pub/gnu/emacs/ \
 PKG_MD5SUM:=b6691852dae0bc142b3c12749f6b7ade
 PKG_INSTALL:=1
 
+PKG_BUILD_PARALLEL:=1
+HOST_BUILD_PARALLEL:=1
+
 PKG_FIXUP:=libtool
 PKG_REMOVE_FILES:=
 
-PKG_BUILD_DEPENDS:= emacs/host 
+PKG_BUILD_DEPENDS:= emacs/host
 
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
@@ -86,6 +89,8 @@ $(call Package/emacs/Default/description)
  C-h f in case provided documentation of an Emacs function is insufficient.
 endef
 
+DUMP_EMACS=1
+
 EMACS_STRIPTEASE_ARGS = \
 	--without-x \
 	--without-xpm \
@@ -102,19 +107,50 @@ EMACS_STRIPTEASE_ARGS = \
 
 HOST_CONFIGURE_ARGS += $(EMACS_STRIPTEASE_ARGS)
 CONFIGURE_ARGS += $(EMACS_STRIPTEASE_ARGS)
-MAKE_FLAGS += "LD=$(TARGET_CROSS)gcc" 
 
 ## Don't try that: lowering PURESIZE makes Emacs' RAM usage explode!  Maybe
 ## something about Elisp garbage collection!?
 #TARGET_CPPFLAGS += -DPURESIZE=16
 
-## Keep emacs build system from doing all kinds nasty tricks that won't work
-## (well) with openwrt and uclibc.  Especially keep it from attempting to
-## manually configure crt* startup file linking.  We won't be able to 'dump'
-## during cross-compile anyway.  Dumping inside the target system seems not
-## possible due to lack of RAM.  Note that we also need to sanitize the
-## Makefile using 'sed' below.
-TARGET_CPPFLAGS += -DCANNOT_DUMP -DNO_REMAP -DORDINARY_LINK
+# sed-script to apply to src/Makefile of emacs sources.  more commands
+# appended below
+EMACS_MAKEFILE_SED = ;
+
+# sed-script to apply to src/epaths.h, commands appended below
+EMACS_EPATHS_SED = ;
+
+## when DUMP_EMACS is unset, we keep emacs build system from doing all
+## kinds nasty tricks that won't work (well) with openwrt and uclibc.
+## Especially keep it from attempting to manually configure crt* startup file
+## linking.  We won't be able to 'dump' during cross-compile anyway.  Dumping
+## inside the target system seems not possible due to lack of RAM.  Note that
+## we also need to sanitize the Makefile using 'sed' below.
+ifeq ($(DUMP_EMACS),)
+	MAKE_FLAGS += "LD=$(TARGET_CROSS)gcc" 
+	TARGET_CPPFLAGS += -DCANNOT_DUMP -DNO_REMAP -DORDINARY_LINK
+	EMACS_MAKEFILE_SED += ; s;\(TEMACS_LDFLAGS\|STARTFILES\) =.*;\1 =;
+	EMACS_MAKEFILE_SED += ; s; /usr/lib/crt[^ ]\+; ;g
+	EMACS_EPATHS_SED += ; s;\(\#.*PATH_DUMPLOADSEARCH\).*$$$$;\1 PATH_LOADSEARCH;
+        define emacs_perform_dump
+	  $(CP) $(PKG_BUILD_DIR)/src/temacs $(PKG_BUILD_DIR)/src/emacs
+        endef
+else
+	MAKE_FLAGS += LD="$(TARGET_CROSS)gcc -nostdlib"
+	TARGET_CPPFLAGS +=
+        # warning: on backfile it'd be $(TOOLCHAIN_DIR)/usr/lib
+	EMACS_MAKEFILE_SED += ; s; /usr/lib/crt\([^ ]\+\); $(TOOLCHAIN_DIR)/lib/crt\1;g
+
+	PKG_BUILD_DEPENDS += +qemu-host/host
+
+        define emacs_perform_dump
+	  $(SED) \
+	    's/(member (nth 3 command-line-args) .("dump" "bootstrap"))/t/g' \
+	     $(PKG_BUILD_DIR)/lisp/loadup.el
+	  cd $(PKG_BUILD_DIR)/src && \
+	  $(STAGING_DIR_HOST)/bin/qemu-$(ARCH) -E LD_LIBRARY_PATH=$(STAGING_DIR_ROOT)/usr/lib/ \
+		-L $(STAGING_DIR_ROOT) -E LC_ALL=C ./temacs -batch -l loadup 
+        endef
+endif
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
@@ -145,12 +181,10 @@ define Build/Compile
 	$(call Build/Compile/Default, -C lib-src -o test-distrib)
 	ln -sf $(STAGING_DIR_HOST)/bin/emacs-make-docfile $(PKG_BUILD_DIR)/lib-src/make-docfile
 	ln -sf $(STAGING_DIR_HOST)/bin/emacs-prefix-args $(PKG_BUILD_DIR)/src/prefix-args
-	sed -ie 's;\(TEMACS_LDFLAGS\|STARTFILES\) =.*;\1 =;' $(PKG_BUILD_DIR)/src/Makefile
-#	sed -ie 's; /usr/lib/crt[^ ]\+; $(TOOLCHAIN_DIR)/usr/lib/crt;g' $(PKG_BUILD_DIR)/src/Makefile
-	sed -ie 's; /usr/lib/crt[^ ]\+; ;g' $(PKG_BUILD_DIR)/src/Makefile
-	sed -ie 's;\(#.*PATH_DUMPLOADSEARCH\).*$$$$;\1 PATH_LOADSEARCH;' $(PKG_BUILD_DIR)/src/epaths.h
+	$(SED) '$(EMACS_MAKEFILE_SED)' $(PKG_BUILD_DIR)/src/Makefile
+	$(SED) '$(EMACS_EPATHS_SED)' $(PKG_BUILD_DIR)/src/epaths.h
 	$(call Build/Compile/Default, -C src -o lib-src -o prefix-args -o ../lib-src/make-docfile temacs ../etc/DOC)
-	cp -v $(PKG_BUILD_DIR)/src/temacs $(PKG_BUILD_DIR)/src/emacs
+	$(call emacs_perform_dump)
 	$(call Build/Compile/Default, -C lisp EMACS=$(STAGING_DIR_HOST)/bin/emacs)
 	$(call Build/Compile/Default, -C leim BUILT-EMACS=$(STAGING_DIR_HOST)/bin/emacs)
 endef
