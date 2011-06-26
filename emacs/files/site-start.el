@@ -23,3 +23,8 @@
 ;; For some reason emacs 23.2 does not come with colored comments by default
 ;; we fix this here (todo: chose a better color?)
 (set-face-foreground 'font-lock-comment-face "blue")
+
+;; f11/f12 are the volume keys on Ben NonoNote.  Use them as a replacement for
+;; PgUp/PgDown
+(global-set-key [f11] 'scroll-down)
+(global-set-key [f12] 'scroll-up) 
