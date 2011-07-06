@@ -30,6 +30,11 @@ IEEE 802.15.4-2006) compatibility.
 If you want to learn more, please go to http://linux-zigbee.sf.net/
 endef
 
+define Build/InstallDev
+	$(INSTALL_DIR) $(1)/usr/include
+	$(CP) $(PKG_BUILD_DIR)/include/ieee802154.h $(1)/usr/include
+endef
+
 define Package/lowpan-tools/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/{iz,izattach,izchat,izcoordinator} $(1)/usr/sbin/
