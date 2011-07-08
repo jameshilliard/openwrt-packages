@@ -1,0 +1,92 @@
+From 3f16ee03c97f63e4f00142a356fd4f968a490c62 Mon Sep 17 00:00:00 2001
+From: Joshua Judson Rosen <rozzin@geekspace.com>
+Date: Wed, 27 Apr 2011 00:46:39 -0400
+Subject: [PATCH 13/17] Provide a "./configure --disable-latin1" option
+ for environments where UTF-8 is native and Latin-1 doesn't exist.
+
+---
+ config.h.in  |    3 +++
+ configure.ac |    9 +++++++++
+ util.c       |    2 ++
+ util.h       |    7 +++++++
+ 4 files changed, 21 insertions(+), 0 deletions(-)
+
+diff --git a/config.h.in b/config.h.in
+index 8833d6c..143620f 100644
+--- a/config.h.in
++++ b/config.h.in
+@@ -1,5 +1,8 @@
+ /* config.h.in.  Generated from configure.ac by autoheader.  */
+ 
++/* Assume tag-strings are encoded in Latin-1 */
++#undef ASSUME_LATIN1
++
+ /* Define to 1 if translation of program messages to the user's native
+    language is requested. */
+ #undef ENABLE_NLS
+diff --git a/configure.ac b/configure.ac
+index 462350f..68155ec 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -38,6 +38,15 @@ if test "$enable_audclient" = "yes"; then
+   PKG_CHECK_MODULES([AUDACIOUS], [audacious])
+ fi
+ 
++AC_ARG_ENABLE([latin1],
++              AS_HELP_STRING([--disable-latin1],
++                             [Disable handling of tags encoded in Latin-1, and assume tags are UTF-8 encoded.]),
++              [assume_latin1=$enableval],
++              [assume_latin1="yes"])
++if test "$assume_latin1" = "yes"; then
++  AC_DEFINE([ASSUME_LATIN1], [1], [Assume tag-strings are encoded in Latin-1])
++fi
++
+ dnl Check for language stuff
+ AM_GNU_GETTEXT([external])
+ AM_GNU_GETTEXT_VERSION([0.18.1])
+diff --git a/util.c b/util.c
+index d5d7160..6b57e5b 100644
+--- a/util.c
++++ b/util.c
+@@ -50,6 +50,7 @@ gjay_dlsym(void *handle, const char const *func_name)
+ /**
+  * Duplicate a string from one encoding to another
+  */
++#ifdef ASSUME_LATIN1
+ gchar * strdup_convert ( const gchar * str, 
+                          const gchar * enc_to, 
+                          const gchar * enc_from ) {
+@@ -68,6 +69,7 @@ gchar * strdup_convert ( const gchar * str,
+     }
+     return conv;
+ }
++#endif /* ASSUME_LATIN1 */
+ 
+ /**
+  * Implement strtof, except make it locale agnostic w/r/t whether a
+diff --git a/util.h b/util.h
+index f422275..24c2170 100644
+--- a/util.h
++++ b/util.h
+@@ -21,11 +21,18 @@
+ #include <glib.h>
+ 
+ void * gjay_dlsym(void *handle, const char const *func_name);
++
+ #define strdup_to_utf8(str)   (strdup_convert(str, "UTF8", "LATIN1"))
+ #define strdup_to_latin1(str) (strdup_convert(str, "LATIN1", "UTF8"))
++
++#ifdef ASSUME_LATIN1
+ gchar * strdup_convert        ( const gchar * str, 
+                                 const gchar * enc_to, 
+                                 const gchar * enc_from );
++#else
++#define strdup_convert(str, enc_to, enc_from)	(g_strdup(str))
++#endif /* ASSUME_LATIN1 */
++
+ float   strtof_gjay           ( const char * nptr,
+                                 char ** endptr);
+ 
+-- 
+1.7.2.5
+

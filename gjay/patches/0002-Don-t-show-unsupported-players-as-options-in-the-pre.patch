@@ -1,0 +1,26 @@
+From 773e924a54ca8f870cc471442c6b4d6c51bafcc0 Mon Sep 17 00:00:00 2001
+From: Joshua Judson Rosen <rozzin@geekspace.com>
+Date: Tue, 26 Apr 2011 21:37:50 -0400
+Subject: [PATCH 02/17] Don't show unsupported players as options in the preferences GUI.
+
+---
+ prefs.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/prefs.c b/prefs.c
+index 844a61d..33a6016 100644
+--- a/prefs.c
++++ b/prefs.c
+@@ -123,7 +123,9 @@ const char *music_player_names[] =
+ {
+   "None",
+   "Audacious",
++#ifdef WITH_MPDCLIENT
+   "MPD",
++#endif
+   NULL
+ };
+ 
+-- 
+1.7.2.5
+

@@ -1,0 +1,23 @@
+From a52792ae17ad9dfa392a4fe2588c3c526b0b06d5 Mon Sep 17 00:00:00 2001
+From: Joshua Judson Rosen <rozzin@geekspace.com>
+Date: Wed, 27 Apr 2011 00:25:37 -0400
+Subject: [PATCH 09/17] Distribute autogen.sh
+ in case someone needs to patch configure.ac, etc. before building.
+
+---
+ Makefile.am |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 43660a9..9b1a5f4 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -23,4 +23,4 @@ gjay_SOURCES = gjay.h songs.h prefs.h ui.h rgbhsv.h analysis.h playlist.h \
+ 
+ ACLOCAL_AMFLAGS = -I m4
+ 
+-EXTRA_DIST = config.rpath m4/ChangeLog
++EXTRA_DIST = config.rpath m4/ChangeLog autogen.sh
+-- 
+1.7.2.5
+

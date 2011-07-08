@@ -1,0 +1,30 @@
+From 5edd4a7b95c5be05ffe72ae6452e94ffa14bc5e5 Mon Sep 17 00:00:00 2001
+From: Joshua Judson Rosen <rozzin@geekspace.com>
+Date: Thu, 12 May 2011 22:18:15 -0400
+Subject: [PATCH 14/17] Use file_depth() rather than file_iter_depth() in explore_files_depth_distance().
+ The numbers end up the same here, but file_depth() is usable even when running without the GUI (e.g.: "gjay --playlist").
+
+---
+ ui_explore_view.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/ui_explore_view.c b/ui_explore_view.c
+index 413675d..d99eab2 100644
+--- a/ui_explore_view.c
++++ b/ui_explore_view.c
+@@ -658,9 +658,9 @@ gint explore_files_depth_distance ( char * file1,
+         k--;
+     /* Replace slash with null termination */
+     buffer[k] = '\0';
+-    f1 = file_iter_depth(file1);
+-    f2 = file_iter_depth(file2);
+-    shared = file_iter_depth(buffer) + 1;
++    f1 = file_depth(file1);
++    f2 = file_depth(file2);
++    shared = file_depth(buffer) + 1;
+ 
+     if (f1 && f2 && shared) 
+         return ((f1 - shared) + (f2 - shared));
+-- 
+1.7.2.5
+

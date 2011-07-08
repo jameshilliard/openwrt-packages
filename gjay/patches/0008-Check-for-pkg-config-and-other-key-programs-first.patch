@@ -1,0 +1,41 @@
+From 48f75a95a05d778509381783da1b44d1049c65e1 Mon Sep 17 00:00:00 2001
+From: Joshua Judson Rosen <rozzin@geekspace.com>
+Date: Wed, 27 Apr 2011 00:23:29 -0400
+Subject: [PATCH 08/17] Check for pkg-config and other key programs first.
+ Otherwise, checks that *use* them may fail mysteriously.
+
+---
+ configure.ac |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index ad72ece..cd90750 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -7,6 +7,11 @@ AC_CONFIG_SRCDIR([gjay.h])
+ AC_CONFIG_HEADERS([config.h])
+ AM_INIT_AUTOMAKE([1.10])
+ 
++# Checks for programs.
++AC_PROG_CC
++AC_PROG_INSTALL
++PKG_PROG_PKG_CONFIG
++
+ dnl Options
+ # Don't require D-Bus unless building a component that needs it:
+ enable_dbus=no
+@@ -33,11 +38,6 @@ if test "$enable_audclient" = "yes"; then
+   PKG_CHECK_MODULES([AUDACIOUS], [audacious])
+ fi
+ 
+-# Checks for programs.
+-AC_PROG_CC
+-AC_PROG_INSTALL
+-PKG_PROG_PKG_CONFIG
+-
+ dnl Check for language stuff
+ AM_GNU_GETTEXT([external])
+ AM_GNU_GETTEXT_VERSION([0.18.1])
+-- 
+1.7.2.5
+

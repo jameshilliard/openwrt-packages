@@ -1,0 +1,89 @@
+From 925908b925a9008a3da36d222874d2b66c9fe6f7 Mon Sep 17 00:00:00 2001
+From: Joshua Judson Rosen <rozzin@geekspace.com>
+Date: Fri, 13 May 2011 21:32:04 -0400
+Subject: [PATCH 15/17] Move file_depth() to util.c and make it public.
+ It's useful beyond the scope of ui_explore_view....
+
+---
+ ui_explore_view.c |   17 ++---------------
+ util.c            |   13 +++++++++++++
+ util.h            |    2 ++
+ 3 files changed, 17 insertions(+), 15 deletions(-)
+
+diff --git a/ui_explore_view.c b/ui_explore_view.c
+index d99eab2..38f6c62 100644
+--- a/ui_explore_view.c
++++ b/ui_explore_view.c
+@@ -29,6 +29,7 @@
+ #include "gjay.h"
+ #include "ui.h"
+ #include "ipc.h"
++#include "util.h"
+ 
+ 
+ enum
+@@ -80,7 +81,7 @@ static int    get_iter_path   ( GtkTreeModel *tree_model,
+                                 char * buffer,
+                                 gboolean is_start );
+ static int    file_iter_depth ( char * file );
+-static int    file_depth      ( char * file );
++
+ static gint   explore_animate ( gpointer data );
+ static void   explore_mark_new_dirs ( char * dir );
+ static gint   iter_sort_strcmp ( GtkTreeModel *model,
+@@ -628,20 +629,6 @@ static int file_iter_depth ( char * file ) {
+     return depth;
+ }
+ 
+-/* Get the depth by counting the number of non-terminal '/' in the path */
+-static int file_depth ( char * file ) {
+-    int len, kk, depth;
+-    
+-    len = strlen(file);
+-    if (len)
+-        len--; // Avoid ending '/'
+-    for (kk = 0, depth = 0; kk < len; kk++) {
+-        if (file[kk] == '/')
+-            depth++;
+-    }
+-    return depth;
+-}
+-
+ 
+ 
+ /* How many directory steps separate files 1 and 2? */
+diff --git a/util.c b/util.c
+index 6b57e5b..00db2d8 100644
+--- a/util.c
++++ b/util.c
+@@ -96,3 +96,16 @@ float strtof_gjay ( const char *nptr, char **endptr) {
+     return result;
+ }
+ 
++/* Get the depth by counting the number of non-terminal '/' in the path */
++int file_depth ( char * file ) {
++    int len, kk, depth;
++    
++    len = strlen(file);
++    if (len)
++        len--; // Avoid ending '/'
++    for (kk = 0, depth = 0; kk < len; kk++) {
++        if (file[kk] == '/')
++            depth++;
++    }
++    return depth;
++}
+diff --git a/util.h b/util.h
+index 24c2170..b9fc7fd 100644
+--- a/util.h
++++ b/util.h
+@@ -36,4 +36,6 @@ gchar * strdup_convert        ( const gchar * str,
+ float   strtof_gjay           ( const char * nptr,
+                                 char ** endptr);
+ 
++int     file_depth            ( char * file );
++
+ #endif /* UTIL_H */
+-- 
+1.7.2.5
+

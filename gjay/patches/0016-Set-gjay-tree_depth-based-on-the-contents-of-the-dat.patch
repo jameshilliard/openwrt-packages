@@ -1,0 +1,39 @@
+From b6a3fef3df001aecb3ae8627de52bd0979bc42d8 Mon Sep 17 00:00:00 2001
+From: Joshua Judson Rosen <rozzin@geekspace.com>
+Date: Fri, 13 May 2011 21:32:29 -0400
+Subject: [PATCH 16/17] Set gjay->tree_depth based on the contents of the database during load
+ so that it's available even when running without the GUI.
+
+---
+ songs.c |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
+
+diff --git a/songs.c b/songs.c
+index ea95d36..2fe010e 100644
+--- a/songs.c
++++ b/songs.c
+@@ -37,6 +37,7 @@
+ #include "flac.h"
+ #include "ui.h"
+ #include "i18n.h"
++#include "util.h"
+ 
+ 
+ typedef enum {
+@@ -646,6 +647,13 @@ void data_start_element  (GMarkupParseContext *context,
+             switch(get_element((char *) attribute_names[k])) {
+             case E_PATH:
+                 path = (gchar *) attribute_values[k];
++                {
++                    int depth = file_depth(path) - 1
++                                - file_depth(gjay->prefs->song_root_dir);
++                    if (depth > gjay->tree_depth) {
++                        gjay->tree_depth = depth;
++                    }
++                }
+                 break;
+             case E_REPEATS:
+                 repeat_path = (gchar *) attribute_values[k];
+-- 
+1.7.2.5
+

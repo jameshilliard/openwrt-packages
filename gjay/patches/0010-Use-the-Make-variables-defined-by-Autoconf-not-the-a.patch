@@ -1,0 +1,27 @@
+From 5d548f4c49466df8928a108a4e864fd9372139b2 Mon Sep 17 00:00:00 2001
+From: Joshua Judson Rosen <rozzin@geekspace.com>
+Date: Wed, 27 Apr 2011 00:26:04 -0400
+Subject: [PATCH 10/17] Use the *Make* variables defined by Autoconf, not the autoconf variables themselves.
+
+---
+ Makefile.am |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 9b1a5f4..0d22faf 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -3,8 +3,8 @@ SUBDIRS = po doc icons
+ 
+ bin_PROGRAMS = gjay
+ 
+-gjay_LDADD = @GTK_LIBS@ @DBUS_GLIB_LIBS@ @GSL_LIBS@
+-AM_CFLAGS = -Wall @GTK_CFLAGS@ @DBUS_GLIB_CFLAGS@ @GSL_CFLAGS@
++gjay_LDADD = $(GTK_LIBS) $(DBUS_GLIB_LIBS) $(GSL_LIBS)
++AM_CFLAGS = -Wall $(GTK_CFLAGS) $(DBUS_GLIB_CFLAGS) $(GSL_CFLAGS)
+ 
+ gjay_SOURCES = gjay.h songs.h prefs.h ui.h rgbhsv.h analysis.h playlist.h \
+ 							 ipc.h constants.h vorbis.h mp3.h flac.h i18n.h \
+-- 
+1.7.2.5
+

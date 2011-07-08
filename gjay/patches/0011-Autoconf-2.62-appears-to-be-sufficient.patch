@@ -1,0 +1,26 @@
+From 550cb1bd232a1611daa90ab83f1440fb02df5f77 Mon Sep 17 00:00:00 2001
+From: Joshua Judson Rosen <rozzin@geekspace.com>
+Date: Wed, 27 Apr 2011 00:26:44 -0400
+Subject: [PATCH 11/17] Autoconf 2.62 appears to be sufficient.
+ It's also what OpenWRT is shipping right now--and what Qi Hardware is using for their Ben NanoNote environment.
+
+---
+ configure.ac |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index cd90750..462350f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1,7 +1,7 @@
+ #                                               -*- Autoconf -*-
+ # Process this file with autoconf to produce a configure script.
+ 
+-AC_PREREQ([2.67])
++AC_PREREQ([2.62])
+ AC_INIT([gjay],[0.3.2],[csmall@enc.com.au])
+ AC_CONFIG_SRCDIR([gjay.h])
+ AC_CONFIG_HEADERS([config.h])
+-- 
+1.7.2.5
+

@@ -1,0 +1,127 @@
+From c52d500e6834815d4425b376f66895eb9e517896 Mon Sep 17 00:00:00 2001
+From: Joshua Judson Rosen <rozzin@geekspace.com>
+Date: Wed, 27 Apr 2011 00:32:27 -0400
+Subject: [PATCH 12/17] Don't show the `Music Player: ...' combo-box unless multiple choices are actually available.
+
+---
+ ui_prefs_view.c |   72 +++++++++++++++++++++++++++++++++++--------------------
+ 1 files changed, 46 insertions(+), 26 deletions(-)
+
+diff --git a/ui_prefs_view.c b/ui_prefs_view.c
+index e65981c..90e025d 100644
+--- a/ui_prefs_view.c
++++ b/ui_prefs_view.c
+@@ -73,6 +73,7 @@ GtkWidget * make_prefs_window ( void )
+   GtkWidget * hseparator, * hbox1, *max_working_set_entry, *table;
+   char buffer[BUFFER_SIZE];
+   int i;
++  int table_row = 0;
+ 
+   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+   gtk_window_set_title(GTK_WINDOW(window), _("GJay Preferences"));
+@@ -88,31 +89,44 @@ GtkWidget * make_prefs_window ( void )
+     gtk_label_set_markup(GTK_LABEL(label),_("<b>General</b>"));
+     gtk_box_pack_start(GTK_BOX(vbox2), label, TRUE, TRUE, 0);
+ 
+-  table = gtk_table_new(3,2,TRUE);
+-  gtk_box_pack_start(GTK_BOX(vbox1), table, TRUE, TRUE, 2);
++    table = gtk_table_new(2, 2, TRUE);
++    gtk_box_pack_start(GTK_BOX(vbox1), table, TRUE, TRUE, 2);
++  
++  if (music_player_names[1] != NULL) {
++    /* There's always, at least, the "None" player.
++       If there are also other plays beyond that,
++       present the user with a menu.
++     */
++
++    /* Make room in the table for this row: */
++    gtk_table_resize(table, 3, 2);
++
++    /* Player selection combo box */
++    label = gtk_label_new(_("Music Player:"));
++  
++    player_cbox = gtk_combo_box_new_text();
++    i=0;
++    while (music_player_names[i] != NULL)
++    {
++      gtk_combo_box_append_text(GTK_COMBO_BOX(player_cbox), music_player_names[i]);
++      i++;
++    }
++    gtk_combo_box_set_active(GTK_COMBO_BOX(player_cbox), gjay->prefs->music_player);
+ 
+-  /* Player selection combo box */
+-  label = gtk_label_new(_("Music Player:"));
++    alignment = gtk_alignment_new(0, 0, 0, 0);
++    gtk_container_add(GTK_CONTAINER(alignment), label);
++    gtk_table_attach(GTK_TABLE(table), alignment,
++        0, 1, table_row, table_row+1,
++        (GTK_EXPAND|GTK_FILL),(GTK_EXPAND|GTK_FILL),6,0);
++    table_row++;
++    alignment = gtk_alignment_new(0, 0, 0, 0);
+ 
+-  player_cbox = gtk_combo_box_new_text();
+-  i=0;
+-  while (music_player_names[i] != NULL)
+-  {
+-    gtk_combo_box_append_text(GTK_COMBO_BOX(player_cbox), music_player_names[i]);
+-    i++;
++    gtk_container_add(GTK_CONTAINER(alignment), player_cbox);
++    gtk_table_attach(GTK_TABLE(table), alignment, 1, 2, 0, 1,
++        (GTK_EXPAND|GTK_FILL),(GTK_EXPAND|GTK_FILL),6,0);
++    g_signal_connect (G_OBJECT (player_cbox), "changed",
++                      G_CALLBACK (player_combo_box_changed), NULL);
+   }
+-  gtk_combo_box_set_active(GTK_COMBO_BOX(player_cbox), gjay->prefs->music_player);
+-
+-  alignment = gtk_alignment_new(0, 0, 0, 0);
+-  gtk_container_add(GTK_CONTAINER(alignment), label);
+-  gtk_table_attach(GTK_TABLE(table), alignment, 0, 1, 0, 1,
+-      (GTK_EXPAND|GTK_FILL),(GTK_EXPAND|GTK_FILL),6,0);
+-  alignment = gtk_alignment_new(0, 0, 0, 0);
+-  gtk_container_add(GTK_CONTAINER(alignment), player_cbox);
+-  gtk_table_attach(GTK_TABLE(table), alignment, 1, 2, 0, 1,
+-      (GTK_EXPAND|GTK_FILL),(GTK_EXPAND|GTK_FILL),6,0);
+-  g_signal_connect (G_OBJECT (player_cbox), "changed",
+-                    G_CALLBACK (player_combo_box_changed), NULL);
+ 
+     /* Song Ratings checkbox */
+     label = gtk_label_new(_("Use song ratings"));
+@@ -125,12 +139,15 @@ GtkWidget * make_prefs_window ( void )
+ 
+     alignment = gtk_alignment_new(0, 0, 0, 0);
+     gtk_container_add(GTK_CONTAINER(alignment), label);
+-    gtk_table_attach(GTK_TABLE(table), alignment, 0, 1, 1, 2,
++    gtk_table_attach(GTK_TABLE(table), alignment,
++        0, 1, table_row, table_row+1,
+         (GTK_EXPAND|GTK_FILL),(GTK_EXPAND|GTK_FILL),6,0);
+     alignment = gtk_alignment_new(0, 0, 0, 0);
+     gtk_container_add(GTK_CONTAINER(alignment), button);
+-    gtk_table_attach(GTK_TABLE(table), alignment, 1, 2, 1, 2,
++    gtk_table_attach(GTK_TABLE(table), alignment,
++        1, 2, table_row, table_row+1,
+         (GTK_EXPAND|GTK_FILL),(GTK_EXPAND|GTK_FILL),6,0);
++    table_row++;
+ 
+     /* Maximum working set box */
+     label = gtk_label_new(_("Max working set"));
+@@ -147,12 +164,15 @@ GtkWidget * make_prefs_window ( void )
+ 
+     alignment = gtk_alignment_new(0, 0, 0, 0);
+     gtk_container_add(GTK_CONTAINER(alignment), label);
+-    gtk_table_attach(GTK_TABLE(table), alignment, 0, 1, 2, 3,
++    gtk_table_attach(GTK_TABLE(table), alignment,
++        0, 1, table_row, table_row+1,
+         (GTK_EXPAND|GTK_FILL),(GTK_EXPAND|GTK_FILL),6,0);
+     alignment = gtk_alignment_new(0, 0, 0, 0);
+     gtk_container_add(GTK_CONTAINER(alignment), max_working_set_entry);
+-    gtk_table_attach(GTK_TABLE(table), alignment, 1, 2, 2, 3,
++    gtk_table_attach(GTK_TABLE(table), alignment,
++        1, 2, table_row, table_row+1,
+         (GTK_EXPAND|GTK_FILL),(GTK_EXPAND|GTK_FILL),6,0);
++    table_row++;
+ 
+     hseparator = gtk_hseparator_new();
+     gtk_box_pack_start(GTK_BOX(vbox1), hseparator, TRUE, TRUE, 2);
+-- 
+1.7.2.5
+

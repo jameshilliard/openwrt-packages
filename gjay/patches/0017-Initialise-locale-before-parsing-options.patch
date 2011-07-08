@@ -1,0 +1,25 @@
+From 0a8f8397c09538b7e583f07960046913f6461579 Mon Sep 17 00:00:00 2001
+From: Joshua Judson Rosen <rozzin@geekspace.com>
+Date: Fri, 13 May 2011 21:34:34 -0400
+Subject: [PATCH 17/17] Initialise locale before parsing options
+  to enable, for example, handling of localised filenames passed to the "--file" and "--analyze-standalone" options.
+
+---
+ gjay.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/gjay.c b/gjay.c
+index 205065e..ea1dc84 100644
+--- a/gjay.c
++++ b/gjay.c
+@@ -130,6 +130,7 @@ parse_commandline(int *argc_p, char ***argv_p, guint *playlist_minutes, gboolean
+ /*  if (gtk_init_check(&argc, &argv))
+   g_option_context_add_group (context, gtk_get_option_group (TRUE));*/
+   error = NULL;
++  gtk_set_locale();
+   if (!g_option_context_parse (context, argc_p, argv_p, &error))
+   {
+     g_print (_("option parsing failed: %s\n"), error->message);
+-- 
+1.7.2.5
+

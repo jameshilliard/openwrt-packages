@@ -1,0 +1,35 @@
+From bf07d7e3771166d0913e005b6835f534a302741e Mon Sep 17 00:00:00 2001
+From: Joshua Judson Rosen <rozzin@geekspace.com>
+Date: Tue, 26 Apr 2011 23:15:35 -0400
+Subject: [PATCH 07/17] Use pkg-config to check for libraries wherever possible.
+ Some embedded environments ship pkg-config files but not the `*-config' scripts, so this should be more portable.
+
+---
+ configure.ac |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 62273bd..ad72ece 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -43,14 +43,15 @@ AM_GNU_GETTEXT([external])
+ AM_GNU_GETTEXT_VERSION([0.18.1])
+ 
+ # Checks for libraries.
+-AM_PATH_GTK_2_0
++PKG_CHECK_MODULES([GTK], [gtk+-2.0])
+ 
+ if test "$enable_dbus" = "yes"; then
+   AC_DEFINE([WITH_DBUSGLIB], [1], [Build with dbus-glib])
+   PKG_CHECK_MODULES([DBUS_GLIB], [dbus-glib-1])
+ fi
+ 
+-AX_PATH_GSL
++PKG_CHECK_MODULES([GSL], [gsl])
++
+ dnl AC_CHECK_LIB([audclient], [audacious_remote_playlist])
+ AC_CHECK_LIB([dl], [dlopen])
+ 
+-- 
+1.7.2.5
+
