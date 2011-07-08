@@ -25,7 +25,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/ibrcommon
   SECTION:=libs
   CATEGORY:=Libraries
-  DEPENDS:=+libstdcpp +libpthread +librt +libnl +libopenssl
+  DEPENDS:=+libstdcpp +libpthread +librt +libnl +libopenssl +cppunit
   TITLE:=IBR Common C++ Library
 endef
 
