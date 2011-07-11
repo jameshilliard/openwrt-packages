@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmenu2x
-PKG_VERSION:=20110623
-PKG_REV:=31e1f3c426759baee7f2d6b69122f985d7c2bf39
+PKG_VERSION:=20110711
+PKG_REV:=3a85cabf37da9d38f7ce02175d356fd047fc0f8e
 PKG_RELEASE:=1
 PKG_INSTALL:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
 PKG_SOURCE_URL:=git://projects.qi-hardware.com/gmenu2x.git
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
@@ -47,12 +47,13 @@ define Package/gmenu2x
   SUBMENU:=app
   TITLE:=Gmenu2x
   URL:=http://projects.qi-hardware.com/index.php/p/gmenu2x/
-  DEPENDS:=+libsdl +libsdl-image +libsdl-ttf +libstdcpp +libsdl-gfx
+  DEPENDS:=+libsdl +libpng +libsdl-ttf +libstdcpp +libsdl-gfx
 endef
 
 define Build/Configure
 	( cd $(PKG_BUILD_DIR); ./autogen.sh );
-	$(call Build/Configure/Default)
+	$(call Build/Configure/Default,\
+		--enable-platform=nanonote)
 endef
 
 define Package/gmenu2x/install
@@ -62,10 +63,10 @@ define Package/gmenu2x/install
 
 	$(INSTALL_BIN) \
 		$(PKG_INSTALL_DIR)/usr/bin/gmenu2x \
-		$(1)/usr/share/gmenu2x/
+		$(1)/usr/bin/gmenu2x.bin
 
 	$(CP) \
-		$(PKG_BUILD_DIR)/nanonote/* \
+		$(PKG_INSTALL_DIR)/usr/share/gmenu2x/* \
 		$(1)/usr/share/gmenu2x/
 
 	mv \
