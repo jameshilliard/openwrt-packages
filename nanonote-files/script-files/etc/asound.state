@@ -2,7 +2,7 @@ state.LB60 {
 	control.1 {
 		iface MIXER
 		name 'Master Playback Volume'
-		value 2
+		value 3
 		comment {
 			access 'read write'
 			type INTEGER
@@ -13,7 +13,7 @@ state.LB60 {
 	control.2 {
 		iface MIXER
 		name 'Master Capture Volume'
-		value 21
+		value 31
 		comment {
 			access 'read write'
 			type INTEGER
