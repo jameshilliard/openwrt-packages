@@ -95,6 +95,9 @@ CONFIG_BUSYBOX_CONFIG_FEATURE_UTMP=y
 CONFIG_BUSYBOX_CONFIG_SETSID=y
 # CONFIG_BUSYBOX_CONFIG_STRINGS is not set
 CONFIG_BUSYBOX_CONFIG_MAN=y
+# CONFIG_BUSYBOX_CONFIG_HWCLOCK is not set
+# CONFIG_BUSYBOX_CONFIG_MKSWAP is not set
+# CONFIG_BUSYBOX_CONFIG_SWAPONOFF is not set
 
 #
 # Disable all patented packages
@@ -122,6 +125,27 @@ CONFIG_PACKAGE_gtkhtml=y
 CONFIG_PACKAGE_gnome-icon-theme=y
 CONFIG_PACKAGE_hicolor-icon-theme=y
 CONFIG_PACKAGE_dejavu-fonts-ttf=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSans=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSans-Bold=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSans-BoldOblique=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSans-ExtraLight=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSans-Oblique=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSansCondensed=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSansCondensed-Bold=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSansCondensed-BoldOblique=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSansCondensed-Oblique=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSansMono=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSansMono-Bold=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSansMono-BoldOblique=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSansMono-Oblique=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSerif=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSerif-Bold=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSerif-BoldItalic=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSerif-Italic=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSerifCondensed=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSerifCondensed-Bold=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSerifCondensed-BoldItalic=y
+CONFIG_PACKAGE_dejavu-fonts-ttf-DejaVuSerifCondensed-Italic=y
 CONFIG_PACKAGE_wqy-microhei=y
 CONFIG_PACKAGE_fontconfig=y
 CONFIG_PACKAGE_procps=y
@@ -408,6 +432,7 @@ CONFIG_PACKAGE_openssh-sftp-server=y
 CONFIG_PACKAGE_man-tiny=y
 CONFIG_PACKAGE_kexecboot=y
 CONFIG_PACKAGE_curveship=y
+CONFIG_PACKAGE_ip=y
 #
 CONFIG_KEXEC_TOOLS_TARGET_NAME="mipsel"
 CONFIG_PACKAGE_lsof=y
