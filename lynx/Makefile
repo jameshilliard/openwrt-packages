@@ -23,7 +23,7 @@ define Package/lynx
     TITLE:=lynx
     SECTION:=network
     CATEGORY:=Network
-    DEPENDS:=+libncursesw +zlib +libopenssl
+    DEPENDS:=+libncursesw +zlib +libopenssl +libidn
     URL:=http://lynx.isc.org
 endef
 
