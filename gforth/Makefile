@@ -26,7 +26,7 @@ PKG_FIXUP:=libtool
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=\
-	http://user.cs.tu-berlin.de/~dvdkhlng/ \
+	http://downloads.qi-hardware.com/people/dvdkhlng/ \
 	http://mosquito.dyndns.tv/~spock/
 #PKG_SOURCE_URL:= file://~/forth/gforth/
 PKG_MD5SUM:=5ada9cc3f72fea8ea002bbae4b39d118
