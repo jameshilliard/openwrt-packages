@@ -1,24 +1,29 @@
 #!/bin/bash
+
+# this script file is using in build host
+# $1: full_system  minimal  xbboot
+
+OPENWRT_DIR_NAME="openwrt-xburst."$1
+OPENWRT_DIR="/home/xiangfu/${OPENWRT_DIR_NAME}/"
+CONFIG_FILE_TYPE="config."$1
+
+MAKE_VARS=" V=99 IGNORE_ERRORS=m "
+
+########################################################################
 DATE=$(date "+%Y-%m-%d")
 TIME=$(date "+%H-%M-%S")
 DATE_TIME=`date +"%m%d%Y-%H%M"`
 
-# this script file is using in build host
-
-# $1: full_system  minimal  xbboot
-OPENWRT_DIR_NAME="openwrt-xburst."$1
-CONFIG_FILE_TYPE="config."$1
-
-# you may need change those Variables
-BASE_DIR="/home/xiangfu/compile-log/"
-OPENWRT_DIR="/home/xiangfu/${OPENWRT_DIR_NAME}/"
 GET_FEEDS_VERSION_SH="/home/xiangfu/bin/get-feeds-revision.sh"
+PATCH_OPENWRT_SH="/home/xiangfu/bin/patch-openwrt.sh"
 
+BASE_DIR="/home/xiangfu/compile-log/"
 IMAGE_DIR="${BASE_DIR}/${OPENWRT_DIR_NAME}-${DATE_TIME}/"
+mkdir -p ${IMAGE_DIR}
+
 BUILD_LOG="${IMAGE_DIR}/BUILD_LOG"
 VERSIONS_FILE="${IMAGE_DIR}/VERSIONS"
 
-MAKE_VARS=" V=99 IGNORE_ERRORS=m "
 
 ########################################################################
 cd ${OPENWRT_DIR}
@@ -53,12 +58,24 @@ rm -f dl    && ln -s ~/dl
 mkdir -p files/etc && echo ${DATE} > files/etc/VERSION
 
 
+echo "patch openwrt "
+${PATCH_OPENWRT_SH} ${OPENWRT_DIR}
+
+
 echo "starting compiling - this may take several hours..."
-mkdir -p ${IMAGE_DIR}
 time make ${MAKE_VARS} > ${IMAGE_DIR}/BUILD_LOG 2>&1
 if [ "$?" != "0" ]; then
 	echo "ERROR: Build failed! Please refer to the log file"
 	tail -n 100 ${IMAGE_DIR}/BUILD_LOG > ${IMAGE_DIR}/BUILD_LOG.`date +"%m%d%Y-%H%M"`.last100
+        echo -e "\
+say #qi-hardware The build has FAILED, \
+see log here: http://fidelio.qi-hardware.com/~xiangfu/compile-log/${OPENWRT_DIR_NAME}-${DATE_TIME}/\nclose" \
+             | nc turandot.qi-hardware.com 3858
+else
+echo -e "\
+say #qi-hardware The build was successfull, \
+see images here: http://fidelio.qi-hardware.com/~xiangfu/compile-log/${OPENWRT_DIR_NAME}-${DATE_TIME}/\nclose" \
+     | nc turandot.qi-hardware.com 3858
 fi
 
 
@@ -68,12 +85,14 @@ ${GET_FEEDS_VERSION_SH} ${OPENWRT_DIR} > ${VERSIONS_FILE}
 
 echo "copy all files to IMAGE_DIR..."
 cp .config ${IMAGE_DIR}/config
+cp build_dir/linux-xburst_qi_lb60/linux-2.6*/.config ${IMAGE_DIR}/kernel.config
 cp feeds.conf ${IMAGE_DIR}/
 cp -a bin/xburst/* ${IMAGE_DIR} 2>/dev/null
 mkdir -p ${IMAGE_DIR}/files
 cp -a files/* ${IMAGE_DIR}/files/
 
 (cd ${IMAGE_DIR}; \
+ grep -E "ERROR:\ package.*failed to build" BUILD_LOG | grep -v "package/kernel" > failed_packages.txt; \
  bzip2 -z BUILD_LOG; \
  bzip2 -z openwrt-xburst-qi_lb60-root.ubi; \
 )
