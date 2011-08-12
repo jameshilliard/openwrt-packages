@@ -1,0 +1,12 @@
+diff -ruN libunistring-0.9.2.1/lib/localename.c libunistring-0.9.2.1m/lib/localename.c
+--- libunistring-0.9.2.1/lib/localename.c	2010-01-01 11:02:02.000000000 +0100
++++ libunistring-0.9.2.1m/lib/localename.c	2011-08-12 01:25:13.037171961 +0200
+@@ -2607,7 +2607,7 @@
+     locale_t thread_locale = uselocale (NULL);
+     if (thread_locale != LC_GLOBAL_LOCALE)
+       {
+-#  if __GLIBC__ >= 2
++#  if __GLIBC__ >= 2 && 0
+         /* Work around an incorrect definition of the _NL_LOCALE_NAME macro in
+            glibc < 2.12.
+            See <http://sourceware.org/bugzilla/show_bug.cgi?id=10968>.  */
