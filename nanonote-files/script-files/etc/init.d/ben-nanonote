@@ -1,12 +1,15 @@
 #!/bin/sh /etc/rc.common
 
-START=99
-STOP=99
+START=01
+STOP=01
 
 start() {
 	/usr/sbin/alsactl restore -f /etc/asound.state
+	return 0
 }
 
 stop() {
 	/usr/sbin/alsactl store -f /etc/asound.state
+	killall gmenu2x
+	return 0
 }
