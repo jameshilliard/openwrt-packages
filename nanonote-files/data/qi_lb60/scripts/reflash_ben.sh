@@ -1,6 +1,6 @@
 #!/bin/bash
 # version of me
-__VERSION__="2011-07-21"
+__VERSION__="2011-08-19"
 
 # use 'http' to download and flash images, use 'file' to flash images present in the <WORKING_DIR>
 PROTOCOL="http"
@@ -25,7 +25,7 @@ K="FALSE"
 R="FALSE"
 ALL="TRUE"
 
-while getopts d:v:l:hbkr OPTIONS
+while getopts d:t:v:l:hbkr OPTIONS
 do
     case $OPTIONS in
     d)
@@ -33,8 +33,13 @@ do
         VERSION=$OPTARG # override version by first argument
         WORKING_DIR=${VERSION}
 	;;
+    t)
+        BASE_URL_HTTP="http://downloads.qi-hardware.com/software/images/NanoNote/Ben/testing"
+        VERSION=$OPTARG
+        WORKING_DIR=${VERSION}
+        ;;
     v)
-        VERSION=$OPTARG # override version by first argument
+        VERSION=$OPTARG
         WORKING_DIR="${HOME}/.qi/nanonote/ben/${VERSION}"
         ;;
     l)
@@ -58,9 +63,11 @@ do
         echo "\
 
 Usage: $0 [-d <dailybuild version>] [-v <version>] [-l <path to local images>] [-b] [-k] [-r] [-h]
-     -d <>  I will download and flash a dailybuild version of OpenWrt images
+     -d <>  I will download and flash a [dailybuild] version of OpenWrt images
 
-     -v <>  I will download and flash a specific version of OpenWrt images
+     -t <>  I will download and flash a [testing] version of OpenWrt images
+
+     -v <>  I will download and flash a [specific] version of OpenWrt images
 
      -l <>  I will flash images present in folder: <arg>
             (missing files will be skipped)
@@ -156,7 +163,7 @@ progress_finish () {
 }
 
 log "working dir:      ${WORKING_DIR}"
-log "chosen method:    ${PROTOCOL}"
+log "chosen method:    ${PROTOCOL} ${BASE_URL_HTTP}"
 test ${VERSION} && log "chosen version:   ${VERSION}"
 log "==="
 
