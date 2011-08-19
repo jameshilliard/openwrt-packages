@@ -62,7 +62,7 @@ do
     *)
         echo "\
 
-Usage: $0 [-d <dailybuild version>] [-v <version>] [-l <path to local images>] [-b] [-k] [-r] [-h]
+Usage: $0 [-d <dailybuild version>] [-t <testing version>] [-v <version>] [-l <path to local images>] [-b] [-k] [-r] [-h]
      -d <>  I will download and flash a [dailybuild] version of OpenWrt images
 
      -t <>  I will download and flash a [testing] version of OpenWrt images
