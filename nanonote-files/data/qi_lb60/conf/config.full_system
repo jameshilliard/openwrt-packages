@@ -311,6 +311,7 @@ CONFIG_PACKAGE_qball=y
 CONFIG_PACKAGE_gottet=y
 CONFIG_PACKAGE_robots=y
 CONFIG_PACKAGE_tetris=y
+CONFIG_PACKAGE_vitetris=y
 CONFIG_PACKAGE_worm=y
 CONFIG_PACKAGE_supertux=y
 CONFIG_PACKAGE_tic-tac-toe=y
