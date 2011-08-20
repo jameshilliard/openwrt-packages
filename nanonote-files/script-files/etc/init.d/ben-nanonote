@@ -10,6 +10,6 @@ start() {
 
 stop() {
 	/usr/sbin/alsactl store -f /etc/asound.state
-	killall gmenu2x
+	killall gmenu2x.bin
 	return 0
 }
