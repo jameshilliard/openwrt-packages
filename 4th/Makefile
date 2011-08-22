@@ -6,7 +6,7 @@ include $(TOPDIR)/rules.mk
 ## Nombre del paquete
 PKG_NAME:=4th
 ## version del programa que vamos incluir en el paquete
-PKG_VERSION:=3.61.1
+PKG_VERSION:=3.61.2
 ## numero de version del paquete 
 PKG_RELEASE:=4
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-nano.tar.gz
@@ -22,7 +22,7 @@ define Package/4th
 	TITLE:=4th
 	SECTION:=Programming
 	CATEGORY:=prog
-	URL:=http://www.xs4all.nl/~thebeez/4tH/
+	URL:=http://thebeez.home.xs4all.nl/4tH/
 endef
 #El directorio donde extraeremos los fuentes y realizaremos la compilacion
 #BUILD_DIR es una variable de etorno de OpenWrt es donde descomprimen/compilan los paquetes
@@ -33,7 +33,7 @@ define Package/4th/description
 endef
 
 MAKE_VARS+=LIBRARIES="${PKG_INSTALL_DIR}/usr/lib" BINARIES="${PKG_INSTALL_DIR}/usr/bin"
-MAKE_FLAGS+=-C $(PKG_BUILD_DIR)/sources 
+MAKE_FLAGS+=-C $(PKG_BUILD_DIR)/sources -f Makefile.NAN
 
 #Definimos donde se copiaran los binarios y las librerias cuando queramos instalarlo,
 #emacs genera el binario en el directorio src
