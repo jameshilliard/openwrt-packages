@@ -4,6 +4,7 @@ START=01
 STOP=01
 
 start() {
+	/usr/bin/poke 0x10003024 0
 	/usr/sbin/alsactl restore -f /etc/asound.state
 	return 0
 }
