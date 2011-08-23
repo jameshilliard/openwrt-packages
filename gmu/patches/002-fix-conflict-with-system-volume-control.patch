@@ -1,0 +1,15 @@
+diff --git a/nanonote.keymap b/nanonote.keymap
+index 324ae67..d2081b0 100644
+--- a/nanonote.keymap
++++ b/nanonote.keymap
+@@ -11,8 +11,8 @@ Left=Left
+ Right=Right
+ Up=Up
+ Down=Down
+-IncreaseVolume=Vol+
+-DecreaseVolume=Vol-
++IncreaseVolume=Mod+Vol+
++DecreaseVolume=Mod+Vol-
+ ToggleTime=T
+ Pause=P
+ Stop=Mod+X
