@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#we use some files from host's openwrt toolchain for gcc-mips package,
+#and the host's gcc version (linaro) is now 4.5.4.
+#this will be fixed when we catch up with openwrt upstream,
+#workaround for now
+for i in $(find /usr/lib/gcc/mipsel-openwrt-linux-uclibc/4.5.4 -type f); do
+	ln -s $i ${i/4.5.4/4.5.2}
+done
