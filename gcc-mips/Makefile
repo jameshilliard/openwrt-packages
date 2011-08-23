@@ -99,4 +99,15 @@ define Package/gcc-mips/install
 	cp -a $(TOOLCHAIN_DIR)/lib/*.{a,o,so*} $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
 endef
 
+define Package/gcc-mips/postinst
+#!/bin/sh
+#we use some files from host's openwrt toolchain for gcc-mips package,
+#and the host's gcc version (linaro) is now 4.5.4.
+#this will be fixed when we catch up with openwrt upstream,
+#workaround for now
+for i in $$(find $${IPKG_INSTROOT}/usr/lib/gcc/mipsel-openwrt-linux-uclibc/4.5.4 -type f); do
+	ln -s ../4.5.4/$${i##*/} $${i/4.5.4/4.5.2}
+done
+endef
+
 $(eval $(call BuildPackage,gcc-mips))
