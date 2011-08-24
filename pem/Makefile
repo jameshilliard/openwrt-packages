@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=pem
-PKG_VERSION:=0.7.8
+PKG_VERSION:=0.7.9
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
@@ -52,4 +52,3 @@ define Package/pem/install
 endef
 
 $(eval $(call BuildPackage,pem))
-
