@@ -54,7 +54,7 @@ endef
 
 define Package/nanonote-data-files/postinst
 #! /bin/sh
-mv -f $${IPKG_INSTROOT}/usr/share/nanonote/files/etc/* $${IPKG_INSTROOT}/etc/
+cp -af $${IPKG_INSTROOT}/usr/share/nanonote/files/etc/* $${IPKG_INSTROOT}/etc/
 endef
 
 
