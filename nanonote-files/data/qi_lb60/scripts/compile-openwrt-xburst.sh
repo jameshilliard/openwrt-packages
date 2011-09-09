@@ -7,7 +7,7 @@ OPENWRT_DIR_NAME="openwrt-xburst."$1
 OPENWRT_DIR="/home/xiangfu/${OPENWRT_DIR_NAME}/"
 CONFIG_FILE_TYPE="config."$1
 
-MAKE_VARS=" V=99 IGNORE_ERRORS=m "
+MAKE_VARS=" V=99 IGNORE_ERRORS=m -j4 "
 
 ########################################################################
 DATE=$(date "+%Y-%m-%d")
@@ -17,12 +17,11 @@ DATE_TIME=`date +"%m%d%Y-%H%M"`
 GET_FEEDS_VERSION_SH="/home/xiangfu/bin/get-feeds-revision.sh"
 PATCH_OPENWRT_SH="/home/xiangfu/bin/patch-openwrt.sh"
 
-BASE_DIR="/home/xiangfu/compile-log/"
-IMAGE_DIR="${BASE_DIR}/${OPENWRT_DIR_NAME}-${DATE_TIME}/"
-mkdir -p ${IMAGE_DIR}
+IMAGES_DIR="/home/xiangfu/compile-log/${OPENWRT_DIR_NAME}-${DATE_TIME}/"
+mkdir -p ${IMAGES_DIR}
 
-BUILD_LOG="${IMAGE_DIR}/BUILD_LOG"
-VERSIONS_FILE="${IMAGE_DIR}/VERSIONS"
+BUILD_LOG="${IMAGES_DIR}/BUILD_LOG"
+VERSIONS_FILE="${IMAGES_DIR}/VERSIONS"
 
 
 ########################################################################
@@ -56,6 +55,7 @@ echo "copy files, create VERSION, copy dl folder, last prepare..."
 rm -f files && ln -s feeds/qipackages/nanonote-files/data/qi_lb60/files/
 rm -f dl    && ln -s ~/dl
 mkdir -p files/etc && echo ${DATE} > files/etc/VERSION
+	mkdir -p files/etc/uci-defaults && echo -e "\0043\0041/bin/sh \ndate --set `date +"%Y%m%d%H%M"`\nhwclock --systohc" > files/etc/uci-defaults/99-set-time
 
 
 echo "patch openwrt "
@@ -63,10 +63,10 @@ ${PATCH_OPENWRT_SH} ${OPENWRT_DIR}
 
 
 echo "starting compiling - this may take several hours..."
-time make ${MAKE_VARS} > ${IMAGE_DIR}/BUILD_LOG 2>&1
+time make ${MAKE_VARS} > ${IMAGES_DIR}/BUILD_LOG 2>&1
 if [ "$?" != "0" ]; then
 	echo "ERROR: Build failed! Please refer to the log file"
-	tail -n 100 ${IMAGE_DIR}/BUILD_LOG > ${IMAGE_DIR}/BUILD_LOG.`date +"%m%d%Y-%H%M"`.last100
+	tail -n 100 ${IMAGES_DIR}/BUILD_LOG > ${IMAGES_DIR}/BUILD_LOG.`date +"%m%d%Y-%H%M"`.last100
         echo -e "\
 say #qi-hardware The build has FAILED, \
 see log here: http://fidelio.qi-hardware.com/~xiangfu/compile-log/${OPENWRT_DIR_NAME}-${DATE_TIME}/\nclose" \
@@ -83,15 +83,15 @@ echo "getting version numbers of used repositories..."
 ${GET_FEEDS_VERSION_SH} ${OPENWRT_DIR} > ${VERSIONS_FILE}
 
 
-echo "copy all files to IMAGE_DIR..."
-cp .config ${IMAGE_DIR}/config
-cp build_dir/linux-xburst_qi_lb60/linux-2.6*/.config ${IMAGE_DIR}/kernel.config
-cp feeds.conf ${IMAGE_DIR}/
-cp -a bin/xburst/* ${IMAGE_DIR} 2>/dev/null
-mkdir -p ${IMAGE_DIR}/files
-cp -a files/* ${IMAGE_DIR}/files/
+echo "copy all files to IMAGES_DIR..."
+cp .config ${IMAGES_DIR}/config
+cp build_dir/linux-xburst_qi_lb60/linux-2.6*/.config ${IMAGES_DIR}/kernel.config
+cp feeds.conf ${IMAGES_DIR}/
+cp -a bin/xburst/* ${IMAGES_DIR} 2>/dev/null
+mkdir -p ${IMAGES_DIR}/files
+cp -a files/* ${IMAGES_DIR}/files/
 
-(cd ${IMAGE_DIR}; \
+(cd ${IMAGES_DIR}; \
  grep -E "ERROR:\ package.*failed to build" BUILD_LOG | grep -v "package/kernel" > failed_packages.txt; \
  bzip2 -z BUILD_LOG; \
  bzip2 -z openwrt-xburst-qi_lb60-root.ubi; \
