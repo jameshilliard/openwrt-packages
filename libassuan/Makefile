@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libassuan
-PKG_VERSION:=2.0.0
+PKG_VERSION:=2.0.2
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=ftp://ftp.gnupg.org/gcrypt/libassuan/
-PKG_MD5SUM:=59bc0ae7194c412d7a522029005684b2
+PKG_MD5SUM:=3e7d00fd2ee8a0b9c51ac7616ef3f1ec
 PKG_FIXUP:=libtool
 
 include $(INCLUDE_DIR)/package.mk
@@ -25,6 +25,7 @@ define Package/libassuan
   CATEGORY:=Libraries
   TITLE:=IPC library used by some GnuPG related software
   URL:=http://www.gnupg.org
+  DEPENDS:=+libgpg-error
 endef
 
 define Package/libassuan/description
