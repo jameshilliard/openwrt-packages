@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=zimreader
-PKG_REV:=239
+PKG_REV:=362
 PKG_VERSION:=r$(PKG_REV)
 PKG_RELEASE:=1
 PKG_SOURCE_PROTO:=svn
@@ -30,7 +30,7 @@ define Package/zimreader
     TITLE:=zimreader
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=@BROKEN +zimlib +tntnet +libpthread
+    DEPENDS:=+zimlib +tntnet +libpthread
     URL:=http://openzim.org
 endef
 
