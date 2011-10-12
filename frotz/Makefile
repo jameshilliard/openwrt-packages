@@ -9,12 +9,23 @@ PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/frotz
-    TITLE:=frotz
+define Package/frotz/Default
     SECTION:=games
     CATEGORY:=Games
+endef
+
+define Package/frotz
+    TITLE:=frotz
     DEPENDS:=+libncurses
     URL:=http://frotz.sourceforge.net/
+endef
+
+define Package/frotz-games
+    TITLE:=frotz-games
+    SECTION:=games
+    CATEGORY:=Games
+    DEPENDS:=+frotz
+    URL:=http://ifarchive.org/if-archive/games/zcode/
 endef
 
 MAKE_VARS +=CONFIG_DIR=/etc \
@@ -29,10 +40,15 @@ define Package/frotz/description
     A Portable Z-Machine Interpreter
 endef
 
-
 define Package/frotz/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/frotz $(1)/usr/bin/
 endef
 
+define Package/frotz-games/install
+	$(INSTALL_DIR) $(1)/usr/games/zcode/
+	$(CP) $(FILES_DIR)/* $(1)/usr/games/zcode/
+endef
+
 $(eval $(call BuildPackage,frotz))
+$(eval $(call BuildPackage,frotz-games))
