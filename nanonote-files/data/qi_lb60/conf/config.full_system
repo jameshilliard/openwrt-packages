@@ -413,6 +413,7 @@ CONFIG_PACKAGE_iconv=y
 CONFIG_PACKAGE_jpeg-tools=y
 CONFIG_PACKAGE_kbd=y
 CONFIG_PACKAGE_kbd-console-fonts=y
+CONFIG_PACKAGE_kbd-console-maps=y
 CONFIG_PACKAGE_kexec-tools=y
 CONFIG_PACKAGE_picoc=y
 CONFIG_PACKAGE_jbig2dec=y
