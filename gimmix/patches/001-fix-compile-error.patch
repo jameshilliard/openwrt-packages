@@ -1,0 +1,33 @@
+diff --git a/configure b/configure
+index 2332de3..0ec086d 100755
+--- a/configure
++++ b/configure
+@@ -3308,7 +3308,7 @@ if test -n "0.21"; then
+ $as_echo_n "checking for intltool >= 0.21... " >&6; }
+ 
+     INTLTOOL_REQUIRED_VERSION_AS_INT=`echo 0.21 | awk -F. '{ print $ 1 * 1000 + $ 2 * 100 + $ 3; }'`
+-    INTLTOOL_APPLIED_VERSION=`intltool-update --version | head -1 | cut -d" " -f3`
++    INTLTOOL_APPLIED_VERSION=`echo 0.21`
+     INTLTOOL_APPLIED_VERSION_AS_INT=`echo $INTLTOOL_APPLIED_VERSION | awk -F. '{ print $ 1 * 1000 + $ 2 * 100 + $ 3; }'`
+ 
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $INTLTOOL_APPLIED_VERSION found" >&5
+@@ -3437,10 +3437,6 @@ $as_echo "no" >&6; }
+ fi
+ 
+ 
+-if test -z "$INTLTOOL_UPDATE" -o -z "$INTLTOOL_MERGE" -o -z "$INTLTOOL_EXTRACT"; then
+-    as_fn_error "The intltool scripts were not found. Please install intltool." "$LINENO" 5
+-fi
+-
+   INTLTOOL_DESKTOP_RULE='%.desktop:   %.desktop.in   $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@'
+ INTLTOOL_DIRECTORY_RULE='%.directory: %.directory.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@'
+      INTLTOOL_KEYS_RULE='%.keys:      %.keys.in      $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -k -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@'
+@@ -12735,7 +12731,7 @@ fi
+ 	# Put the nasty error message in config.log where it belongs
+ 	echo "$GIMMIX_PKG_ERRORS" >&5
+ 
+-	as_fn_error "Package requirements ($pkg_modules) were not met:
++	as_echo "Package requirements ($pkg_modules) were not met:
+ 
+ $GIMMIX_PKG_ERRORS
+ 

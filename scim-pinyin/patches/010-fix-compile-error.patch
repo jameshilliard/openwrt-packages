@@ -1,0 +1,62 @@
+add miss head files
+
+From: Xiangfu Liu <xiangfu@sharism.cc>
+
+
+---
+
+ src/scim_phrase.cpp        |    1 +
+ src/scim_pinyin.cpp        |    1 +
+ src/scim_pinyin_phrase.cpp |    1 +
+ src/scim_special_table.cpp |    1 +
+ 4 files changed, 4 insertions(+), 0 deletions(-)
+
+
+diff --git a/src/scim_phrase.cpp b/src/scim_phrase.cpp
+index b8618ca..2534c5f 100644
+--- a/src/scim_phrase.cpp
++++ b/src/scim_phrase.cpp
+@@ -28,6 +28,7 @@
+ #define SCIM_PHRASE_MAX_RELATION 1000
+ 
+ #include <scim.h>
++#include <string.h>
+ #include "scim_pinyin_private.h"
+ #include "scim_phrase.h"
+ 
+diff --git a/src/scim_pinyin.cpp b/src/scim_pinyin.cpp
+index 0c281ec..7a762b6 100644
+--- a/src/scim_pinyin.cpp
++++ b/src/scim_pinyin.cpp
+@@ -28,6 +28,7 @@
+ #define Uses_SCIM_CONFIG_PATH
+ #define Uses_SCIM_LOOKUP_TABLE
+ 
++#include <string.h>
+ #include <scim.h>
+ #include "scim_pinyin.h"
+ 
+diff --git a/src/scim_pinyin_phrase.cpp b/src/scim_pinyin_phrase.cpp
+index e44e9df..ab9997b 100644
+--- a/src/scim_pinyin_phrase.cpp
++++ b/src/scim_pinyin_phrase.cpp
+@@ -26,6 +26,7 @@
+ #define Uses_SCIM_CONFIG_PATH
+ #define Uses_SCIM_LOOKUP_TABLE
+ 
++#include <string.h>
+ #include <scim.h>
+ #include "scim_pinyin_private.h"
+ #include "scim_phrase.h"
+diff --git a/src/scim_special_table.cpp b/src/scim_special_table.cpp
+index 6a46e8f..b47cbcf 100644
+--- a/src/scim_special_table.cpp
++++ b/src/scim_special_table.cpp
+@@ -20,6 +20,7 @@
+ #define Uses_STL_IOMANIP
+ #define Uscs_C_STRING
+ 
++#include <string.h>
+ #include <time.h>
+ #include <scim.h>
+ #include "scim_pinyin_private.h"
