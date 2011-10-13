@@ -1,0 +1,156 @@
+diff --git a/Makefile b/Makefile
+index 8eaa069..d5d8a28 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,5 +1,5 @@
+-CC=g++
+-CFLAGS=-g -O $$(sdl-config --cflags) \
++CXX=?g++
++CFLAGS:=$(CFLAGS) -g -O $$(sdl-config --cflags) \
+   -Wall -Wuninitialized -Wshadow -Wno-non-virtual-dtor -Wno-multichar
+ OBJ=testsw.o sdl-widgets.o
+ 
+@@ -10,10 +10,10 @@ OBJ=testsw.o sdl-widgets.o
+ all: testsw hello make-waves bouncy-tune
+ 
+ testsw: $(OBJ)
+-	$(CC) $(OBJ) -o $@ $$(sdl-config --libs) -lSDL_gfx -lSDL_ttf
++	$(CXX) $(OBJ) $(CFLAGS) -o $@ $$(sdl-config --libs) -lSDL_gfx -lSDL_ttf
+ 
+ %.o: %.cpp
+-	$(CC) -c $< $(CFLAGS)
++	$(CXX) -c $< $(CFLAGS)
+ 
+ hello make-waves bouncy-tune:
+ 	make -C $@
+diff --git a/bouncy-tune/Makefile b/bouncy-tune/Makefile
+index 99ab226..da86574 100644
+--- a/bouncy-tune/Makefile
++++ b/bouncy-tune/Makefile
+@@ -1,17 +1,17 @@
+-CC=g++
+-CFLAGS=-g $$(sdl-config --cflags) \
++CXX?=g++
++CFLAGS+=-g $$(sdl-config --cflags) \
+   -O -Wuninitialized -Wshadow -Wall -Wno-non-virtual-dtor -Wno-multichar
+ 
+ .SUFFIXES=
+ 
+ bouncy-tune: bouncy-tune.o dump-wave.o ../sdl-widgets.o
+-	$(CC) $@.o dump-wave.o ../sdl-widgets.o -o $@ $$(sdl-config --libs) -lSDL_gfx -lSDL_ttf
++	$(CXX) $@.o dump-wave.o ../sdl-widgets.o -o $@ $$(sdl-config --libs) -lSDL_gfx -lSDL_ttf $(CFLAGS)
+ 
+ ../sdl-widgets.o: ../sdl-widgets.cpp ../sdl-widgets.h ../sw-pixmaps.h
+ 	make -C .. sdl-widgets.o
+ 
+ %.o: %.cpp
+-	$(CC) -c $< -I.. $(CFLAGS)
++	$(CXX) -c $< -I.. $(CFLAGS)
+ 
+ bouncy-tune.o: ../sdl-widgets.h dump-wave.h templates.h
+ dump-wave.o: dump-wave.h
+diff --git a/configure b/configure
+index 568532f..028bf5c 100755
+--- a/configure
++++ b/configure
+@@ -1,5 +1,6 @@
+ echo -n "Searching C++ compiler ... "
+-[ -z `which g++` ] && { echo no; exit; }
++[ -z `which ${CXX}` ] && { echo no; exit; }
++echo -n "${CXX}"
+ echo yes
+ 
+ echo -n "Searching sdl-config ... "
+@@ -7,7 +8,7 @@ echo -n "Searching sdl-config ... "
+ echo yes
+ 
+ # create dummy object-file for testing of libraries
+-echo "int main(int,char **) { return 0; }" | g++ -c -x c++ -o tst.o -
++echo "int main(int,char **) { return 0; }" | ${CXX} -c -x c++ -o tst.o -
+ 
+ okay=yes
+ LPATH=`sdl-config --libs | sed 's/ -l.*//;s/-L//'`
+@@ -15,7 +16,8 @@ echo "Searching libraries in $LPATH"
+ for LIB in SDL SDL_gfx SDL_ttf
+ do
+   echo -n "library $LIB ... "
+-  g++ -L$LPATH -l$LIB tst.o 2>/dev/null
++  echo "COMMAND: ${CXX} -L$LPATH -l$LIB tst.o 2>/dev/null"
++  ${CXX} -L$LPATH -l$LIB -Wl,-rpath-link=${STAGING_DIR}/usr/lib tst.o 2>/dev/null
+   if [ $? = 0 ]
+   then echo yes
+   else echo no; okay=no
+@@ -33,7 +35,6 @@ if test $# -gt 1; then
+     FONTDIR="$1"
+   else
+     echo "unexpected option $1"
+-    exit
+   fi
+ fi
+ FONTPATH=`find $FONTDIR -name FreeSans.ttf`
+@@ -45,10 +46,10 @@ then okay=no
+ else echo okay
+ fi
+ 
+-[ $okay = no ] && { echo "TrueType font-spec not found"; exit; }
++[ $okay = no ] && { echo "TrueType font-spec not found"; }
+ 
+-echo "const char* FONTPATH=\"$FONTPATH\";" > config.h
+-echo "const char* FONTPATH_BOLD=\"$FONTPATH_BOLD\";" >> config.h
+-echo "const char* FONTPATH_MONO=\"$FONTPATH_MONO\";" >> config.h
++echo "const char* FONTPATH=\"/usr/share/fonts/ttf-dejavu/DejaVuSans.ttf\";" > config.h
++echo "const char* FONTPATH_BOLD=\"/usr/share/fonts/ttf-dejavu/DejaVuSans-Bold.ttf\";" >> config.h
++echo "const char* FONTPATH_MONO=\"/usr/share/fonts/ttf-dejavu/DejaVuSans-Bold.ttf\";" >> config.h
+ echo "Created: config.h. Now you can run 'make'"
+  
+diff --git a/hello/Makefile b/hello/Makefile
+index 4300250..520d145 100644
+--- a/hello/Makefile
++++ b/hello/Makefile
+@@ -1,14 +1,14 @@
+-CC=g++
+-CFLAGS=-g $(shell sdl-config --cflags)
+-LFLAGS=$(shell sdl-config --libs) -lSDL_gfx -lSDL_ttf
++CXX=?g++
++CFLAGS+=-g $(shell sdl-config --cflags)
++LFLAGS+=$(LDFLAGS) $(shell sdl-config --libs) -lSDL_gfx -lSDL_ttf
+ 
+ .SUFFIXES=
+ 
+ hello: hello.o ../sdl-widgets.o
+-	$(CC) $@.o ../sdl-widgets.o -o $@ $(LFLAGS)
++	$(CXX) $@.o ../sdl-widgets.o -o $@ $(LFLAGS) $(CFLAGS)
+ 
+ %.o: %.cpp
+-	$(CC) -c $< -I.. $(CFLAGS)
++	$(CXX) -c $< -I.. $(CFLAGS)
+ 
+ ../sdl-widgets.o: ../sdl-widgets.cpp ../sdl-widgets.h ../sw-pixmaps.h
+ 	make -C .. sdl-widgets.o
+diff --git a/make-waves/Makefile b/make-waves/Makefile
+index 738d638..2bb8e54 100644
+--- a/make-waves/Makefile
++++ b/make-waves/Makefile
+@@ -1,18 +1,18 @@
+-CC=g++ -O
+-CFLAGS=-g $$(sdl-config --cflags) -I.. \
++CXX=?g++ -O
++CFLAGS+=-g $$(sdl-config --cflags) -I.. \
+   -Wuninitialized -Wshadow -Wall -Wno-non-virtual-dtor -Wno-multichar
+ OBJ= make-waves.o dump-wave.o ../sdl-widgets.o
+ 
+ .SUFFIXES=
+ 
+ make-waves: $(OBJ)
+-	$(CC) $(OBJ) -o $@ $$(sdl-config --libs) -lSDL_gfx -lSDL_ttf
++	$(CXX) $(CFLAGS) $(OBJ) -o $@ $$(sdl-config --libs) -lSDL_gfx -lSDL_ttf
+ 
+ ../sdl-widgets.o: ../sdl-widgets.cpp ../sdl-widgets.h ../sw-pixmaps.h
+ 	make -C .. sdl-widgets.o
+ 
+ %.o: %.cpp
+-	$(CC) -c $< $(CFLAGS)
++	$(CXX) -c $< $(CFLAGS)
+ 
+ make-waves.o: ../sdl-widgets.h dump-wave.h templates.h filter-test.cpp 
+ dump-wave.o: dump-wave.h
