@@ -16,14 +16,16 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/task
 	MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
-	TITLE:=Taskwarrior
+	TITLE:=Taskwarrior - command line task manager
 	SECTION:=utils
 	CATEGORY:=Utilities
+	DEPENDS:=+libncurses
 	URL:=http://taskwarrior.org/projects/show/taskwarrior
 endef
 
 define Package/task/description
-Taskwarrior is a command-line todo list manager.
+	Taskwarrior is an ambitious project to supercharge task with an interactive interface, GTD features, color themes, data synch, dependencies, 
+	custom reports, charts, and Lua plugins, all while our international team provides excellent support!
 endef
 
 define Package/task/install
