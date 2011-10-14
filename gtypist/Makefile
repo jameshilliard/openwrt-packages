@@ -20,7 +20,7 @@ define Package/gtypist
 	SECTION:=games
 	CATEGORY:=Games
 	URL:=http://www.gnu.org/software/gtypist/
-	DEPENDS:=+ncurses
+	DEPENDS:=+libncurses
 endef
 
 # Long description of the package
@@ -30,7 +30,9 @@ endef
 
 define Package/gtypist/install
 	$(INSTALL_DIR) $(1)/usr/bin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/gtypist $(1)/usr/bin 
+	$(INSTALL_DIR) $(1)/usr/share/gtypist
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/gtypist $(1)/usr/bin
+	$(CP) $(PKG_BUILD_DIR)/lessons/*.typ $(1)/usr/share/gtypist/
 endef
 
 $(eval $(call BuildPackage,gtypist))
