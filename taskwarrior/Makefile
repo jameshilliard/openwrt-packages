@@ -3,9 +3,9 @@
 #
 
 include $(TOPDIR)/rules.mk
-PKG_NAME:=task
+PKG_NAME:=taskwarrior
 PKG_VERSION:=1.9.4
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE:=task-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.taskwarrior.org/download/
 PKG_BUILD_DIR:=$(BUILD_DIR)/task-$(PKG_VERSION)
 
@@ -14,7 +14,7 @@ PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/task
+define Package/taskwarrior
 	MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
 	TITLE:=Taskwarrior - command line task manager
 	SECTION:=utils
@@ -23,14 +23,14 @@ define Package/task
 	URL:=http://taskwarrior.org/projects/show/taskwarrior
 endef
 
-define Package/task/description
+define Package/taskwarrior/description
 	Taskwarrior is an ambitious project to supercharge task with an interactive interface, GTD features, color themes, data synch, dependencies, 
 	custom reports, charts, and Lua plugins, all while our international team provides excellent support!
 endef
 
-define Package/task/install
+define Package/taskwarrior/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/task $(1)/usr/bin/
 endef
 
-$(eval $(call BuildPackage,task))
+$(eval $(call BuildPackage,taskwarrior))
