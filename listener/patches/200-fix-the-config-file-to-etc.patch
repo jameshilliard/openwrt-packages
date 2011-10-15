@@ -1,0 +1,28 @@
+diff --git a/Makefile b/Makefile
+index 4b25e62..48f4caa 100644
+--- a/Makefile
++++ b/Makefile
+@@ -14,7 +14,7 @@ setlistener: $(OBJSsl)
+ 	$(CC) $(CFLAGS) $(OBJSsl) $(LDFLAGS) -ldl -lncurses -o setlistener
+ 
+ listener: $(OBJSli)
+-	$(CC) $(CFLAGS) $(OBJSli) $(LDFLAGS) -ldl -lm -lsndfile -o listener -DCONFIGFILE=$(INSTALL_PREFIX)/etc/listener.conf
++	$(CC) $(CFLAGS) $(OBJSli) $(LDFLAGS) -ldl -lm -lsndfile -o listener
+ 
+ listenersoundpipe: $(OBJSsp)
+ 	$(CC) $(CFLAGS) $(OBJSsp) -o listenersoundpipe
+diff --git a/listener.h b/listener.h
+index 5cdf088..88b93ee 100644
+--- a/listener.h
++++ b/listener.h
+@@ -1,7 +1,9 @@
+ #define SAMPLE_RATE     44100
+ #define WAV_PATH        "listen_wav_out"
+ #define DSP_PATH        "/dev/dsp"
+-#define CONFIGFILE      "/usr/local/etc/listener.conf"
++#ifndef CONFIGFILE
++  #define CONFIGFILE      "/usr/local/etc/listener.conf"
++#endif
+ #define MAX_N_LIBRARIES	16
+ 
+ 
