@@ -50,8 +50,11 @@ endef
 # Since the Ben NanoNote does not have internet access, build the dictionary
 # on the host machine and copy it into the package.
 #
+
+#	python $(PKG_BUILD_DIR)/makfa update en $(PKG_BUILD_DIR)/makfa.dump
+#	if there is update. please use this command update files/makfa.dump
+#	sometimes this needs hours in buildhost.
 define Build/Compile
-	python $(PKG_BUILD_DIR)/makfa update en $(PKG_BUILD_DIR)/makfa.dump
 endef
 
 define Package/makfa/install
@@ -64,7 +67,7 @@ define Package/makfa/install
 		$(1)/usr/bin/
 
 	$(INSTALL_DATA) \
-		$(PKG_BUILD_DIR)/makfa.dump \
+		$(FILES_DIR)/makfa.dump \
 		$(1)/usr/share/$(PKG_NAME)/
 endef
 
