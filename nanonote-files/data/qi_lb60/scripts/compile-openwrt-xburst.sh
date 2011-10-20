@@ -7,7 +7,7 @@ OPENWRT_DIR_NAME="openwrt-xburst."$1
 OPENWRT_DIR="/home/xiangfu/${OPENWRT_DIR_NAME}/"
 CONFIG_FILE_TYPE="config."$1
 
-MAKE_VARS=" V=99 IGNORE_ERRORS=m -j4 "
+MAKE_VARS=" V=99 IGNORE_ERRORS=m "
 
 ########################################################################
 DATE=$(date "+%Y-%m-%d")
@@ -85,7 +85,7 @@ ${GET_FEEDS_VERSION_SH} ${OPENWRT_DIR} > ${VERSIONS_FILE}
 
 echo "copy all files to IMAGES_DIR..."
 cp .config ${IMAGES_DIR}/config
-cp build_dir/linux-xburst_qi_lb60/linux-2.6*/.config ${IMAGES_DIR}/kernel.config
+cp build_dir/linux-xburst_qi_lb60/linux-*/.config ${IMAGES_DIR}/kernel.config
 cp feeds.conf ${IMAGES_DIR}/
 cp -a bin/xburst/* ${IMAGES_DIR} 2>/dev/null
 mkdir -p ${IMAGES_DIR}/files
