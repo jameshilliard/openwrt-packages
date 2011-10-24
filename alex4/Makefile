@@ -45,7 +45,6 @@ endef
 define Package/alex4-data
 $(call Package/alex4/Default)
   TITLE += (data)
-  DEPENDS:=+alex4
 endef
 
 define Package/alex4-data/description
