@@ -6,8 +6,8 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ben-wpan
 PKG_VERSION:=git
-PKG_REV:=50595979f5cad37743779019930ebe6ffe24d981
-PKG_RELEASE:=1
+PKG_REV:=ac76df901d347c1cdb414644ad33120fd262729f
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
 PKG_SOURCE_URL:=git://projects.qi-hardware.com/ben-wpan.git
@@ -29,6 +29,17 @@ endef
 define Build/Compile
     $(MAKE) -C $(PKG_BUILD_DIR)/tools TARGET=ben_openwrt; \
     $(MAKE) -C $(PKG_BUILD_DIR)/tools/dirtpan TARGET=ben_openwrt CFLAGS+="-I$(STAGING_DIR)/usr/include -I../include"
+endef
+
+define Package/ben-wpan-doc
+    $(call Package/ben-wpan/Default)
+    TITLE:=Documents about ben-wpan
+endef
+
+define Package/ben-wpan-doc/install
+	$(INSTALL_DIR) $(1)/usr/share/ben-wpan
+	$(CP) $(PKG_BUILD_DIR)/install/INSTALL* $(1)/usr/share/ben-wpan
+	$(CP) $(PKG_BUILD_DIR)/install/USAGE     $(1)/usr/share/ben-wpan
 endef
 
 define Package/atrf-gpio
@@ -152,3 +163,4 @@ $(eval $(call BuildPackage,atrf-trim))
 $(eval $(call BuildPackage,atrf-txrx))
 $(eval $(call BuildPackage,atrf-xmit))
 $(eval $(call BuildPackage,atrf-xtal))
+$(eval $(call BuildPackage,ben-wpan-doc))
