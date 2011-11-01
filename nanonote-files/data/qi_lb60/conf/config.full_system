@@ -537,6 +537,7 @@ CONFIG_PACKAGE_atrf-trim=y
 CONFIG_PACKAGE_atrf-txrx=y
 CONFIG_PACKAGE_atrf-xmit=y
 CONFIG_PACKAGE_atrf-xtal=y
+CONFIG_PACKAGE_ben-wpan-doc=y
 CONFIG_PACKAGE_dirtpan=y
 CONFIG_PACKAGE_lowpan-tools=y
 #
