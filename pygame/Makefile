@@ -14,15 +14,18 @@ include $(INCLUDE_DIR)/package.mk
 -include $(if $(DUMP),,$(STAGING_DIR)/mk/python-package.mk)
 
 define Package/pygame
-  SUBMENU:=Python
-  SECTION:=lang
-  CATEGORY:=Languages
-  TITLE:=pygame
-  URL:=http://pygame.org
-  DEPENDS:=+python-mini +libsdl +libpng +libjpeg +libsdl-image +libsdl-mixer
+	SUBMENU:=Python
+	SECTION:=lang
+	CATEGORY:=Languages
+	TITLE:=pygame
+	URL:=http://pygame.org
+	DEPENDS:=+python-mini +libsdl +libpng +libjpeg +libsdl-image +libsdl-mixer
 endef
 
 define Package/pygame/description
+Pygame is a set of Python modules designed for writing video games.
+Pygame adds functionality on top of the excellent SDL library.
+This allows you to create fully featured games and multimedia programs in the python language.
 endef
 
 define Build/Compile
