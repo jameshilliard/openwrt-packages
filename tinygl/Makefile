@@ -1,7 +1,7 @@
 # 
 # Copyright (C) Xiangfu Liu <xiangfu@sharism.cc>
-#
-# License GPLv2 or later.  NO WARRANTY.
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
 #
 
 include $(TOPDIR)/rules.mk
