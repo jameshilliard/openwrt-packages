@@ -1,0 +1,33 @@
+diff --git a/Bonnie.c b/Bonnie.c
+index 909ca4a..b3a782a 100644
+--- a/Bonnie.c
++++ b/Bonnie.c
+@@ -77,11 +77,6 @@
+ #include <sys/wait.h>
+ #include <stdlib.h>
+ 
+-#ifdef __linux__
+-/* for o_direct */
+-#include <asm/page.h>
+-#endif
+-
+ #ifdef unix
+ #include <signal.h>
+ #endif
+@@ -197,13 +192,13 @@ int main(
+   int	 volcnt;
+   register off_t  words;
+ 
+-  __buf = malloc(Chunk + ~PAGE_MASK);
++  __buf = malloc(Chunk + ~(sysconf(_SC_PAGE_SIZE)-1));
+   if (!__buf) 
+   {
+-    fprintf(stderr, "unable to malloc %d bytes\n", Chunk + ~PAGE_MASK);
++    fprintf(stderr, "unable to malloc %d bytes\n", Chunk + ~(sysconf(_SC_PAGE_SIZE)-1));
+     exit(1) ;
+   }
+-  buf = (int *)((unsigned long)(__buf + ~PAGE_MASK) & PAGE_MASK);
++  buf = (int *)((unsigned long)(__buf + ~(sysconf(_SC_PAGE_SIZE)-1)) & sysconf(_SC_PAGE_SIZE)-1);
+ 
+   basetime = (int) time((time_t *) NULL);
+   size = 100;
