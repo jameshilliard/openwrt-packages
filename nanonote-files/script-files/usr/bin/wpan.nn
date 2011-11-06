@@ -1,0 +1,22 @@
+#!/bin/sh
+
+
+cd /lib/modules/`uname -r`
+
+echo jz4740-mmc.0 > /sys/bus/platform/drivers/jz4740-mmc/unbind
+insmod at86rf230.ko
+insmod spi_atben.ko
+
+cd ${HOME}
+
+iz add wpan-phy0
+ip link set wpan0 address de:ad:be:af:ca:fe:ba:be
+ifconfig wpan0 up
+
+rm -f /tmp/lease
+izcoordinator -d 1 -l /tmp/lease -i wpan0 -p 0x777 -s 1 -c 11
+
+izchat 777 1 8001
+
+#dirtpan 777 1 8001 'ifconfig tun0 10.8.0.1 dstaddr 10.8.0.2 up'
+
