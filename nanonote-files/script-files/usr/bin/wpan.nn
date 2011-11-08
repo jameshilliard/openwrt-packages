@@ -10,13 +10,22 @@ insmod spi_atben.ko
 cd ${HOME}
 
 iz add wpan-phy0
-ip link set wpan0 address de:ad:be:af:ca:fe:ba:be
+if [ "$1" == "2" ]; then
+  ip link set wpan0 address de:ad:be:af:ca:fe:ba:b2
+else
+  ip link set wpan0 address de:ad:be:af:ca:fe:ba:b1
+fi
 ifconfig wpan0 up
 
-rm -f /tmp/lease
-izcoordinator -d 1 -l /tmp/lease -i wpan0 -p 0x777 -s 1 -c 11
+if [ "$1" == "2" ]; then
+  iz assoc wpan0 777 1 11 short
 
-izchat 777 1 8001
+  izchat 777 8001 1
+  #dirtpan 777 8001 1 'ifconfig tun0 10.8.0.2 dstaddr 10.8.0.1 up' &
+else
+  rm -f /tmp/lease
+  izcoordinator -d 1 -l /tmp/lease -i wpan0 -p 0x777 -s 1 -c 11 &
 
-#dirtpan 777 1 8001 'ifconfig tun0 10.8.0.1 dstaddr 10.8.0.2 up'
-
+  izchat 777 1 8001
+  #dirtpan 777 1 8001 'ifconfig tun0 10.8.0.1 dstaddr 10.8.0.2 up' &
+fi
