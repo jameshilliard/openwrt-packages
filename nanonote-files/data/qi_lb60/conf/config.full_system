@@ -607,3 +607,13 @@ CONFIG_PACKAGE_svgalib-demo=y
 CONFIG_PACKAGE_nanonote-script-files=y
 CONFIG_PACKAGE_nanonote-data-files=y
 CONFIG_PACKAGE_nanonote-base-files=y
+#
+# WPAN
+#
+CONFIG_PACKAGE_kmod-at86rf230=y
+# CONFIG_PACKAGE_kmod-fakehard is not set
+# CONFIG_PACKAGE_kmod-fakelb is not set
+CONFIG_PACKAGE_kmod-ieee802154=y
+CONFIG_PACKAGE_kmod-mac802154=y
+CONFIG_PACKAGE_kmod-spi_atben=y
+# CONFIG_PACKAGE_kmod-spi_atusb is not set
