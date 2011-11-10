@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tempest-for-eliza
 PKG_VERSION:=1.0.5
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=tempest_for_eliza-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.erikyyy.de/tempest/
@@ -31,6 +31,7 @@ define Package/tempest-for-eliza/install
 	$(INSTALL_DIR) $(1)/usr/share/tempest-for-eliza/songs
 
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tempest_for_eliza $(1)/usr/bin/
+	$(CP) $(PKG_BUILD_DIR)/README $(1)/usr/share/tempest-for-eliza/README
 	$(CP) $(PKG_BUILD_DIR)/songs/* $(1)/usr/share/tempest-for-eliza/songs
 	rm -f $(1)/usr/share/tempest-for-eliza/songs/Makefile*
 endef
