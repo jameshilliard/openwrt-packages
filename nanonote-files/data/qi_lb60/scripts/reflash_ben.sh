@@ -1,6 +1,6 @@
 #!/bin/bash
 # version of me
-__VERSION__="2011-08-19"
+__VERSION__="2011-11-11"
 
 # use 'http' to download and flash images, use 'file' to flash images present in the <WORKING_DIR>
 PROTOCOL="http"
@@ -214,6 +214,10 @@ fi
 log "booting device..."
 usbboot -c "boot" >> "${LOG_FILE}" || abort "can't boot device - xburst-tools setup correctly? device in boot-mode? device connected?"
 
+if [ "$ALL" == "TRUE" ]; then
+	log "clean bootloader env data ..."
+	usbboot -c "nerase 2 2 0 0" >> "${LOG_FILE}" 2>&1
+fi
 if [ "$B" == "TRUE" ]; then
 	log "flashing bootloader..."
 	progress_prepare
