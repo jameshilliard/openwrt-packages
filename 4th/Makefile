@@ -6,7 +6,7 @@ include $(TOPDIR)/rules.mk
 ## Nombre del paquete
 PKG_NAME:=4th
 ## version del programa que vamos incluir en el paquete
-PKG_VERSION:=3.61.2
+PKG_VERSION:=3.61.3
 ## numero de version del paquete 
 PKG_RELEASE:=4
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-nano.tar.gz
