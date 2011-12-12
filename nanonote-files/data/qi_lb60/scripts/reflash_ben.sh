@@ -1,6 +1,6 @@
 #!/bin/bash
 # version of me
-__VERSION__="2011-11-11"
+__VERSION__="2011-12-12"
 
 # use 'http' to download and flash images, use 'file' to flash images present in the <WORKING_DIR>
 PROTOCOL="http"
@@ -172,6 +172,11 @@ if [ "$PROTOCOL" == "http" ]; then
     MD5SUMS_SERVER=$(wget -O - ${BASE_URL_HTTP}/${VERSION}/md5sums 2> /dev/null | grep -E "(${LOADER}|${KERNEL}|${ROOTFS})" | sort)
     [ "${MD5SUMS_SERVER}" ] || abort "can't fetch files from server"
     
+    if [ ! -f "${WORKING_DIR}/${ROOTFS}" ] && [ -f "${WORKING_DIR}/${ROOTFS}.bz2" ] ; then
+        log "found .ubi.bz2 rootfs, decompressing to .ubi ..."
+        (cd "${WORKING_DIR}"; bzip2 -d "${ROOTFS}.bz2")
+    fi
+
     MD5SUMS_LOCAL=$( (cd "${WORKING_DIR}" ; md5sum --binary "${LOADER}" "${KERNEL}" "${ROOTFS}" 2> /dev/null) | sort )
 
     if [ "${MD5SUMS_SERVER}" == "${MD5SUMS_LOCAL}" ]; then
@@ -254,7 +259,3 @@ if [ "$ALL" == "TRUE" ]; then
 fi
 
 log "done"
-
-########## ChangeLog ###############
-### 2011-06-07
- # using -O in wget
