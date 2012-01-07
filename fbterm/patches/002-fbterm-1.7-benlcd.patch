@@ -1,0 +1,50 @@
+Patch to get the fbterm 1.7 display somewhat better the gliphs on the Ben LCD.
+
+Author: Lluís Batlle i Rossell
+
+diff --git a/src/screen_render.cpp b/src/screen_render.cpp
+index e8f39b8..e0f90e9 100644
+--- a/src/screen_render.cpp
++++ b/src/screen_render.cpp
+@@ -195,7 +195,40 @@ void Screen::draw##bits(u32 x, u32 y, u32 w, u8 fc, u8 bc, u8 *pixmap) \
+ 
+ drawX(15, 5, 5, 5, u16, writew)
+ drawX(16, 5, 6, 5, u16, writew)
+-drawX(32, 8, 8, 8, u32, writel)
++
++void Screen::draw32(u32 x, u32 y, u32 w, u8 fc, u8 bc, u8 *pixmap)
++{
++    /* This code takes into account the Ben Nanonote LCD, that has the distribution:
++     *   0:   RR  GG  BB  RR  GG  BB
++     *   1: GG  BB  RR  GG  BB  RR  
++     *   2:   RR  GG  BB  RR  GG  BB
++     *   3: ...
++     *
++     *   We display the odd rows as 50% green in the current pixel, 50% in the next */ 
++   u8 red, green, blue;
++   u8 pixel;
++   u32 color;
++   u32 *dst = (u32 *)(mVMemBase + y * mBytesPerLine + x * bytes_per_pixel);
++   /* To work with white background, we ensure to paint the first pixel */
++   u8 prevgreen = mPalette[bc].green/2;
++
++   for (; w--; pixmap++, dst++) {
++        u8 newgreen;
++        pixel = *pixmap;
++
++        red = mPalette[bc].red + (((mPalette[fc].red - mPalette[bc].red) * pixel) >> 8);
++        newgreen = mPalette[bc].green + (((mPalette[fc].green - mPalette[bc].green) * pixel) >> 8);
++        blue = mPalette[bc].blue + (((mPalette[fc].blue - mPalette[bc].blue) * pixel) >> 8);
++
++        /* width == 0 is the special case for the last byte, where we paint full green.
++         * That's relevant for white background, like when running 'top'. */
++        green = ((y & 1) == 0 || w == 0) ? newgreen : (newgreen/2 + prevgreen);
++        color = (red << 16) | (green << 8) | (blue);
++        writel(dst, color);
++        prevgreen = newgreen/2;
++   }
++}
++
+ 
+ #define drawXBg(bits, lred, lgreen, lblue, type, fbwrite) \
+  \

@@ -5,12 +5,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=fbterm
-PKG_VERSION:=1.6
+PKG_VERSION:=1.7
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).0.tar.gz
 PKG_SOURCE_URL:=http://fbterm.googlecode.com/files/
-PKG_MD5SUM:=531ea0984836b58fd123e6a97a4228c6
+PKG_MD5SUM:=c36bae75a450df0519b4527cccaf7572
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
