@@ -13,6 +13,8 @@ PKG_SOURCE_URL:=http://festvox.org/bard/
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)-current/
 PKG_RELEASE:=1
+PKG_FIXUP:=autoreconf
+
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -29,10 +31,7 @@ Bard Storyteller is a text reader.  Bard not only allows a user to read books,
 but can also read books to a user using text-to-speech. 
 endef
 
-define Build/Configure
-	cd $(PKG_BUILD_DIR) && autoconf
-	$(call Build/Configure/Default, FLITEDIR=$(STAGING_DIR)/usr)
-endef
+CONFIGURE_ARGS += FLITEDIR=$(STAGING_DIR)/usr
 
 TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
 
