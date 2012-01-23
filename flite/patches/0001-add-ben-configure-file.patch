@@ -1,0 +1,24 @@
+From 3ef2b90c7077dfdcbf3d81dc6eeda948861a0be1 Mon Sep 17 00:00:00 2001
+From: Xiangfu <xiangfu@macbook.openmobilefree.net>
+Date: Tue, 24 Jan 2012 00:05:27 +0800
+Subject: [PATCH] add ben configure file
+
+---
+ config/ben.lv |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+ create mode 100644 config/ben.lv
+
+diff --git a/config/ben.lv b/config/ben.lv
+new file mode 100644
+index 0000000..6caf9fa
+--- /dev/null
++++ b/config/ben.lv
+@@ -0,0 +1,5 @@
++#
++#  The base languages, lexicons and voices
++LEXES += cmulex
++LANGS += usenglish
++VOXES += cmu_us_kal
+-- 
+1.7.5.4
+

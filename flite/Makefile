@@ -28,6 +28,8 @@ define Package/flite/description
   a small, fast run-time synthesis engine
 endef
 
+CONFIGURE_ARGS += --with-langvox=ben
+
 define Package/flite/install
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/flite $(1)/usr/bin/
