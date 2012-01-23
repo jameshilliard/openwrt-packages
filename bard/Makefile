@@ -23,7 +23,7 @@ define Package/bard
   CATEGORY:=Multimedia
   TITLE:=bard
   URL:=http://festvox.org/bard/ 
-  DEPENDS:=+flite +libsdl +libsdl-ttf @BROKEN
+  DEPENDS:=+flite +libsdl +libsdl-ttf +dejavu-fonts-ttf-DejaVuSans
 endef
 
 define Package/bard/description
@@ -31,9 +31,11 @@ Bard Storyteller is a text reader.  Bard not only allows a user to read books,
 but can also read books to a user using text-to-speech. 
 endef
 
-CONFIGURE_ARGS += FLITEDIR=$(STAGING_DIR)/usr
+CONFIGURE_ARGS += FLITEDIR=$(STAGING_DIR)/usr \
+	DEFAULTFONT=/usr/share/fonts/ttf-dejavu/DejaVuSans.ttf
 
 TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
+TARGET_LDFLAGS+= -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Package/bard/install
 	$(INSTALL_DIR) $(1)/usr/bin/
