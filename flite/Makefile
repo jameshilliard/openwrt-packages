@@ -33,5 +33,10 @@ define Package/flite/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/flite $(1)/usr/bin/
 endef
 
+define Build/InstallDev
+	$(INSTALL_DIR) $(1)/usr/include
+	$(CP) $(PKG_BUILD_DIR)/include/*.h $(1)/usr/include
+endef
+
 $(eval $(call BuildPackage,flite))
 
