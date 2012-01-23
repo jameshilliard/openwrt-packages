@@ -1,0 +1,21 @@
+diff --git a/configure.in b/configure.in
+index 0e44011..254d1da 100644
+--- a/configure.in
++++ b/configure.in
+@@ -430,16 +430,6 @@ echo CMU Flite found in $FLITEDIR
+ AC_SUBST(FLITEDIR)
+ 
+ dnl
+-dnl SDL support
+-dnl
+-if ! test -f /usr/include/SDL/SDL.h; then
+-    AC_MSG_ERROR("Cannot locate /usr/include/SDL/SDL.h.")
+-fi
+-if ! test -f /usr/include/SDL/SDL_ttf.h; then
+-    AC_MSG_ERROR("Cannot locate /usr/include/SDL/SDL_ttf.h.")
+-fi
+-
+-dnl
+ dnl Find a font.
+ dnl
+ if test "x$DEFAULTFONT" = "x"

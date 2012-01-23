@@ -29,6 +29,13 @@ Bard Storyteller is a text reader.  Bard not only allows a user to read books,
 but can also read books to a user using text-to-speech. 
 endef
 
+define Build/Configure
+	cd $(PKG_BUILD_DIR) && autoconf
+	$(call Build/Configure/Default, FLITEDIR=$(STAGING_DIR)/usr)
+endef
+
+TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
+
 define Package/bard/install
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/bard $(1)/usr/bin/
