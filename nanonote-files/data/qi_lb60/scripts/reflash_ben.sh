@@ -29,7 +29,7 @@ while getopts d:t:v:l:hbkr OPTIONS
 do
     case $OPTIONS in
     d)
-	BASE_URL_HTTP="http://fidelio.qi-hardware.com/~xiangfu/compile-log/"
+	BASE_URL_HTTP="http://fidelio.qi-hardware.com/~xiangfu/build-nanonote/"
         VERSION=$OPTARG # override version by first argument
         WORKING_DIR=${VERSION}
 	;;

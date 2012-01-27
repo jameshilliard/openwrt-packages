@@ -11,14 +11,15 @@ MAKE_VARS=" V=99 IGNORE_ERRORS=m "
 
 ########################################################################
 DATE=$(date "+%Y-%m-%d")
-TIME=$(date "+%H-%M-%S")
-DATE_TIME=`date +"%m%d%Y-%H%M"`
+DATE_TIME=`date +"%Y%m%d-%H%M"`
 
 GET_FEEDS_VERSION_SH="/home/xiangfu/bin/get-feeds-revision.sh"
 PATCH_OPENWRT_SH="/home/xiangfu/bin/patch-openwrt.sh"
 
-IMAGES_DIR="/home/xiangfu/compile-log/${OPENWRT_DIR_NAME}-${DATE_TIME}/"
+IMAGES_DIR="/home/xiangfu/building/Nanonote/Ben/${OPENWRT_DIR_NAME}-${DATE_TIME}/"
+DEST_DIR="/home/xiangfu/build-nanonote"
 mkdir -p ${IMAGES_DIR}
+mkdir -p ${DEST_DIR}
 
 BUILD_LOG="${IMAGES_DIR}/BUILD_LOG"
 VERSIONS_FILE="${IMAGES_DIR}/VERSIONS"
@@ -97,4 +98,6 @@ cp -a files/* ${IMAGES_DIR}/files/
  bzip2 -z openwrt-xburst-qi_lb60-root.ubi; \
 )
 
-echo "DONE :)"
+mv ${IMAGES_DIR} ${DEST_DIR}
+
+echo "DONE!"
