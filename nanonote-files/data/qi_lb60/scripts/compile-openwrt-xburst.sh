@@ -70,12 +70,12 @@ if [ "$?" != "0" ]; then
 	tail -n 100 ${IMAGES_DIR}/BUILD_LOG > ${IMAGES_DIR}/BUILD_LOG.`date +"%m%d%Y-%H%M"`.last100
         echo -e "\
 say #qi-hardware The build has FAILED, \
-see log here: http://fidelio.qi-hardware.com/~xiangfu/compile-log/${OPENWRT_DIR_NAME}-${DATE_TIME}/\nclose" \
+see log here: http://fidelio.qi-hardware.com/~xiangfu/build-nanonote/${OPENWRT_DIR_NAME}-${DATE_TIME}/\nclose" \
              | nc turandot.qi-hardware.com 3858
 else
 echo -e "\
 say #qi-hardware The build was successfull, \
-see images here: http://fidelio.qi-hardware.com/~xiangfu/compile-log/${OPENWRT_DIR_NAME}-${DATE_TIME}/\nclose" \
+see images here: http://fidelio.qi-hardware.com/~xiangfu/build-nanonote/${OPENWRT_DIR_NAME}-${DATE_TIME}/\nclose" \
      | nc turandot.qi-hardware.com 3858
 fi
 
