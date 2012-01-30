@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=bard
-PKG_VERSION:=0.5
+PKG_VERSION:=0.6
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-current.tar.bz2
 PKG_SOURCE_URL:=http://festvox.org/bard/

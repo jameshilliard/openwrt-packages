@@ -1,8 +1,17 @@
+From 2d451688f5fbacddf39de02f14ed1088f9414dd6 Mon Sep 17 00:00:00 2001
+From: Xiangfu <xiangfu@openmobilefree.net>
+Date: Mon, 30 Jan 2012 09:57:01 +0800
+Subject: [PATCH 1/2] remove-configure-hardcode-path
+
+---
+ configure.in |   10 ----------
+ 1 files changed, 0 insertions(+), 10 deletions(-)
+
 diff --git a/configure.in b/configure.in
-index 0e44011..254d1da 100644
+index d1a93e0..9288a3f 100644
 --- a/configure.in
 +++ b/configure.in
-@@ -430,16 +430,6 @@ echo CMU Flite found in $FLITEDIR
+@@ -443,16 +443,6 @@ echo CMU Flite found in $FLITEDIR
  AC_SUBST(FLITEDIR)
  
  dnl
@@ -19,3 +28,6 @@ index 0e44011..254d1da 100644
  dnl Find a font.
  dnl
  if test "x$DEFAULTFONT" = "x"
+-- 
+1.7.5.4
+

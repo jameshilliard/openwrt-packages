@@ -1,0 +1,27 @@
+From 559fc9a590cf13af7bfce87af6b78e5bae21eff4 Mon Sep 17 00:00:00 2001
+From: Xiangfu <xiangfu@openmobilefree.net>
+Date: Mon, 30 Jan 2012 09:58:12 +0800
+Subject: [PATCH 2/2] disable-mouse
+
+---
+ src/display.c |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+diff --git a/src/display.c b/src/display.c
+index 620ad8a..91dd965 100644
+--- a/src/display.c
++++ b/src/display.c
+@@ -107,6 +107,10 @@ bard_display *bard_display_open(cst_features *config)
+         return NULL;
+     }
+ 
++#ifdef BARD_TARGET_BEN_NANONOTE
++    SDL_ShowCursor(SDL_DISABLE);
++#endif
++
+     return display;
+ }
+ 
+-- 
+1.7.5.4
+
