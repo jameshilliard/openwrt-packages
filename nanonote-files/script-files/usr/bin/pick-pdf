@@ -1,0 +1,25 @@
+#! /bin/bash
+
+export CMD=nupdf
+export EXT=pdf
+
+export i=0
+
+echo " "
+echo "Searching for *.$EXT files. It may take a while..."
+echo " "
+
+rm -f /tmp/fsel.tmp 2>/dev/null
+touch /tmp/fsel.tmp
+for aa in `find . -name "*.$EXT" -print` ;do i=`expr $i + 1` ; echo $i $aa >>/tmp/fsel.tmp ;done
+export B=`cat /tmp/fsel.tmp`
+export A=`dialog --menu "Select a File" 0 50 20 $B --stdout`
+
+if test $A > 0
+then
+export C=`grep "^$A" /tmp/fsel.tmp`
+export D=`echo $C | cut -d' ' -f2 -`
+$CMD $D
+else
+echo "No file selected!"
+fi
