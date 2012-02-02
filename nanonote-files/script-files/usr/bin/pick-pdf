@@ -5,14 +5,25 @@ export EXT=pdf
 
 export i=0
 
-echo " "
+export PDF_PATH=~/
+
+echo -e `basename $0` "\t\tVersion: 2012-02-02"
 echo "Searching for *.$EXT files. It may take a while..."
 echo " "
 
 rm -f /tmp/fsel.tmp 2>/dev/null
 touch /tmp/fsel.tmp
-for aa in `find . -name "*.$EXT" -print` ;do i=`expr $i + 1` ; echo $i $aa >>/tmp/fsel.tmp ;done
+for aa in `find ${PDF_PATH} -name "*.$EXT" -type f -print` ; do
+  i=`expr $i + 1` ;
+  echo $i $aa >>/tmp/fsel.tmp ;
+done
+
 export B=`cat /tmp/fsel.tmp`
+if [ "$B" == "" ]; then
+  echo "No pdf file found"
+  exit
+fi
+
 export A=`dialog --menu "Select a File" 0 50 20 $B --stdout`
 
 if test $A > 0
