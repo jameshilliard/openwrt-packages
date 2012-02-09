@@ -1,4 +1,4 @@
-# 
+#
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
@@ -19,16 +19,17 @@ PKG_FIXUP:=autoreconf
 include $(INCLUDE_DIR)/package.mk
 
 define Package/bard
+  MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
   SECTION:=multimedia
   CATEGORY:=Multimedia
   TITLE:=bard
-  URL:=http://festvox.org/bard/ 
+  URL:=http://festvox.org/bard/
   DEPENDS:=+flite +libsdl +libsdl-ttf +dejavu-fonts-ttf-DejaVuSans
 endef
 
 define Package/bard/description
 Bard Storyteller is a text reader.  Bard not only allows a user to read books,
-but can also read books to a user using text-to-speech. 
+but can also read books to a user using text-to-speech.
 endef
 
 CONFIGURE_ARGS += FLITEDIR=$(STAGING_DIR)/usr \
