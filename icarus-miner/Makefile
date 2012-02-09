@@ -39,7 +39,7 @@ define Package/icarus-miner/postinst
 #!/bin/sh
 crontab /root/crontab.icarus
 /etc/init.d/cron enable
-/etc/init.d/cron start
+/etc/init.d/cron restart
 endef
 
 $(eval $(call BuildPackage,icarus-miner))
