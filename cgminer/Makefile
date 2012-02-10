@@ -37,7 +37,7 @@ endef
 define Package/cgminer/description
 endef
 
-CONFIGURE_ARGS += --enable-bitforce --disable-opencl --disable-adl
+CONFIGURE_ARGS += --enable-bitforce --disable-opencl --disable-adl --enable-cpumining
 TARGET_CFLAGS  += 
 TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
