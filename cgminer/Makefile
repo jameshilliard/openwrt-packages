@@ -31,7 +31,7 @@ define Package/cgminer
 	CATEGORY:=Utilities
 	TITLE:=cgminer
 	URL:=https://github.com/ckolivas/cgminer
-	DEPENDS:=+libcurl
+	DEPENDS:=+libcurl +libpthread +libncurses +jansson
 endef
 
 define Package/cgminer/description
