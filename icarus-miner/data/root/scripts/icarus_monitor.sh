@@ -8,6 +8,7 @@ WORKER=http://xiangfu.z@gmail.com_1:1234@pit.deepbit.net:8332/
 SCRIPT_PATH=`pwd`
 
 ${SCRIPT_PATH}/icarus_undermanager.py -a ${API_KEY} > ${SCRIPT_PATH}/u.log 2>&1
+date >> ${SCRIPT_PATH}/u.log
 
 TRUE_COUNT=`less ${SCRIPT_PATH}/u.log | grep "\"alive\": true"   | wc -l`
 HASHRATE=`less ${SCRIPT_PATH}/u.log | grep "\"hashrate\": 0,"  | wc -l`
