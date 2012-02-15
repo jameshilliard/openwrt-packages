@@ -1,0 +1,289 @@
+From 80451867b6eeeb79e02d639171999d99069bb27f Mon Sep 17 00:00:00 2001
+From: Xiangfu <xiangfu@openmobilefree.net>
+Date: Mon, 13 Feb 2012 16:04:34 +0800
+Subject: [PATCH 2/6] add icarus.c, base on bitforce.c
+
+
+Signed-off-by: Xiangfu <xiangfu@openmobilefree.net>
+---
+ icarus.c |  268 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 268 insertions(+), 0 deletions(-)
+ create mode 100644 icarus.c
+
+diff --git a/icarus.c b/icarus.c
+new file mode 100644
+index 0000000..141d639
+--- /dev/null
++++ b/icarus.c
+@@ -0,0 +1,268 @@
++/*
++ * Copyright 2012 Luke Dashjr
++ * Copyright 2012 Xiangfu <xiangfu@openmobilefree.com>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the Free
++ * Software Foundation; either version 2 of the License, or (at your option)
++ * any later version.  See COPYING for more details.
++ */
++
++#include <limits.h>
++#include <pthread.h>
++#include <stdio.h>
++#include <sys/time.h>
++#include <sys/types.h>
++#include <dirent.h>
++#include <unistd.h>
++#ifndef WIN32
++  #include <termios.h>
++  #include <sys/stat.h>
++  #include <fcntl.h>
++  #ifndef O_CLOEXEC
++    #define O_CLOEXEC 0
++  #endif
++#else
++  #include <windows.h>
++  #include <io.h>
++#endif
++
++#include "elist.h"
++#include "miner.h"
++
++#define ICARUS_READ_FAULT_COUNT	(8)
++
++struct device_api icarus_api;
++
++static void rev(char *s, ssize_t l)
++{
++	int i, j;
++	char t;
++
++	for(i = 0, j = l - 1; i < j; i++, j--) {
++		t = s[i];
++		s[i] = s[j];
++		s[j] = t;
++	}
++}
++
++static int icarus_open(const char *devpath)
++{
++#ifndef WIN32
++	struct termios my_termios;
++
++	int serialfd = open(devpath, O_RDWR | O_CLOEXEC | O_NOCTTY);
++
++	if(serialfd == -1)
++		return -1;
++
++	tcgetattr(serialfd, &my_termios);
++	my_termios.c_cflag = B115200;
++	my_termios.c_cflag |= CS8;
++	my_termios.c_cflag |= CREAD;
++	my_termios.c_cflag |= CLOCAL;
++	my_termios.c_cflag &= ~(CSIZE | PARENB);
++
++	my_termios.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
++	my_termios.c_oflag &= ~OPOST;
++	my_termios.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
++	my_termios.c_cc[VTIME] = 10; /* block 1 second */
++	my_termios.c_cc[VMIN] = 0;
++	tcsetattr(serialfd, TCSANOW, &my_termios);
++
++	tcflush(serialfd, TCOFLUSH);
++	tcflush(serialfd, TCIFLUSH);
++
++	return serialfd;
++#else
++	HANDLE hSerial = CreateFile(devpath, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
++	if (unlikely(hSerial == INVALID_HANDLE_VALUE))
++		return -1;
++	return _open_osfhandle((LONG)hSerial, 0);
++#endif
++}
++
++static void icarus_gets(char *buf, size_t bufLen, int fd)
++{
++	int ret = 0, count = 0;
++
++	while (bufLen) {
++		ret = read(fd, buf, 1);
++		if(ret == 1) {
++			bufLen--;
++			buf++;
++		}
++		count++;
++		if(count == ICARUS_READ_FAULT_COUNT)
++			break;
++	}
++}
++
++static void icarus_write(int fd, const void *buf, size_t bufLen)
++{
++	ssize_t ret = write(fd, buf, bufLen);
++	if (unlikely(ret != bufLen))
++		quit(1, "icarus_write failed");
++}
++
++#define icarus_close(fd) close(fd)
++
++static bool icarus_detect_one(const char *devpath)
++{
++	static int i = 0;
++
++	const char ob[128] =
++"ce92099c5a80bb81c52990d5c0924c625fd25a535640607d5a4bdf8174e2c8d500000000000000000000000080000000000000000b290c1a42313b4f21b5bcb8";
++	const char nonce[] = "8e0b31c5";
++	char ob_bin[64];
++	char pdevbuf[4];
++	int fdDev;
++	char *nonce_hex;
++
++	if (total_devices == MAX_DEVICES)
++		return false;
++
++	fdDev = icarus_open(devpath);
++	if (unlikely(fdDev == -1)) {
++		applog(LOG_ERR, "Icarus Detect: Failed to open %s", devpath);
++		return false;
++	}
++
++	hex2bin(ob_bin, ob, sizeof(ob_bin));
++	icarus_write(fdDev, ob_bin, sizeof(ob_bin));
++
++	memset(pdevbuf, 0, sizeof(pdevbuf));
++	icarus_gets(pdevbuf, sizeof(pdevbuf), fdDev);
++
++	icarus_close(fdDev);
++
++	nonce_hex = bin2hex(pdevbuf, sizeof(pdevbuf));
++	if(strncmp(nonce_hex, nonce, 8)) {
++		applog(LOG_DEBUG, "Icarus Detect: Test failed at %s : get %s, should: %s",
++		       devpath, nonce_hex, nonce);
++		return false;
++	}
++	free(nonce_hex);
++
++	/* We have a real Icarus! */
++	struct cgpu_info *icarus;
++	icarus = calloc(1, sizeof(*icarus));
++	devices[total_devices++] = icarus;
++	icarus->api = &icarus_api;
++	icarus->device_id = i++;
++	icarus->device_path = strdup(devpath);
++	icarus->enabled = true;
++	icarus->threads = 1;
++
++	return true;
++}
++
++static void icarus_detect_auto()
++{
++#ifndef WIN32
++	DIR *D;
++	struct dirent *de;
++	const char udevdir[] = "/dev/serial/by-id";
++	char devpath[sizeof(udevdir) + 1 + NAME_MAX];
++	char *devfile = devpath + sizeof(udevdir);
++
++	D = opendir(udevdir);
++	if (!D)
++		return;
++	memcpy(devpath, udevdir, sizeof(udevdir) - 1);
++	devpath[sizeof(udevdir) - 1] = '/';
++	while ( (de = readdir(D)) ) {
++		/* Icarus using a PL2303 usb-serial chip */
++		if (!strstr(de->d_name, "Prolific_Technology_Inc"))
++			continue;
++		strcpy(devfile, de->d_name);
++		icarus_detect_one(devpath);
++	}
++	closedir(D);
++#endif
++}
++
++static void icarus_detect()
++{
++	struct string_elist *iter, *tmp;
++
++	list_for_each_entry_safe(iter, tmp, &scan_devices, list) {
++		if (icarus_detect_one(iter->string))
++			string_elist_del(iter);
++	}
++
++	icarus_detect_auto();
++}
++
++static pthread_mutex_t hash_lock;
++
++static bool icarus_thread_prepare(struct thr_info *thr)
++{
++	struct cgpu_info *icarus = thr->cgpu;
++
++	struct timeval now;
++
++	int fdDev = icarus_open(icarus->device_path);
++	if (unlikely(-1 == fdDev)) {
++		applog(LOG_ERR, "Failed to open Icarus on %s", icarus->device_path);
++		return false;
++	}
++
++	icarus->device_fd = fdDev;
++
++	applog(LOG_INFO, "Opened Icarus on %s", icarus->device_path);
++	gettimeofday(&now, NULL);
++	get_datestamp(icarus->init, &now);
++
++	mutex_init(&hash_lock);
++	return true;
++}
++
++static uint64_t icarus_scanhash(struct thr_info *thr, struct work *work, uint64_t max_nonce)
++{
++	struct cgpu_info *icarus = thr->cgpu;
++	int fdDev = icarus->device_fd;
++
++	char pdevbuf[4];
++	unsigned char ob[64];
++	uint32_t nonce;
++	char *ob_hex, *nonce_hex;
++
++	mutex_lock(&hash_lock);
++
++	memcpy(ob, work->midstate, 32);
++	memcpy(ob + 32, work->data + 64, 32);
++	rev(ob, 32);
++	rev(ob + 32, 32);
++
++	icarus_write(fdDev, ob, sizeof(ob));
++
++	ob_hex = bin2hex(ob, sizeof(ob));
++	applog(LOG_DEBUG, "Icarus Send: %s", ob_hex);
++	free(ob_hex);
++
++	memset(pdevbuf, 0, sizeof(pdevbuf));
++	icarus_gets(pdevbuf, sizeof(pdevbuf), fdDev);
++
++	nonce_hex = bin2hex(pdevbuf, sizeof(pdevbuf));
++	applog(LOG_DEBUG, "Icarus Return: %s", nonce_hex);
++	free(nonce_hex);
++
++	work->blk.nonce = 0xffffffff;
++
++	memcpy((char *)&nonce, pdevbuf, sizeof(pdevbuf));
++#ifndef __BIG_ENDIAN__
++	nonce = swab32(nonce);
++#endif
++	submit_nonce(thr, work, nonce);
++
++	mutex_unlock(&hash_lock);
++	return 0xffffffff;
++}
++
++struct device_api icarus_api = {
++	.name = "Icarus",
++	.api_detect = icarus_detect,
++	.thread_prepare = icarus_thread_prepare,
++	.scanhash = icarus_scanhash,
++};
+-- 
+1.7.5.4
+

@@ -9,8 +9,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cgminer
-PKG_VERSION:=20120210
-PKG_REV:=6e3ad7ad250b5d63be2472d9dc56325d143d7ace
+PKG_VERSION:=20120215
+PKG_REV:=9a0e4f8facababf54cf6dcac7bf93a0e6099047e
 PKG_RELEASE:=1
 PKG_INSTALL:=1
 
@@ -37,7 +37,7 @@ endef
 define Package/cgminer/description
 endef
 
-CONFIGURE_ARGS += --enable-bitforce --disable-opencl --disable-adl --enable-cpumining
+CONFIGURE_ARGS += --disable-opencl --disable-adl --enable-icarus
 TARGET_CFLAGS  += 
 TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 

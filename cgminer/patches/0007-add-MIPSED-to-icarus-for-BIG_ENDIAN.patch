@@ -1,0 +1,13 @@
+diff --git a/icarus.c b/icarus.c
+index 141d639..2e89a86 100644
+--- a/icarus.c
++++ b/icarus.c
+@@ -251,7 +251,7 @@ static uint64_t icarus_scanhash(struct thr_info *thr, struct work *work, uint64_
+ 	work->blk.nonce = 0xffffffff;
+ 
+ 	memcpy((char *)&nonce, pdevbuf, sizeof(pdevbuf));
+-#ifndef __BIG_ENDIAN__
++#if !defined (__BIG_ENDIAN__) && !defined(MIPSEB)
+ 	nonce = swab32(nonce);
+ #endif
+ 	submit_nonce(thr, work, nonce);

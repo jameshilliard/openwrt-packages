@@ -1,0 +1,77 @@
+From fdcf21974b9b9d1b2d92ccad6b16eadf023515fc Mon Sep 17 00:00:00 2001
+From: Xiangfu <xiangfu@openmobilefree.net>
+Date: Mon, 13 Feb 2012 16:09:45 +0800
+Subject: [PATCH 3/6] add icarus to cgminer.c
+
+
+Signed-off-by: Xiangfu <xiangfu@openmobilefree.net>
+---
+ cgminer.c |   17 ++++++++++++++---
+ 1 files changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/cgminer.c b/cgminer.c
+index 596a21a..cea6f59 100644
+--- a/cgminer.c
++++ b/cgminer.c
+@@ -400,7 +400,7 @@ static char *set_int_1_to_10(const char *arg, int *i)
+ 	return set_int_range(arg, i, 1, 10);
+ }
+ 
+-#ifdef USE_BITFORCE
++#if defined(USE_BITFORCE) || defined(USE_ICARUS)
+ static char *add_serial(char *arg)
+ {
+ 	string_elist_add(arg, &scan_devices);
+@@ -662,7 +662,7 @@ static struct opt_table opt_config_table[] = {
+ 	OPT_WITHOUT_ARG("--disable-gpu|-G",
+ 			opt_set_bool, &opt_nogpu,
+ 			"Disable GPU mining even if suitable devices exist"),
+-#if defined(WANT_CPUMINE) && (defined(HAVE_OPENCL) || defined(USE_BITFORCE))
++#if defined(WANT_CPUMINE) && (defined(HAVE_OPENCL) || defined(USE_BITFORCE) || defined(USE_ICARUS))
+ 	OPT_WITHOUT_ARG("--enable-cpu|-C",
+ 			opt_set_bool, &opt_usecpu,
+ 			"Enable CPU mining with other mining (default: no CPU mining if other devices exist)"),
+@@ -777,7 +777,7 @@ static struct opt_table opt_config_table[] = {
+ 	OPT_WITHOUT_ARG("--round-robin",
+ 		     set_rr, &pool_strategy,
+ 		     "Change multipool strategy from failover to round robin on failure"),
+-#ifdef USE_BITFORCE
++#if defined(USE_BITFORCE) || (defined(USE_ICARUS) && defined(WIN32))
+ 	OPT_WITH_ARG("--scan-serial|-S",
+ 		     add_serial, NULL, NULL,
+ 		     "Serial port to probe for BitForce device"),
+@@ -962,6 +962,9 @@ static char *opt_verusage_and_exit(const char *extra)
+ #ifdef USE_BITFORCE
+ 		"bitforce "
+ #endif
++#ifdef USE_ICARUS
++		"icarus "
++#endif
+ 		"mining support.\n"
+ 		, packagename);
+ 	printf("%s", opt_usage(opt_argv0, extra));
+@@ -4117,6 +4120,10 @@ struct device_api cpu_api = {
+ extern struct device_api bitforce_api;
+ #endif
+ 
++#ifdef USE_ICARUS
++extern struct device_api icarus_api;
++#endif
++
+ 
+ static int cgminer_id_count = 0;
+ 
+@@ -4271,6 +4278,10 @@ int main (int argc, char *argv[])
+ 	bitforce_api.api_detect();
+ #endif
+ 
++#ifdef USE_ICARUS
++	icarus_api.api_detect();
++#endif
++
+ #ifdef WANT_CPUMINE
+ 	cpu_api.api_detect();
+ #endif
+-- 
+1.7.5.4
+
