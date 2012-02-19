@@ -1,19 +1,17 @@
-From 867a939c012ffcdbff018625c76571a588642662 Mon Sep 17 00:00:00 2001
+From dfead150f78fcaa5b052c791b6ee0ee8f2939b1c Mon Sep 17 00:00:00 2001
 From: Xiangfu <xiangfu@openmobilefree.net>
 Date: Wed, 15 Feb 2012 12:43:25 +0800
-Subject: [PATCH 6/6] add shortcut to description for easy grep
+Subject: [PATCH 6/7] add shortcuts to description for easy grep
 
-
-Signed-off-by: Xiangfu <xiangfu@openmobilefree.net>
 ---
  README |   16 ++++++++--------
  1 files changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/README b/README
-index 0ef1b9f..174882a 100644
+index 30cf037..d801a9a 100644
 --- a/README
 +++ b/README
-@@ -320,14 +320,14 @@ The output line shows the following:
+@@ -315,14 +315,14 @@ The output line shows the following:
  (5s):1713.6 (avg):1707.8 Mh/s | Q:301  A:729  R:8  HW:0  E:242%  U:22.53/m
  
  Each column is as follows:

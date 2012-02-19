@@ -1,10 +1,8 @@
-From 75e27968a62025d1ac3655275e8f52b879092255 Mon Sep 17 00:00:00 2001
+From 2bb92ebcdc4612d218e965b8f6f6f22b6b3ff21d Mon Sep 17 00:00:00 2001
 From: Xiangfu <xiangfu@openmobilefree.net>
 Date: Mon, 13 Feb 2012 16:04:13 +0800
-Subject: [PATCH 1/6] add Icarus support to autoreconf system
+Subject: [PATCH 4/7] add Icarus support to autoreconf system
 
-
-Signed-off-by: Xiangfu <xiangfu@openmobilefree.net>
 ---
  Makefile.am  |    3 +++
  configure.ac |   21 +++++++++++++++++++--
@@ -22,7 +20,7 @@ index 4249d51..5262d52 100644
 +cgminer_SOURCES += icarus.c
 +endif
 diff --git a/configure.ac b/configure.ac
-index ee665aa..a931867 100644
+index d2fdbb4..ce89c6f 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -196,6 +196,17 @@ if test "x$bitforce" = xyes; then

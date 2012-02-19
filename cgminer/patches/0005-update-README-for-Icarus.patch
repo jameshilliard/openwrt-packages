@@ -1,16 +1,14 @@
-From 5ae847013d58990a1686d2875b768945c65a2f6e Mon Sep 17 00:00:00 2001
+From beaf158a409920ab436cef749b997f487e0225b9 Mon Sep 17 00:00:00 2001
 From: Xiangfu <xiangfu@openmobilefree.net>
 Date: Tue, 14 Feb 2012 00:01:20 +0800
-Subject: [PATCH 5/6] update README for Icarus
+Subject: [PATCH 5/7] update README for Icarus
 
-
-Signed-off-by: Xiangfu <xiangfu@openmobilefree.net>
 ---
- README |    6 ++++++
- 1 files changed, 6 insertions(+), 0 deletions(-)
+ README |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/README b/README
-index f3c0a26..0ef1b9f 100644
+index f3c0a26..30cf037 100644
 --- a/README
 +++ b/README
 @@ -50,6 +50,7 @@ CGMiner specific configuration options:
@@ -21,18 +19,18 @@ index f3c0a26..0ef1b9f 100644
  
  Basic *nix build instructions:
  	To build with GPU mining support:
-@@ -198,6 +199,11 @@ BitForce only options:
- --scan-serial|-S <arg> Serial port to probe for BitForce device
+@@ -193,9 +194,9 @@ GPU only options:
+ --ndevs|-n          Enumerate number of detected GPUs and exit
  
  
-+Icarus only options(only under Windows system):
-+
-+--scan-serial|-S <arg> Serial port to probe for Icarus device
-+
-+
+-BitForce only options:
++FPGA mining boards(BitForce, Icarus) only options:
+ 
+---scan-serial|-S <arg> Serial port to probe for BitForce device
++--scan-serial|-S <arg> Serial port to probe for FPGA mining device
+ 
+ 
  CPU only options:
- 
- --algo|-a <arg>     Specify sha256 implementation for CPU mining:
 -- 
 1.7.5.4
 
