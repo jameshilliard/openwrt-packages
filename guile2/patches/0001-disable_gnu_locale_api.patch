@@ -1,0 +1,11 @@
+--- guile-2.0.2/libguile/i18n.c	2011-08-12 16:47:52.538234245 +0200
++++ guile-2.0.2m/libguile/i18n.c	2011-08-12 16:47:11.027419164 +0200
+@@ -865,7 +865,7 @@
+   *dst = '\0';
+ }
+ 
+-#ifdef USE_GNU_LOCALE_API
++#ifdef USE_GNU_LOCALE_API_DISABLED
+ static inline void
+ str_upcase_l (register char *dst, register const char *src,
+ 	      scm_t_locale locale)

@@ -6,10 +6,13 @@
 # See /LICENSE for more information.
 #
 
+# modified 20/02/2012
+# author: jnbagale@gmail.com
+
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libunistring
-PKG_VERSION:=0.9.2.1
+PKG_VERSION:=0.9.3
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://ftp.gnu.org/gnu/$(PKG_NAME)/
@@ -17,13 +20,14 @@ PKG_SOURCE_URL:=http://ftp.gnu.org/gnu/$(PKG_NAME)/
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 
 define Package/libunistring
     MAINTAINER:="Bart van Strien" <bart.bes@gmail.com>
     TITLE:=libunistring
     SECTION:=libs
     CATEGORY:=Libraries
-    DEPENDS:=+libiconv
+    DEPENDS:=$(ICONV_DEPENDS)
     URL:=http://savannah.gnu.org/projects/libunistring/
 endef
 
