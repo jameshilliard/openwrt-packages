@@ -74,7 +74,7 @@ see log here: http://fidelio.qi-hardware.com/~xiangfu/build-nanonote/${OPENWRT_D
              | nc turandot.qi-hardware.com 3858
 else
 echo -e "\
-say #qi-hardware The build was successfull, \
+say #qi-hardware The build was successful, \
 see images here: http://fidelio.qi-hardware.com/~xiangfu/build-nanonote/${OPENWRT_DIR_NAME}-${DATE_TIME}/\nclose" \
      | nc turandot.qi-hardware.com 3858
 fi
