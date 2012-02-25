@@ -1,18 +1,18 @@
-From 83df54b91b99aad744e0f62431d6f3ceecd0ac51 Mon Sep 17 00:00:00 2001
+From bed5510daca0a751e264da14367d3389f4f93dbd Mon Sep 17 00:00:00 2001
 From: Xiangfu <xiangfu@openmobilefree.net>
 Date: Sun, 19 Feb 2012 22:20:22 +0800
-Subject: [PATCH 7/7] add-MIPSED-to-icarus-for-BIG_ENDIAN.patch
+Subject: [PATCH 2/2] add-MIPSED-to-icarus-for-BIG_ENDIAN.patch
 
 ---
  icarus.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/icarus.c b/icarus.c
-index 5562e5e..73cd4de 100644
+index 1d59657..26f4927 100644
 --- a/icarus.c
 +++ b/icarus.c
-@@ -285,7 +285,7 @@ static uint64_t icarus_scanhash(struct thr_info *thr, struct work *work,
-         if (nonce == 0 && icarus_read_count == ICARUS_READ_FAULT_COUNT)
+@@ -287,7 +287,7 @@ static uint64_t icarus_scanhash(struct thr_info *thr, struct work *work,
+         if (nonce == 0 && ret)
                  return 0xffffffff;
  
 -#ifndef __BIG_ENDIAN__
