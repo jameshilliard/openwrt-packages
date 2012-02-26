@@ -37,7 +37,7 @@ endef
 define Package/cgminer/description
 endef
 
-CONFIGURE_ARGS += --disable-opencl --disable-adl --enable-icarus --enable-bitforce
+CONFIGURE_ARGS += --disable-opencl --disable-adl --enable-icarus
 TARGET_CFLAGS  += 
 TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
