@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2012 Xiangfu Liu <xiangfu@sharism.cc>
+# Copyright (C) 2012 Xiangfu Liu <xiangfu.z@gmail.com>
 #                            bitcoin: 1BQvUsuQBYUyVuX4jjFk4dVBpWJVQEUHTZ
 #
 # This is free software, licensed under the GNU General Public License v2.
@@ -9,8 +9,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cgminer
-PKG_VERSION:=20120226
-PKG_REV:=daf1eff13c5583770ed4a8e7a399924b1e208845
+PKG_VERSION:=20120305
+PKG_REV:=97ab111ec924e8812eaeff2f4f71940811a3cf1b
 PKG_RELEASE:=1
 PKG_INSTALL:=1
 
@@ -25,20 +25,25 @@ PKG_FIXUP:=autoreconf
 include $(INCLUDE_DIR)/package.mk
 
 define Package/cgminer
-	MAINTAINER:="Xiangfu Liu" \
-		<xiangfu@sharism.cc> <1BQvUsuQBYUyVuX4jjFk4dVBpWJVQEUHTZ>
+	MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
 	SECTION:=utils
 	CATEGORY:=Utilities
-	TITLE:=cgminer
+	TITLE:=cgminer (FPGA Miner)
 	URL:=https://github.com/ckolivas/cgminer
 	DEPENDS:=+libcurl +libpthread +libncurses +jansson
 endef
 
 define Package/cgminer/description
+Cgminer is a multi-threaded multi-pool GPU, FPGA and CPU miner with ATI GPU
+monitoring, (over)clocking and fanspeed support for bitcoin and derivative
+coins. Do not use on multiple block chains at the same time!
 endef
+# This package only enable the Icarus support. just connect your Icarus
+# FPGA miner board to OpenWrt router(with USB HOST support)
+# Run like: 
+#    cgminer -S /dev/ttyUSB0 -o http://MINING.POOL.URL -O USER:PASS
 
 CONFIGURE_ARGS += --disable-opencl --disable-adl --enable-icarus
-TARGET_CFLAGS  += 
 TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Package/cgminer/install

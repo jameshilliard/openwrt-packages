@@ -1,7 +1,7 @@
-From bed5510daca0a751e264da14367d3389f4f93dbd Mon Sep 17 00:00:00 2001
+From 5d3d883703d8098537c248c797009247f51b116b Mon Sep 17 00:00:00 2001
 From: Xiangfu <xiangfu@openmobilefree.net>
 Date: Sun, 19 Feb 2012 22:20:22 +0800
-Subject: [PATCH 2/2] add-MIPSED-to-icarus-for-BIG_ENDIAN.patch
+Subject: [PATCH] add-MIPSED-to-icarus-for-BIG_ENDIAN.patch
 
 ---
  icarus.c |    2 +-
