@@ -83,21 +83,19 @@ cp -a bin/xburst/* ${IMAGES_DIR} 2>/dev/null
 mkdir -p ${IMAGES_DIR}/files
 cp -a files/* ${IMAGES_DIR}/files/
 
-(cd ${IMAGES_DIR}; \
-    grep -E "ERROR:\ package.*failed to build" BUILD_LOG | \
-    	grep -v "package/kernel" > failed_packages.txt; \
-    bzip2 -z BUILD_LOG; \
-    bzip2 -z openwrt-xburst-qi_lb60-root.ubi; \
-)
-
 if [ "${MAKE_RET}" != "0" ]; then
     echo "ERROR: Build failed! please refer to the BUILD_LOG file"
-    tail -n 100 ${IMAGES_DIR}/BUILD_LOG > \
-	${IMAGES_DIR}/BUILD_LOG.`date +"%m%d%Y-%H%M"`.last100
+    tail -n 100 ${IMAGES_DIR}/BUILD_LOG > ${IMAGES_DIR}/BUILD_LOG.last100
     MSG="The build was FAILED"
     URL="http://fidelio.qi-hardware.com/~xiangfu/building/Nanonote/Ben/\
 /${OPENWRT_DIR_NAME}-${DATE_TIME}"
 else
+    (cd ${IMAGES_DIR} && \
+        grep -E "ERROR:\ package.*failed to build" BUILD_LOG | \
+    	    grep -v "package/kernel" > failed_packages.txt; \
+        bzip2 -z BUILD_LOG; \
+        bzip2 -z openwrt-xburst-qi_lb60-root.ubi; \
+    )
     mv ${IMAGES_DIR} ${DEST_DIR}
     MSG="The build was successful"
     URL="${IMAGES_URL}/${OPENWRT_DIR_NAME}-${DATE_TIME}"
