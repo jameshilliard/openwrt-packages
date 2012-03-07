@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script file is using in build host
+# This script file is using in build host, Xiangfu <xiangfu@openmobilefree.net>
 # $1: full_system  minimal  xbboot
 
 OPENWRT_DIR_NAME="openwrt-xburst."$1
@@ -59,7 +59,8 @@ rm -f files && ln -s feeds/qipackages/nanonote-files/data/qi_lb60/files/
 rm -f dl    && ln -s ~/dl
 mkdir -p files/etc && echo ${DATE} > files/etc/VERSION
 mkdir -p files/etc/uci-defaults && \
-    echo -e "\0043\0041/bin/sh \ndate --set `date +"%Y%m%d%H%M"`\nhwclock --systohc" > files/etc/uci-defaults/99-set-time
+    echo -e "\0043\0041/bin/sh \ndate --set `date +"%Y%m%d%H%M"`\n  \
+hwclock --systohc" > files/etc/uci-defaults/99-set-time
 
 
 echo "patch openwrt..."
@@ -87,7 +88,7 @@ if [ "${MAKE_RET}" != "0" ]; then
     echo "ERROR: Build failed! please refer to the BUILD_LOG file"
     tail -n 100 ${IMAGES_DIR}/BUILD_LOG > ${IMAGES_DIR}/BUILD_LOG.last100
     MSG="The build was FAILED"
-    URL="http://fidelio.qi-hardware.com/~xiangfu/building/Nanonote/Ben/\
+    URL="http://fidelio.qi-hardware.com/~xiangfu/building/Nanonote/Ben\
 /${OPENWRT_DIR_NAME}-${DATE_TIME}"
 else
     (cd ${IMAGES_DIR} && \
