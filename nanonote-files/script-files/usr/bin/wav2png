@@ -11,4 +11,4 @@ sox $WAV $DAT
 grep -v '^;' $DAT >$DAT.clean
 FREQ=`head -1 $DAT|tr -d ';'`
 
-echo -e "set terminal png;set title '$FREQ';set output '$PNG'; plot '$DAT.clean'" | gnuplot 
+echo -e "set terminal png; set title '$FREQ';set output '$PNG'; plot '$DAT.clean' w l lt 2" | gnuplot
