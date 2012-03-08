@@ -3095,7 +3095,7 @@ static const struct net_device_ops ks_wlan_netdev_ops = {
 	.ndo_set_mac_address    = ks_wlan_set_mac_address,
 	.ndo_get_stats 		= ks_wlan_get_stats,
 	.ndo_tx_timeout         = ks_wlan_tx_timeout,
-	.ndo_set_multicast_list = ks_wlan_set_multicast_list,
+	.ndo_set_rx_mode        = ks_wlan_set_multicast_list,
 };
 
 int ks_wlan_net_start(struct net_device *dev)
