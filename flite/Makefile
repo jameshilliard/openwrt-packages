@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=flite
-PKG_VERSION:=1.5.4
+PKG_VERSION:=1.5.5
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-current.tar.bz2
 PKG_SOURCE_URL:=http://festvox.org/bard/
