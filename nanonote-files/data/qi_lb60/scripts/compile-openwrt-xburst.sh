@@ -87,7 +87,7 @@ cp -a files/* ${IMAGES_DIR}/files/
 if [ "${MAKE_RET}" != "0" ]; then
     echo "ERROR: Build failed! please refer to the BUILD_LOG file"
     tail -n 100 ${IMAGES_DIR}/BUILD_LOG > ${IMAGES_DIR}/BUILD_LOG.last100
-    MSG="The build was FAILED"
+    MSG="The build has FAILED"
     URL="http://fidelio.qi-hardware.com/~xiangfu/building/Nanonote/Ben\
 /${OPENWRT_DIR_NAME}-${DATE_TIME}"
 else
