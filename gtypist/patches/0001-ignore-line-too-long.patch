@@ -1,0 +1,48 @@
+diff --git a/src/gtypist.c b/src/gtypist.c
+index 03e949c..cfa50a8 100644
+--- a/src/gtypist.c
++++ b/src/gtypist.c
+@@ -564,8 +564,6 @@ do_tutorial( FILE *script, char *line ) {
+   /* output this line, and each continuation line read */
+   do 
+     {
+-      if ( linenum >= LINES - 1 )
+-	fatal_error( _("data exceeds screen length"), line );
+       move( linenum, 0 );
+       ADDSTR( SCR_DATA( line ));
+       get_script_line( script, line );
+@@ -663,8 +661,6 @@ do_drill( FILE *script, char *line ) {
+      against the screen length */
+   for ( p = data, lines_count = 0; *p != ASCII_NULL; p++ )
+     if ( *p == ASCII_NL) lines_count++;
+-  if ( DP_TOP_LINE + lines_count * 2 > LINES )
+-    fatal_error( _("data exceeds screen length"), line );
+ 
+   /* if the last command was a tutorial, ensure we have
+      the complete screen */
+@@ -931,8 +927,6 @@ do_speedtest( FILE *script, char *line ) {
+      against the screen length */
+   for ( p = data, lines_count = 0; *p != ASCII_NULL; p++ )
+     if ( *p == ASCII_NL) lines_count++;
+-  if ( DP_TOP_LINE + lines_count > LINES )
+-    fatal_error( _("data exceeds screen length"), line );
+ 
+   /* if the last command was a tutorial, ensure we have
+      the complete screen */
+diff --git a/src/script.c b/src/script.c
+index 7974a9d..7ca1b3a 100644
+--- a/src/script.c
++++ b/src/script.c
+@@ -109,12 +109,6 @@ void get_script_line( FILE *script, char *line )
+ 	fatal_error( _("data shortage"), line );
+       if ( SCR_SEP( line ) != C_SEP )
+ 	fatal_error( _("missing ':'"), line );
+-      if ( SCR_COMMAND( line ) != C_LABEL 
+-	   && SCR_COMMAND( line ) != C_GOTO 
+-	   && SCR_COMMAND( line ) != C_YGOTO
+-	   && SCR_COMMAND( line ) != C_NGOTO
+-	   && strlen( SCR_DATA( line )) > COLS )
+-	fatal_error( _("line too long for screen"), line );
+     }
+ }
+ 
