@@ -10,3 +10,7 @@ CONFIG_TARGET_ROOTFS_TARGZ=y
 CONFIG_TARGET_ROOTFS_UBIFS=y
 # CONFIG_BUILD_PATENTED is not set
 CONFIG_PACKAGE_uboot-xburst-qi_lb60=y
+
+# CONFIG_ALL is not set
+# Enable this option only you want build ALL PAKCAGE in feeds.conf
+# To skip broken module packages while compiling , run "make IGNORE_ERRORS=m"
