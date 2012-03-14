@@ -24,7 +24,6 @@ define Package/stardict/Default
     MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=stardict
     TITLE:=International Dictionary Software
 endef
 
