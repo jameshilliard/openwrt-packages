@@ -53,6 +53,17 @@ cp feeds/qipackages/nanonote-files/data/qi_lb60/conf/${CONFIG_FILE_TYPE} \
 sed -i '/CONFIG_ALL/s/.*/CONFIG_ALL=y/' .config 
 yes "" | make oldconfig > /dev/null
 
+echo "getting version numbers of used repositories..."
+HEAD_NEW=`${GET_FEEDS_VERSION_SH} ${OPENWRT_DIR}`
+HEAD_OLD=`cat ${IMAGES_DIR}/../${OPENWRT_DIR_NAME}.VERSIONS`
+if [ "${HEAD_NEW}" == "${HEAD_OLD}" ]; then
+	echo "No new commit, ignore build"
+	rm -f ${BUILD_LOG} ${VERSIONS_FILE}
+	rmdir ${IMAGES_DIR}
+	exit 0
+fi
+${GET_FEEDS_VERSION_SH} ${OPENWRT_DIR} > ${VERSIONS_FILE}
+cp ${VERSIONS_FILE} ${IMAGES_DIR}/../${OPENWRT_DIR_NAME}.VERSIONS
 
 echo "copy files, create VERSION, link dl folder, last prepare..."
 rm -f files && ln -s feeds/qipackages/nanonote-files/data/qi_lb60/files/
@@ -70,10 +81,6 @@ ${PATCH_OPENWRT_SH} ${OPENWRT_DIR}
 echo "starting compiling - this may take several hours..."
 time make ${MAKE_VARS} > ${IMAGES_DIR}/BUILD_LOG 2>&1
 MAKE_RET="$?"
-
-
-echo "getting version numbers of used repositories..."
-${GET_FEEDS_VERSION_SH} ${OPENWRT_DIR} > ${VERSIONS_FILE}
 
 
 echo "copy all files to IMAGES_DIR..."
