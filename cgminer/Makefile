@@ -9,7 +9,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cgminer
-PKG_VERSION:=20120305
+PKG_VERSION:=20120314
 PKG_REV:=97ab111ec924e8812eaeff2f4f71940811a3cf1b
 PKG_RELEASE:=1
 PKG_INSTALL:=1
@@ -49,6 +49,8 @@ TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 define Package/cgminer/install
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/cgminer $(1)/usr/bin/
+	$(INSTALL_DIR) $(1)/usr/share/cgminer
+	$(CP) $(PKG_BUILD_DIR)/miner.php $(1)/usr/share/cgminer/
 endef
 
 $(eval $(call BuildPackage,cgminer))
