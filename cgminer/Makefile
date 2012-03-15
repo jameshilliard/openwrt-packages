@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2012 Xiangfu Liu <xiangfu.z@gmail.com>
+# Copyright (C) 2012 Xiangfu Liu <xiangfu@openmobilefree.net>
 #                            bitcoin: 1BQvUsuQBYUyVuX4jjFk4dVBpWJVQEUHTZ
 #
 # This is free software, licensed under the GNU General Public License v2.
@@ -9,13 +9,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cgminer
-PKG_VERSION:=20120314
-PKG_REV:=97ab111ec924e8812eaeff2f4f71940811a3cf1b
+PKG_VERSION:=20120315
+PKG_REV:=22ff7a406951f97af57cbca75d282c4bbf41a3e7
 PKG_RELEASE:=1
 PKG_INSTALL:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
-PKG_SOURCE_URL:=git://github.com/ckolivas/cgminer.git
+PKG_SOURCE_URL:=git://github.com/kanoi/cgminer.git
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=$(PKG_REV)
