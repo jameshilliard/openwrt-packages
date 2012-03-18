@@ -53,6 +53,14 @@ cp feeds/qipackages/nanonote-files/data/qi_lb60/conf/${CONFIG_FILE_TYPE} \
 sed -i '/CONFIG_ALL/s/.*/CONFIG_ALL=y/' .config 
 yes "" | make oldconfig > /dev/null
 
+
+if [ "$1" == "full_system" ]; then
+    echo "re-write config file"
+    cp .config ${IMAGES_DIR}/config.autogen
+    cp /home/xiangfu/config .config
+fi
+
+
 echo "getting version numbers of used repositories..."
 HEAD_NEW=`${GET_FEEDS_VERSION_SH} ${OPENWRT_DIR}`
 HEAD_OLD=`cat ${IMAGES_DIR}/../${OPENWRT_DIR_NAME}.VERSIONS`
@@ -91,6 +99,11 @@ cp -a bin/xburst/* ${IMAGES_DIR} 2>/dev/null
 mkdir -p ${IMAGES_DIR}/files
 cp -a files/* ${IMAGES_DIR}/files/
 
+(cd ${IMAGES_DIR} && \
+    grep -E "ERROR:\ package.*failed to build" BUILD_LOG | \
+    grep -v "package/kernel" > failed_packages.txt; \
+)
+
 if [ "${MAKE_RET}" != "0" ]; then
     echo "ERROR: Build failed! please refer to the BUILD_LOG file"
     tail -n 100 ${IMAGES_DIR}/BUILD_LOG > ${IMAGES_DIR}/BUILD_LOG.last100
@@ -99,15 +112,14 @@ if [ "${MAKE_RET}" != "0" ]; then
 /${OPENWRT_DIR_NAME}-${DATE_TIME}"
 else
     (cd ${IMAGES_DIR} && \
-        grep -E "ERROR:\ package.*failed to build" BUILD_LOG | \
-    	    grep -v "package/kernel" > failed_packages.txt; \
-        bzip2 -z BUILD_LOG; \
         bzip2 -z openwrt-xburst-qi_lb60-root.ubi; \
     )
     mv ${IMAGES_DIR} ${DEST_DIR}
     MSG="The build was successful"
     URL="${IMAGES_URL}/${OPENWRT_DIR_NAME}-${DATE_TIME}"
 fi
+
+(cd ${IMAGES_DIR} && bzip2 -z BUILD_LOG;)
 
 echo -e "say #qi-hardware ${MSG}: ${URL} \nclose" \
     | nc turandot.qi-hardware.com 3858
