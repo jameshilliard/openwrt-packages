@@ -515,6 +515,7 @@ CONFIG_PACKAGE_tune2fs=y
 CONFIG_PACKAGE_tunec=y
 CONFIG_PACKAGE_txt2tags=y
 CONFIG_PACKAGE_uboot-envtools=y
+CONFIG_PACKAGE_uboot-envtools_setenv_symlink=y
 CONFIG_PACKAGE_unifont=y
 CONFIG_PACKAGE_units=y
 CONFIG_PACKAGE_unzip=y
