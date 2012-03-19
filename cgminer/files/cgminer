@@ -1,0 +1,13 @@
+#!/bin/sh /etc/rc.common
+START=99
+
+POOL="-o http://pool.ABCPool.co -O xiangfu.0:x"
+DEV="-S /dev/ttyUSB0"
+PARAMETER="$DEV $POOL"
+start() {
+	cgminer -q -T --api-network --api-listen $PARAMETER> /dev/null 2>&1 &
+}
+
+stop() {
+	killall -s 9 cgminer
+}
