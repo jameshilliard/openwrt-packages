@@ -1,0 +1,25 @@
+From 6334588efe26a774f4ebaac345073f8ad5f9172c Mon Sep 17 00:00:00 2001
+From: Xiangfu <xiangfu@openmobilefree.net>
+Date: Wed, 21 Mar 2012 13:54:53 +0800
+Subject: [PATCH 2/2] Increase the MAX_DEVICES to 64
+
+---
+ miner.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/miner.h b/miner.h
+index 5f5fd68..e1cc07f 100644
+--- a/miner.h
++++ b/miner.h
+@@ -473,7 +473,7 @@ extern int add_pool_details(bool live, char *url, char *user, char *pass);
+ #define ADD_POOL_OK 0
+ 
+ #define MAX_GPUDEVICES 16
+-#define MAX_DEVICES 32
++#define MAX_DEVICES 64
+ #define MAX_POOLS (32)
+ 
+ #define MIN_INTENSITY -10
+-- 
+1.7.5.4
+
