@@ -49,7 +49,7 @@ endef
 TARGET_CPPFLAGS += -DNDEBUG
 #TARGET_CPPFLAGS += -DDEBUGMODE
 
-TARGET_LDFLAGS += -L$(STAGING_DIR)/usr/lib -lalleg
+TARGET_LDFLAGS += -L$(STAGING_DIR)/usr/lib -lalleg -lm -lpthread
 
 define Build/Install
 	$(INSTALL_DIR) $(PKG_INSTALL_DIR)/usr/{bin,share}

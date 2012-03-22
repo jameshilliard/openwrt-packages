@@ -55,7 +55,7 @@ endef
 #TARGET_LDFLAGS += -Wl,-rpath-link -Wl,$(STAGING_DIR)/usr/lib
 #TARGET_CPPFLAGS +=
 
-TARGET_LDFLAGS += -L$(STAGING_DIR)/usr/lib -laldmb -ldumb -lalleg
+TARGET_LDFLAGS += -L$(STAGING_DIR)/usr/lib -laldmb -ldumb -lalleg -lm
 
 
 
