@@ -44,3 +44,9 @@ define Package/bard/install
 endef
 
 $(eval $(call BuildPackage,bard))
+
+
+# The following comments configure the Emacs editor.  Just ignore them.
+# Local Variables:
+# compile-command: "cd ~/src/nanonote/bard-0.7-current && ~/bin/quilt-export target && make -C ~/h/src/qi/openwrt-xburst package/bard/compile -j2 V=99"
+# End:
