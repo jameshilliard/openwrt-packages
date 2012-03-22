@@ -39,7 +39,7 @@ MAKE_FLAGS += \
 	PREFIX=/usr \
 	CFLAGS_RELEASE="$(TARGET_CFLAGS) $(EXTRA_CFLAGS) $(TARGET_CPPFLAGS)" \
 	CFLAGS_DEBUG="$(TARGET_CFLAGS) $(EXTRA_CFLAGS) $(TARGET_CPPFLAGS)" \
-	LINK_ALLEGRO="-L$(STAGING_DIR)/usr/lib -lalleg"
+	LINK_ALLEGRO="-L$(STAGING_DIR)/usr/lib -lalleg -lm"
 
 define Build/Configure
 	echo "include make/unix.inc" > $(PKG_BUILD_DIR)/make/config.txt
