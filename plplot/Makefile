@@ -363,15 +363,16 @@ define Package/plplot/install
 endef
 
 # ugly, but necessary: compiling demo-programs on install, using the just
-# installed libs.
+# installed libs.  Note that the PKG_CONFIG_ENV= override used below sets
+# environment variables that would usually be handled by openwrt's
+# include/package.mk (Build/Exports/Default), but aren't available for the
+# install targets.
 define Package/plplot-demo/install
-	$(SED) 's;/usr/lib/pkgconfig;$(STAGING_DIR)/usr/lib/pkgconfig;g' \
-		$(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/examples/c/Makefile
 	$(MAKE) -C $(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/examples/c/ \
 		 C_INCLUDE_PATH=$(STAGING_DIR)/usr/include/plplot \
 		 CC="$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_CPPFLAGS) $(EXTRA_CFLAGS) $(TARGET_LDFLAGS)"\
-		RPATHCMD=
-
+		RPATHCMD= \
+	        PKG_CONFIG_ENV="STAGING_PREFIX=$(STAGING_DIR)/usr PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) PKG_CONFIG_LIBDIR=$(PKG_CONFIG_PATH)"
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/share/plplot$(PKG_VERSION)/examples/c/x??c \
 		$(1)/usr/bin/
