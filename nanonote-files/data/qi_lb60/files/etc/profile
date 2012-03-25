@@ -13,7 +13,7 @@ export SDL_NOMOUSE=1
 export SDL_VIDEODRIVER=fbcon
 ## QT4
 ### set keyboard device
-export QWS_KEYBOARD=LinuxInput:/dev/input/event1:keymap=/usr/share/qmaps/ben.qmap
+export QWS_KEYBOARD=LinuxInput:/dev/input/event0:keymap=/usr/share/qmaps/ben.qmap
 ### do use fb-device directly
 export QWS_DISPLAY=linuxfb
 
