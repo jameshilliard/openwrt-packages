@@ -11,7 +11,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=kbd
 PKG_RELEASE:=1
 PKG_VERSION:=1.15.3
-PKG_SOURCE_URL:=http://mirror.anl.gov/pub/linux/utils/kbd/
+PKG_SOURCE_URL:=ftp://ftp.altlinux.org/pub/people/legion/kbd/
 PKG_SOURCE:=kbd-$(PKG_VERSION).tar.gz
 
 include $(INCLUDE_DIR)/package.mk

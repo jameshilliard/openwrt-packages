@@ -1,0 +1,62 @@
+Index: bard-0.7-current/configure.in
+===================================================================
+--- bard-0.7-current.orig/configure.in	2012-03-22 03:13:47.186201055 +0100
++++ bard-0.7-current/configure.in	2012-03-22 03:25:50.896839172 +0100
+@@ -456,28 +456,28 @@
+ SDLLIBS="-lSDL"
+ 
+ dnl Fix this ....
+-if ! test -f /usr/include/SDL/SDL_ttf.h; then
+-    AC_MSG_ERROR("Cannot locate /usr/include/SDL/SDL_ttf.h.")
+-fi
++AC_CHECK_HEADER(SDL/SDL_ttf.h,,[AC_MSG_ERROR([Cannot locate SDL/SDL_ttf.h])])
+ SDLLIBS="-lSDL_ttf $SDLLIBS"
+ 
+ dnl AC_CHECK_HEADER(SDL/SDL_ttf.h,,[AC_MSG_ERROR([Cannot locate SDL/SDL_ttf.h])])
+-if ! test "x$EPUBDEFS" = x; then
+-   if test -f /usr/include/SDL/SDL_image.h -a -f /usr/include/SDL/SDL_rotozoom.h
+-   then
+-       echo "EPUB (with SDL images) support found"
++AS_IF([test "x$EPUBDEFS" = x],[
++  sdl_img=no
++  sdl_rotozoom=no
++  AC_CHECK_HEADER(SDL/SDL_image.h,sdl_img=yes)
++  AC_CHECK_HEADER(SDL/SDL_rotozoom.h,sdl_rotozoom=yes)
++  AS_IF([test x$sdl_img = xyes && test x$sdl_rotozoom = xyes], [
++       AC_MSG_NOTICE([EPUB (with SDL images) support found])
+        SDLLIBS="-lSDL_gfx -lSDL_image $SDLLIBS"
+        EPUBDEFS="-DBARD_EPUB_IMAGES $EPUBDEFS"
+-   else
+-       echo "EPUB (without SDL images) support found"
+-   fi
+-else
+-   echo "No EPUB support found (missing libzip)"
+-fi
++  ],[
++       AC_MSG_NOTICE([EPUB (without SDL images) support found])
++  ])],[
++  AC_MSG_NOTICE([No EPUB support found (missing libzip)])
++])
+ 
++CFLAGS="$CFLAGS $EPUBDEFS"
++LDFLAGS="$LDFLAGS $SDLLIBS"
+ AC_SUBST(SDLLIBS)
+-AC_SUBST(EPUBLIBS)
+-AC_SUBST(EPUBDEFS)
+ 
+ dnl
+ dnl Find a font.
+Index: bard-0.7-current/config/config.in
+===================================================================
+--- bard-0.7-current.orig/config/config.in	2012-03-22 03:23:02.812217274 +0100
++++ bard-0.7-current/config/config.in	2012-03-22 03:23:15.784265078 +0100
+@@ -29,8 +29,7 @@
+ 
+ EPUBLIBS = @EPUBLIBS@
+ EPUBDEFS = @EPUBDEFS@
+-SDLINCLUDES = -I/usr/include/SDL ${EPUBDEFS}
+-SDLLIBS = @SDLLIBS@ ${EPUBLIBS}
++SDLLIBS = @SDLLIBS@
+ 
+ DEFAULTFONT = @DEFAULTFONT@
+ 

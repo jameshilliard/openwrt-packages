@@ -6,12 +6,20 @@
 # OpenWRT package for the GNU Octave
 #
 # todo: how do we enable octave's internal help system?
+#
+# todo: we may have a (slight) linking problem: it prefers liboctinterp.so &
+# friends from staging_dir/target-mipsel_uClibc-0.9.32/usr/lib/ over the one
+# freshly compiled.  As a workaround, try 'rm
+# openwrt-xburst/staging_dir/target-mipsel_uClibc-0.9.32/usr/lib/*oct*' if
+# compilation fails for you.  Mostly that doesn't matter on clean rebuilds
+# anyways.
+#
 
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=octave
 PKG_VERSION:=3.2.4
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.octave.org/pub/octave/
 PKG_MD5SUM:=90c39fa9e241ad2e978bcee4682a2ba9
@@ -75,6 +83,10 @@ endef
 # todo : need -enable-rpath?
 
 OCTAVE_LIB_DIR := /usr/lib
+
+# ugly workaround for octave 3.2.4 to compile with latest openwrt toolchain
+TARGET_CXXFLAGS += -include stddef.h -fpermissive
+
 CONFIGURE_ARGS += --without-x --without-fftw --disable-docs
 CONFIGURE_VARS += octlibdir=$(OCTAVE_LIB_DIR) \
 	FFLAGS="$(TARGET_CFLAGS)"
