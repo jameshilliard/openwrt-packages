@@ -40,7 +40,6 @@ $(call Package/brainless/Default/description)
 endef
 
 
-# searches for fusion* headers that are not present.  different version?
 CONFIGURE_ARGS += \
 	--with-gforth=/usr/bin/gforth-fast
 
