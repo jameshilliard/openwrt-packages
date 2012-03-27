@@ -113,6 +113,12 @@ CONFIG_BUSYBOX_CONFIG_MAN=y
 # CONFIG_FFMPEG_PARSER_mpeg4video is not set
 
 #
+# Package features
+#
+CONFIG_FEATURE_drawing-backend_DirectFB=y
+# CONFIG_FEATURE_drawing-backend_libX11 is not set
+
+#
 # System libs or apps
 #
 CONFIG_PACKAGE_block-hotplug=y
