@@ -26,7 +26,7 @@ TARGET_CFLAGS += \
 
 TARGET_LDFLAGS += \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-	-lSDL -lSDL_ttf
+	-lSDL -lSDL_ttf -lm
 
 define Package/dgclock
   SECTION:=xorg-apps
