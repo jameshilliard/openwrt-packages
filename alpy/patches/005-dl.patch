@@ -1,0 +1,27 @@
+Index: Alpy-0.1.5/alpy.py
+===================================================================
+--- Alpy-0.1.5.orig/alpy.py	2012-03-28 03:07:42.682184386 +0200
++++ Alpy-0.1.5/alpy.py	2012-03-28 03:08:24.794378142 +0200
+@@ -32,18 +32,18 @@
+     if not _ALLEGRO_USE_MODULES:
+         return __import__('_alpy')
+     _major, _minor = sys.version_info[:2]
+-    try: import dl
++    try: import DLFCN
+     except ImportError:
+-        msg = "Sorry, to be able to use Allegro loadable modules you need to install the 'dl' module: you can still use Alpy, but some features will not be available"
++        msg = "Sorry, to be able to use Allegro loadable modules you need to install the 'DLFCN' module: you can still use Alpy, but some features will not be available"
+         print >> sys.stderr, "Warning: %s\n" % msg
+         return __import__('_alpy')
+     if _major > 2 or (_major == 2 and _minor >= 2):
+-        sys.setdlopenflags(dl.RTLD_NOW|dl.RTLD_GLOBAL)
++        sys.setdlopenflags(DLFCN.RTLD_NOW|DLFCN.RTLD_GLOBAL)
+         return __import__('_alpy')
+     else:
+         file, path, desc = imp.find_module('_alpy')
+         try:
+-            handle = dl.open(path, dl.RTLD_NOW|dl.RTLD_GLOBAL)
++            handle = DLFCN.open(path, DLFCN.RTLD_NOW|DLFCN.RTLD_GLOBAL)
+             m = __import__('_alpy')
+             handle.close()
+             return m
