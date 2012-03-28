@@ -22,7 +22,7 @@ include $(INCLUDE_DIR)/package.mk
 TARGET_CFLAGS+= -I$(STAGING_DIR)/usr/include/SDL
 
 TARGET_LDFLAGS+= -Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
-		-lSDL -lSDL -ldirectfb -lfusion
+		-lSDL -lSDL -ldirectfb -lfusion -lm
 
 define Package/dega
 	MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
