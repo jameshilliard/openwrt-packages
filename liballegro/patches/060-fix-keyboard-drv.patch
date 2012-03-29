@@ -1,7 +1,7 @@
 Index: allegro-4.4.2/src/linux/lkeybd.c
 ===================================================================
 --- allegro-4.4.2.orig/src/linux/lkeybd.c	2011-06-19 11:32:20.000000000 +0200
-+++ allegro-4.4.2/src/linux/lkeybd.c	2011-06-19 11:32:31.000000000 +0200
++++ allegro-4.4.2/src/linux/lkeybd.c	2012-03-29 02:24:07.317094564 +0200
 @@ -143,7 +143,10 @@
  /* convert Allegro format scancodes into key_shifts flag bits */
  static unsigned short modifier_table[__allegro_KEY_MAX - __allegro_KEY_MODIFIERS] =
@@ -26,3 +26,50 @@ Index: allegro-4.4.2/src/linux/lkeybd.c
                  if (key[__allegro_KEY_ALT]) map |= 8;
  
                  /* Map scancode to type and value */
+@@ -312,12 +318,25 @@
+ 
+    FD_ZERO(&set);
+    FD_SET(std_keyboard.fd, &set);
+-   if (select (FD_SETSIZE, &set, NULL, NULL, &tv) <= 0)
+-      return 0;
+ 
+-   bytes_read = read(std_keyboard.fd, &buf, sizeof(buf));
+-   if (bytes_read < 1)
+-      return 0;
++   /* Possible heisenbug here.  when doing readkey(), the main thread does
++      select with timeout and causes us EINTR here.  One lost select() an we
++      already hit that "select() is not fully level triggered" lost-wakeup
++      deadlock!?  Also note EINTR problem with read() below. */
++
++   while (select (FD_SETSIZE, &set, NULL, NULL, &tv) < 0)
++   {
++      if (errno != EINTR)
++      {
++   	 return 0;
++      }
++   }
++
++   do {
++      bytes_read = read(std_keyboard.fd, &buf, sizeof(buf));
++      if (bytes_read < 1 && (bytes_read >= 0 || errno != EINTR))
++	 return 0;
++   } while (bytes_read < 0);
+ 
+    process_keyboard_data(buf, bytes_read);
+ 
+Index: allegro-4.4.2/src/keyboard.c
+===================================================================
+--- allegro-4.4.2.orig/src/keyboard.c	2012-03-29 02:21:50.328523081 +0200
++++ allegro-4.4.2/src/keyboard.c	2012-03-29 02:22:58.768808442 +0200
+@@ -625,6 +625,11 @@
+    _DRIVER_INFO *driver_list;
+    int i;
+ 
++   /* readkey() uses rest(1) which deadlocks unless we call install_timer()
++      first.  this bug occurs e.g. with exhello (but not with any of the
++      event-loop driven allegro games) */
++   install_timer();
++
+    if (keyboard_driver)
+       return 0;
+ 

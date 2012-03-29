@@ -19,7 +19,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=liballegro
 PKG_VERSION:=4.4.2
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_SOURCE:=allegro-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/alleg/allegro/$(PKG_VERSION)
 PKG_BUILD_DIR = $(BUILD_DIR)/allegro-$(PKG_VERSION)
@@ -282,5 +282,5 @@ $(eval $(call BuildPackage,liballegro-utils))
 
 # The following comments configure the Emacs editor.  Just ignore them.
 # Local Variables:
-# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/liballegro/compile -j2 V=99"
+# compile-command: "cd ~/src/nanonote/allegro-4.4.2 && ~/bin/quilt-export target && make -C ~/h/src/qi/openwrt-xburst package/liballegro/compile -j2 V=99"
 # End:
