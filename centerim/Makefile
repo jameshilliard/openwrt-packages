@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=centerim
-PKG_VERSION:=4.22.9
-PKG_RELEASE:=4
+PKG_VERSION:=4.22.10
+PKG_RELEASE:=1
 
 PKG_SOURCE:=centerim-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.centerim.org/download/releases
-PKG_MD5SUM:=c43911508205e0277529230c8316a298
+PKG_MD5SUM:=7565c3c8cac98a4e2d8524076a44676f
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/centerim-$(PKG_VERSION)
 
