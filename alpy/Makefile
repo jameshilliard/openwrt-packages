@@ -58,7 +58,7 @@ endef
 # 		$(PKG_BUILD_DIR)/setup.py build
 # endef
 
-TARGET_LDFLAGS += -lalleg -lm -lpthread
+TARGET_LDFLAGS += -lm -lpthread -ldl -lrt -lalleg
 
 define Build/Install
 	$(call Build/Compile/PyMod,, \
@@ -80,5 +80,5 @@ $(eval $(call BuildPackage,alpy))
 
 # The following comments configure the Emacs editor.  Just ignore them.
 # Local Variables:
-# compile-command: "make -C ~/h/src/qi/openwrt-xburst package/alpy/compile -j2 V=99"
+# compile-command: "cd ~/src/nanonote/Alpy-0.1.5 && ~/bin/quilt-export target && make -C ~/h/src/qi/openwrt-xburst package/alpy/compile -j2 V=99"
 # End:

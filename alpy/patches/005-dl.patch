@@ -25,3 +25,29 @@ Index: Alpy-0.1.5/alpy.py
              m = __import__('_alpy')
              handle.close()
              return m
+Index: Alpy-0.1.5/_alpymodule.c
+===================================================================
+--- Alpy-0.1.5.orig/_alpymodule.c	2012-03-29 00:20:15.351117567 +0200
++++ Alpy-0.1.5/_alpymodule.c	2012-03-29 00:27:10.017151329 +0200
+@@ -29,6 +29,7 @@
+ #include "allegro.h"
+ #include <stdlib.h>
+ #include <string.h>
++#include <dlfcn.h>
+ 
+ static const char *_utf8 = "utf8";
+ 
+@@ -237,6 +238,13 @@
+ {
+     int result, alpy_system = SYSTEM_AUTODETECT;
+ 
++	/* this is an ugly hack added for OpenWRT: seems that recursive library
++       dependencies won't get the treatment configured in alpy.py via
++       sys.setdlopenflags(), so that aleg-fbcon.so references into liballegro
++       are not referenced.  Of course we could also go and fix liballegro to
++       make all modules explicitely link to liballegro themselves. */
++	dlopen("liballeg.so", RTLD_NOW|RTLD_GLOBAL);
++
+     if (!alpy_allegro_installed) {
+         alpy_allegro_installed++;
+ 
