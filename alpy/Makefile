@@ -31,6 +31,7 @@ define Package/alpy/Default/description
 Python bindings for the Allegro Game and Graphics Library
 endef
 
+# note: needs thee the data-files from liballegro-demo for demo.py and others.
 define Package/alpy
 $(call Package/alpy/Default)
 endef
@@ -39,7 +40,17 @@ define Package/alpy/description
 $(call Package/alpy/Default/description)
 endef
 
-CONFIGURE_ARGS += 
+define Package/alpy-examples
+$(call Package/alpy/Default)
+  TITLE:=Alpy Example Python Scripts
+  DEPENDS:=+alpy +liballegro-demo
+endef
+
+define Package/alpy-examples/description
+$(call Package/alpy/Default/description)
+This package contains the example python scripts, installed to /usr/share/alpy.
+First cd to the directory before running the scripts!
+endef
 
 define Build/Compile
 	$(call Build/Compile/PyMod,,build)
@@ -75,8 +86,14 @@ define PyPackage/alpy/filespec
 +|$(PYTHON_PKG_DIR)/_alpy.so
 endef
 
+define Package/alpy-examples/install
+	$(INSTALL_DIR) $(1)/usr/share/alpy/examples
+	$(CP) $(PKG_BUILD_DIR)/examples/* $(1)/usr/share/alpy/examples/
+endef
+
 $(eval $(call PyPackage,alpy))
 $(eval $(call BuildPackage,alpy))
+$(eval $(call BuildPackage,alpy-examples))
 
 # The following comments configure the Emacs editor.  Just ignore them.
 # Local Variables:

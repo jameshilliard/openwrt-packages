@@ -1,0 +1,298 @@
+Index: Alpy-0.1.5/examples/demo.py
+===================================================================
+--- Alpy-0.1.5.orig/examples/demo.py	2012-03-30 02:24:52.080821520 +0200
++++ Alpy-0.1.5/examples/demo.py	2012-03-30 02:26:31.761264720 +0200
+@@ -13,7 +13,8 @@
+ 
+ MAX_SPEED = 32
+ SPEED_SHIFT = 3
+-MAX_STARS = 128
++# reduced number of stars to keep NanoNote's CPU happy
++MAX_STARS = 64
+ MAX_ALIENS = 50
+ 
+ ycounter = 0
+@@ -155,8 +156,10 @@
+             self.oy = 0
+     def draw(self, bmp):
+         x = int(((self.ox-screen.w/2) * (self.oy/(4-int(self.z)/2)+screen.h)/screen.h) + screen.w/2)
++        set_color_depth(8)
+         bmp.putpixel(x, self.oy, 15 - int(self.z))
+-
++        set_color_depth(32)
++        
+ class Alien:
+     bullet_exploded = 0
+     def __init__(self, img):
+@@ -340,8 +343,8 @@
+     clear_keybuf()
+     set_palette(data[GAME_PAL].dat)
+     position_mouse(screen.w/2, screen.h/2)
+-    register_counter('game_time', speed = MSEC_TO_TIMER(6400/screen.w))
+-    install_fps()
++    register_counter('game_time', speed = MSEC_TO_TIMER(50))
++    #install_fps()
+     counters.game_time = 0
+     esc = 0
+     #main game loop
+@@ -359,13 +362,14 @@
+         fade_out(5)
+         sys.exit(0)
+     draw_screen()
+-    b = Bitmap(160, 160)
+-    b2 = Bitmap(160, 160)
++    b = Bitmap(160, 160,depth=8)
++    b2 = Bitmap(160, 160,depth=8)
+     b.clear()
+     b.textout(data[END_FONT].dat, "GAME OVER", 80, 50, 2, align='center')
+     b.textout(data[END_FONT].dat, "SCORE: %d" % player.score, 80, 82, 2, align='center')
+     clear_keybuf()
+     c = 0
++    # todo: remove this counter once, remove_counter() works again
+     register_counter('scroll_count', MSEC_TO_TIMER(6000/screen.w))
+     counters.scroll_count = -160
+     while not keypressed():
+@@ -388,7 +392,10 @@
+     h = screen.h / size
+ 
+     screen.clear()
+-    b.stretch_blit(screen, dest_x=(screen.w - w)/2, dest_y=(screen.h - h)/2,
++    b32 = Bitmap(b.w, b.h, depth=32)
++    set_palette(data[GAME_PAL].dat);
++    b.blit(b32);
++    b32.stretch_blit(screen, dest_x=(screen.w - w)/2, dest_y=(screen.h - h)/2,
+                    dest_width=w, dest_height=h)
+ 
+ 
+@@ -400,11 +407,26 @@
+     set_palette(data[GAME_PAL].dat)
+     fade_out(fade_speed)
+ 
++# added to use as workaround over seemingly broken explosion.dat data-file
++def make_explosion(i):
++    set_color_depth(8)
++    set_palette(data[GAME_PAL].dat)
++    ex = Bitmap(47,47)
++    ex.clear()
++    ex.circle(ex.w/2,ex.h/2,radius=ex.w/2,fill=True,
++             color=makecol(255-i*180/EXPLODE_FRAMES, 
++                           240-i*240/EXPLODE_FRAMES, 
++                           235-i*235/EXPLODE_FRAMES))
++    spr = ex.get_rle()
++    set_color_depth(32)
++    return spr
++    
+ def generate_explosions():
+     global explosion, expl_dat
+-    expl_dat = load_datafile('explosion.dat')
+-    explosion = map(lambda x: expl_dat[x].dat, range(EXPLODE_FRAMES))
+-
++    # broken data file?  even allegro's dat util can't open without crashing
++    #expl_dat = load_datafile('explosion.dat')
++    explosion=[make_explosion(i) for i in range(EXPLODE_FRAMES)]
++    
+ color = 0
+ def title_screen():
+     global color
+@@ -445,25 +467,30 @@
+     if color > 3: color = 0
+ 
+     screen.clear()
++    
+     set_palette(Game.title_palette)
+ 
+     register_counter('scroll_count', MSEC_TO_TIMER(5))
+     counters.scroll_count = 1
+ 
+     t = data[TITLE_BMP].dat
++    t32 = Bitmap(t.w, t.h, depth=32);
++    t.blit(t32);
+     while 1:
+         c = counters.scroll_count
+         if c >= 160: break
+-        t.stretch_blit(screen, 0, 0, 320, 128, screen.w/2-c,
++        t32.stretch_blit(screen, 0, 0, 320, 128, screen.w/2-c,
+                        screen.h/2-c*64/160-32, c*2, c*128/160)
+ 
+-    remove_counter('scroll_count')
++    print >> sys.stderr, "remove_counter..."
++    # hmm, why does remove_counter crash?
++    # remove_counter('scroll_count')
++    print >> sys.stderr, "remove_counter done."
+ 
+-    t.blit(screen, screen.w/2-160, screen.h/2-96, width=320, height=128)
+-
+-    buffer = Bitmap(screen.w, screen.h)
++    t32.blit(screen, screen.w/2-160, screen.h/2-96, width=320, height=128)
++    buffer = Bitmap(screen.w, screen.h, depth=8)
+     buffer.clear()
+-    text_bmp = Bitmap(screen.w, 24)
++    text_bmp = Bitmap(screen.w, 24, depth=8)
+     text_bmp.clear()
+ 
+     clear_keybuf()
+@@ -473,7 +500,6 @@
+     buffer.blit()
+ 
+     fade_out(5)
+-
+     while keypressed():
+         if readkey() & 0xff == 27:
+             return 0
+@@ -496,18 +522,20 @@
+     allegro_init()
+     install_keyboard()
+     install_timer()
+-    install_mouse()
++##    install_mouse()
+ 
+     jumpstart = 0
+ 
++    set_color_depth(32);
++
+     try:
+         install_sound()
+         if not jumpstart:
+             fade_out(4)
+-        set_gfx_mode(GFX_AUTODETECT, 320, 200)
++        set_gfx_mode(GFX_SAFE, 320, 200)
+         set_color_conversion(COLORCONV_NONE)
+         global data
+-        data = load_datafile('demo.dat')
++        data = load_datafile('/usr/share/allegro/shooter.dat')
+     except AlpyException, msg:
+         set_gfx_mode(GFX_TEXT, 0, 0)
+         allegro_message("Alpy `%s'. Allegro `%s'" % (msg, get_allegro_error()))
+@@ -530,16 +558,18 @@
+             pass
+         fade_out(1)
+ 
+-    try: set_gfx_mode(GFX_AUTODETECT, 640, 480)
++    set_color_depth(32);
++    try: set_gfx_mode(GFX_SAFE, 320, 240)
+     except AlpyException, msg:
+         allegro_message("Alpy `%s'. Allegro `%s'" % (msg, get_allegro_error()))
+ 
+     screen.clear()
+-    set_color_depth(8)
++#    set_color_depth(8)
+ 
++    sys.stderr.flush()
+     generate_explosions()
+ 
+-    Game.s = Bitmap(screen.w, screen.h)
++    Game.s = Bitmap(screen.w, screen.h, depth=8)
+     intro_spl = data[INTRO_SPL].dat
+     intro_spl.stop()
+ 
+Index: Alpy-0.1.5/examples/exbitmap.py
+===================================================================
+--- Alpy-0.1.5.orig/examples/exbitmap.py	2012-03-30 02:24:52.356822747 +0200
++++ Alpy-0.1.5/examples/exbitmap.py	2012-03-30 02:25:09.140897332 +0200
+@@ -6,7 +6,10 @@
+ 
+ import alpy, sys
+ 
+-alpy.allegro_init()
++print "init"
++alpy.install_allegro(alpy.SYSTEM_LINUX)
++#alpy.allegro_init()
++print "huhu"
+ 
+ if len(sys.argv) != 2:
+     alpy.allegro_message("Usage: 'exbitmap filename.[bmp|lbm|pcx|tga]'")
+@@ -14,7 +17,7 @@
+ 
+ alpy.install_keyboard()
+ try:
+-    alpy.set_gfx_mode(alpy.GFX_SAFE, 640, 480)
++    alpy.set_gfx_mode(alpy.GFX_SAFE, 320, 240)
+ except AlpyException, msg:
+     alpy.set_gfx_mode(GFX_TEXT, 0, 0)
+     alpy.allegro_message("Unable to set any graphic mode. %s, %s." % (msg,
+Index: Alpy-0.1.5/examples/exblend.py
+===================================================================
+--- Alpy-0.1.5.orig/examples/exblend.py	2012-03-30 02:24:52.432823085 +0200
++++ Alpy-0.1.5/examples/exblend.py	2012-03-30 02:25:09.160897422 +0200
+@@ -24,7 +24,7 @@
+ if bpp > 0:
+     set_color_depth(bpp)
+     try:
+-        set_gfx_mode(GFX_AUTODETECT, 640, 480)
++        set_gfx_mode(GFX_AUTODETECT, 320, 240)
+     except AlpyException:
+         failure = 1
+ else:
+@@ -33,7 +33,7 @@
+         bpp = d
+         set_color_depth(bpp)
+         try:
+-            set_gfx_mode(GFX_AUTODETECT, 640, 480)
++            set_gfx_mode(GFX_AUTODETECT, 320, 240)
+         except AlpyException:
+             failure = 1
+             continue
+@@ -44,7 +44,7 @@
+ if failure:
+     set_gfx_mode(GFX_TEXT, 0, 0)
+     allegro_message("Error setting %d bit graphics mode. %s\n" % (bpp,
+-        get_allegro_error*()))
++        get_allegro_error()))
+     sys.exit(1)
+ 
+ set_color_conversion(COLORCONV_TOTAL)
+Index: Alpy-0.1.5/examples/excolmap.py
+===================================================================
+--- Alpy-0.1.5.orig/examples/excolmap.py	2012-03-30 02:24:52.500823387 +0200
++++ Alpy-0.1.5/examples/excolmap.py	2012-03-30 02:25:09.172897476 +0200
+@@ -89,7 +89,7 @@
+                                            callback_func, 'blend')
+ 
+     try:
+-        alpy.set_gfx_mode(alpy.GFX_AUTODETECT, 320, 200)
++        alpy.set_gfx_mode(alpy.GFX_SAFE, 320, 200)
+     except alpy.AlpyException, msg:
+         alpy.set_gfx_mode(alpy.GFX_TEXT, 0, 0)
+         alpy.allegro_message('Unable to set any graphic mode. %s, %s' % (msg,
+Index: Alpy-0.1.5/examples/exdat.py
+===================================================================
+--- Alpy-0.1.5.orig/examples/exdat.py	2012-03-30 02:24:52.648824045 +0200
++++ Alpy-0.1.5/examples/exdat.py	2012-03-30 02:25:09.200897599 +0200
+@@ -13,9 +13,9 @@
+ install_sound()
+ 
+ try:
+-    data = load_datafile('demo.dat')
++    data = load_datafile('/usr/share/allegro/shooter.dat')
+     set_gfx_mode(GFX_SAFE, 320, 200)
+-except alpy.AlpyException, msg:
++except AlpyException, msg:
+     import sys
+     set_gfx_mode(GFX_TEXT, 0, 0)
+     allegro_message('error: %s, %s' % (msg, get_allegro_error()))
+Index: Alpy-0.1.5/examples/exfli.py
+===================================================================
+--- Alpy-0.1.5.orig/examples/exfli.py	2012-03-30 02:24:52.840824898 +0200
++++ Alpy-0.1.5/examples/exfli.py	2012-03-30 02:25:09.236897760 +0200
+@@ -14,7 +14,7 @@
+ 
+ try:
+     set_gfx_mode(GFX_SAFE, 320, 200)
+-    data = load_datafile('demo.dat')
++    data = load_datafile('/usr/share/allegro/shooter.dat')
+ 
+     while 1:
+         if keypressed(): break
+Index: Alpy-0.1.5/examples/extimer.py
+===================================================================
+--- Alpy-0.1.5.orig/examples/extimer.py	2012-03-30 02:24:53.816829234 +0200
++++ Alpy-0.1.5/examples/extimer.py	2012-03-30 02:25:09.344898239 +0200
+@@ -12,7 +12,7 @@
+ install_timer()
+ 
+ try:
+-    set_gfx_mode(GFX_AUTODETECT, 320, 200)
++    set_gfx_mode(GFX_SAFE, 320, 200)
+ except AlpyException, msg:
+     set_gfx_mode(GFX_TEXT, 0, 0)
+     allegro_message("Unable to set any graphic mode\n%s\n%s\n" % (msg, get_allegro_error()))

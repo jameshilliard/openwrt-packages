@@ -1,0 +1,13 @@
+Index: Alpy-0.1.5/_alpymodule.c
+===================================================================
+--- Alpy-0.1.5.orig/_alpymodule.c	2012-03-30 01:32:30.846018939 +0200
++++ Alpy-0.1.5/_alpymodule.c	2012-03-30 01:32:46.162091430 +0200
+@@ -1194,7 +1194,7 @@
+             break;
+         }
+     }
+-    if(i == -1) {
++    if(index == -1) {
+         PyErr_Format(PyExc_NameError, "no such counter: %s", name);
+         PyMem_Free(name);
+         return NULL;
