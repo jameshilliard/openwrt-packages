@@ -30,7 +30,7 @@ define Package/nightsky/description
 endef
 
 TARGET_CFLAGS+=-DNANONOTE
-TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
+TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib -lm
 
 define Package/nightsky/install
 	$(INSTALL_DIR) \
