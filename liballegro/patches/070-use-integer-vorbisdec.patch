@@ -1,0 +1,100 @@
+Index: allegro-4.4.2/cmake/FindVorbis.cmake
+===================================================================
+--- allegro-4.4.2.orig/cmake/FindVorbis.cmake	2012-03-30 23:59:08.149052027 +0200
++++ allegro-4.4.2/cmake/FindVorbis.cmake	2012-03-31 00:02:35.209665654 +0200
+@@ -11,10 +11,10 @@
+         set(VORBIS_FIND_QUIETLY TRUE)
+     endif(VORBIS_INCLUDE_DIR)
+     find_path(OGG_INCLUDE_DIR ogg/ogg.h)
+-    find_path(VORBIS_INCLUDE_DIR vorbis/vorbisfile.h)
++    find_path(VORBIS_INCLUDE_DIR tremor/ivorbisfile.h)
+     find_library(OGG_LIBRARY NAMES ogg)
+-    find_library(VORBIS_LIBRARY NAMES vorbis)
+-    find_library(VORBISFILE_LIBRARY NAMES vorbisfile)
++    find_library(VORBIS_LIBRARY NAMES vorbisidec)
++    find_library(VORBISFILE_LIBRARY NAMES vorbisidec)
+     # Handle the QUIETLY and REQUIRED arguments and set VORBIS_FOUND
+     # to TRUE if all listed variables are TRUE.
+     include(FindPackageHandleStandardArgs)
+Index: allegro-4.4.2/addons/logg/logg.h
+===================================================================
+--- allegro-4.4.2.orig/addons/logg/logg.h	2012-03-31 00:03:37.965850709 +0200
++++ allegro-4.4.2/addons/logg/logg.h	2012-03-31 00:05:19.486149188 +0200
+@@ -6,7 +6,7 @@
+ #endif
+ 
+ #include <allegro.h>
+-#include <vorbis/vorbisfile.h>
++#include <tremor/ivorbisfile.h>
+ 
+ #define OGG_PAGES_TO_BUFFER 2
+ 
+Index: allegro-4.4.2/addons/logg/logg.c
+===================================================================
+--- allegro-4.4.2.orig/addons/logg/logg.c	2012-03-30 23:59:16.901078061 +0200
++++ allegro-4.4.2/addons/logg/logg.c	2012-03-31 00:52:21.628986644 +0200
+@@ -14,6 +14,20 @@
+ 
+ static int logg_bufsize = 1024*64;
+ 
++/* convert samples from signed (tremor) to unsigned (allegro).  from and to
++ * are allowed to refer to the same memory. */
++static void logg_from_signed(const char *from, char *to, int nbytes)
++{
++   const unsigned short *src = (const unsigned short*)from;
++   unsigned short *dst = (unsigned short*)to;
++   int i;
++
++   for (i = 0; i < nbytes; i += 2)
++   {
++      *dst++ = *src++ + 0x8000;
++   }
++}
++
+ SAMPLE* logg_load(const char* filename)
+ {
+ 	OggVorbis_File ovf;
+@@ -32,7 +46,7 @@
+ 		return 0;
+ 	}
+ 
+-	if (ov_open_callbacks(file, &ovf, 0, 0, OV_CALLBACKS_DEFAULT) != 0) {
++	if (ov_open(file, &ovf, 0, 0) != 0) {
+ 		strncpy(allegro_error, "ov_open_callbacks failed.", ALLEGRO_ERROR_SIZE);
+ 		fclose(file);
+ 		free(buf);
+@@ -57,9 +71,10 @@
+ 	samp->loop_end = samp->len;
+ 	samp->data = _al_malloc(sizeof(unsigned short) * samp->len * 2);
+ 
++	/* todo: need to convert to unsigned samples */
+ 	while ((numRead = ov_read(&ovf, buf, logg_bufsize,
+-				ENDIANNESS, 2, 0, &bitstream)) != 0) {
+-		memcpy((unsigned char*)samp->data+offset, buf, numRead);
++				&bitstream)) != 0) {
++		logg_from_signed(buf, (unsigned char*)samp->data+offset, numRead);
+ 		offset += numRead;
+ 	}
+ 
+@@ -91,7 +106,7 @@
+ 		return 1;
+ 	}
+ 
+-	if (ov_open_callbacks(file, &s->ovf, 0, 0, OV_CALLBACKS_DEFAULT) != 0) {
++	if (ov_open(file, &s->ovf, 0, 0) != 0) {
+ 		strncpy(allegro_error, "ov_open_callbacks failed.", ALLEGRO_ERROR_SIZE);
+ 		fclose(file);
+ 		return 1;
+@@ -119,9 +134,10 @@
+ 	memset(s->buf[page], 0, logg_bufsize);
+ 	
+ 	while (read < logg_bufsize) {
++	   /* todo: need to convert to unsigned samples */
+ 		int thisRead = ov_read(&s->ovf, s->buf[page]+read,
+-				logg_bufsize-read,
+-				ENDIANNESS, 2, 0, &bitstream);
++				logg_bufsize-read, &bitstream);
++		logg_from_signed(s->buf[page]+read,s->buf[page]+read,thisRead);
+ 		if (thisRead == 0) {
+ 			if (s->loop) {
+ 				ov_clear(&s->ovf);

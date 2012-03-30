@@ -72,6 +72,44 @@ $(call Package/liballegro/Default/description)
  This package contains various data files that are used by the Allegro library.
 endef
 
+define Package/liballegro-png
+$(call Package/liballegro/Default)
+  TITLE+= (PNG image support)
+  DEPENDS:=+liballegro +zlib +libpng
+endef
+
+define Package/liballegro-png/description
+$(call Package/liballegro/Default/description)
+ This package contains the libloadpng addon that allows interfacing allegro 
+ Bitmaps with PNG files.  Although the name of the library suggests otherwise
+ saving to PNG is supported as well as loading PNG files.
+endef
+
+# note: jpgalleg contains its own jpeg implementation; libjpeg not needed!
+define Package/liballegro-jpeg
+$(call Package/liballegro/Default)
+  TITLE+= (JPEG image support)
+  DEPENDS:=+liballegro
+endef
+
+define Package/liballegro-jpeg/description
+$(call Package/liballegro/Default/description)
+ This package contains the libjpgalleg addon that allows interfacing allegro 
+ Bitmaps with JPEG files.  Saving to JPEG files is supported as well as loading.
+endef
+
+define Package/liballegro-ogg
+$(call Package/liballegro/Default)
+  TITLE+= (Ogg/Vorbis audio support)
+  DEPENDS:=+liballegro +libvorbisidec +libogg
+endef
+
+define Package/liballegro-ogg/description
+$(call Package/liballegro/Default/description)
+ This package contains the liblogg addon that allows play-back and mixing of
+ background music from Ogg Vorbis audio files.
+endef
+
 define Package/liballegro-demo
 $(call Package/liballegro/Default)
   TITLE+= (demo)
@@ -171,28 +209,31 @@ endif
 EXTRA_CFLAGS = -DSETUP_SCREEN_W=320 -DSETUP_SCREEN_H=240 -DSETUP_CFG_FILE=\\\"/etc/allegrorc\\\"
 TARGET_LDFLAGS = -L$(STAGING_DIR)/usr/lib -ldl -lrt
 
-CMAKE_OPTIONS = \
-	-DRT_LIBRARY= \
-	-DALLEGRO_USE_CONSTRUCTOR_EXITCODE=0 \
-	-DRT_LIBRARY= \
-	-DDL_LIBRARY= \
-	-DWANT_TOOLS=on					\
-	-DWANT_TESTS=on					\
-	-DWANT_MODULES=on				\
-	-DWANT_EXAMPLES=on				\
-	-DWANT_ALLEGROGL=off				\
-	-DWANT_LOADPNG=on				\
-	-DWANT_LOGG=off					\
-	-DWANT_JPGALLEG=off				\
-	-DWANT_X11=off					\
-	-DWANT_LINUX_CONSOLE=on				\
-	-DWANT_LINUX_FBCON=on				\
-	-DWANT_LINUX_VGA=off				\
-	-DWANT_LINUX_SVGALIB=off			\
-	-DWANT_ALSA=on					\
-	-DWANT_OSS=off					\
-	-DWANT_JACK=off					\
-	-DWANT_SGIAUDIO=off 
+CMAKE_OPTIONS =								\
+	-DRT_LIBRARY=							\
+	-DALLEGRO_USE_CONSTRUCTOR_EXITCODE=0				\
+	-DRT_LIBRARY=							\
+	-DDL_LIBRARY=							\
+	-DWANT_TOOLS=on							\
+	-DWANT_TESTS=on							\
+	-DWANT_MODULES=on						\
+	-DWANT_EXAMPLES=on						\
+	-DWANT_ALLEGROGL=off						\
+	-DWANT_X11=off							\
+	-DWANT_LINUX_CONSOLE=on						\
+	-DWANT_LINUX_FBCON=on						\
+	-DWANT_LINUX_VGA=off						\
+	-DWANT_LINUX_SVGALIB=off					\
+	-DWANT_ALSA=on							\
+	-DWANT_OSS=off							\
+	-DWANT_JACK=off							\
+	-DWANT_SGIAUDIO=off						\
+	-DWANT_LOADPNG=$(if $(CONFIG_PACKAGE_liballegro-png),on,off)	\
+	-DWANT_JPGALLEG=$(if $(CONFIG_PACKAGE_liballegro-jpeg),on,off) \
+	-DWANT_LOGG=$(if $(CONFIG_PACKAGE_liballegro-ogg),on,off)
+
+# todo: patch CMakeLists.txt to force addons to be compiled as shared libs?
+#	-DADDON_LINKAGE=SHARED
 
 MAKE_FLAGS += -j4
 
@@ -219,6 +260,8 @@ define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib*.so* \
 		$(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib*.a \
+		$(1)/usr/lib/
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/* \
 		$(1)/usr/lib/pkgconfig/
 #	$(SED) 's,-I$$$${includedir},,g' $(1)/usr/lib/pkgconfig/plplotd.pc
@@ -226,8 +269,9 @@ define Build/InstallDev
 endef
 
 define Package/liballegro/install
-	$(INSTALL_DIR) $(1)/usr  $(1)/etc
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib $(1)/usr
+	$(INSTALL_DIR) $(1)/usr/lib  $(1)/etc
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/liballeg* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/allegro $(1)/usr/lib/
 	$(CP) ./files/allegrorc $(1)/etc/
 endef
 
@@ -240,6 +284,21 @@ define Package/liballegro-data/install
 		$(1)/usr/share/allegro/docs/txt
 	$(CP) $(PKG_BUILD_DIR)/docs/src/thanks._tx \
 		$(1)/usr/share/allegro/docs/src
+endef
+
+define Package/liballegro-png/install
+	$(INSTALL_DIR) $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libloadpng* $(1)/usr/lib/
+endef
+
+define Package/liballegro-jpeg/install
+	$(INSTALL_DIR) $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libjpgalleg* $(1)/usr/lib/
+endef
+
+define Package/liballegro-ogg/install
+	$(INSTALL_DIR) $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/liblogg* $(1)/usr/lib/
 endef
 
 define Package/liballegro-demo/install
@@ -274,6 +333,9 @@ endef
 $(eval $(call HostBuild))
 $(eval $(call BuildPackage,liballegro))
 $(eval $(call BuildPackage,liballegro-data))
+$(eval $(call BuildPackage,liballegro-png))
+$(eval $(call BuildPackage,liballegro-jpeg))
+$(eval $(call BuildPackage,liballegro-ogg))
 $(eval $(call BuildPackage,liballegro-demo))
 $(eval $(call BuildPackage,liballegro-setup))
 $(eval $(call BuildPackage,liballegro-examples))

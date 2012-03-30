@@ -1,0 +1,126 @@
+Index: allegro-4.4.2/addons/jpgalleg/examples/ex1.c
+===================================================================
+--- allegro-4.4.2.orig/addons/jpgalleg/examples/ex1.c	2012-03-31 00:56:40.394446398 +0200
++++ allegro-4.4.2/addons/jpgalleg/examples/ex1.c	2012-03-31 00:56:55.266529285 +0200
+@@ -21,7 +21,7 @@
+ 	jpgalleg_init();
+ 
+ 	set_color_depth(32);
+-	if (set_gfx_mode(GFX_AUTODETECT, 640, 480, 0, 0)) {
++	if (set_gfx_mode(GFX_AUTODETECT, 320, 240, 0, 0)) {
+ 		set_color_depth(16);
+ 		if (set_gfx_mode(GFX_AUTODETECT, 640, 480, 0, 0)) {
+ 			set_color_depth(15);
+Index: allegro-4.4.2/addons/jpgalleg/examples/ex3.c
+===================================================================
+--- allegro-4.4.2.orig/addons/jpgalleg/examples/ex3.c	2012-03-31 00:56:40.594447513 +0200
++++ allegro-4.4.2/addons/jpgalleg/examples/ex3.c	2012-03-31 00:57:35.398752424 +0200
+@@ -21,7 +21,7 @@
+ 	jpgalleg_init();
+ 
+ 	set_color_depth(32);
+-	if (set_gfx_mode(GFX_AUTODETECT, 640, 480, 0, 0)) {
++	if (set_gfx_mode(GFX_AUTODETECT, 320, 240, 0, 0)) {
+ 		set_color_depth(16);
+ 		if (set_gfx_mode(GFX_AUTODETECT, 640, 480, 0, 0)) {
+ 			set_color_depth(15);
+Index: allegro-4.4.2/addons/jpgalleg/examples/ex4.c
+===================================================================
+--- allegro-4.4.2.orig/addons/jpgalleg/examples/ex4.c	2012-03-31 00:56:40.698448093 +0200
++++ allegro-4.4.2/addons/jpgalleg/examples/ex4.c	2012-03-31 00:57:43.386796746 +0200
+@@ -22,7 +22,7 @@
+ 	jpgalleg_init();
+ 
+ 	set_color_depth(32);
+-	if (set_gfx_mode(GFX_AUTODETECT, 640, 480, 0, 0)) {
++	if (set_gfx_mode(GFX_AUTODETECT, 320, 240, 0, 0)) {
+ 		set_color_depth(16);
+ 		if (set_gfx_mode(GFX_AUTODETECT, 640, 480, 0, 0)) {
+ 			set_color_depth(15);
+Index: allegro-4.4.2/addons/jpgalleg/examples/ex5.c
+===================================================================
+--- allegro-4.4.2.orig/addons/jpgalleg/examples/ex5.c	2012-03-31 00:56:40.814448739 +0200
++++ allegro-4.4.2/addons/jpgalleg/examples/ex5.c	2012-03-31 00:57:55.634864647 +0200
+@@ -336,7 +336,7 @@
+ 		mode = GFX_AUTODETECT_WINDOWED;
+ 
+ 	set_color_depth(32);
+-	if (set_gfx_mode(mode, 640, 480, 0, 0)) {
++	if (set_gfx_mode(mode, 320, 240, 0, 0)) {
+ 		set_color_depth(16);
+ 		if (set_gfx_mode(mode, 640, 480, 0, 0)) {
+ 			set_color_depth(15);
+Index: allegro-4.4.2/addons/loadpng/examples/exalpha.c
+===================================================================
+--- allegro-4.4.2.orig/addons/loadpng/examples/exalpha.c	2012-03-31 00:56:25.270361994 +0200
++++ allegro-4.4.2/addons/loadpng/examples/exalpha.c	2012-03-31 00:58:26.647036250 +0200
+@@ -29,7 +29,7 @@
+ int main(int argc, char *argv[])
+ {
+     BITMAP *fg;
+-    int depth = 16;
++    int depth = 32;
+     const char *file;
+ 
+     allegro_init();
+@@ -54,9 +54,9 @@
+     }
+ 
+     set_color_depth(depth);
+-    if ((set_gfx_mode(GFX_AUTODETECT_WINDOWED, 640, 480, 0, 0) < 0) &&
+-        (set_gfx_mode(GFX_AUTODETECT, 640, 480, 0, 0) < 0)) {
+-	allegro_message("Unable to set video mode (640x480x%d).\n", depth);
++    if ((set_gfx_mode(GFX_AUTODETECT_WINDOWED, 320, 240, 0, 0) < 0) &&
++        (set_gfx_mode(GFX_AUTODETECT, 320, 240, 0, 0) < 0)) {
++	allegro_message("Unable to set video mode (320x240x%d).\n", depth);
+ 	return 1;
+     }
+ 
+Index: allegro-4.4.2/addons/loadpng/examples/example.c
+===================================================================
+--- allegro-4.4.2.orig/addons/loadpng/examples/example.c	2012-03-31 00:56:25.374362575 +0200
++++ allegro-4.4.2/addons/loadpng/examples/example.c	2012-03-31 00:58:42.259122465 +0200
+@@ -13,7 +13,7 @@
+     char *filename;
+     BITMAP *bmp;
+     PALETTE pal;
+-    int depth = 16;
++    int depth = 32;
+ 
+     /* Initialise Allegro. */
+     allegro_init();
+@@ -34,8 +34,8 @@
+ 
+     /* Set a suitable graphics mode. */
+     set_color_depth(depth);
+-    if ((set_gfx_mode(GFX_AUTODETECT_WINDOWED, 640, 480, 0, 0) < 0) &&
+-        (set_gfx_mode(GFX_AUTODETECT, 640, 480, 0, 0) < 0)) {
++    if ((set_gfx_mode(GFX_AUTODETECT_WINDOWED, 320, 240, 0, 0) < 0) &&
++        (set_gfx_mode(GFX_AUTODETECT, 320, 240, 0, 0) < 0)) {
+ 	allegro_message("Error setting video mode (640x480x%d).\n", depth);
+ 	return 1;
+     }
+Index: allegro-4.4.2/addons/loadpng/examples/exdata.c
+===================================================================
+--- allegro-4.4.2.orig/addons/loadpng/examples/exdata.c	2012-03-31 00:56:25.474363134 +0200
++++ allegro-4.4.2/addons/loadpng/examples/exdata.c	2012-03-31 00:59:00.787224634 +0200
+@@ -13,7 +13,7 @@
+ {
+     BITMAP *bmp;
+     DATAFILE *data;
+-    int depth = 16;
++    int depth = 32;
+ 
+     allegro_init();
+     install_keyboard();
+@@ -33,8 +33,8 @@
+     }
+ 
+     set_color_depth(depth);
+-    if ((set_gfx_mode(GFX_AUTODETECT_WINDOWED, 640, 480, 0, 0) < 0) &&
+-        (set_gfx_mode(GFX_AUTODETECT, 640, 480, 0, 0) < 0)) {
++    if ((set_gfx_mode(GFX_AUTODETECT_WINDOWED, 320, 240, 0, 0) < 0) &&
++        (set_gfx_mode(GFX_AUTODETECT, 320, 240, 0, 0) < 0)) {
+ 	allegro_message("Unable to set video mode (640x480x%d).\n", depth);
+ 	return 1;
+     }

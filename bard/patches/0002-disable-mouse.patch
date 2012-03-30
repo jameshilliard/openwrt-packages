@@ -7,11 +7,11 @@ Subject: [PATCH 2/2] disable-mouse
  src/display.c |    4 ++++
  1 files changed, 4 insertions(+), 0 deletions(-)
 
-diff --git a/src/display.c b/src/display.c
-index c2e4d56..dddd9f0 100644
---- a/src/display.c
-+++ b/src/display.c
-@@ -114,6 +114,10 @@ bard_display *bard_display_open(cst_features *config)
+Index: bard-0.7-current/src/display.c
+===================================================================
+--- bard-0.7-current.orig/src/display.c	2012-03-22 03:13:47.146200911 +0100
++++ bard-0.7-current/src/display.c	2012-03-22 03:14:52.574435005 +0100
+@@ -114,6 +114,10 @@
      /* unless you move it */
      SDL_ShowCursor(SDL_DISABLE);
  
@@ -22,6 +22,3 @@ index c2e4d56..dddd9f0 100644
      return display;
  }
  
--- 
-1.7.5.4
-
