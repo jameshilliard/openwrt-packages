@@ -19,7 +19,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=liballegro
 PKG_VERSION:=4.4.2
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 PKG_SOURCE:=allegro-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/alleg/allegro/$(PKG_VERSION)
 PKG_BUILD_DIR = $(BUILD_DIR)/allegro-$(PKG_VERSION)
@@ -260,7 +260,7 @@ define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib*.so* \
 		$(1)/usr/lib/
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib*.a \
+	-$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib*.a \
 		$(1)/usr/lib/
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/* \
 		$(1)/usr/lib/pkgconfig/

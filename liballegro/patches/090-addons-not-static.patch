@@ -1,0 +1,13 @@
+Index: allegro-4.4.2/CMakeLists.txt
+===================================================================
+--- allegro-4.4.2.orig/CMakeLists.txt	2012-03-31 01:45:47.403146010 +0200
++++ allegro-4.4.2/CMakeLists.txt	2012-03-31 01:46:04.255249710 +0200
+@@ -910,7 +910,7 @@
+ if(WANT_FRAMEWORKS)
+     set(ADDON_LINKAGE SHARED)
+ else()
+-    set(ADDON_LINKAGE STATIC)
++    set(ADDON_LINKAGE SHARED)
+ endif()
+ 
+ if(WANT_ALLEGROGL)
