@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=alpy
 PKG_VERSION:=0.1.5
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_SOURCE:=Alpy-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/project/pyallegro/alpy/alpy-$(PKG_VERSION)
 PKG_MD5SUM:=862925d97931fc81d1e4c3b9159fe2b1
@@ -24,7 +24,8 @@ define Package/alpy/Default
   CATEGORY:=Languages
   TITLE:=Alpy (Allegro bindings for Python)
   URL:=https://sourceforge.net/projects/forth-alpy/
-  DEPENDS:=+python-mini +liballegro
+  DEPENDS:=+python-mini +liballegro +liballegro-png +liballegro-jpeg
+
 endef
 
 define Package/alpy/Default/description
@@ -43,7 +44,7 @@ endef
 define Package/alpy-examples
 $(call Package/alpy/Default)
   TITLE:=Alpy Example Python Scripts
-  DEPENDS:=+alpy +liballegro-demo
+  DEPENDS:=+alpy +liballegro-demo 
 endef
 
 define Package/alpy-examples/description
@@ -69,7 +70,15 @@ endef
 # 		$(PKG_BUILD_DIR)/setup.py build
 # endef
 
-TARGET_LDFLAGS += -lm -lpthread -ldl -lrt -lalleg
+# Note: this linking command will not work correctly when jpgalleg or loadpng
+# are linked statically (Note how we patched allegro to make sure these are
+# always compiled as dynamic libraries).  The problem probably is, that
+# Build/Compile adds these linking options to early in the command line, and
+# static libraries won't resolve symbols of objects added later on.
+#
+# You won't even see a compiler error; the resulting _alpy.so would be going
+# to segfault due to an unresolved (0-pointer) symbol.
+TARGET_LDFLAGS += -ljpgalleg -lloadpng -lalleg -lpng -lz -lm -lpthread -ldl -lrt
 
 define Build/Install
 	$(call Build/Compile/PyMod,, \

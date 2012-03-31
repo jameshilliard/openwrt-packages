@@ -1,0 +1,37 @@
+Index: Alpy-0.1.5/_alpymodule.c
+===================================================================
+--- Alpy-0.1.5.orig/_alpymodule.c	2012-03-31 01:15:51.052570081 +0200
++++ Alpy-0.1.5/_alpymodule.c	2012-03-31 01:20:50.874079951 +0200
+@@ -27,6 +27,8 @@
+ 
+ #include "Python.h"
+ #include "allegro.h"
++#include "loadpng.h"
++#include "jpgalleg.h"
+ #include <stdlib.h>
+ #include <string.h>
+ #include <dlfcn.h>
+@@ -253,6 +255,10 @@
+         }
+ 
+         result = install_allegro(alpy_system, &errno, atexit);
++		if (result == 0)
++		   result = loadpng_init();
++		if (result == 0)
++		   result = jpgalleg_init();
+ 
+         return PyInt_FromLong(result);
+     }
+@@ -2599,6 +2605,12 @@
+     else if(strcmp(type, "lbm")==0) {
+         bmp = Bitmap_Object_from_BITMAP(load_lbm(filename, PAL(pal)));
+     }
++    else if(strcmp(type, "png")==0) {
++        bmp = Bitmap_Object_from_BITMAP(load_png(filename, PAL(pal)));
++    }
++    else if(strcmp(type, "jpg")==0 || strcmp(type, "jpeg")==0) {
++        bmp = Bitmap_Object_from_BITMAP(load_jpg(filename, PAL(pal)));
++    }
+     else {
+         PyMem_Free(filename);
+         PyErr_SetString(AllegroError, "unknown image type");
