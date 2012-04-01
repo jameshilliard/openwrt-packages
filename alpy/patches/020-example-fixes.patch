@@ -1,7 +1,7 @@
 Index: Alpy-0.1.5/examples/demo.py
 ===================================================================
---- Alpy-0.1.5.orig/examples/demo.py	2012-03-30 02:24:52.080821520 +0200
-+++ Alpy-0.1.5/examples/demo.py	2012-03-30 02:26:31.761264720 +0200
+--- Alpy-0.1.5.orig/examples/demo.py	2012-04-01 23:29:57.989557335 +0200
++++ Alpy-0.1.5/examples/demo.py	2012-04-01 23:45:58.686160740 +0200
 @@ -13,7 +13,8 @@
  
  MAX_SPEED = 32
@@ -24,18 +24,16 @@ Index: Alpy-0.1.5/examples/demo.py
  class Alien:
      bullet_exploded = 0
      def __init__(self, img):
-@@ -340,8 +343,8 @@
+@@ -340,7 +343,7 @@
      clear_keybuf()
      set_palette(data[GAME_PAL].dat)
      position_mouse(screen.w/2, screen.h/2)
 -    register_counter('game_time', speed = MSEC_TO_TIMER(6400/screen.w))
--    install_fps()
 +    register_counter('game_time', speed = MSEC_TO_TIMER(50))
-+    #install_fps()
+     install_fps()
      counters.game_time = 0
      esc = 0
-     #main game loop
-@@ -359,13 +362,14 @@
+@@ -359,8 +362,8 @@
          fade_out(5)
          sys.exit(0)
      draw_screen()
@@ -46,13 +44,7 @@ Index: Alpy-0.1.5/examples/demo.py
      b.clear()
      b.textout(data[END_FONT].dat, "GAME OVER", 80, 50, 2, align='center')
      b.textout(data[END_FONT].dat, "SCORE: %d" % player.score, 80, 82, 2, align='center')
-     clear_keybuf()
-     c = 0
-+    # todo: remove this counter once, remove_counter() works again
-     register_counter('scroll_count', MSEC_TO_TIMER(6000/screen.w))
-     counters.scroll_count = -160
-     while not keypressed():
-@@ -388,7 +392,10 @@
+@@ -388,7 +391,10 @@
      h = screen.h / size
  
      screen.clear()
@@ -64,7 +56,7 @@ Index: Alpy-0.1.5/examples/demo.py
                     dest_width=w, dest_height=h)
  
  
-@@ -400,11 +407,26 @@
+@@ -400,11 +406,26 @@
      set_palette(data[GAME_PAL].dat)
      fade_out(fade_speed)
  
@@ -94,7 +86,7 @@ Index: Alpy-0.1.5/examples/demo.py
  color = 0
  def title_screen():
      global color
-@@ -445,25 +467,30 @@
+@@ -445,25 +466,27 @@
      if color > 3: color = 0
  
      screen.clear()
@@ -114,11 +106,7 @@ Index: Alpy-0.1.5/examples/demo.py
 +        t32.stretch_blit(screen, 0, 0, 320, 128, screen.w/2-c,
                         screen.h/2-c*64/160-32, c*2, c*128/160)
  
--    remove_counter('scroll_count')
-+    print >> sys.stderr, "remove_counter..."
-+    # hmm, why does remove_counter crash?
-+    # remove_counter('scroll_count')
-+    print >> sys.stderr, "remove_counter done."
+     remove_counter('scroll_count')
  
 -    t.blit(screen, screen.w/2-160, screen.h/2-96, width=320, height=128)
 -
@@ -131,7 +119,7 @@ Index: Alpy-0.1.5/examples/demo.py
      text_bmp.clear()
  
      clear_keybuf()
-@@ -473,7 +500,6 @@
+@@ -473,7 +496,6 @@
      buffer.blit()
  
      fade_out(5)
@@ -139,7 +127,7 @@ Index: Alpy-0.1.5/examples/demo.py
      while keypressed():
          if readkey() & 0xff == 27:
              return 0
-@@ -496,18 +522,20 @@
+@@ -496,18 +518,20 @@
      allegro_init()
      install_keyboard()
      install_timer()
@@ -163,7 +151,7 @@ Index: Alpy-0.1.5/examples/demo.py
      except AlpyException, msg:
          set_gfx_mode(GFX_TEXT, 0, 0)
          allegro_message("Alpy `%s'. Allegro `%s'" % (msg, get_allegro_error()))
-@@ -530,16 +558,18 @@
+@@ -530,16 +554,18 @@
              pass
          fade_out(1)
  
@@ -187,8 +175,8 @@ Index: Alpy-0.1.5/examples/demo.py
  
 Index: Alpy-0.1.5/examples/exbitmap.py
 ===================================================================
---- Alpy-0.1.5.orig/examples/exbitmap.py	2012-03-30 02:24:52.356822747 +0200
-+++ Alpy-0.1.5/examples/exbitmap.py	2012-03-30 02:25:09.140897332 +0200
+--- Alpy-0.1.5.orig/examples/exbitmap.py	2012-04-01 23:29:58.481559747 +0200
++++ Alpy-0.1.5/examples/exbitmap.py	2012-04-01 23:31:13.897929383 +0200
 @@ -6,7 +6,10 @@
  
  import alpy, sys
@@ -212,8 +200,8 @@ Index: Alpy-0.1.5/examples/exbitmap.py
      alpy.allegro_message("Unable to set any graphic mode. %s, %s." % (msg,
 Index: Alpy-0.1.5/examples/exblend.py
 ===================================================================
---- Alpy-0.1.5.orig/examples/exblend.py	2012-03-30 02:24:52.432823085 +0200
-+++ Alpy-0.1.5/examples/exblend.py	2012-03-30 02:25:09.160897422 +0200
+--- Alpy-0.1.5.orig/examples/exblend.py	2012-04-01 23:29:57.953557157 +0200
++++ Alpy-0.1.5/examples/exblend.py	2012-04-01 23:31:13.925929521 +0200
 @@ -24,7 +24,7 @@
  if bpp > 0:
      set_color_depth(bpp)
@@ -243,8 +231,8 @@ Index: Alpy-0.1.5/examples/exblend.py
  set_color_conversion(COLORCONV_TOTAL)
 Index: Alpy-0.1.5/examples/excolmap.py
 ===================================================================
---- Alpy-0.1.5.orig/examples/excolmap.py	2012-03-30 02:24:52.500823387 +0200
-+++ Alpy-0.1.5/examples/excolmap.py	2012-03-30 02:25:09.172897476 +0200
+--- Alpy-0.1.5.orig/examples/excolmap.py	2012-04-01 23:29:58.377559237 +0200
++++ Alpy-0.1.5/examples/excolmap.py	2012-04-01 23:31:13.961929696 +0200
 @@ -89,7 +89,7 @@
                                             callback_func, 'blend')
  
@@ -256,8 +244,8 @@ Index: Alpy-0.1.5/examples/excolmap.py
          alpy.allegro_message('Unable to set any graphic mode. %s, %s' % (msg,
 Index: Alpy-0.1.5/examples/exdat.py
 ===================================================================
---- Alpy-0.1.5.orig/examples/exdat.py	2012-03-30 02:24:52.648824045 +0200
-+++ Alpy-0.1.5/examples/exdat.py	2012-03-30 02:25:09.200897599 +0200
+--- Alpy-0.1.5.orig/examples/exdat.py	2012-04-01 23:29:57.921557001 +0200
++++ Alpy-0.1.5/examples/exdat.py	2012-04-01 23:31:13.989929835 +0200
 @@ -13,9 +13,9 @@
  install_sound()
  
@@ -272,8 +260,8 @@ Index: Alpy-0.1.5/examples/exdat.py
      allegro_message('error: %s, %s' % (msg, get_allegro_error()))
 Index: Alpy-0.1.5/examples/exfli.py
 ===================================================================
---- Alpy-0.1.5.orig/examples/exfli.py	2012-03-30 02:24:52.840824898 +0200
-+++ Alpy-0.1.5/examples/exfli.py	2012-03-30 02:25:09.236897760 +0200
+--- Alpy-0.1.5.orig/examples/exfli.py	2012-04-01 23:29:58.341559061 +0200
++++ Alpy-0.1.5/examples/exfli.py	2012-04-01 23:31:14.025930011 +0200
 @@ -14,7 +14,7 @@
  
  try:
@@ -285,8 +273,8 @@ Index: Alpy-0.1.5/examples/exfli.py
          if keypressed(): break
 Index: Alpy-0.1.5/examples/extimer.py
 ===================================================================
---- Alpy-0.1.5.orig/examples/extimer.py	2012-03-30 02:24:53.816829234 +0200
-+++ Alpy-0.1.5/examples/extimer.py	2012-03-30 02:25:09.344898239 +0200
+--- Alpy-0.1.5.orig/examples/extimer.py	2012-04-01 23:29:58.197558355 +0200
++++ Alpy-0.1.5/examples/extimer.py	2012-04-01 23:31:14.061930188 +0200
 @@ -12,7 +12,7 @@
  install_timer()
  
