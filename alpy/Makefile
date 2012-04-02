@@ -23,9 +23,9 @@ define Package/alpy/Default
   SECTION:=libs
   CATEGORY:=Languages
   TITLE:=Alpy (Allegro bindings for Python)
-  URL:=https://sourceforge.net/projects/forth-alpy/
+  URL:=http://pyallegro.sourceforge.net/alpy.php
   DEPENDS:=+python-mini +liballegro +liballegro-png +liballegro-jpeg
-
+  MAINTAINER:="David Kuehling" <dvdkhlng TA gmx TOD de>
 endef
 
 define Package/alpy/Default/description
