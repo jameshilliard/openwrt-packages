@@ -23,10 +23,10 @@ static int help_flag = 0;
 
 char * program_invocation_short_name;
 
-static void print_help(const char *name) {
+static void print_help() {
    const char *help = 
-      "[OPTION]..."
-      "Options:"
+      "[OPTION]...\n"
+      "Options:\n"
       "\t-t --title=STRING\n"
       "\t\tSet file selector dialog's title\n"
       "\t-w --wallpaper=FILENAME\n"
