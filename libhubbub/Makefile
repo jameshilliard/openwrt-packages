@@ -1,12 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libhubbub
-PKG_VERSION:=0.0.2
+PKG_VERSION:=0.1.2
 PKG_RELEASE:=1
 
 PKG_SOURCE:=hubbub-$(PKG_VERSION)-src.tar.gz
 PKG_SOURCE_URL:=http://www.netsurf-browser.org/projects/releases/
 PKG_BUILD_DIR:=$(BUILD_DIR)/hubbub-$(PKG_VERSION)
+PKG_MD5SUM:=94e2819843f1e675dcccd2e569c9a0a2
 
 include $(INCLUDE_DIR)/package.mk
 
