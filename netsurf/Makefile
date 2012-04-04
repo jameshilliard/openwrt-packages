@@ -4,14 +4,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=netsurf
-PKG_VERSION:=r10948
+PKG_VERSION:=2.9
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://www.netsurf-browser.org/downloads/development/
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
-
-PKG_INSTALL:=1
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-src.tar.gz
+PKG_SOURCE_URL:=http://www.netsurf-browser.org/downloads/releases/
+PKG_MD5SUM:=d5d9d21a9a14f7e9cc502cc617298baa
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -22,7 +20,7 @@ define Package/netsurf
 	CATEGORY:=Network
 	TITLE:=netsurf
 	URL:=http://www.netsurf-browser.org/
-	DEPENDS:=+libsdl +libcss +libhubbub +libparserutils +libnsfb +libxml2 +libcurl +libfreetype
+	DEPENDS:=+libsdl +libcss +libhubbub +libparserutils +libnsfb +libxml2 +libcurl +libfreetype +libnsbmp +libnsgif
 endef
 
 define Package/netsurf/description
@@ -31,8 +29,11 @@ endef
 
 MAKE_FLAGS += "TARGET=framebuffer" \
 			  "PREFIX=/usr"
+#MAKE_FLAGS += "TARGET=gtk" \
+#	      "PREFIX=/usr"
 
 TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
+#TARGET_CFLAGS += "-I$(STAGING_DIR)/usr/include/gtk-2.0"
 TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Build/Prepare
@@ -45,12 +46,25 @@ define Package/netsurf/install
 		$(1)/usr/bin $(1)/usr/share/netsurf
 
 	$(INSTALL_BIN) \
-		$(PKG_INSTALL_DIR)/usr/bin/netsurf \
-		$(1)/usr/bin/
+		$(PKG_BUILD_DIR)/nsfb \
+		$(1)/usr/bin/netsurf
+
+	cp -rfL \
+		$(PKG_BUILD_DIR)/framebuffer/res/* \
+		$(1)/usr/share/netsurf/
 
 	$(INSTALL_DATA) \
-		$(PKG_INSTALL_DIR)/usr/share/netsurf/* \
+		$(FILES_DIR)/Choices \
 		$(1)/usr/share/netsurf/
+
+	#That's really dirty... For some reason overriding font paths from Makefile doesn't work
+	mkdir -p $(1)/usr/share/netsurf/usr/share/fonts
+	ln -s ../../../../fonts/ttf-dejavu $(1)/usr/share/netsurf/usr/share/fonts/ttf-dejavu
+endef
+
+define Package/netsurf/postinst
+#!/bin/sh
+mkdir -p $${IPKG_INSTROOT}/root/.netsurf && cp $${IPKG_INSTROOT}/usr/share/netsurf/Choices $${IPKG_INSTROOT}/root/.netsurf/Choices
 endef
 
 $(eval $(call BuildPackage,netsurf))
