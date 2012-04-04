@@ -1,12 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libparserutils
-PKG_VERSION:=0.0.2
+PKG_VERSION:=0.1.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-src.tar.gz
 PKG_SOURCE_URL:=http://www.netsurf-browser.org/projects/releases/
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_MD5SUM:=c145e961be0ffee35f6afd638fb74dab
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -16,7 +17,6 @@ define Package/libparserutils
 	CATEGORY:=Libraries
 	TITLE:=LibParserUtils has some built-in charset converters
 	URL:=http://www.netsurf-browser.org/projects/libparserutils/
-	DEPENDS:=
 endef
 
 define Package/libparserutils/description
