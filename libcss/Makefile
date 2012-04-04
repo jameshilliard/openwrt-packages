@@ -1,12 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libcss
-PKG_VERSION:=0.0.2
+PKG_VERSION:=0.1.2
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-src.tar.gz
 PKG_SOURCE_URL:=http://www.netsurf-browser.org/projects/releases/
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_MD5SUM:=6e9dd7ed53113fc42fa1d20b3d202475
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -30,6 +31,7 @@ define Build/Compile
 		WARNFLAGS="" \
 		COMPONENT_TYPE=lib-shared \
 		DESTDIR="$(PKG_INSTALL_DIR)" \
+		HOST_CC="$(HOSTCC)" \
 		all install
 endef
 
