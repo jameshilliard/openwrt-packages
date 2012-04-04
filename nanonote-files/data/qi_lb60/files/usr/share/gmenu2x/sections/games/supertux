@@ -1,0 +1,3 @@
+title=Supertux
+icon=skin:icons/supertux.png
+exec=/usr/bin/supertux

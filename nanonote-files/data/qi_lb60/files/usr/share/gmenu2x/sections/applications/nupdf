@@ -1,0 +1,4 @@
+title=NuPDF
+icon=skin:icons/editor.png
+exec=/usr/bin/alfilesel
+params=-t "NuPDF: Select File" -p /root/ -f "pdf;PDF" -- nupdf

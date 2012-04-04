@@ -1,0 +1,3 @@
+title=mediatomb
+icon=skin:icons/mediatomb.png
+exec=/usr/bin/mediatomb

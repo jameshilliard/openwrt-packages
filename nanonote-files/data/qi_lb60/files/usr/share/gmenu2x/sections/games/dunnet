@@ -1,0 +1,4 @@
+title=dunnet
+icon=skin:icons/emacs.png
+exec=/usr/bin/emacs
+params=-batch -l dunnet

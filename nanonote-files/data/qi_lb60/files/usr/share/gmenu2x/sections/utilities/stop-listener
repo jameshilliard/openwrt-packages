@@ -1,0 +1,4 @@
+title=stop-listener
+icon=skin:icons/listener.png
+exec=/usr/bin/killall
+params= -s 9 listener; cd /usr/share/listener && ash 

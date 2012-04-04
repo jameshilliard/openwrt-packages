@@ -1,0 +1,3 @@
+title=reboot
+icon=skin:icons/reboot.png
+exec=/sbin/reboot

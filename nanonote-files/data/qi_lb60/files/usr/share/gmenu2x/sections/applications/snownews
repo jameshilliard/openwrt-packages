@@ -1,0 +1,3 @@
+title=snownews
+icon=skin:icons/leaf_red.png
+exec=/usr/bin/snownews

@@ -1,0 +1,4 @@
+title=links
+icon=skin:icons/links.png
+exec=/usr/bin/links
+params=-driver svgalib -mode 320x240x16M32 -download-dir /root/ http://en.qi-hardware.com/wiki/Main_Page

@@ -1,0 +1,4 @@
+title=zgv
+icon=skin:icons/zgv.png
+exec=/usr/bin/zgv
+params=/root/

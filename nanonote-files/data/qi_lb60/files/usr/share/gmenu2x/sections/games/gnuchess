@@ -1,0 +1,3 @@
+title=gnuchess
+icon=skin:icons/chess.png
+exec=/usr/bin/gnuchess

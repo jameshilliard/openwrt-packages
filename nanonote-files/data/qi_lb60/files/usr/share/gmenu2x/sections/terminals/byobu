@@ -1,0 +1,4 @@
+title=byobu
+icon=skin:icons/utilities-terminal.png
+exec=/bin/touch
+params=/var/run/utmp; /usr/bin/byobu

@@ -1,0 +1,4 @@
+title=start-listener
+icon=skin:icons/listener.png
+exec=/usr/bin/listener
+params= ; sleep 1

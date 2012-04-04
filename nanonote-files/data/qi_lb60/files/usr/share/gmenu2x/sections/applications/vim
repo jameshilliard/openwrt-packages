@@ -1,0 +1,3 @@
+title=vim
+icon=skin:icons/vim.png
+exec=/usr/bin/vim

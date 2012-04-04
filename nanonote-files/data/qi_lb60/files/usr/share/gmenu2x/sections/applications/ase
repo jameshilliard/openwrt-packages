@@ -1,0 +1,3 @@
+title=ASEPRITE
+icon=skin:icons/ase.png
+exec=/usr/bin/aseprite

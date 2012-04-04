@@ -1,0 +1,4 @@
+title=ash(Default)
+icon=skin:icons/utilities-terminal.png
+exec=/usr/sbin/setfont2
+params=/usr/share/setfont2/un-fuzzy-6x10-font.pnm; /usr/bin/loadunimap /usr/share/setfont2/ben_uni.trans; /bin/ash --login

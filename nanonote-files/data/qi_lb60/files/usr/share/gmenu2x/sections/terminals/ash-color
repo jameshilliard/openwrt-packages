@@ -1,0 +1,4 @@
+title=ash(Color)
+icon=skin:icons/utilities-terminal.png
+exec=/usr/bin/setfont
+params=/usr/share/kbd/consolefonts/kernel-6x11-font; /bin/ash --login

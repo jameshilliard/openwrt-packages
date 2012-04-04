@@ -1,0 +1,3 @@
+title=mathomatic
+icon=skin:icons/mathomatic.png
+exec=/usr/bin/mathomatic

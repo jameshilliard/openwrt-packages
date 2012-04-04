@@ -1,0 +1,4 @@
+title=sokoban
+icon=skin:icons/gforth.png
+exec=/usr/bin/gforth
+params=sokoban.fs -e sokoban -e bye

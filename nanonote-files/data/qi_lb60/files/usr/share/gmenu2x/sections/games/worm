@@ -1,0 +1,3 @@
+title=worm
+icon=skin:icons/worm.png
+exec=/usr/bin/worm

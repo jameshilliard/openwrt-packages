@@ -1,0 +1,3 @@
+title=gforth
+icon=skin:icons/gforth.png
+exec=/usr/bin/gforth

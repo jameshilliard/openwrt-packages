@@ -1,0 +1,3 @@
+title=python
+icon=skin:icons/python.png
+exec=/usr/bin/python

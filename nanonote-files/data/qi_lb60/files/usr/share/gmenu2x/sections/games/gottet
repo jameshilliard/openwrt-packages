@@ -1,0 +1,4 @@
+title=gottet
+icon=skin:icons/gottet.png
+exec=/usr/bin/gottet
+params=-qws

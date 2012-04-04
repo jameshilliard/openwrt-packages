@@ -1,0 +1,3 @@
+title= poweroff
+icon=skin:icons/poweroff.png
+exec=/sbin/poweroff

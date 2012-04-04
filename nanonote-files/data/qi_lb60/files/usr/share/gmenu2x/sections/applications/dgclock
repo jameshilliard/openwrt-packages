@@ -1,0 +1,4 @@
+title=DGClock
+icon=skin:icons/dgclock.png
+exec=/usr/bin/dgclock
+wrapper=true

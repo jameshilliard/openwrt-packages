@@ -1,0 +1,4 @@
+title=Gnuplot
+icon=skin:icons/gnuplot.png
+exec=/usr/bin/gnuplot
+params=

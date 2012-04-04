@@ -1,0 +1,3 @@
+title=lua
+icon=skin:icons/lua.png
+exec=/usr/bin/lua

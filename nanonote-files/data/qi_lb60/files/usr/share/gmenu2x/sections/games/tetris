@@ -1,0 +1,4 @@
+title=tetris
+icon=skin:icons/tetris.png
+exec=/usr/sbin/setfont2
+params=/usr/share/setfont2/un-fuzzy-6x10-font.pnm; /usr/bin/tetris

@@ -1,0 +1,4 @@
+title=alsamixer
+icon=skin:icons/alsamixer.png
+exec=/usr/bin/alsamixer
+params=-Vall

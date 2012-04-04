@@ -1,0 +1,4 @@
+title=MPlayer
+icon=skin:icons/mplayer.png
+exec=/usr/bin/alfilesel
+params=-t "MPlayer: Select Video" -p /root/ -f "ogg;ogv;mkv;webm;avi;mpg;mpeg" -- mplayer

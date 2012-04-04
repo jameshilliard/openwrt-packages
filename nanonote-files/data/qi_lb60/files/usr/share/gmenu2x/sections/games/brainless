@@ -1,0 +1,4 @@
+title=Brainless
+icon=skin:icons/brainless.png
+exec=/usr/bin/brainless-jfbterm
+params=
