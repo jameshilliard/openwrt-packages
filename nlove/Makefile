@@ -19,7 +19,7 @@ define Package/nlove
 	SECTION:=games
 	CATEGORY:=Games
 	TITLE:=LÖVE
-	DEPENDS:=+libphysfs +libsdl +libsdl-image +libsdl-gfx +libsdl-mixer +lua +libvorbisidec +libvorbis
+	DEPENDS:=+libphysfs +libsdl +libsdl-image +libsdl-gfx +libsdl-mixer +lua +libvorbisidec +libvorbis @BROKEN
 	URL:=http://bartbes.ath.cx/
 endef
 

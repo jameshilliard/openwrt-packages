@@ -16,7 +16,7 @@ define Package/offrss
 	CATEGORY:=Network
 	TITLE:=Offrss
 	URL:=http://vicerveza.homeunix.net/~viric/cgi-bin/offrss/doc/trunk/doc/home.wiki
-	DEPENDS:=+libcurl +libnxml +libmrss
+	DEPENDS:=+libcurl +libnxml +libmrss @BROKEN
 endef
 
 TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
