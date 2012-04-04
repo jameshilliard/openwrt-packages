@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=alfilesel
 PKG_VERSION:=0.1.0
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 #PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 #PKG_SOURCE_URL:=@SF/forth-brainless
 #PKG_MD5SUM:=ed4a4cbbe23628b17edc5aa01f32f7fb
@@ -21,7 +21,6 @@ include $(INCLUDE_DIR)/package.mk
 define Package/alfilesel
   SECTION:=utilities
   CATEGORY:=Utilities
-  CATEGORY:=Games
   MAINTAINER:="David Kuehling" <dvdkhlng TA gmx TOD de>
   TITLE:=Graphical file selector app to use in shell scripts
   DEPENDS:=+liballegro +liballegro-jpeg +liballegro-png

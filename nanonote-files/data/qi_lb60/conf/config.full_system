@@ -298,6 +298,8 @@ CONFIG_PACKAGE_zlib=y
 # liballegro
 #
 CONFIG_PACKAGE_liballegro=y
+CONFIG_PACKAGE_liballegro-jpeg=y
+CONFIG_PACKAGE_liballegro-png=y
 CONFIG_PACKAGE_liballegro-data=y
 CONFIG_PACKAGE_liballegro-demo=y
 CONFIG_PACKAGE_liballegro-digmid=y
@@ -341,6 +343,7 @@ CONFIG_PACKAGE_emacs-ja-dic-m=y
 CONFIG_KEXEC_TOOLS_TARGET_NAME="mipsel"
 CONFIG_PACKAGE_abook=y
 CONFIG_PACKAGE_aewan=y
+CONFIG_PACKAGE_alfilesel=y
 CONFIG_PACKAGE_alsa-utils=y
 CONFIG_PACKAGE_ase=y
 CONFIG_PACKAGE_at=y
