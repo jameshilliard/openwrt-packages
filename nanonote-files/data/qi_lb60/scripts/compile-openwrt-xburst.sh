@@ -54,13 +54,6 @@ sed -i '/CONFIG_ALL/s/.*/CONFIG_ALL=y/' .config
 yes "" | make oldconfig > /dev/null
 
 
-if [ "$1" == "full_system" ]; then
-    echo "re-write config file"
-    cp .config ${IMAGES_DIR}/config.autogen
-    cp /home/xiangfu/config .config
-fi
-
-
 echo "getting version numbers of used repositories..."
 HEAD_NEW=`${GET_FEEDS_VERSION_SH} ${OPENWRT_DIR}`
 HEAD_OLD=`cat ${IMAGES_DIR}/../${OPENWRT_DIR_NAME}.VERSIONS`
