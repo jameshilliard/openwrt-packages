@@ -1,10 +1,20 @@
-diff -ur libnsfb.orig/src/surface/Makefile libnsfb/src/surface/Makefile
---- libnsfb.orig/src/surface/Makefile	2010-11-20 13:13:46.000000000 +0300
-+++ libnsfb/src/surface/Makefile	2010-11-20 13:42:01.000000000 +0300
-@@ -1,4 +1,4 @@
+--- a/src/surface/Makefile
++++ b/src/surface/Makefile
+@@ -1,16 +1,8 @@
  # Sources
--DIR_SOURCES := surface.c sdl.c vnc.c able.c ram.c linux.c x.c
-+DIR_SOURCES := surface.c sdl.c ram.c linux.c
+-DIR_SOURCES := surface.c able.c ram.c linux.c
++DIR_SOURCES := surface.c ram.c linux.c
  
+ ifeq ($(NSFB_SDL_AVAILABLE),yes)
+   DIR_SOURCES := $(DIR_SOURCES) sdl.c
+ endif
+ 
+-ifeq ($(NSFB_XCB_AVAILABLE),yes)
+-  DIR_SOURCES := $(DIR_SOURCES) x.c
+-endif
+-
+-ifeq ($(NSFB_VNC_AVAILABLE),yes)
+-  DIR_SOURCES := $(DIR_SOURCES) vnc.c
+-endif
+-
  include build/makefiles/Makefile.subdir
-Только в libnsfb/src/surface: Makefile~

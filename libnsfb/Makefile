@@ -1,16 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libnsfb
-PKG_REV:=10618
-PKG_VERSION:=r$(PKG_REV)
+PKG_VERSION:=0.0.2
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=svn://svn.netsurf-browser.org/trunk/libnsfb
-PKG_SOURCE_PROTO:=svn
-PKG_SOURCE_VERSION:=$(PKG_REV)
-PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-src.tar.gz
+PKG_SOURCE_URL:=http://www.netsurf-browser.org/projects/releases/
+PKG_MD5SUM:=f7c1cbf5a7d26750a9d6e0668dd8760c
 
 include $(INCLUDE_DIR)/package.mk
 
