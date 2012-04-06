@@ -7,7 +7,7 @@
 include $(TOPDIR)/rules.mk
 PKG_NAME:=gcc
 #PKG_VERSION:=$(strip $(subst ",, $(CONFIG_GCC_VERSION)))#"))
-PKG_VERSION:=4.5.2
+PKG_VERSION:=4.6.2
 PKG_RELEASE:=1
 PATCH_DIR=$(TOPDIR)/toolchain/gcc/patches/$(PKG_VERSION)
 PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-$(PKG_VERSION) \
@@ -15,7 +15,7 @@ PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-$(PKG_VER
 	    ftp://ftp.gnu.org/gnu/gcc/releases/gcc-$(PKG_VERSION)
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_MD5SUM:=d6559145853fbaaa0fd7556ed93bce9a
+PKG_MD5SUM:=2b7887846f8e5ac1ca58fe4dfaabf5a6
 PKG_INSTALL:=1
 PKG_FIXUP:=libtool
 
@@ -36,7 +36,7 @@ define Package/gcc-mips
   SECTION:=devel
   CATEGORY:=Development
   TITLE:=gcc-mips
-  DEPENDS:=+mpfr +binutils +libmpc @BROKEN
+  DEPENDS:=+mpfr +binutils +libmpc
 endef
 
 define Package/gcc-mips/description
@@ -72,6 +72,7 @@ define Build/Configure
 			--with-gmp=$(STAGING_DIR)/usr \
 			--with-mpc=$(STAGING_DIR)/usr \
 			--with-mpfr=$(STAGING_DIR)/usr \
+			--disable-libstdcxx-pch \
 			--prefix=/usr \
 			$(EXTRA_TARGET) \
 			$(SOFT_FLOAT_CONFIG_OPTION) \
@@ -87,7 +88,7 @@ endef
 define Package/gcc-mips/install
 	$(INSTALL_DIR) $(1)/usr/bin $(1)/usr/lib/$(PKG_NAME)/$(REAL_GNU_TARGET_NAME)/$(PKG_VERSION)
 	cp -ar $(PKG_INSTALL_DIR)/usr/{include,libexec} $(1)/usr
-	cp -a $(PKG_INSTALL_DIR)/usr/bin/{$(REAL_GNU_TARGET_NAME)-{g++,gcc},gccbug,cpp,gcov} $(1)/usr/bin
+	cp -a $(PKG_INSTALL_DIR)/usr/bin/{$(REAL_GNU_TARGET_NAME)-{g++,gcc},cpp,gcov} $(1)/usr/bin
 	ln -s $(REAL_GNU_TARGET_NAME)-g++ $(1)/usr/bin/c++
 	ln -s $(REAL_GNU_TARGET_NAME)-g++ $(1)/usr/bin/g++
 	ln -s $(REAL_GNU_TARGET_NAME)-g++ $(1)/usr/bin/$(REAL_GNU_TARGET_NAME)-c++
@@ -102,11 +103,10 @@ endef
 define Package/gcc-mips/postinst
 #!/bin/sh
 #we use some files from host's openwrt toolchain for gcc-mips package,
-#and the host's gcc version (linaro) is now 4.5.4.
-#this will be fixed when we catch up with openwrt upstream,
+#and the host's gcc version (linaro) is now 4.6.3.
 #workaround for now
-for i in $$(find $${IPKG_INSTROOT}/usr/lib/gcc/mipsel-openwrt-linux-uclibc/4.5.4 -type f); do
-	ln -s ../4.5.4/$${i##*/} $${i/4.5.4/4.5.2}
+for i in $$(find $${IPKG_INSTROOT}/usr/lib/gcc/mipsel-openwrt-linux-uclibc/4.6.3 -type f); do
+	ln -s ../4.6.3/$${i##*/} $${i/4.6.3/4.6.2}
 done
 endef
 
