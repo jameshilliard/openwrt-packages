@@ -10,7 +10,7 @@ PKG_NAME:=MPlayer
 PKG_REV:=33341
 FFMPEG_REV:=3b6bbfa0631d237f2bbc85a7b43907733bea1e82
 PKG_VERSION:=r$(PKG_REV)
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 
 PKG_SOURCE=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 FFMPEG_SOURCE_URL:=git://git.videolan.org/ffmpeg.git
@@ -74,6 +74,10 @@ CONFIGURE_ARGS := --target=mips \
 		  --confdir=/etc/mplayer				\
 		  --enable-menu						\
 		  --disable-x11						\
+		  --disable-xmga                                        \
+		  --disable-xshape                                      \
+		  --disable-xinerama                                    \
+		  --disable-gif                                         \
 		  --disable-xv						\
 		  --disable-vm						\
 		  --disable-vdpau					\
