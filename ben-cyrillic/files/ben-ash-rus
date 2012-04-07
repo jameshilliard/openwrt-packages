@@ -1,3 +1,5 @@
 #!/bin/sh
 /usr/sbin/russian.sh
+#since gmenu2x ignores workdir
+cd /root
 exec /bin/ash --login

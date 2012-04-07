@@ -7,7 +7,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ben-cyrillic
-PKG_VERSION:=0.0.1
+PKG_VERSION:=0.0.2
 PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -50,7 +50,7 @@ define Package/ben-cyrillic/install
 		$(1)/usr/bin/
 
 	$(INSTALL_DATA) \
-		$(FILES_DIR)/{ben_ru_uni.map,ben_ru_uni.trans,un-fuzzy-6x10-font_rus.pnm} \
+		$(FILES_DIR)/{ben_ru_uni.map,ben_ru_uni_phon.map,ben_ru_uni.trans,un-fuzzy-6x10-font_rus.pnm} \
 		$(1)/usr/share/ben-cyrillic/
 
 	$(INSTALL_DATA) \
