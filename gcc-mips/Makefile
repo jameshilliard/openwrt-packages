@@ -15,7 +15,7 @@ PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-$(PKG_VER
 	    ftp://ftp.gnu.org/gnu/gcc/releases/gcc-$(PKG_VERSION)
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_MD5SUM:=2b7887846f8e5ac1ca58fe4dfaabf5a6
+PKG_MD5SUM:=028115c4fbfb6cfd75d6369f4a90d87e
 PKG_INSTALL:=1
 PKG_FIXUP:=libtool
 
