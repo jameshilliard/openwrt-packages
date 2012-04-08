@@ -9,13 +9,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cgminer
-PKG_VERSION:=20120315
-PKG_REV:=22ff7a406951f97af57cbca75d282c4bbf41a3e7
-PKG_RELEASE:=3
+PKG_VERSION:=20120408
+PKG_REV:=ef76ec8a77d473382303b39de1247b75a4c4ae71
+PKG_RELEASE:=1
 PKG_INSTALL:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
-PKG_SOURCE_URL:=git://github.com/kanoi/cgminer.git
+PKG_SOURCE_URL:=git://github.com/ckolivas/cgminer.git
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=$(PKG_REV)
@@ -47,11 +47,10 @@ CONFIGURE_ARGS += --disable-opencl --disable-adl --enable-icarus
 TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Package/cgminer/install
-	$(INSTALL_DIR) $(1)/usr/bin $(1)/usr/share/cgminer $(1)/etc/init.d
+	$(INSTALL_DIR) $(1)/usr/bin $(1)/etc/init.d
 
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/cgminer $(1)/usr/bin
 	$(INSTALL_BIN) $(FILES_DIR)/cgminer $(1)/etc/init.d
-	$(CP) $(PKG_BUILD_DIR)/miner.php $(1)/usr/share/cgminer
 endef
 
 $(eval $(call BuildPackage,cgminer))
