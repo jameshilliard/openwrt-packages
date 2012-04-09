@@ -45,6 +45,9 @@ endef
 
 define Package/nanonote-data-files/install
 	$(INSTALL_DIR) $(1)/usr/share/nanonote/
+	$(INSTALL_DIR) $(1)/usr/share/nanonote/files/
+
+	$(CP) ./files/* $(1)/usr/share/nanonote/files/
 	$(CP) ./data/qi_lb60/* $(1)/usr/share/nanonote/
 endef
 
