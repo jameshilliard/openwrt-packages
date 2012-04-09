@@ -1,3 +1,0 @@
-#!/bin/sh
-
-(cd /usr/lib; ln -s libffi.so.5.0.10 libffi.so.4)
