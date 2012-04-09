@@ -67,7 +67,7 @@ ${GET_FEEDS_VERSION_SH} ${OPENWRT_DIR} > ${VERSIONS_FILE}
 cp ${VERSIONS_FILE} ${IMAGES_DIR}/../${OPENWRT_DIR_NAME}.VERSIONS
 
 echo "copy files, create VERSION, link dl folder, last prepare..."
-rm -f files && ln -s feeds/qipackages/nanonote-files/data/qi_lb60/files/
+rm -f files && ln -s feeds/qipackages/nanonote-files/files/
 rm -f dl    && ln -s ~/dl
 mkdir -p files/etc && echo ${DATE} > files/etc/VERSION
 mkdir -p files/etc/uci-defaults && \
