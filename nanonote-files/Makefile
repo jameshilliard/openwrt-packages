@@ -27,6 +27,11 @@ define Package/nanonote-data-files
     TITLE+=(Date Files)
 endef
 
+define Package/nanonote-gmenu2x-icons
+    $(call Package/nanonote-files/Default)
+    TITLE+=(Gmenu2x Icons)
+endef
+
 define Build/Compile
 endef
 
@@ -48,7 +53,12 @@ define Package/nanonote-data-files/postinst
 cp -af $${IPKG_INSTROOT}/usr/share/nanonote/files/* $${IPKG_INSTROOT}/
 endef
 
+define Package/nanonote-gmenu2x-icons/install
+	$(INSTALL_DIR) $(1)/usr/share/gmenu2x
+	$(CP) gmenu2x-icons/gmenu2x/* $(1)/usr/share/gmenu2x/
+endef
 
 $(eval $(call BuildPackage,nanonote-example-files))
 $(eval $(call BuildPackage,nanonote-base-files))
 $(eval $(call BuildPackage,nanonote-data-files))
+$(eval $(call BuildPackage,nanonote-gmenu2x-icons))
