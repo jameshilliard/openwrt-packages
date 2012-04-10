@@ -33,3 +33,6 @@ CONFIG_MAKE_TOOLCHAIN=y
 # Enable this option only you want build ALL PAKCAGE in feeds.conf
 # To skip broken module packages while compiling , run "make IGNORE_ERRORS=m"
 
+# WPAN
+# CONFIG_PACKAGE_kmod-spi_atusb is not set
+# Since we don't have USB host, disable the spi_atusb
