@@ -138,12 +138,13 @@ CONFIGURE_ARGS := --target=mips \
 
 ifdef CONFIG_BUILD_PATENTED
 CONFIGURE_ARGS+= --enable-mad \
-		  --enable-mp3lib 
+		 --enable-mp3lib
 else
 CONFIGURE_ARGS+= --disable-mad \
-		  --disable-mp3lib \
-		--disable-libmpeg2 \
-		--disable-libmpeg2-internal 
+		 --disable-mp3lib \
+		 --disable-libmpeg2 \
+		 --disable-libmpeg2-internal \
+		 --disable-faad
 endif
 
 # mplayer makefile is soooo broken.  have to specify libs by hand, if
