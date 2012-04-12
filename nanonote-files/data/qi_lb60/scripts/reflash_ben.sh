@@ -1,8 +1,9 @@
 #!/bin/bash
 # version of me
-__VERSION__="2011-12-12"
+__VERSION__="2012-04-12"
 
-# use 'http' to download and flash images, use 'file' to flash images present in the <WORKING_DIR>
+# use 'http' to download and flash images,
+# use 'file' to flash images present in the <WORKING_DIR>
 PROTOCOL="http"
 
 # NanoNote images Version
@@ -25,7 +26,7 @@ K="FALSE"
 R="FALSE"
 ALL="TRUE"
 
-while getopts d:t:v:l:hbkr OPTIONS
+while getopts d:v:l:hbkr OPTIONS
 do
     case $OPTIONS in
     d)
@@ -33,11 +34,6 @@ do
         VERSION=$OPTARG # override version by first argument
         WORKING_DIR=${VERSION}
 	;;
-    t)
-        BASE_URL_HTTP="http://downloads.qi-hardware.com/software/images/NanoNote/Ben/testing"
-        VERSION=$OPTARG
-        WORKING_DIR=${VERSION}
-        ;;
     v)
         VERSION=$OPTARG
         WORKING_DIR="${HOME}/.qi/nanonote/ben/${VERSION}"
@@ -62,27 +58,28 @@ do
     *)
         echo "\
 
-Usage: $0 [-d <dailybuild version>] [-t <testing version>] [-v <version>] [-l <path to local images>] [-b] [-k] [-r] [-h]
+Usage: $0 [-d <dailybuild version>] [-v <version>] [-l <path to local images>]
+          [-b] [-k] [-r] [-h]
      -d <>  I will download and flash a [dailybuild] version of OpenWrt images
-
-     -t <>  I will download and flash a [testing] version of OpenWrt images
+            From: http://downloads.qi-hardware.com/software/images/NanoNote/Ben
 
      -v <>  I will download and flash a [specific] version of OpenWrt images
+            From: http://fidelio.qi-hardware.com/~xiangfu/build-nanonote/
 
      -l <>  I will flash images present in folder: <arg>
             (missing files will be skipped)
 
-     -b     flash bootloader(u-boot)
-     -k     linux kernel
-     -r     root filesystem
+     -b     Flash bootloader(u-boot)
+     -k     Linux kernel
+     -r     Root filesystem
 
-     -h     you already found out
+     -h     You already found out
 
-without any arguments, I will download and flash the latest OpenWrt images
+Without any arguments, I will download and flash the latest OpenWrt images
 (includes bootloader, kernel and rootfs)
 
 OpenWrt reflash script for Qi Hardware Ben NanoNote
-written by: Mirko Vogt (mirko.vogt@sharism.cc)
+Written by: Mirko Vogt (mirko.vogt@sharism.cc)
             Xiangfu Liu (xiangfu@sharism.cc)
 
                                                      version: ${__VERSION__}
