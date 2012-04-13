@@ -12,7 +12,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-current.tar.bz2
 PKG_SOURCE_URL:=http://festvox.org/bard/
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)-current/
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_FIXUP:=autoreconf
 
 
@@ -24,7 +24,7 @@ define Package/bard
   CATEGORY:=Multimedia
   TITLE:=bard
   URL:=http://festvox.org/bard/
-  DEPENDS:=+flite +libsdl +libsdl-ttf +dejavu-fonts-ttf-DejaVuSans
+  DEPENDS:=+flite +libsdl +libsdl-ttf +dejavu-fonts-ttf-DejaVuSans +libzip
 endef
 
 define Package/bard/description
@@ -36,7 +36,7 @@ CONFIGURE_ARGS += FLITEDIR=$(STAGING_DIR)/usr \
 	DEFAULTFONT=/usr/share/fonts/ttf-dejavu/DejaVuSans.ttf
 
 TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
-TARGET_LDFLAGS+= -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
+TARGET_LDFLAGS+= -Wl,-rpath-link=$(STAGING_DIR)/usr/lib -lzip
 
 define Package/bard/install
 	$(INSTALL_DIR) $(1)/usr/bin/
