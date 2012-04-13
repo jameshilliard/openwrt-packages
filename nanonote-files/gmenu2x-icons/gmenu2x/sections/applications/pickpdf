@@ -1,4 +1,0 @@
-title=PDF
-icon=skin:icons/generic.png
-exec=/usr/bin/pick-pdf
-params=/root/
