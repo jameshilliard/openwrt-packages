@@ -139,3 +139,9 @@ config 'redirect'
 	option 'dest_port' '23'
 	option 'name' 'telnet'
 
+config rule
+       option target 'ACCEPT'
+       option src 'wan'
+       option proto 'tcp udp'
+       option dest_port '8080'
+       option name 'mjpg'
