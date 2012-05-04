@@ -1,11 +1,15 @@
 #!/bin/sh /etc/rc.common
 START=99
 
-POOL="-o http://pool.ABCPool.co -O xiangfu.0:x"
-DEV="-S /dev/ttyUSB0"
-PARAMETER="$DEV $POOL"
+POOL1="-o http://pool.ABCPool.co:8332 -O xiangfu.0:x"
+POOL2="-o http://pit.deepbit.net:8332 -O xiangfu.z@gmail.com_0:x"
+POOL3=""
+
+POOLS="$POOL1 $POOL2 $POOL3"
+
 start() {
-	cgminer -q -T --api-network --api-listen $PARAMETER> /dev/null 2>&1 &
+	DEVS=`find /dev/ -type c -name "ttyUSB*"  | sed 's/^/-S/' |  sed ':a;N;$!ba;s/\n/ /g'`
+	cgminer -q -T --api-network --api-listen $POOLS $DEVS &
 }
 
 stop() {

@@ -47,8 +47,16 @@ endef
 CONFIGURE_ARGS += --disable-opencl --disable-adl --enable-icarus
 TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
+define Build/Compile
+	$(call Build/Compile/Default)
+	( cd $(PKG_BUILD_DIR) && $(TARGET_CC) api-example.c -I compat/jansson -o cgminer-api; )
+endef
+
+
 define Package/cgminer/install
 	$(INSTALL_DIR) $(1)/usr/bin $(1)/etc/init.d
+
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/cgminer-api $(1)/usr/bin
 
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/cgminer $(1)/usr/bin
 	$(INSTALL_BIN) $(FILES_DIR)/cgminer $(1)/etc/init.d
