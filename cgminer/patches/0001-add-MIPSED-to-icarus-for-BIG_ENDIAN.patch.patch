@@ -1,62 +1,13 @@
-From 1a19591a7f4cfa873f2c6fe58b48d7588187e4c7 Mon Sep 17 00:00:00 2001
-From: Xiangfu <xiangfu@openmobilefree.net>
-Date: Sun, 19 Feb 2012 22:20:22 +0800
-Subject: [PATCH] add-MIPSED-to-icarus-for-BIG_ENDIAN.patch
-
----
- cgminer.c |    4 ++--
- icarus.c  |    2 +-
- uthash.h  |    2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/cgminer.c b/cgminer.c
-index cfb0216..2976092 100644
---- a/cgminer.c
-+++ b/cgminer.c
-@@ -1102,7 +1102,7 @@ static bool work_decode(const json_t *val, struct work *work)
- 
- 	memset(work->hash, 0, sizeof(work->hash));
- 
--#ifdef __BIG_ENDIAN__
-+#if defined(__BIG_ENDIAN__) || defined(MIPSEB)
-         int swapcounter = 0;
-         for (swapcounter = 0; swapcounter < 32; swapcounter++)
-             (((uint32_t*) (work->data))[swapcounter]) = swab32(((uint32_t*) (work->data))[swapcounter]);
-@@ -1479,7 +1479,7 @@ static bool submit_upstream_work(const struct work *work)
- 		return rc;
+diff --git a/driver-icarus.c b/driver-icarus.c
+index b0c3b4f..b2c8503 100644
+--- a/driver-icarus.c
++++ b/driver-icarus.c
+@@ -356,7 +356,7 @@ static uint64_t icarus_scanhash(struct thr_info *thr, struct work *work,
+ 		return ESTIMATE_HASHES;
  	}
- 
--#ifdef __BIG_ENDIAN__
-+#if defined(__BIG_ENDIAN__) || defined(MIPSEB)
-         int swapcounter = 0;
-         for (swapcounter = 0; swapcounter < 32; swapcounter++)
-             (((uint32_t*) (work->data))[swapcounter]) = swab32(((uint32_t*) (work->data))[swapcounter]);
-diff --git a/icarus.c b/icarus.c
-index 276cd8c..0ad7398 100644
---- a/icarus.c
-+++ b/icarus.c
-@@ -294,7 +294,7 @@ static uint64_t icarus_scanhash(struct thr_info *thr, struct work *work,
-         if (nonce == 0 && ret)
-                 return 0xffffffff;
  
 -#ifndef __BIG_ENDIAN__
 +#if !defined (__BIG_ENDIAN__) && !defined(MIPSEB)
  	nonce = swab32(nonce);
  #endif
- 	work->blk.nonce = 0xffffffff;
-diff --git a/uthash.h b/uthash.h
-index 4cedb9c..f55fc77 100644
---- a/uthash.h
-+++ b/uthash.h
-@@ -500,7 +500,7 @@ do {
- #define MUR_PLUS2_ALIGNED(p) (((unsigned long)p & 0x3) == 2)
- #define MUR_PLUS3_ALIGNED(p) (((unsigned long)p & 0x3) == 3)
- #define WP(p) ((uint32_t*)((unsigned long)(p) & ~3UL))
--#if (defined(__BIG_ENDIAN__) || defined(SPARC) || defined(__ppc__) || defined(__ppc64__))
-+#if (defined(__BIG_ENDIAN__) || defined(SPARC) || defined(__ppc__) || defined(__ppc64__)) || defined(MIPSEB)
- #define MUR_THREE_ONE(p) ((((*WP(p))&0x00ffffff) << 8) | (((*(WP(p)+1))&0xff000000) >> 24))
- #define MUR_TWO_TWO(p)   ((((*WP(p))&0x0000ffff) <<16) | (((*(WP(p)+1))&0xffff0000) >> 16))
- #define MUR_ONE_THREE(p) ((((*WP(p))&0x000000ff) <<24) | (((*(WP(p)+1))&0xffffff00) >>  8))
--- 
-1.7.5.4
-
+ 
