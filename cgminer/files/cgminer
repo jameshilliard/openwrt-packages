@@ -1,9 +1,9 @@
 #!/bin/sh /etc/rc.common
 START=99
 
-POOL1="-o http://pool.ABCPool.co:8332 -O xiangfu.0:x"
-POOL2="-o http://pit.deepbit.net:8332 -O xiangfu.z@gmail.com_0:x"
-POOL3=""
+POOL1="-o http://us.ozco.in:8331 -O xiangfu.0:x"
+POOL2="-o http://pool.ABCPool.co:8332 -O xiangfu.0:x"
+POOL3="-o http://pit.deepbit.net:8332 -O xiangfu.z@gmail.com_0:x"
 
 POOLS="$POOL1 $POOL2 $POOL3"
 
