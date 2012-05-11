@@ -54,12 +54,14 @@ endef
 
 
 define Package/cgminer/install
-	$(INSTALL_DIR) $(1)/usr/bin $(1)/etc/init.d
+	$(INSTALL_DIR) $(1)/usr/bin $(1)/etc/init.d $(1)/etc/hotplug.d/usb
 
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/cgminer-api $(1)/usr/bin
 
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/cgminer $(1)/usr/bin
 	$(INSTALL_BIN) $(FILES_DIR)/cgminer $(1)/etc/init.d
+
+	$(CP)          $(FILES_DIR)/20-icarus.hotplug $(1)/etc/hotplug.d/usb/20-icarus
 endef
 
 $(eval $(call BuildPackage,cgminer))
