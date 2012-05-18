@@ -1,15 +1,15 @@
 #!/bin/sh
 
-# Copyright (C) 2009 OpenWrt.org
+# Copyright (C) 2012 Xiangfu (BTC: 12h6gdGnThW385JaX1LRMA8cXKmbYRTP8Q)
 
 if [ "${PRODUCT}" = "67b/2303/400" ] && [ "$TYPE" = "0/0/0" ] && [ "$INTERFACE" = "255/0/0" ]; then   
 	case "$ACTION" in
 		add)
 			killall -s 9 sleep
 			killall -s 9 cgminer
-			sleep 1 && /etc/init.d/cgminer start &
+			sleep 8 && /etc/init.d/cgminer start &
 			;;
 		remove)
 			;;
-	esac	
-fi	
+	esac
+fi

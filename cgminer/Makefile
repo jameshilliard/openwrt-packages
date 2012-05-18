@@ -1,6 +1,6 @@
 #
 # Copyright (C) 2012 Xiangfu Liu <xiangfu@openmobilefree.net>
-#                            bitcoin: 1BQvUsuQBYUyVuX4jjFk4dVBpWJVQEUHTZ
+#                            bitcoin: 12h6gdGnThW385JaX1LRMA8cXKmbYRTP8Q
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
