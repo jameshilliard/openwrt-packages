@@ -12,7 +12,7 @@ PKG_NAME:=cgminer
 PKG_VERSION:=20120516
 PKG_REV:=b69d735cfe468c489a24677ffef1d6d998818cac
 # this is upstream version 2.4.1
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_INSTALL:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
@@ -39,12 +39,8 @@ Cgminer is a multi-threaded multi-pool GPU, FPGA and CPU miner with ATI GPU
 monitoring, (over)clocking and fanspeed support for bitcoin and derivative
 coins. Do not use on multiple block chains at the same time!
 endef
-# This package only enable the Icarus support. just connect your Icarus
-# FPGA miner board to OpenWrt router(with USB HOST support)
-# Run like: 
-#    cgminer -S /dev/ttyUSB0 -o http://MINING.POOL.URL -O USER:PASS
 
-CONFIGURE_ARGS += --disable-opencl --disable-adl --enable-icarus
+CONFIGURE_ARGS += --disable-opencl --disable-adl --enable-icarus --enable-bitforce
 TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Build/Compile
@@ -59,9 +55,9 @@ define Package/cgminer/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/cgminer-api $(1)/usr/bin
 
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/cgminer $(1)/usr/bin
-	$(INSTALL_BIN) $(FILES_DIR)/cgminer $(1)/etc/init.d
+	$(INSTALL_BIN) $(FILES_DIR)/cgminer.init $(1)/etc/init.d/cgminer
 
-	$(CP)          $(FILES_DIR)/20-icarus.hotplug $(1)/etc/hotplug.d/usb/20-icarus
+	$(CP)          $(FILES_DIR)/20-cgminer.hotplug $(1)/etc/hotplug.d/usb/20-cgminer
 endef
 
 $(eval $(call BuildPackage,cgminer))
