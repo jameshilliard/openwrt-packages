@@ -12,7 +12,7 @@ PKG_NAME:=cgminer
 PKG_VERSION:=20120516
 PKG_REV:=b69d735cfe468c489a24677ffef1d6d998818cac
 # this is upstream version 2.4.1
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 PKG_INSTALL:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
@@ -55,7 +55,8 @@ define Package/cgminer/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/cgminer-api $(1)/usr/bin
 
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/cgminer $(1)/usr/bin
-	$(INSTALL_BIN) $(FILES_DIR)/cgminer.init $(1)/etc/init.d/cgminer
+	$(INSTALL_BIN) $(FILES_DIR)/cgminer-monitor       $(1)/usr/bin
+	$(INSTALL_BIN) $(FILES_DIR)/cgminer.init          $(1)/etc/init.d/cgminer
 
 	$(CP)          $(FILES_DIR)/20-cgminer.hotplug $(1)/etc/hotplug.d/usb/20-cgminer
 endef
