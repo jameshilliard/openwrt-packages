@@ -13,7 +13,6 @@
 # modified 20/02/2012
 # author: jnbagale@gmail.com
 
-# install the "guile 2" in your HOST pc for compile this package
 
 include $(TOPDIR)/rules.mk
 
@@ -25,9 +24,13 @@ PKG_SOURCE_URL:=http://ftp.gnu.org/gnu/guile/
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
+PKG_BUILD_PARALLEL:=1
+HOST_BUILD_PARALLEL:=1
+
 PKG_FIXUP:=libtool
 PKG_INSTALL:=1
 
+include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
 
@@ -44,9 +47,29 @@ define Package/guile2/description
     GNU Guile is an interpreter for Scheme, packaged as a library that you can link into your applications to give them their own scripting language.
 endef
 
-# should fix issue with threads
-CONFIGURE_ARGS += --with-libgmp-prefix --with-libunistring-prefix --with-libltdl-prefix 
+CONFIGURE_ARGS += --with-libgmp-prefix --with-libunistring-prefix --with-libltdl-prefix --with-libffi-prefix
 CONFIGURE_VARS += gl_cv_func_duplocale_works=yes guile_cv_use_csqrt="no, Ben NanoNote (cross-compiling)"
+
+HOST_CONFIGURE_ARGS += --with-libgmp-prefix --with-libunistring-prefix --with-libltdl-prefix --with-libffi-prefix
+
+define Build/Prepare
+	 $(call Build/Prepare/Default)
+endef
+
+define Host/Configure
+	$(call Host/Configure/Default)
+endef
+
+## On the host, we only compile and install guile2 used for
+## bootstrapping
+define Host/Compile
+	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)lib; \
+	$(call Host/Compile/Default)
+endef
+
+define Host/Install
+	$(call Host/Install/Default)
+endef
 
 define Build/InstallDev
 	$(INSTALL_DIR) \
@@ -60,8 +83,8 @@ define Build/InstallDev
 		$(PKG_INSTALL_DIR)/usr/include/* \
 		$(1)/usr/include/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig \
-		$(1)/usr/lib/
+		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig/* \
+		$(1)/usr/lib/pkgconfig/
 endef
 
 define Package/guile2/install
@@ -85,5 +108,5 @@ define Package/guile2/install
 
 endef
 
-$(eval $(call RequireCommand,guile,$(PKG_NAME) requires guile on the host system.))
+$(eval $(call HostBuild))
 $(eval $(call BuildPackage,guile2))
