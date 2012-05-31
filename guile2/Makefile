@@ -30,6 +30,9 @@ HOST_BUILD_PARALLEL:=1
 PKG_FIXUP:=libtool
 PKG_INSTALL:=1
 
+PKG_BUILD_DEPENDS:=guile2/host
+HOST_BUILD_DEPENDS:=gettext/host libiconv/host gc/host 
+
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
@@ -47,10 +50,13 @@ define Package/guile2/description
     GNU Guile is an interpreter for Scheme, packaged as a library that you can link into your applications to give them their own scripting language.
 endef
 
-CONFIGURE_ARGS += --with-libgmp-prefix --with-libunistring-prefix --with-libltdl-prefix --with-libffi-prefix
+CONFIGURE_ARGS += --with-libgmp-prefix --with-libunistring-prefix --with-libltdl-prefix 
 CONFIGURE_VARS += gl_cv_func_duplocale_works=yes guile_cv_use_csqrt="no, Ben NanoNote (cross-compiling)"
 
-HOST_CONFIGURE_ARGS += --with-libgmp-prefix --with-libunistring-prefix --with-libltdl-prefix --with-libffi-prefix
+HOST_CONFIGURE_ARGS += --with-libgmp-prefix --with-libunistring-prefix --with-libltdl-prefix
+HOST_CONFIGURE_VARS += PKG_CONFIG=true  LIBFFI_LIBS=-lffi BDW_GC_LIBS=-lgc 
+#					LIBFFI_CFLAGS=$(STAGING_DIR_HOST)/include \
+					BDW_GC_CFLAGS=$(STAGING_DIR_HOST)/include 
 
 define Build/Prepare
 	 $(call Build/Prepare/Default)
@@ -63,7 +69,6 @@ endef
 ## On the host, we only compile and install guile2 used for
 ## bootstrapping
 define Host/Compile
-	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)lib; \
 	$(call Host/Compile/Default)
 endef
 
@@ -87,6 +92,8 @@ define Build/InstallDev
 		$(1)/usr/lib/pkgconfig/
 endef
 
+
+
 define Package/guile2/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_DIR) $(1)/usr/lib
@@ -108,5 +115,5 @@ define Package/guile2/install
 
 endef
 
-$(eval $(call HostBuild))
 $(eval $(call BuildPackage,guile2))
+$(eval $(call HostBuild))
