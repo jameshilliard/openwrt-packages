@@ -38,14 +38,20 @@ endef
 define Build/Configure
 	( cd $(PKG_BUILD_DIR); ./autogen.sh );
 	$(call Build/Configure/Default, \
-		CROSS_COMPILE="mipsel-openwrt-linux-" \
-		--enable-firmware \
+		--disable-firmware \
 		--prefix=/usr \
 		--sysconfdir=/etc \
 	)
 endef
 
 define Package/xburst-tools/install
+	(cd $(PKG_BUILD_DIR) && \
+	 wget http://projects.qi-hardware.com/media/upload/xburst-tools/files/xburst-tools-firmware-201105.tar.bz2 && \
+	 tar xvf xburst-tools-firmware-201105.tar.bz2)
+
+	$(INSTALL_DIR) $(1)/usr/share/xburst-tools/
+	$(CP) $(PKG_BUILD_DIR)/xburst-tools-firmware/* $(1)/usr/share/xburst-tools/
+
 	$(CP) $(PKG_BUILD_DIR)/ipkg-install/* $(1)/
 endef
 
