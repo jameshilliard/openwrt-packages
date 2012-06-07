@@ -26,9 +26,18 @@ define Package/ben-wpan/Default
     URL:=http://en.qi-hardware.com/wiki/Ben_WPAN
 endef
 
+ifneq ($(CONFIG_TARGET_xburst_qi_lb60),)
+    BEN_WPAN_MAKE_ARGS=V=1 TARGET=ben_openwrt
+else
+# If you compile under other target please manually disable those package under 'menuconfig'
+#   atrf-rssi atrf-path atrf-xtal
+# this need more work on DEPENDS work, like the dirtpan DEPENDS below.
+    BEN_WPAN_MAKE_ARGS=NOGUI=1 V=1 CC_host=$(TARGET_CC)
+endif
+
 define Build/Compile
-    $(MAKE) -C $(PKG_BUILD_DIR)/tools TARGET=ben_openwrt; \
-    $(MAKE) -C $(PKG_BUILD_DIR)/tools/dirtpan TARGET=ben_openwrt CFLAGS+="-I$(STAGING_DIR)/usr/include -I../include"
+    $(MAKE) -C $(PKG_BUILD_DIR)/tools $(BEN_WPAN_MAKE_ARGS) && \
+    $(MAKE) -C $(PKG_BUILD_DIR)/tools/dirtpan $(BEN_WPAN_MAKE_ARGS) CFLAGS+="-I$(STAGING_DIR)/usr/include -I../include"
 endef
 
 define Package/ben-wpan-doc
@@ -145,6 +154,7 @@ endef
 define Package/dirtpan
     $(call Package/ben-wpan/Default)
     TITLE:=Quick and dirty IPv4 over 802.15.4 tunnel
+    DEPENDS:=$(if $(CONFIG_TARGET_xburst_qi_lb60),,+libusb)
 endef
 
 define Package/dirtpan/install

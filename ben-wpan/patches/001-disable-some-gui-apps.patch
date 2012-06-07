@@ -1,0 +1,19 @@
+diff --git a/tools/Makefile b/tools/Makefile
+index 0ebc31b..95adf51 100644
+--- a/tools/Makefile
++++ b/tools/Makefile
+@@ -11,8 +11,12 @@
+ #
+ 
+ 
+-BEN_DIRS=atrf-gpio atrf-id atrf-path atrf-proxy atrf-reset \
+-	 atrf-rssi atrf-trim atrf-txrx atrf-xmit atrf-xtal
++BEN_DIRS=atrf-gpio atrf-id atrf-proxy atrf-reset atrf-trim \
++	atrf-txrx atrf-xmit
++
++ifeq ($(NOGUI),)
++BEN_DIRS += atrf-rssi atrf-path atrf-xtal
++endif
+ 
+ ifneq ($(wildcard ../install/lowpan-tools-0.2.2/include/ieee802154.h),)
+ DIRTPAN := dirtpan
