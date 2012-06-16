@@ -1,31 +1,44 @@
 #!/bin/sh
 
+if [ "$1" != "client" ] && [ "$1" != "host" ]; then
+  echo "wpan.nn host|client [dirtpan]"
+  exit 1
+fi
 
-cd /lib/modules/`uname -r`
+uname -a  | grep BenNanoNote > /dev/null 2>&1
 
-echo jz4740-mmc.0 > /sys/bus/platform/drivers/jz4740-mmc/unbind
-insmod at86rf230.ko
-insmod spi_atben.ko
-
-cd ${HOME}
+if [ "$?" == "0" ]; then
+  echo jz4740-mmc.0 > /sys/bus/platform/drivers/jz4740-mmc/unbind
+  insmod /lib/modules/`uname -r`/at86rf230.ko
+  insmod /lib/modules/`uname -r`/spi_atben.ko
+fi
 
 iz add wpan-phy0
-if [ "$1" == "2" ]; then
+
+if [ "$1" == "client" ]; then
   ip link set wpan0 address de:ad:be:af:ca:fe:ba:b2
 else
   ip link set wpan0 address de:ad:be:af:ca:fe:ba:b1
 fi
 ifconfig wpan0 up
 
-if [ "$1" == "2" ]; then
+if [ "$1" == "client" ]; then
   iz assoc wpan0 777 1 11 short
 
-  izchat 777 8001 1
-  #dirtpan 777 8001 1 'ifconfig tun0 10.8.0.2 dstaddr 10.8.0.1 up' &
+  if [ "$2" == "dirtpan" ]; then
+    dirtpan 777 8001 1 'ifconfig tun0 10.8.0.2 dstaddr 10.8.0.1 up' &
+  else
+    izchat 777 8001 1
+  fi
 else
   rm -f /tmp/lease
   izcoordinator -d 1 -l /tmp/lease -i wpan0 -p 0x777 -s 1 -c 11 &
 
-  izchat 777 1 8001
-  #dirtpan 777 1 8001 'ifconfig tun0 10.8.0.1 dstaddr 10.8.0.2 up' &
+  sleep 1
+
+  if [ "$2" == "dirtpan" ]; then
+    dirtpan 777 1 8001 'ifconfig tun0 10.8.0.1 dstaddr 10.8.0.2 up' &
+  else
+    izchat 777 1 8001
+  fi
 fi
