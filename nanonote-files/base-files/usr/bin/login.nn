@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ -f /usr/bin/gmenu2x ]; then
+  exec /usr/bin/gmenu2x
+fi
+
+if [ -f /bin/ash ]; then
+  exec /bin/ash --login
+fi
+
+if [ -f /bin/bash ]; then
+  exec /bin/sh --login
+fi
