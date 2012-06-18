@@ -22,6 +22,7 @@ include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
 
 define Package/urjtag
+  MAINTAINER:="Xiangfu Liu" <xiangfu@openmobilefree.net>
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=Urjtag
@@ -37,6 +38,10 @@ CONFIGURE_PATH  = ./urjtag
 CONFIGURE_CMD   = ./autogen.sh
 CONFIGURE_ARGS += --with-libusb --with-libftdi --without-ftd2xx \
 		  --disable-svf --disable-bsdl --disable-python
+
+define Package/urjtag/description
+Universal JTAG library, server and tools
+endef
 
 define Package/urjtag/install
 	$(INSTALL_DIR) \

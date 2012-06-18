@@ -24,6 +24,7 @@ include $(INCLUDE_DIR)/package.mk
 TARGET_LDFLAGS+= -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Package/xburst-tools
+  MAINTAINER:="Xiangfu Liu" <xiangfu@openmobilefree.net>
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=Xburst-Tools
