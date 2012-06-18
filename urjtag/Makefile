@@ -26,10 +26,8 @@ define Package/urjtag
   CATEGORY:=Utilities
   TITLE:=Urjtag
   URL:=http://urjtag.org/
-  DEPENDS:=+libusb-1.0 +libftdi $(INTL_DEPENDS) @BROKEN
+  DEPENDS:=+libusb-1.0 +libftdi $(INTL_DEPENDS)
 endef
-
-PKG_BUILD_DEPENDS:=python
 
 TARGET_CFLAGS  += $(INTL_CFLAGS)
 TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib $(INTL_LDFLAGS)
@@ -38,7 +36,7 @@ MAKE_FLAGS     += -C urjtag
 CONFIGURE_PATH  = ./urjtag
 CONFIGURE_CMD   = ./autogen.sh
 CONFIGURE_ARGS += --with-libusb --with-libftdi --without-ftd2xx \
-		  --disable-svf --disable-bsdl
+		  --disable-svf --disable-bsdl --disable-python
 
 define Package/urjtag/install
 	$(INSTALL_DIR) \
