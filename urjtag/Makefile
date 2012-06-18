@@ -26,7 +26,7 @@ define Package/urjtag
   CATEGORY:=Utilities
   TITLE:=Urjtag
   URL:=http://urjtag.org/
-  DEPENDS:=+libusb-1.0 +libftdi $(INTL_DEPENDS)
+  DEPENDS:=+libusb +libusb-1.0 +libftdi $(INTL_DEPENDS) +libreadline +libncurses
 endef
 
 TARGET_CFLAGS  += $(INTL_CFLAGS)
@@ -41,7 +41,12 @@ CONFIGURE_ARGS += --with-libusb --with-libftdi --without-ftd2xx \
 define Package/urjtag/install
 	$(INSTALL_DIR) \
 		$(1)/usr/bin/ \
-		$(1)/usr/share/urjtag/
+		$(1)/usr/share/urjtag/ \
+		$(1)/usr/lib/liburjtag/
+
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/jtag  $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/share/urjtag/*     $(1)/usr/share/urjtag/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/liburjtag.so.* $(1)/usr/lib/liburjtag/
 endef
 
 $(eval $(call BuildPackage,urjtag))

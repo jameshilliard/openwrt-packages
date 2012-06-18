@@ -1,0 +1,34 @@
+diff --git a/urjtag/src/tap/parport/direct.c b/urjtag/src/tap/parport/direct.c
+index 10bea4d..2be15b8 100644
+--- a/urjtag/src/tap/parport/direct.c
++++ b/urjtag/src/tap/parport/direct.c
+@@ -37,6 +37,20 @@
+ #include <urjtag/cable.h>
+ #include "../parport.h"
+ 
++#ifdef __linux__
++#if defined(arm) || defined(__hppa__) || defined(__sparc__) || defined(__ppc__) \
++|| defined(__powerpc__) || defined(__s390__) || defined(__s390x__)\
++|| defined(__mips__) || defined(__mc68000__) || defined(__sh__)
++
++#define NO_SYSIO
++
++#define inb(foo) 0
++#define outb(foo,bar) 0
++
++#endif /* architechtures */
++#endif /* __linux__ */
++
++
+ #if defined(HAVE_INPOUTXX)
+ 
+ static HINSTANCE inpout32_dll_handle = NULL;
+@@ -50,7 +64,7 @@ static outfuncPtr Out32;
+ #define inb(p) (Inp32)(p)
+ #define outb(d,p) (Out32)(p,d)
+ 
+-#elif defined(HAVE_IOPERM)
++#elif defined(HAVE_IOPERM) && !defined(NO_SYSIO)
+ 
+ #include <sys/io.h>
+ 
