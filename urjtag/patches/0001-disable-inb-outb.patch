@@ -1,5 +1,5 @@
 diff --git a/urjtag/src/tap/parport/direct.c b/urjtag/src/tap/parport/direct.c
-index 10bea4d..2be15b8 100644
+index 10bea4d..bc3bada 100644
 --- a/urjtag/src/tap/parport/direct.c
 +++ b/urjtag/src/tap/parport/direct.c
 @@ -37,6 +37,20 @@
@@ -13,8 +13,8 @@ index 10bea4d..2be15b8 100644
 +
 +#define NO_SYSIO
 +
-+#define inb(foo) 0
-+#define outb(foo,bar) 0
++#define inb(addr)      (*(volatile unsigned char *)(addr))
++#define outb(b,addr)   (*(volatile unsigned char *)(addr)) = (b)
 +
 +#endif /* architechtures */
 +#endif /* __linux__ */
