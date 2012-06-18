@@ -41,12 +41,11 @@ CONFIGURE_ARGS += --with-libusb --with-libftdi --without-ftd2xx \
 define Package/urjtag/install
 	$(INSTALL_DIR) \
 		$(1)/usr/bin/ \
-		$(1)/usr/share/urjtag/ \
-		$(1)/usr/lib/liburjtag/
+		$(1)/usr/share/urjtag/
 
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/jtag  $(1)/usr/bin/
 	$(CP) $(PKG_INSTALL_DIR)/usr/share/urjtag/*     $(1)/usr/share/urjtag/
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/liburjtag.so.* $(1)/usr/lib/liburjtag/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/liburjtag.so.* $(1)/usr/lib/
 endef
 
 $(eval $(call BuildPackage,urjtag))
