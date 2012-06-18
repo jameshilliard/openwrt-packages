@@ -129,15 +129,31 @@ CONFIG_PACKAGE_librt=y
 CONFIG_PACKAGE_libstdcpp=y
 CONFIG_PACKAGE_ucitrigger=y
 CONFIG_PACKAGE_wireless-tools=y
-CONFIG_PACKAGE_kmod-fuse=y
-CONFIG_PACKAGE_kmod-tun=y
-CONFIG_PACKAGE_kmod-ks7010=y
-# CONFIG_PACKAGE_kmod-fs-xfs is not set
 CONFIG_PACKAGE_gtkhtml=y
 CONFIG_PACKAGE_gnome-icon-theme=y
 CONFIG_PACKAGE_hicolor-icon-theme=y
 CONFIG_PACKAGE_fontconfig=y
 CONFIG_PACKAGE_procps=y
+#
+# Kernel module
+#
+CONFIG_PACKAGE_kmod-fuse=y
+CONFIG_PACKAGE_kmod-tun=y
+CONFIG_PACKAGE_kmod-ks7010=y
+CONFIG_PACKAGE_kmod-ipv6=y
+# CONFIG_PACKAGE_kmod-fs-xfs is not set
+CONFIG_PACKAGE_kmod-lib-crc-ccitt=y
+CONFIG_PACKAGE_kmod-lib-crc-itu-t=y
+#
+# WPAN
+#
+CONFIG_PACKAGE_kmod-at86rf230=y
+# CONFIG_PACKAGE_kmod-fakehard is not set
+# CONFIG_PACKAGE_kmod-fakelb is not set
+CONFIG_PACKAGE_kmod-ieee802154=y
+CONFIG_PACKAGE_kmod-mac802154=y
+CONFIG_PACKAGE_kmod-spi_atben=y
+# CONFIG_PACKAGE_kmod-spi_atusb is not set
 #
 # Fonts
 #
@@ -614,15 +630,3 @@ CONFIG_PACKAGE_svgalib-demo=y
 #
 CONFIG_PACKAGE_nanonote-base-files=y
 CONFIG_PACKAGE_nanonote-gmenu2x-icons=y
-#
-# WPAN
-#
-CONFIG_PACKAGE_kmod-at86rf230=y
-# CONFIG_PACKAGE_kmod-fakehard is not set
-# CONFIG_PACKAGE_kmod-fakelb is not set
-CONFIG_PACKAGE_kmod-ieee802154=y
-CONFIG_PACKAGE_kmod-mac802154=y
-CONFIG_PACKAGE_kmod-spi_atben=y
-# CONFIG_PACKAGE_kmod-spi_atusb is not set
-CONFIG_PACKAGE_kmod-lib-crc-ccitt=y
-CONFIG_PACKAGE_kmod-lib-crc-itu-t=y
