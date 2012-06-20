@@ -46,7 +46,8 @@ endef
 define Package/urjtag/install
 	$(INSTALL_DIR) \
 		$(1)/usr/bin/ \
-		$(1)/usr/share/urjtag/
+		$(1)/usr/share/urjtag/ \
+		$(1)/usr/lib/
 
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/jtag  $(1)/usr/bin/
 	$(CP) $(PKG_INSTALL_DIR)/usr/share/urjtag/*     $(1)/usr/share/urjtag/
