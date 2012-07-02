@@ -154,6 +154,9 @@ CONFIG_PACKAGE_kmod-ieee802154=y
 CONFIG_PACKAGE_kmod-mac802154=y
 CONFIG_PACKAGE_kmod-spi_atben=y
 # CONFIG_PACKAGE_kmod-spi_atusb is not set
+# CONFIG_PACKAGE_kmod-wpan-serial is not set
+# CONFIG_PACKAGE_kmod-cc2420 is not set
+# CONFIG_PACKAGE_kmod-adf7242 is not set
 #
 # Fonts
 #
