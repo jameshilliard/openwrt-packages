@@ -95,6 +95,10 @@ cp -a files/* ${IMAGES_DIR}/files/
 (cd ${IMAGES_DIR} && \
     grep -E "ERROR:\ package.*failed to build" BUILD_LOG | \
     grep -v "package/kernel" > failed_packages.txt; \
+
+    if [ "$1" == "minimal" ]; then
+	cp failed_packages.txt /home/xiangfu/building/Nanonote/Ben/
+    fi
 )
 
 if [ "${MAKE_RET}" == "0" ]; then

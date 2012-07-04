@@ -29,7 +29,7 @@ define Package/xburst-tools
   CATEGORY:=Utilities
   TITLE:=Xburst-Tools
   URL:=http://projects.qi-hardware.com/p/xburst-tools/
-  DEPENDS:=+libusb +libusb-1.0 +confuse +libreadline
+  DEPENDS:=+libusb +libusb-1.0 +confuse +libreadline +libncurses
 endef
 
 define Package/xburst-tools/description
