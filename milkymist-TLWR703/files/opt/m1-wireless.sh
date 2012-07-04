@@ -27,11 +27,8 @@ if [ "$1" == "set" ] && [ "$#" == "4" ]; then
   uci set wireless.@wifi-iface[0].encryption=$4
 
   uci commit wireless
-  wifi up            > /dev/null 2>&1
-  udhcpc -i wlan0 -b > /dev/null 2>&1
+  ifup wwan
   
-  ifconfig wlan0 | grep "inet addr"
-
   exit 0
 fi
 
