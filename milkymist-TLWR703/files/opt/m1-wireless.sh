@@ -24,6 +24,7 @@ if [ "$1" == "set" ] && [ "$#" == "4" ]; then
   uci commit network
   uci commit wireless
   ifup wwan
+  sleep 1
   
   exit 0
 fi
