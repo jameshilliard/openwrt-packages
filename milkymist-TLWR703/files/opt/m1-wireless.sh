@@ -2,15 +2,10 @@
 
 if [ "$1" == "set" ] && [ "$#" == "4" ]; then
   uci delete network.wwan
-  uci commit wireless
-
   uci set network.wwan=interface
   uci set network.wwan.proto=dhcp
-  uci commit wireless
 
   uci delete wireless.@wifi-iface[0]
-  uci commit wireless
-
   uci set wireless.@wifi-device[0].disabled=0
   uci add wireless wifi-iface   > /dev/null 2>&1
   uci set wireless.@wifi-iface[0].device='radio0'
@@ -26,6 +21,7 @@ if [ "$1" == "set" ] && [ "$#" == "4" ]; then
   uci set wireless.@wifi-iface[0].key=$3
   uci set wireless.@wifi-iface[0].encryption=$4
 
+  uci commit network
   uci commit wireless
   ifup wwan
   
