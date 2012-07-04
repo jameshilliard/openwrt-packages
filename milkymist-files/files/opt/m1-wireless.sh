@@ -51,9 +51,22 @@ if [ "$1" == "get" ]; then
 fi
 
 if [ "$1" == "status" ]; then
-  ifconfig wlan0
+  sleep 1
+  IP=`ifconfig wlan0 2>/dev/null | grep "inet addr" | \
+      sed -e 's/^ *//g' | cut -d":" -f2 | cut -d" " -f1` 
+  if [ "$?" != 0 ] || [ "${IP}" == "" ]; then
+    echo "Disconnected"
+    echo "0.0.0.0"
+    exit 1
+  fi
+  
+  ESSID=`iwconfig wlan0 2>/dev/null | grep ESSID | cut -d":" -f 2 | sed -e 's/\"//g'`
+  
+  echo "${ESSID}"
+  echo "${IP}"
 
   exit 0
 fi
 
 echo "Usage: $0 [get/set/status] PARAMS..."
+exit 1

@@ -73,8 +73,12 @@ function iwscan(iface)
 		 elseif wpa then enc = "psk"
 		 else enc = "wep" end
 	      end
+	      
+	      local a = Q:match("(%d-)/")
+	      local b = Q:match("/(%d-)$")
+	      Q = math.floor(tonumber(a)/tonumber(b)*100)
 
-	      local r = Q .. "\t" .. ESSID .. "\t" .. enc
+	      local r = Q .. "%," .. ESSID .. "," .. enc
 
 	      table.insert(iws, r)
 	   end
@@ -84,4 +88,9 @@ function iwscan(iface)
 end
 
 local t = iwscan("wlan0")
-for k,v in pairs(t) do print(v) end
+if t == {} then
+    print();
+else
+    for k,v in pairs(t) do print(v) end
+end
+        
