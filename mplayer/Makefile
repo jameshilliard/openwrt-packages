@@ -59,6 +59,7 @@ endef
 #		  --extra-libs="-lavformat -lavcodec -lavutil -lpostproc -lswscale" \
 
 CONFIGURE_ARGS := --target=mips \
+		  --disable-pulse \
 		  --disable-mencoder \
 		  --disable-pthreads \
 		  --enable-cross-compile \
