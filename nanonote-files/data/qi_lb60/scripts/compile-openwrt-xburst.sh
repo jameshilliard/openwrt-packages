@@ -96,24 +96,30 @@ cp -a files/* ${IMAGES_DIR}/files/
     grep -E "ERROR:\ package.*failed to build" BUILD_LOG | \
     grep -v "package/kernel" > failed_packages.txt; \
 
-    if [ "$1" == "minimal" ]; then
-	cp failed_packages.txt /home/xiangfu/building/Nanonote/Ben/
-    fi
 )
+
+if [ "$1" == "minimal" ]; then
+    cp ${IMAGES_DIR}/failed_packages.txt /home/xiangfu/building/Nanonote/Ben/
+fi
 
 if [ "${MAKE_RET}" == "0" ]; then
     (cd ${IMAGES_DIR} && \
         bzip2 -z openwrt-xburst-qi_lb60-root.ubi; \
+	bzip2 -z BUILD_LOG; \
     )
     mv ${IMAGES_DIR} ${DEST_DIR}
+
     MSG="The build was successful: ${IMAGES_URL}/${OPENWRT_DIR_NAME}-${DATE_TIME}"
     echo -e "say #qi-hardware ${MSG} \nclose" \
         | nc turandot.qi-hardware.com 3858
 else
+    (cd ${IMAGES_DIR} && \
+	tail -n 100 BUILD_LOG > BUILD_LOG.last100; \
+	bzip2 -z BUILD_LOG; \
+    )
+
     echo "ERROR: Build failed! please refer to the BUILD_LOG file"
-    tail -n 100 ${IMAGES_DIR}/BUILD_LOG > ${IMAGES_DIR}/BUILD_LOG.last100
 fi
 
-(cd ${IMAGES_DIR} && bzip2 -z BUILD_LOG;)
 
 echo "Done"
