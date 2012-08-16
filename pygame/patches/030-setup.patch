@@ -1,0 +1,14 @@
+--- a/Setup.in	2012-08-14 09:42:39.000000000 +0200
++++ b/Setup	2012-08-14 09:42:46.000000000 +0200
+@@ -32,9 +32,9 @@
+ mixer_music src/music.c $(SDL) $(MIXER) $(DEBUG)
+ _numericsurfarray src/_numericsurfarray.c $(SDL) $(DEBUG)
+ _numericsndarray src/_numericsndarray.c $(SDL) $(MIXER) $(DEBUG)
+-movie src/movie.c $(SDL) $(SMPEG) $(DEBUG)
++#movie src/movie.c $(SDL) $(SMPEG) $(DEBUG)
+ scrap src/scrap.c $(SDL) $(SCRAP) $(DEBUG)
+-_camera src/_camera.c src/camera_v4l2.c src/camera_v4l.c $(SDL) $(DEBUG)
++#_camera src/_camera.c src/camera_v4l2.c src/camera_v4l.c $(SDL) $(DEBUG)
+ pypm src/pypm.c $(SDL) $(PORTMIDI) $(PORTTIME) $(DEBUG)
+ 
+ GFX = src/SDL_gfx/SDL_gfxPrimitives.c 

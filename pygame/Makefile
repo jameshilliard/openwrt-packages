@@ -19,7 +19,7 @@ define Package/pygame
 	CATEGORY:=Languages
 	TITLE:=pygame
 	URL:=http://pygame.org
-	DEPENDS:=+python-mini +libsdl +libpng +libjpeg +libsdl-image +libsdl-mixer @BROKEN
+	DEPENDS:=+python-mini +libsdl +libpng +libjpeg +libsdl-image +libsdl-mixer
 endef
 
 define Package/pygame/description
