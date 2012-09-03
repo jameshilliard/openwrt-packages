@@ -1,0 +1,59 @@
+#
+# This file must be copied to .config in the OpenWrt root folder,
+# then run: yes "" | make oldconfig > /dev/null
+#
+
+CONFIG_TARGET_ar71xx=y
+CONFIG_TARGET_ar71xx_generic=y
+CONFIG_TARGET_ar71xx_generic_TLWR703=y
+
+CONFIG_TARGET_ROOTFS_TARGZ=y
+CONFIG_TARGET_ROOTFS_JFFS2=y
+CONFIG_TARGET_ROOTFS_SQUASHFS=y
+
+# CONFIG_BUILD_PATENTED is not set
+
+CONFIG_DEVEL=y
+CONFIG_TOOLCHAINOPTS=y
+CONFIG_GDB=y
+
+# CONFIG_SDK is not set
+
+# CONFIG_ALL is not set
+# Enable this option only you want build ALL PAKCAGE in feeds.conf
+# To skip broken module packages while compiling , run "make IGNORE_ERRORS=m"
+
+CONFIG_PACKAGE_block-mount=y
+
+CONFIG_PACKAGE_luci=y
+CONFIG_PACKAGE_luci-mod-admin-core=y
+CONFIG_PACKAGE_luci-mod-admin-full=y
+CONFIG_PACKAGE_luci-mod-rpc=y
+
+CONFIG_PACKAGE_kmod-fs-ext4=y
+CONFIG_PACKAGE_kmod-ipv6=m
+CONFIG_PACKAGE_kmod-tun=m
+
+CONFIG_PACKAGE_kmod-usb-core=y
+CONFIG_PACKAGE_kmod-usb-serial=m
+CONFIG_PACKAGE_kmod-usb-serial-ftdi=m
+CONFIG_PACKAGE_kmod-usb-serial-pl2303=m
+CONFIG_PACKAGE_kmod-usb-storage=y
+CONFIG_PACKAGE_kmod-usb2=y
+CONFIG_PACKAGE_kmod-video-core=m
+CONFIG_PACKAGE_kmod-video-uvc=m
+CONFIG_PACKAGE_kmod-video-videobuf2=m
+CONFIG_PACKAGE_kmod-at86rf230=m
+CONFIG_PACKAGE_kmod-ieee802154=m
+CONFIG_PACKAGE_kmod-mac802154=m
+CONFIG_PACKAGE_kmod-spi_atusb=m
+
+CONFIG_PACKAGE_ip=m
+CONFIG_PACKAGE_dirtpan=m
+CONFIG_PACKAGE_lowpan-tools=m
+CONFIG_PACKAGE_mjpg-streamer=m
+CONFIG_PACKAGE_swap-utils=y
+CONFIG_PACKAGE_mount-utils=m
+CONFIG_PACKAGE_strace=m
+CONFIG_PACKAGE_urjtag=m
+CONFIG_PACKAGE_xburst-tools=m
