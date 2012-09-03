@@ -38,3 +38,5 @@ CONFIG_MAKE_TOOLCHAIN=y
 # CONFIG_PACKAGE_kmod-wpan-serial is not set
 # CONFIG_PACKAGE_kmod-cc2420 is not set
 # CONFIG_PACKAGE_kmod-adf7242 is not set
+
+CONFIG_PACKAGE_nanonote-base-files=y
