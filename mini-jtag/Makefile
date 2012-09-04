@@ -38,6 +38,7 @@ endef
 TARGET_LDFLAGS += -lusb -lftdi
 
 define Package/mini-jtag/install
+	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/mini-jtag $(1)/usr/bin
 endef
 
