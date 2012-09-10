@@ -4,7 +4,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=avrdude
-PKG_VERSION:=5.10
+PKG_VERSION:=5.11.1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://download.savannah.gnu.org/releases/avrdude/
@@ -36,8 +36,8 @@ CONFIGURE_ARGS+= \
 	--disable-parport
 
 ifeq ($(CONFIG_TARGET_xburst_qi_lb60),y)
-BEN_AVRDUDE_PATCHES_URL:=http://projects.qi-hardware.com/index.php/p/ben-blinkenlights/source/file/master/avrdude/patches/
-BEN_PATCH:=patch -Np2
+BEN_AVRDUDE_PATCHES_URL:=http://projects.qi-hardware.com/index.php/p/ben-blinkenlights/source/file/master/avrdude/patches
+BEN_PATCH:=patch -Np1
 define Build/Prepare
 	$(call Build/Prepare/Default)
 
