@@ -1,15 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=quickcalc
-PKG_VERSION:=1.26
+PKG_VERSION:=1.28
 PKG_RELEASE:=1
 
-PKG_SOURCE:=quickcalc-$(PKG_VERSION).tgz
-	PKG_SOURCE_URL:=ftp://ftp.ac-grenoble.fr/ge/mathematics/
-	PKG_MD5SUM:=152599c038c06ecc11e7db9dad4d4dce
-	PKG_CAT:=zcat
-
-PKG_BUILD_DIR:=$(BUILD_DIR)/quickcalc-$(PKG_VERSION)
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE_URL:=ftp://ftp.ac-grenoble.fr/ge/mathematics/
+PKG_MD5SUM:=1d89b963c84d6cd32918da8a779f3f24
 
 include $(INCLUDE_DIR)/package.mk
 
