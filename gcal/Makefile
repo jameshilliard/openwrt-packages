@@ -20,6 +20,7 @@ define Package/gcal
 	CATEGORY:=Utilities
 	TITLE:=GCal
 	URL:=http://www.gnu.org/software/gcal/
+	DEPENDS:=+libncurses
 endef
 
 define Package/gcal/description
