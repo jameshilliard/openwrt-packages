@@ -5,7 +5,7 @@ PKG_VERSION:=0.0.3
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-src.tar.gz
-PKG_SOURCE_URL:=http://www.netsurf-browser.org/projects/releases/
+PKG_SOURCE_URL:=http://download.netsurf-browser.org/libs/releases/
 PKG_MD5SUM:=1f9efcdbbf0096eee639dc1e263b20dc
 
 include $(INCLUDE_DIR)/package.mk
