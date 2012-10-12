@@ -61,8 +61,7 @@ endef
 ## override LD_LIBRARY_PATH for all the build steps that might run the
 ## host-GForth.
 HOST_CONFIGURE_VARS += LTDL_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib \
-	no_dynamic_default=1 \
-	LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib
+	no_dynamic_default=1
 
 ## Engine's dispatch would be crippled when compiling with -Os, also dynamic
 ## superinstructions don't seem to work in that case
@@ -75,12 +74,10 @@ endef
 ## On the host, we only compile and install minimum number of gforth
 ## components
 define Host/Compile
-	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib; \
 	$(call Host/Compile/Default, gforth gforth.fi)
 endef
 
 define Host/Install
-	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib; \
 	$(INSTALL_DIR) $(STAGING_DIR_HOST)/bin
 	$(INSTALL_DIR) $(STAGING_DIR_HOST)/lib
 	$(INSTALL_BIN) $(HOST_BUILD_DIR)/gforth $(STAGING_DIR_HOST)/bin/
