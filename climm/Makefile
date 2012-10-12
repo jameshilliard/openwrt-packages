@@ -20,7 +20,7 @@ define Package/climm
 	CATEGORY:=Network
 	TITLE:=Climm
 	URL:=http://www.climm.org/
-	DEPENDS:=+zlib +libncurses +libreadline $(INTL_DEPENDS) +libcharset +libopenssl +libgnutls +libgnutls-openssl
+	DEPENDS:=+zlib +libncurses +libreadline $(INTL_DEPENDS) $(ICONV_DEPENDS) +libcharset +libopenssl +libgnutls +libgnutls-openssl
 endef
 
 define Package/climm/description
