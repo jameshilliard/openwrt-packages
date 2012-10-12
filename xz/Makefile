@@ -15,7 +15,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/xz
   SECTION:=utils
   CATEGORY:=Utilities
-  DEPENDS:=
+  DEPENDS:=+libpthread
   TITLE:=xz utils
   URL:=http://tukaani.org/
 endef
