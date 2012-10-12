@@ -24,6 +24,7 @@ define Package/jbig2dec
   CATEGORY:=Libraries
   TITLE:=decoder implementation of the JBIG2 image compression format
   URL:=http://jbig2dec.sourceforge.net/
+  DEPENDS:=+zlib +libpng
 endef
 
 define Package/jbig2dec/description
