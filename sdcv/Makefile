@@ -12,11 +12,10 @@ PKG_NAME:=sdcv
 PKG_VERSION:=0.4.2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=http://cdnetworks-kr-1.dl.sourceforge.net/project/sdcv/sdcv/0.4.2/
+PKG_SOURCE_URL:=@SF/$(PKG_NAME)
+PKG_MD5SUM:=f624662b333daa5da2d3e99cef519f17
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
-
-PKG_INSTALL:=2
+PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
@@ -25,7 +24,7 @@ define Package/sdcv
     TITLE:=sdcv
     SECTION:=utils
     CATEGORY:=Utilities
-    DEPENDS:=$(ICONV_DEPENDS) $(INTL_DEPENDS) +libreadline +glib2
+    DEPENDS:=$(ICONV_DEPENDS) $(INTL_DEPENDS) +libreadline +glib2 +libstdcpp +libncurses +PACKAGE_libncursesw:libncursesw
     URL:=http://sdcv.sourceforge.net/
 endef
 
