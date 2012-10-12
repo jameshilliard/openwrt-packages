@@ -23,7 +23,7 @@ define Package/nethack
     CATEGORY:=Games
     DEPENDS:=nethack
     TITLE:=single player dungeon exploration game
-    DEPENDS:=+libncurses
+    DEPENDS:=+libncurses +libstdcpp
 endef
 
 define Package/nethack/description
