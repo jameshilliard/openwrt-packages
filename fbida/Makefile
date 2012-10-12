@@ -22,7 +22,7 @@ define Package/fbida
     SECTION:=utils
     CATEGORY:=Utilities
     URL:=http://linux.bytesex.org/fbida/
-    DEPENDS:=+libpng +libtiff +libexif $(ICONV_DEPENDS) +dejavu-fonts-ttf
+    DEPENDS:=+libpng +libtiff +libexif $(ICONV_DEPENDS) +dejavu-fonts-ttf +libcurl +libfreetype +fontconfig
 endef
 
 define Package/fbida/description
