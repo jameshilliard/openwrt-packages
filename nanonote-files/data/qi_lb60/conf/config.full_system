@@ -207,6 +207,7 @@ CONFIG_PACKAGE_qt4-svg=y
 # Internet
 #
 CONFIG_PACKAGE_centerim=y
+CONFIG_PACKAGE_centerim5=y
 CONFIG_PACKAGE_elinks=y
 CONFIG_PACKAGE_lynx=y
 CONFIG_PACKAGE_links=y
