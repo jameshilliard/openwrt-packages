@@ -19,6 +19,7 @@ define Package/vitetris
     SECTION:=games
     CATEGORY:=Games
     URL:=http://victornils.net/tetris
+    DEPENDS:=+libncurses
 endef
 
 define Package/vitetris/description
