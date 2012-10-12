@@ -26,7 +26,7 @@ define Package/w3m
     SECTION:=network
     CATEGORY:=Network
     URL:=http://w3m.sourceforge.net/
-    DEPENDS:=+libopenssl +gc +libncursesw +gtk2
+    DEPENDS:=+libopenssl +gc +libncurses +PACKAGE_libncursesw:libncursesw +gtk2
 endef
 
 define Package/w3m/description
