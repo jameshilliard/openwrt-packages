@@ -24,6 +24,7 @@ define Package/cxxtools
     TITLE:=cxxtools
     SECTION:=utils
     CATEGORY:=Utilities
+    DEPENDS:=+libpthread +libstdcpp
 endef
 
 define Build/Configure
