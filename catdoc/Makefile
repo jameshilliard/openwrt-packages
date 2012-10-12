@@ -3,12 +3,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=catdoc
-PKG_VERSION:=0.94
-PKG_RELEASE:=3
+PKG_VERSION:=0.94.2
+PKG_RELEASE:=1
 
 PKG_SOURCE:=catdoc-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://site.n.ml.org/download/20050502084842/catdoc/
-	PKG_MD5SUM:=f884dabe366d66c6cda35dacb0cdceab
+PKG_SOURCE_URL:=http://ftp.wagner.pp.ru/pub/catdoc/
+	PKG_MD5SUM:=243e1680bb3e703616f5adecfee24491
 	PKG_CAT:=zcat
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/catdoc-$(PKG_VERSION)
@@ -19,7 +19,7 @@ define Package/catdoc
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=Catdoc
-	URL:=http://site.n.ml.org/info/catdoc/
+	URL:=http://vitus.wagner.pp.ru/software/catdoc/
 endef
 
 define Package/catdoc/description
