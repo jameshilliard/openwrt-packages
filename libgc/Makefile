@@ -25,6 +25,7 @@ define Package/gc
     SECTION:=libs
     CATEGORY:=Libraries
     URL:=http://www.hpl.hp.com/personal/Hans_Boehm/gc/
+    DEPENDS:=+libpthread
 endef
 
 define Package/gc/description
