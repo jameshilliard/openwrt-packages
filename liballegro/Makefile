@@ -146,6 +146,7 @@ endef
 define Package/liballegro-utils
 $(call Package/liballegro/Default)
   TITLE+= (utils)
+  DEPENDS:=+liballegro +PACKAGE_liballegro-jpeg:liballegro-jpeg
 endef
 
 define Package/liballegro-utils/description
