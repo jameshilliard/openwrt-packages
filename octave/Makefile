@@ -56,7 +56,7 @@ endef
 define Package/octave
 $(call Package/octave/Default)
   DEPENDS:= +libltdl +zlib +libpcre +libncurses +libreadline +libgfortran \
-	+octave-data
+	+octave-data +libpthread +libstdcpp
 #+fftw3
 #+GraphicsMagick 
   TITLE+= (executable)
