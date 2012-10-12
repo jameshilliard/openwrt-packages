@@ -61,7 +61,7 @@ endef
 
 define Package/gnuplot-gfx
 $(call Package/gnuplot-gfx/Default)
-  DEPENDS:=+libncurses +zlib +libpng +libfreetype +libgd $(INTL_DEPENDS) $(ICONV_DEPENDS) +svgalib
+  DEPENDS:=+libncurses +zlib +libpng +libfreetype +libgd $(INTL_DEPENDS) $(ICONV_DEPENDS) +svgalib +PACKAGE_libncursesw:libncursesw +libreadline +libstdcpp
   TITLE+=
 endef
 
