@@ -6,17 +6,17 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=qball
-PKG_VERSION:=1.3
+PKG_VERSION:=1.4
 PKG_RELEASE:=1
 PKG_SOURCE_URL:=http://homepage.ntlworld.com/mark.harman/
 PKG_SOURCE:=qball_src.zip
-PKG_MD5SUM:=78231c3ae743d6b4e92726125efec448
+PKG_MD5SUM:=137df75bd4c9ec538a9ec19a527ef982
 UNZIP_CMD=unzip -d $(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION) $(DL_DIR)/$(PKG_SOURCE)
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/QBall
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/qball_src
 
 $(call include_mk,qmake.mk)
 
