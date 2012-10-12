@@ -5,12 +5,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ne
-PKG_VERSION:=2.1
+PKG_VERSION:=2.4
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://ne.dsi.unimi.it/
-PKG_MD5SUM:=9f76652f6349721cfe0e8dc2aec9c767
+PKG_MD5SUM:=b1ad4aca35637b98a091cc57235a8469
 
 include $(INCLUDE_DIR)/package.mk
 
