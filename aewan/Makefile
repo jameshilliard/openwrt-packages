@@ -16,7 +16,7 @@ define Package/aewan
 	CATEGORY:=Utilities
 	TITLE:=Ascii Art Editor
 	URL:=http://aewan.sourceforge.net/
-	DEPENDS:=+libncurses
+	DEPENDS:=+libncurses +zlib
 endef
 
 define Package/aewan/description
