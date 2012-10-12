@@ -21,7 +21,7 @@ define Package/units
 	CATEGORY:=Utilities
 	TITLE:=Units
 	URL:=http://www.gnu.org/software/units/units.html#downloading
-	DEPENDS+= +libreadline
+	DEPENDS:=+libreadline +libncurses
 endef
 
 define Package/units/description
