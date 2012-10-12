@@ -16,7 +16,7 @@ define Package/tempest-for-eliza
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=Tempest_For_Eliza
-	DEPENDS:=+libsdl +directfb 
+	DEPENDS:=+libsdl +directfb +libstdcpp
 	URL:=http://www.erikyyy.de/tempest/
 endef
 
