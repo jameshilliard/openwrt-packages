@@ -21,6 +21,7 @@ define Package/gnuchess
   SECTION:=games
   CATEGORY:=Games
   URL:=http://www.gnu.org/software/chess/chess.html
+  DEPENDS:=+libncurses +libpthread +libreadline
 endef
 PKG_BUILD_DIR:=$(BUILD_DIR)/gnuchess-$(PKG_VERSION)
 
