@@ -8,8 +8,10 @@ PKG_VERSION:=2.9
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-src.tar.gz
-PKG_SOURCE_URL:=http://www.netsurf-browser.org/downloads/releases/
-PKG_MD5SUM:=d5d9d21a9a14f7e9cc502cc617298baa
+PKG_SOURCE_URL:=http://download.netsurf-browser.org/netsurf/releases/source/
+PKG_MD5SUM:=7e5efab690bb473e7cdb6936202f5f95
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_UNPACK:=gzip -dc $(DL_DIR)/$(PKG_SOURCE) | $(TAR) -C $(PKG_BUILD_DIR) --strip-components=1 -xf -
 
 include $(INCLUDE_DIR)/package.mk
 
