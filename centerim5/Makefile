@@ -7,8 +7,10 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=centerim5
 PKG_VERSION:=alpha
-PKG_REV:=5a97f76e6fc5dc0c6c72b923b843f6f66b1f12e6
+PKG_REV:=2f922377219973e7a7923abd4fd1008c0bcf8f43
 PKG_RELEASE:=1
+PKG_INSTALL:=1
+PKG_FIXUP:=gettext-version
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
 PKG_SOURCE_URL:=git://repo.or.cz/centerim5.git
@@ -33,8 +35,11 @@ define Build/Prepare
 	(cd $(PKG_BUILD_DIR) && ./bootstrap)
 endef
 
-TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib $(INTL_LDFLAGS)
-MAKE_FLAGS+="SUBDIRS = cppconsui misc src tests"
+CONFIGURE_ARGS+=--with-libintl-prefix=$(INTL_PREFIX)
+TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib -lintl
+TARGET_CFLAGS+=-std=c99
+DISABLE_NLS:=--enable-nls
+#MAKE_FLAGS+="SUBDIRS = cppconsui misc src tests"
 
 define Package/centerim5/description
 	Centerim is a multi-protocol messaging client.
@@ -42,9 +47,10 @@ define Package/centerim5/description
 endef
 
 define Package/centerim5/install
-	$(INSTALL_DIR) $(1)/usr/bin $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/.libs/centerim5 $(1)/usr/bin
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/cppconsui/.libs/*.so* $(1)/usr/lib
+	$(INSTALL_DIR) $(1)/usr/bin $(1)/usr/lib $(1)/usr/share/locale
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/centerim5 $(1)/usr/bin
+	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/lib/*.so* $(1)/usr/lib
+	cp -r $(PKG_INSTALL_DIR)/usr/share/locale/* $(1)/usr/share/locale
 endef
 
 $(eval $(call BuildPackage,centerim5))
