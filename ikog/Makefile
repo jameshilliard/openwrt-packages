@@ -3,8 +3,8 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=ikog
 PKG_VERSION:=1.90
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE:=$(PKG_NAME).py.gz
-PKG_SOURCE_URL:=http://www.henspace.co.uk/ikog/app/
+PKG_SOURCE:=$(PKG_NAME)_$(PKG_VERSION).py.gz
+PKG_SOURCE_URL:=https://sites.google.com/site/henspace/ikog/ikog-files/
 UNPACK_CMD=zcat $(DL_DIR)/$(PKG_SOURCE) > $(1)/ikog.py
 
 include $(INCLUDE_DIR)/package.mk
