@@ -38,7 +38,7 @@ endef
 define Package/ase
 $(call Package/ase/Default)
   TITLE +=
-  DEPENDS:=+liballegro +libpng +libjpeg +libgd +libfreetype
+  DEPENDS:=+liballegro +libpng +libjpeg +libgd +libfreetype +libstdcpp
 endef
 
 define Package/ase/description
