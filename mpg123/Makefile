@@ -28,6 +28,7 @@ define Package/libmpg123
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=fast console mpeg audio decoder library
+  DEPENDS:=+libltdl
 endef
 
 define Package/mpg123
