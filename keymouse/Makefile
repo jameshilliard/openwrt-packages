@@ -6,12 +6,16 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=keymouse
-PKG_VERSION:=1.0
-PKG_RELEASE:=2
+PKG_VERSION:=1.0-git
+PKG_RELEASE:=1
+PKG_REV:=c60552422fad13dc9c4064d8ea7e5e5ecc58be4a
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=http://download2.berlios.de/keymouse
-PKG_CAT:=bzcat
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
+PKG_SOURCE_URL:=https://github.com/nopper/keymouse.git
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
+PKG_SOURCE_VERSION:=$(PKG_REV)
+
 PKG_BUILD_DEPENDS:=libX11
 
 include $(INCLUDE_DIR)/package.mk
@@ -21,6 +25,7 @@ define Package/keymouse
 	SECTION:=utils
 	CATEGORY:=Utilities
 	URL:=http://keymouse.berlios.de
+	DEPENDS:=+libstdcpp
 endef
 PKG_BUILD_DIR:=$(BUILD_DIR)/keymouse-$(PKG_VERSION)
 
