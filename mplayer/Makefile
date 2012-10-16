@@ -83,6 +83,7 @@ CONFIGURE_ARGS := --target=mips \
 		  --disable-vm						\
 		  --disable-vdpau					\
 		  --disable-gl						\
+		  --disable-libgsm					\
 		  --disable-xf86keysym					\
 		  --disable-ossaudio					\
 		  --enable-alsa						\
