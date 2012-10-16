@@ -39,7 +39,7 @@ endef
 define Package/libggi
 $(call Package/libggi/Default)
   TITLE += (library)
-  DEPENDS:=+libgii +libncurses +svgalib
+  DEPENDS:=+libgii +libncurses +svgalib +libaa
 #+directfb
 endef
 
