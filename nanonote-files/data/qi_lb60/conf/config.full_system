@@ -191,18 +191,24 @@ CONFIG_PACKAGE_gtkmm=y
 CONFIG_PACKAGE_qt4=y
 CONFIG_QT4_WS_QWS=y
 CONFIG_PACKAGE_qt4-dbus=y
+# CONFIG_PACKAGE_qt4-declarative is not set
+# CONFIG_PACKAGE_qt4-demos is not set
 CONFIG_PACKAGE_qt4-drivers-gfx-directfb=y
 CONFIG_PACKAGE_qt4-drivers-gfx-linuxfb=y
 CONFIG_PACKAGE_qt4-drivers-kbd-linuxinput=y
 CONFIG_PACKAGE_qt4-drivers-mouse-pcmousedriver=y
 CONFIG_PACKAGE_qt4-drivers-mouse-tpmousedriver=y
 # CONFIG_PACKAGE_qt4-drivers-mouse-tslibmousedriver is not set
+# CONFIG_PACKAGE_qt4-examples is not set
 CONFIG_PACKAGE_qt4-gui=y
 CONFIG_PACKAGE_qt4-mysql=y
 CONFIG_PACKAGE_qt4-network=y
 CONFIG_PACKAGE_qt4-sqlite=y
 CONFIG_PACKAGE_qt4-xml=y
 CONFIG_PACKAGE_qt4-svg=y
+# CONFIG_PACKAGE_qt4-webkit is not set
+# CONFIG_PACKAGE_qt4-xmlpatterns is not set
+
 # 
 # Internet
 #
