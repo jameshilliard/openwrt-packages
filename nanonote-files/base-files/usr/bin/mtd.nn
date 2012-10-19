@@ -1,6 +1,6 @@
 #!/bin/sh
  
-__VERSION__=2011-03-07
+__VERSION__=2012-10-15
 
 if [ "$1" == "flash" ] && [ "$#" == "3" ]; then
     case "$2" in
@@ -43,8 +43,8 @@ if [ "$1" == "mount" ] && [ "$#" == "3" ]; then
 	    exit 1
 	fi
 
-	ubiattach /dev/ubi_ctrl -m ${PARTITION}
-	DEV_UBI=`dmesg | grep "UBI: attached mtd${PARTITION} to" | cut -d ":" -f 2 | cut -d " " -f 5`
+	ubiattach /dev/ubi_ctrl -m ${PARTITION} > /dev/null 2>&1
+	DEV_UBI=`dmesg | grep "UBI: attached mtd${PARTITION} to" | tail -n 1 | cut -d ":" -f 2 | cut -d " " -f 5`
 	mount -t ubifs ${DEV_UBI}_0 $MOUNT_POINT
         exit 0
     fi

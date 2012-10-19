@@ -48,7 +48,7 @@ define Package/MPlayer
   CATEGORY:=Multimedia
   TITLE:=MPlayer, the movie player
   URL:=http://www.mplayerhq.hu
-  DEPENDS:=+libjpeg +libpng +directfb +zlib +libsdl +libfreetype +fontconfig $(ICONV_DEPENDS) +BUILD_PATENTED:libmad +BUILD_PATENTED:libmpg123 +libaa +giflib +fribidi +libtheora +libggi +PACKAGE_libspeex:libspeex
+  DEPENDS:=+libjpeg +libpng +directfb +zlib +libsdl +libfreetype +fontconfig $(ICONV_DEPENDS) +BUILD_PATENTED:libmad +BUILD_PATENTED:libmpg123 +libaa +giflib +fribidi +libtheora +libggi +PACKAGE_libspeex:libspeex +liblzo
 endef
 
 define Package/MPlayer/description
@@ -83,6 +83,7 @@ CONFIGURE_ARGS := --target=mips \
 		  --disable-vm						\
 		  --disable-vdpau					\
 		  --disable-gl						\
+		  --disable-libgsm					\
 		  --disable-xf86keysym					\
 		  --disable-ossaudio					\
 		  --enable-alsa						\
