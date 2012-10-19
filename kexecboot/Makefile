@@ -6,11 +6,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=kexecboot
 PKG_VERSION:=git
-PKG_REV:=ed2ccf8a61d3fa5c9e2dbb6142f1c995b824f9bb
-PKG_RELEASE:=20110228
+PKG_REV:=3079df11996826b42691496afb44cc6b4a7fdb24
+PKG_RELEASE:=20120804
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_RELEASE).tar.gz
-PKG_SOURCE_URL:=git://git.linuxtogo.org/home/groups/kexecboot/kexecboot.git
+PKG_SOURCE_URL:=https://github.com/kexecboot/kexecboot.git
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=$(PKG_REV)
@@ -22,7 +22,7 @@ define Package/kexecboot
 	CATEGORY:=Utilities
 	TITLE:=a nice Linux-As-a-Bootloader implementation based on kexec
 	DEPENDS:=+kexec-tools
-	URL:=http://projects.linuxtogo.org/projects/kexecboot/
+	URL:=http://kexecboot.org
 endef
 
 define Build/Configure
