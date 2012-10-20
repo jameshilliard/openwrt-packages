@@ -28,6 +28,7 @@ CONFIG_SJLJ_EXCEPTIONS=y
 
 CONFIG_SDK=y
 CONFIG_MAKE_TOOLCHAIN=y
+CONFIG_IB=y
 
 # CONFIG_ALL is not set
 # Enable this option only you want build ALL PAKCAGE in feeds.conf
