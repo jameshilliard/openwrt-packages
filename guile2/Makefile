@@ -13,6 +13,10 @@
 # modified 20/02/2012
 # author: jnbagale@gmail.com
 
+# modified 23/10/2012
+# fix depends
+
+
 # Install libffi-dev on the host computer 
 
 include $(TOPDIR)/rules.mk
@@ -39,11 +43,11 @@ include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
 
 define Package/guile2
-    MAINTAINER:="Xiangfu Liu" <xiangfu@sharism.cc>
+    MAINTAINER:="Xiangfu Liu" <xiangfu@openmobilefree.net>
     TITLE:=guile2
     SECTION:=lang
     CATEGORY:=Languages
-    DEPENDS:=+libgmp +libpthread +libltdl +libncurses +libreadline +libffi +libunistring +gc
+    DEPENDS:=+libgmp +libpthread +libltdl +libncurses +libreadline +libffi +libunistring +gc +librt
     URL:=http://savannah.gnu.org/projects/guile/
 endef
 
