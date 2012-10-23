@@ -22,7 +22,7 @@ define Package/ascii-paint
 	CATEGORY:=Libraries
 	TITLE:=Ascii-Paint
 	URL:=http://code.google.com/p/ascii-paint/
-	DEPENDS:=+libtcod
+	DEPENDS:=+libtcod +libstdcpp
 endef
 
 define Package/ascii-paint/description
