@@ -24,7 +24,7 @@ endef
 
 define Package/dopewars
     $(call Package/dopewars/Default)
-    DEPENDS:=$(ICONV_DEPENDS) $(INTL_DEPENDS) +libgconf2 +gtk2 +libstdcpp +libsigcxx
+    DEPENDS:=$(ICONV_DEPENDS) $(INTL_DEPENDS) +libgconf2 +gtk2 +libstdcpp +libsigcxx +libncurses
 endef
 
 
