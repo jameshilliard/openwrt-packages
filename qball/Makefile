@@ -7,16 +7,16 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=qball
 PKG_VERSION:=1.4
+PKG_REV:=8ff218394bc1815ab9e274752598039b0ef18bbe
 PKG_RELEASE:=1
-PKG_SOURCE_URL:=http://homepage.ntlworld.com/mark.harman/
-PKG_SOURCE:=qball_src.zip
-PKG_MD5SUM:=137df75bd4c9ec538a9ec19a527ef982
-UNZIP_CMD=unzip -d $(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION) $(DL_DIR)/$(PKG_SOURCE)
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
+PKG_SOURCE_URL:=git://git.code.sf.net/p/q-ball/code
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
+PKG_SOURCE_VERSION:=$(PKG_REV)
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
-
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/qball_src
 
 $(call include_mk,qmake.mk)
 
