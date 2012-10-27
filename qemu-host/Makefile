@@ -52,7 +52,7 @@ HOST_CONFIGURE_VARS =
 #	--extra-cflags="$(HOST_CFLAGS) $(HOST_CPPFLAGS)"
 
 HOST_CONFIGURE_ARGS =						\
-	--cc=$(HOSTCC) 						\
+	--cc="$(HOSTCC)"					\
 	--prefix=$(STAGING_DIR_HOST)				\
 	--extra-ldflags="$(HOST_LDFLAGS)"			\
 	--sysconfdir=$(STAGING_DIR_HOST)/etc			\
