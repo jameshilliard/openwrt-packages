@@ -8,13 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=emacs
-PKG_VERSION:=23.2
-PKG_RELEASE:=5
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_VERSION:=23.4
+PKG_RELEASE:=1
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/pub/gnu/emacs/ \
 	@GNU/emacs/
 
-PKG_MD5SUM:=b6691852dae0bc142b3c12749f6b7ade
+PKG_MD5SUM:=070c68ad8e3c31fb3cb2414feaf5e6f0
 PKG_INSTALL:=1
 
 PKG_BUILD_PARALLEL:=1
@@ -34,6 +34,7 @@ define Package/emacs/Default
   CATEGORY:=Utilities
   TITLE:=The GNU Emacs Editor a.k.a. \"Emacs OS\"
   URL:=http://www.gnu.org/software/emacs/
+  MAINTAINER=David Kuehling <dvdkhlng TA gmx TOD de>
 #  SUBMENU:=Editors
 endef
 
@@ -135,7 +136,7 @@ ifeq ($(DUMP_EMACS),)
 	  $(CP) $(PKG_BUILD_DIR)/src/temacs $(PKG_BUILD_DIR)/src/emacs
         endef
 else
-	MAKE_FLAGS += LD="$(TARGET_CROSS)gcc -nostdlib"
+	MAKE_FLAGS += LD="$(TARGET_CROSS)gcc -nostdlib" CRT_DIR="$(TOOLCHAIN_DIR)/lib/"
 	TARGET_CPPFLAGS +=
         # warning: on backfile it'd be $(TOOLCHAIN_DIR)/usr/lib
 	EMACS_MAKEFILE_SED += ; s; /usr/lib/crt\([^ ]\+\); $(TOOLCHAIN_DIR)/lib/crt\1;g
@@ -163,8 +164,7 @@ endef
 ## On the host, we only compile and install minimum Emacs components used for
 ## bootstrapping
 define Host/Compile
-	export LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib; \
-	$(call Host/Compile/Default)
+	$(call Host/Compile/Default LD_LIBRARY_PATH=$(STAGING_DIR_HOST)/lib)
 endef
 
 define Host/Install
