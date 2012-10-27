@@ -47,10 +47,13 @@ endef
 
 HOST_CONFIGURE_VARS =
 
+# Cannot currently pass HOST_CFLAGS as these mess with include file ordering,
+# causing qemu compile to fail
+#	--extra-cflags="$(HOST_CFLAGS) $(HOST_CPPFLAGS)"
+
 HOST_CONFIGURE_ARGS =						\
 	--cc=$(HOSTCC) 						\
 	--prefix=$(STAGING_DIR_HOST)				\
-	--extra-cflags="$(HOST_CFLAGS) $(HOST_CPPFLAGS)"	\
 	--extra-ldflags="$(HOST_LDFLAGS)"			\
 	--sysconfdir=$(STAGING_DIR_HOST)/etc			\
 	--disable-sdl						\
