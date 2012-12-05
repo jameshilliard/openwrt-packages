@@ -4,10 +4,10 @@
 # $1: full_system  minimal  xbboot
 
 OPENWRT_DIR_NAME="openwrt-xburst."$1
-OPENWRT_DIR="/home/xiangfu/${OPENWRT_DIR_NAME}/"
+OPENWRT_DIR="/home/xiangfu/tmp/${OPENWRT_DIR_NAME}/"
 CONFIG_FILE_TYPE="config."$1
 
-MAKE_VARS=" V=99 IGNORE_ERRORS=m "
+MAKE_VARS=" -j8 V=s IGNORE_ERRORS=m "
 
 ########################################################################
 DATE=$(date "+%Y-%m-%d")
@@ -16,10 +16,10 @@ DATE_TIME=`date +"%Y%m%d-%H%M"`
 GET_FEEDS_VERSION_SH="/home/xiangfu/bin/get-feeds-revision.sh"
 PATCH_OPENWRT_SH="/home/xiangfu/bin/patch-openwrt.sh"
 
-IMAGES_URL="http://fidelio.qi-hardware.com/~xiangfu/build-nanonote"
-IMAGES_DIR_BASE="/home/xiangfu/building/Nanonote/Ben"
+IMAGES_URL="http://pertain.qi-hardware.com/~xiangfu/build-nanonote"
+IMAGES_DIR_BASE="/home/xiangfu/tmp/building/Nanonote/Ben"
 IMAGES_DIR="${IMAGES_DIR_BASE}/${OPENWRT_DIR_NAME}-${DATE_TIME}/"
-DEST_DIR="/home/xiangfu/build-nanonote"
+DEST_DIR="/home/xiangfu/tmp/build-nanonote"
 mkdir -p ${IMAGES_DIR}
 mkdir -p ${DEST_DIR}
 
@@ -27,7 +27,11 @@ BUILD_LOG="${IMAGES_DIR}/BUILD_LOG"
 VERSIONS_FILE="${IMAGES_DIR}/VERSIONS"
 
 ########################################################################
+if [ ! -d ${OPENWRT_DIR} ]; then
+  git clone git://projects.qi-hardware.com/openwrt-xburst.git ${OPENWRT_DIR}
+fi
 cd ${OPENWRT_DIR}
+
 
 echo "make distclean..."
 make distclean 
@@ -68,7 +72,10 @@ cp ${VERSIONS_FILE} ${IMAGES_DIR}/../${OPENWRT_DIR_NAME}.VERSIONS
 
 echo "copy files, create VERSION, link dl folder, last prepare..."
 rm -f files && ln -s feeds/qipackages/nanonote-files/files/
-rm -f dl    && ln -s ~/dl
+if [ ! -d /home/xiangfu/tmp/dl ]; then
+  mkdir -p /home/xiangfu/tmp/dl
+fi
+rm -f dl    && ln -s /home/xiangfu/tmp/dl/
 mkdir -p files/etc && echo ${DATE} > files/etc/VERSION
 mkdir -p files/etc/uci-defaults && \
     echo -e "\0043\0041/bin/sh \ndate --set `date +"%Y%m%d%H%M"`\n  \
@@ -99,7 +106,7 @@ cp -a files/* ${IMAGES_DIR}/files/
 )
 
 if [ "$1" == "minimal" ]; then
-    cp ${IMAGES_DIR}/failed_packages.txt /home/xiangfu/building/Nanonote/Ben/
+    cp ${IMAGES_DIR}/failed_packages.txt /home/xiangfu/tmp/building/Nanonote/Ben/
 fi
 
 if [ "${MAKE_RET}" == "0" ]; then
