@@ -9,9 +9,9 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cgminer
-PKG_VERSION:=20120905
-PKG_REV:=ba0122535a7045f75adcab2953f51c241683b0de
-# this is upstream version 2.7.5
+PKG_VERSION:=20121225
+PKG_REV:=b9c7f3d169942417e04f13fab6e86d944aff37cb
+# this is upstream version 2.10.2
 PKG_RELEASE:=1
 PKG_INSTALL:=1
 
