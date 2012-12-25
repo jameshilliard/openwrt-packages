@@ -7,7 +7,7 @@ OPENWRT_DIR_NAME="openwrt-xburst."$1
 OPENWRT_DIR="/home/xiangfu/tmp/${OPENWRT_DIR_NAME}/"
 CONFIG_FILE_TYPE="config."$1
 
-MAKE_VARS=" -j8 V=s IGNORE_ERRORS=m "
+MAKE_VARS=" V=s IGNORE_ERRORS=m "
 
 ########################################################################
 DATE=$(date "+%Y-%m-%d")
@@ -47,6 +47,7 @@ fi
 
 
 echo "update and install feeds..."
+cp /home/xiangfu/bin/feeds.conf ./
 ./scripts/feeds update -a && ./scripts/feeds install -a
 if [ "$?" != "0" ]; then
     echo "ERROR: update and install feeds failed"
