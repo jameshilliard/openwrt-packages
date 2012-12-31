@@ -9,7 +9,7 @@ POOLS="$POOL1 $POOL2 $POOL3"
 
 start() {
 	DEVS=`find /dev/ -type c -name "ttyUSB*"  | sed 's/^/-S/' |  sed ':a;N;$!ba;s/\n/ /g'`
-	cgminer -q -T --api-allow "W:0/0" --api-listen $POOLS $DEVS &
+	cgminer -q --api-allow "W:0/0" --api-listen $POOLS $DEVS &
 }
 
 stop() {

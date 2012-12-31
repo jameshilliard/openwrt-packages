@@ -31,7 +31,7 @@ define Package/cgminer
 	CATEGORY:=Utilities
 	TITLE:=cgminer (FPGA Miner)
 	URL:=https://github.com/ckolivas/cgminer
-	DEPENDS:=+libcurl +libpthread +libncurses +jansson +udev
+	DEPENDS:=+libcurl +libpthread +jansson +udev
 endef
 
 define Package/cgminer/description
@@ -40,7 +40,7 @@ monitoring, (over)clocking and fanspeed support for bitcoin and derivative
 coins. Do not use on multiple block chains at the same time!
 endef
 
-CONFIGURE_ARGS += --disable-opencl --disable-adl --enable-icarus --enable-bitforce
+CONFIGURE_ARGS += --disable-opencl --disable-adl --enable-icarus --enable-bitforce --without-curses
 TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Build/Compile
