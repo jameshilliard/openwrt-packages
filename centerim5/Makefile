@@ -6,8 +6,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=centerim5
-PKG_VERSION:=alpha
-PKG_REV:=2f922377219973e7a7923abd4fd1008c0bcf8f43
+PKG_VERSION:=git
+PKG_REV:=95bb9eb08d73e171e40a9bcfaafe4bc39e650034
 PKG_RELEASE:=1
 PKG_INSTALL:=1
 PKG_FIXUP:=gettext-version
@@ -36,7 +36,7 @@ define Build/Prepare
 endef
 
 CONFIGURE_ARGS+=--with-libintl-prefix=$(INTL_PREFIX)
-TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib -lintl
+TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib -lintl -liconv
 TARGET_CFLAGS+=-std=c99
 DISABLE_NLS:=--enable-nls
 #MAKE_FLAGS+="SUBDIRS = cppconsui misc src tests"
