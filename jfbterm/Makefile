@@ -9,7 +9,7 @@ PKG_VERSION:=0.4.7
 PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=@SF/$(PKG_NAME)
+PKG_SOURCE_URL:=http://iij.dl.sourceforge.jp/jfbterm/13501
 PKG_MD5SUM:=cb0b869bd1c21f0dd224b7fc40517680
 
 PKG_FIXUP:=autoreconf
