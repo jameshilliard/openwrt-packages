@@ -32,6 +32,8 @@ define Package/sdcv/description
     StarDict Command line version
 endef
 
+TARGET_LDFLAGS+=-liconv
+
 define Package/sdcv/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/sdcv $(1)/usr/bin/
