@@ -36,7 +36,7 @@ define Package/mpg123
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=fast console mpeg audio player
-  DEPENDS+=+libmpg123
+  DEPENDS+=+libmpg123 +libasound +libsdl +libpthread
 endef
 
 define Build/Configure
