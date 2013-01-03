@@ -55,7 +55,7 @@ define Build/Configure
 	)
 endef
 
-TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib $(INTL_LDFLAGS)
+TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib -liconv
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include/libpurple
