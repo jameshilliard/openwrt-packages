@@ -28,7 +28,7 @@ define Build/Configure
 	$(call Build/Configure/Qmake,qstardict)
 endef
 
-TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
+TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib -liconv
 
 define Package/qstardict/install
 	$(INSTALL_DIR) $(1)/usr/bin $(1)/usr/lib/qstardict/plugins
