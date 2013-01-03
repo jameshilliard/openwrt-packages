@@ -7,7 +7,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=directvnc
 PKG_VERSION:=0.7.7
 PKG_RELEASE:=1
-	
+
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/downloads/drinkmilk/directvnc
 PKG_MD5SUM:=e30f1a0e45b440443c044148fb62ad6e
@@ -22,7 +22,7 @@ define Package/directvnc
     SECTION:=utilities
     CATEGORY:=Utilities
     URL:=http://freecode.com/projects/directvnc
-    DEPENDS:=+directfb
+    DEPENDS:=+directfb +libjpeg
 endef
 
 define Package/directvnc/description
