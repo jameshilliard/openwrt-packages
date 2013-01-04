@@ -40,7 +40,7 @@ CONFIGURE_ARGS += --with-ssl=$(STAGING_DIR)/usr \
 		  --enable-image="fb" \
 		  --with-termlib="ncurses"
 
-TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
+TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib -liconv
 
 define Build/Configure
 	$(call Build/Configure/Default)
