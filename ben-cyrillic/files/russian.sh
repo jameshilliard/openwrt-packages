@@ -1,6 +1,6 @@
 #!/bin/sh
 setfont2 /usr/share/ben-cyrillic/un-fuzzy-6x10-font_rus.pnm
-loadkeys /usr/share/ben-cyrillic/ben_ru_uni.map
+loadkeys /usr/share/ben-cyrillic/ben_ru_uni_phon.map
 loadunimap /usr/share/ben-cyrillic/ben_ru_uni.trans
 profile="/etc/profile"
 locale="export LC_ALL=ru_RU.UTF-8"
