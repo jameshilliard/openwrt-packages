@@ -2,12 +2,28 @@
 
 # Copyright (C) 2012 Xiangfu (BTC: 12h6gdGnThW385JaX1LRMA8cXKmbYRTP8Q)
 
-if [ "${PRODUCT}" = "67b/2303/400" ] && [ "$TYPE" = "0/0/0" ] && [ "$INTERFACE" = "255/0/0" ]; then   
+#FT232
+if [ "${PRODUCT}" = "403/6001/600" ] && [ "${INTERFACE}" = "255/255/255" ] && [ "$TYPE" = "0/0/0" ]; then
 	case "$ACTION" in
 		add)
-			killall -s 9 sleep
 			killall -s 9 cgminer
-			sleep 30 && /etc/init.d/cgminer start &
+			ntpd -d -n -q -N -p 0.openwrt.pool.ntp.org \
+				-p 1.openwrt.pool.ntp.org -p 2.openwrt.pool.ntp.org -p 3.openwrt.pool.ntp.org && \
+			/etc/init.d/cgminer start &
+			;;
+		remove)
+			;;
+	esac
+fi
+
+#PL2303
+if [ "${PRODUCT}" = "67b/2303/400" ] && [ "$TYPE" = "0/0/0" ] && [ "$INTERFACE" = "255/0/0" ]; then
+	case "$ACTION" in
+		add)
+			killall -s 9 cgminer
+			ntpd -d -n -q -N -p 0.openwrt.pool.ntp.org \
+				-p 1.openwrt.pool.ntp.org -p 2.openwrt.pool.ntp.org -p 3.openwrt.pool.ntp.org && \
+			/etc/init.d/cgminer start &
 			;;
 		remove)
 			;;
