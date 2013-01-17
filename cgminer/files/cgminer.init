@@ -9,6 +9,8 @@ POOLS="$POOL1 $POOL2 $POOL3"
 
 start() {
 	DEVS=`find /dev/ -type c -name "ttyUSB*"  | sed 's/^/-S/' |  sed ':a;N;$!ba;s/\n/ /g'`
+	ntpd -d -n -q -N -p 0.openwrt.pool.ntp.org \
+		-p 1.openwrt.pool.ntp.org -p 2.openwrt.pool.ntp.org -p 3.openwrt.pool.ntp.org && \
 	cgminer -q --api-allow "W:0/0" --api-listen $POOLS $DEVS &
 }
 

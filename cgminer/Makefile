@@ -9,17 +9,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cgminer
-PKG_VERSION:=20121225
-PKG_REV:=b9c7f3d169942417e04f13fab6e86d944aff37cb
-# this is upstream version 2.10.2
+PKG_VERSION:=2.10.4
 PKG_RELEASE:=1
 PKG_INSTALL:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
-PKG_SOURCE_URL:=git://github.com/ckolivas/cgminer.git
-PKG_SOURCE_PROTO:=git
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE_URL:=http://ck.kolivas.org/apps/cgminer/
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=$(PKG_REV)
 
 PKG_FIXUP:=autoreconf
 
