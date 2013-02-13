@@ -30,7 +30,7 @@ while getopts d:v:l:hbkr OPTIONS
 do
     case $OPTIONS in
     d)
-	BASE_URL_HTTP="http://fidelio.qi-hardware.com/~xiangfu/build-nanonote/"
+	BASE_URL_HTTP="http://pertain.qi-hardware.com/~xiangfu/build-nanonote/"
         VERSION=$OPTARG # override version by first argument
         WORKING_DIR=${VERSION}
 	;;
@@ -64,7 +64,7 @@ Usage: $0 [-d <dailybuild version>] [-v <version>] [-l <path to local images>]
             From: http://downloads.qi-hardware.com/software/images/NanoNote/Ben
 
      -v <>  I will download and flash a [specific] version of OpenWrt images
-            From: http://fidelio.qi-hardware.com/~xiangfu/build-nanonote/
+            From: http://pertain.qi-hardware.com/~xiangfu/build-nanonote/
 
      -l <>  I will flash images present in folder: <arg>
             (missing files will be skipped)
