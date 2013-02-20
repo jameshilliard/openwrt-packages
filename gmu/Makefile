@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmu
-PKG_VERSION:=0.8.0BETA1
+PKG_VERSION:=0.9.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://wejp.k.vu/files/
-PKG_MD5SUM:=a1a3d346802f3877b4c739b3c65225d6
+PKG_MD5SUM:=b9beb8ae21828c637821fcc98b989603
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -24,7 +24,8 @@ define Package/gmu
   URL:=http://wejp.k.vu/projects/gmu/
   MENU:=1
   DEPENDS:=+libsdl +libsdl-image +libsdl-gfx +libmpcdec +libmikmod \
-	  +libvorbisidec +libspeex +libflac +libogg +BUILD_PATENTED:libmpg123
+	  +libvorbisidec +libspeex +libflac +libogg +BUILD_PATENTED:libmpg123 \
+	  +libncursesw
 endef
 
 define Package/gmu/description
@@ -34,7 +35,7 @@ define Package/gmu/description
 endef
 
 MAKE_VARS += TARGET=nanonote $(if $(CONFIG_BUILD_PATENTED),MORE_DECODERS="decoders/mpg123.so")
-TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL
+TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/SDL -I$(STAGING_DIR)/usr/include/ncursesw
 TARGET_LDFLAGS+= \
 	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
 	-L$(STAGING_DIR)/usr/lib/SDL \
@@ -49,8 +50,8 @@ define Package/gmu/install
 		$(1)/usr/share/gmu/themes/default-modern 
 
 	$(INSTALL_BIN) \
-		$(PKG_BUILD_DIR)/gmu \
-		$(1)/usr/bin/gmu.bin
+		$(PKG_BUILD_DIR)/{gmu.bin,gmuc} \
+		$(1)/usr/bin/
 
 	$(INSTALL_BIN) \
 		./files/gmu \

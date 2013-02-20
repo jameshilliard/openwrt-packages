@@ -1,6 +1,6 @@
 --- a/nanonote.mk
 +++ b/nanonote.mk
-@@ -19,11 +19,7 @@ DECODERS_TO_BUILD=decoders/vorbis.so dec
+@@ -18,11 +18,7 @@ DECODERS_TO_BUILD=decoders/vorbis.so dec
  FRONTENDS_TO_BUILD=frontends/sdl.so frontends/log.so
  SDL_LIB=-lSDL -lpthread -ldirectfb -ldirect -lfusion -lz
  SDL_CFLAGS=-D_GNU_SOURCE=1 -D_REENTRANT
@@ -13,4 +13,4 @@
 -LFLAGS=-s -L$(TOOLCHAIN_ROOT_PATH)/target-mipsel_uClibc-0.9.30.1/usr/lib -L$(TOOLCHAIN_ROOT_PATH)/target-mipsel_uClibc-0.9.30.1/root-xburst/usr/lib -lpthread -lm -ldl -lgcc -Wl,-export-dynamic
 +CFLAGS+=-msoft-float -ffast-math -fomit-frame-pointer $(SDL_CFLAGS) -DFILE_HW_H="\"hw_$(TARGET).h\""
 +LFLAGS=$(LDFLAGS) -s $(SDL_LIB) -lpthread -lm -ldl -lgcc -Wl,-export-dynamic
- DISTFILES=$(BINARY) frontends decoders themes gmu.png README.txt libs.nanonote gmu.nn COPYING gmuinput.nanonote.conf gmu.bmp
+ DISTFILES=$(COMMON_DISTBIN_FILES) gmu-nanonote.sh gmuinput.nanonote.conf
