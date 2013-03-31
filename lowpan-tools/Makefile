@@ -5,12 +5,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=lowpan-tools
-PKG_VERSION:=0.2.2
+PKG_VERSION:=0.3
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/linux-zigbee/linux-zigbee-sources/$(PKG_VERSION)
-PKG_MD5SUM:=c727b36e5a6053b15e54ecf220bd5d6b
+PKG_MD5SUM:=564bdf163de5b33232d751383495a65c
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -19,7 +19,7 @@ define Package/lowpan-tools
     SECTION:=network
     CATEGORY:=Network
     URL:=http://sourceforge.net/apps/trac/linux-zigbee/
-    DEPENDS:=+libnl-1
+    DEPENDS:=+libnl-3
 endef
 
 define Package/lowpan-tools/description
@@ -32,7 +32,7 @@ endef
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include
-	$(CP) $(PKG_BUILD_DIR)/include/ieee802154.h $(1)/usr/include
+	$(CP) $(PKG_BUILD_DIR)/include/{ieee802154.h,nl802154.h} $(1)/usr/include
 endef
 
 define Package/lowpan-tools/install
