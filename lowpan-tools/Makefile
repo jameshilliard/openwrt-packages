@@ -5,12 +5,15 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=lowpan-tools
-PKG_VERSION:=0.3
+PKG_VERSION:=git
+PKG_REV:=a1d9615adde6d1a568813c24a128273ed755af04
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=@SF/linux-zigbee/linux-zigbee-sources/$(PKG_VERSION)
-PKG_MD5SUM:=564bdf163de5b33232d751383495a65c
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
+PKG_SOURCE_URL:=git://linux-zigbee.git.sourceforge.net/gitroot/linux-zigbee/linux-zigbee
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
+PKG_SOURCE_VERSION:=$(PKG_REV)
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -28,6 +31,11 @@ The LoWPAN stack aims for IEEE 802.15.4-2003 (and for lesser extent
 IEEE 802.15.4-2006) compatibility.
 
 If you want to learn more, please go to http://linux-zigbee.sf.net/
+endef
+
+define Build/Prepare
+	$(call Build/Prepare/Default)
+	(cd $(PKG_BUILD_DIR) && ./autogen.sh --help)
 endef
 
 define Build/InstallDev
