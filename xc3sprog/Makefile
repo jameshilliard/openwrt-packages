@@ -12,23 +12,21 @@ PKG_SOURCE_VERSION=$(PKG_REV)
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/cmake.mk
 
 define Package/xc3sprog
-  SECTION:=
-  CATEGORY:=
-  TITLE:=
-  URL:=
-  DEPENDS:=
+	SECTION:=utils
+	CATEGORY:=Utilities
+	TITLE:=xc3sporg
+	URL:=http://xc3sprog.sourceforge.net/
+	DEPENDS:=+libusb +libftdi
 endef
 
-define Package/MPlayer/description
-  
+define Package/xc3sprog/description
+xc3sprog is a suite of utilities for programming Xilinx FPGAs, CPLDs, and EEPROMs with the Xilinx Parallel Cable and other JTAG adapters under Linux. 
 endef
 
-CONFIGURE_ARGS += 
-TARGET_CFLAGS += 
-
-define Package/MPlayer/install
+define Package/xc3sprog/install
 	$(INSTALL_DIR) $(1)/usr/bin
 
 	$(INSTALL_BIN) \
