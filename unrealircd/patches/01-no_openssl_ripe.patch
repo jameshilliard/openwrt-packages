@@ -1,0 +1,25 @@
+--- a/include/struct.h
++++ b/include/struct.h
+@@ -39,8 +39,10 @@
+ #include <openssl/evp.h>
+ #include <openssl/rand.h>
+ #include <openssl/md5.h>
++#ifndef OPENSSL_NO_RIPEMD
+ #include <openssl/ripemd.h>
+ #endif
++#endif
+ #include "common.h"
+ #include "sys.h"
+ #include "hash.h"
+--- a/include/auth.h
++++ b/include/auth.h
+@@ -37,7 +37,9 @@ typedef	struct {
+ #ifdef USE_SSL
+ #define AUTHENABLE_SHA1
+ #define AUTHENABLE_SSL_CLIENTCERT
++#ifndef OPENSSL_NO_RIPEMD
+ #define AUTHENABLE_RIPEMD160
++#endif
+ #define AUTHENABLE_SSL_CLIENTCERTFP
+ /* OpenSSL provides a crypt() */
+ #ifndef AUTHENABLE_UNIXCRYPT
