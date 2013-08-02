@@ -27,7 +27,7 @@ define Package/unrealircd
 endef
 
 define Package/unrealircd/conffiles
-/etc/unrealircd.conf
+/etc/unrealircd/unrealircd.conf
 endef
 
 CONFIGURE_ARGS+= --with-showlistmodes \
