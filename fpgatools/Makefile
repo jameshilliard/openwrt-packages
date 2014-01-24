@@ -61,7 +61,7 @@ endef
 
 define Package/mini-jtag
 	$(call Package/fpgatools/Default)
-	DEPENDS:=+libusb +libftdi
+	DEPENDS:=+libusb-compat +libftdi
 	TITLE+=(mini-jtag)
 endef
 
