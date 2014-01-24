@@ -19,7 +19,7 @@ define Package/xc3sprog
 	CATEGORY:=Utilities
 	TITLE:=xc3sporg
 	URL:=http://xc3sprog.sourceforge.net/
-	DEPENDS:=+libusb +libftdi
+	DEPENDS:=+libusb-compat +libftdi
 endef
 
 define Package/xc3sprog/description
